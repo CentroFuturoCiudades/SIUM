@@ -1,29 +1,8 @@
 html {
-  height: 100vh;
   overflow: hidden;
 }
 
 body {
-  --black: #000000;
-  --ash-black: #222;
-  --white: #fafafa;
-
-  --background: linear-gradient(#b9dfea, #e0dfbf);
-  --accent: var(--white);
-
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  margin: 0;
-  padding: 0;
-  background-image: var(--background);
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-
-  position: absolute;
   top: 0;
   bottom: 0;
   right: 0;
@@ -36,14 +15,9 @@ body {
 }
 
 section {
-  height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
   scroll-snap-align: center;
   scroll-snap-stop: always;
-  perspective: 500px;
 }
 
 section > div {
@@ -54,20 +28,17 @@ section > div {
 
 .card {
   margin: 1rem;
+  width: 100%;
   padding: 1rem;
   font-size: 1.25rem;
-  line-height: 1.3;
   border-radius: 0.6rem;
-  height: calc(100vh - 4rem);
-  background-color: white;
+  height: calc(100vh - 2rem);
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .cardMap {
   width: 75%;
-  margin: 10px;
-  overflow: hidden;
-  position: relative;
-  width: calc(75% - 20px);
+  width: calc(75% - 1rem);
   border-radius: 0.6rem;
   height: calc(100vh - 2rem);
   overflow: hidden;
@@ -110,6 +81,7 @@ section > div {
 .title {
   color: rgb(39, 40, 42);
   text-align: center;
-  margin-top: 0.1rem;
   margin-bottom: 0.3rem;
+  font-size: 3rem;
+  font-weight: 600;
 }

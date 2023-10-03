@@ -3,6 +3,8 @@ import DeckGL from "@deck.gl/react";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import StaticMap from "react-map-gl";
 import maplibregl from "maplibre-gl";
+import { ButtonGroup, IconButton } from "@chakra-ui/react";
+import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 
 import "maplibre-gl/dist/maplibre-gl.css";
 import styles from "./styles.module.css";
@@ -81,7 +83,7 @@ function Card({ id, children }) {
 function Card1({ setOutline }) {
   return (
     <Card id="section1">
-      <h2 className={styles.title}>Title 1</h2>
+      <h2 className={styles.title}>¿Hacia dónde crecemos?</h2>
       Las familias migran a la{" "}
       <span
         className={styles.highlightAccent}
@@ -98,7 +100,7 @@ function Card1({ setOutline }) {
 function Card2({ setOutline }) {
   return (
     <Card id="section2">
-      <h2 className={styles.title}>¿Por qué migramos a la periferia?</h2>
+      <h2 className={styles.title}>¿En donde trabajamos?</h2>
       Porque en los{" "}
       <span
         className={styles.highlightPrimary}
@@ -115,7 +117,7 @@ function Card2({ setOutline }) {
 function Card3({ setOutline }) {
   return (
     <Card id="section3">
-      <h2 className={styles.title}>Title 3</h2>
+      <h2 className={styles.title}>¿Como nos movemos?</h2>
       <p>
         Alrededor del <b>40%</b> de los traslados se hacen desde la{" "}
         <span
@@ -180,6 +182,14 @@ export default function App() {
       window.document.body.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const zoomIn = () => {
+    setViewState((v) => ({ ...v, zoom: v.zoom + 1, transitionDuration: 100 }));
+  };
+
+  const zoomOut = () => {
+    setViewState((v) => ({ ...v, zoom: v.zoom - 1, transitionDuration: 100 }));
+  };
+
   return (
     <div style={{ display: "flex" }} className="parent">
       <div style={{ width: "25%" }}>
@@ -200,6 +210,20 @@ export default function App() {
             mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
           />
         </DeckGL>
+        <div style={{ position: "absolute", top: 10, right: 10 }}>
+          <ButtonGroup isAttached size="sm" colorScheme="blackAlpha">
+            <IconButton
+              aria-label="Zoom In"
+              onClick={zoomIn}
+              icon={<AddIcon />}
+            />
+            <IconButton
+              aria-label="Zoom Out"
+              onClick={zoomOut}
+              icon={<MinusIcon />}
+            />
+          </ButtonGroup>
+        </div>
       </div>
     </div>
   );
