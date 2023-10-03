@@ -1,0 +1,115 @@
+html {
+  height: 100vh;
+  overflow: hidden;
+}
+
+body {
+  --black: #000000;
+  --ash-black: #222;
+  --white: #fafafa;
+
+  --background: linear-gradient(#b9dfea, #e0dfbf);
+  --accent: var(--white);
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  margin: 0;
+  padding: 0;
+  background-image: var(--background);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  scroll-snap-type: y mandatory;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+section {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  perspective: 500px;
+}
+
+section > div {
+  width: 300px;
+  height: 400px;
+  position: relative;
+}
+
+.card {
+  margin: 1rem;
+  padding: 1rem;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  border-radius: 0.6rem;
+  height: calc(100vh - 4rem);
+  background-color: white;
+}
+
+.cardMap {
+  width: 75%;
+  margin: 10px;
+  overflow: hidden;
+  position: relative;
+  width: calc(75% - 20px);
+  border-radius: 0.6rem;
+  height: calc(100vh - 2rem);
+  overflow: hidden;
+  position: sticky;
+  right: 1rem;
+  top: 1rem;
+  bottom: 1rem;
+}
+
+.highlightAccent {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  background: rgb(255, 194, 81);
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.1rem 0.2rem;
+  border-radius: 0.4rem;
+}
+
+.highlightAccent:hover {
+  background: orange;
+  color: white;
+}
+
+.highlightPrimary {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  background: rgb(81, 142, 255);
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.1rem 0.2rem;
+  border-radius: 0.4rem;
+}
+
+.highlightPrimary:hover {
+  background: rgb(43, 43, 254);
+  color: white;
+}
+
+.title {
+  color: rgb(39, 40, 42);
+  text-align: center;
+  margin-top: 0.1rem;
+  margin-bottom: 0.3rem;
+}
