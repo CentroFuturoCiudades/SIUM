@@ -147,32 +147,37 @@ function Card3({ setOutline }) {
 export default function App() {
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const [outline, setOutline] = useState(null);
+  const [currentSection, setCurrentSection] = useState(1);
+
+  const isSectionInView = (section) => {
+    const { top, bottom } = section.getBoundingClientRect();
+    const midScreen = window.innerHeight * 0.5;
+
+    return (
+      (top > 0 && top <= midScreen) ||
+      (bottom > midScreen && bottom <= window.innerHeight)
+    );
+  };
+
+  const getCurrentSectionId = () => {
+    const sections = document.querySelectorAll("section");
+    const currentSection = Array.from(sections).find(isSectionInView);
+
+    return currentSection ? currentSection.id : null;
+  };
+
+  const getSectionFromURL = () => {
+    return window.location.hash?.replace("#", "") || null;
+  };
 
   useEffect(() => {
-    const isSectionInView = (section) => {
-      const { top, bottom } = section.getBoundingClientRect();
-      const midScreen = window.innerHeight * 0.5;
-
-      return (
-        (top > 0 && top <= midScreen) ||
-        (bottom > midScreen && bottom <= window.innerHeight)
-      );
-    };
-
-    const getCurrentSectionId = () => {
-      const sections = document.querySelectorAll("section");
-      const currentSection = Array.from(sections).find(isSectionInView);
-
-      return currentSection ? currentSection.id : null;
-    };
-
     const handleScroll = () => {
-      const currentSectionId = getCurrentSectionId();
-      const currentHash = window.location.hash.replace("#", "");
+      const detectedSectionId = getCurrentSectionId();
+      const currentHash = getSectionFromURL();
 
-      if (currentSectionId && currentSectionId !== currentHash) {
-        setViewState(INITIAL_STATE);
-        window.history.replaceState(null, null, `#${currentSectionId}`);
+      if (detectedSectionId && detectedSectionId !== currentHash) {
+        setCurrentSection(detectedSectionId);
+        window.history.replaceState(null, null, `#${detectedSectionId}`);
       }
     };
 
@@ -180,6 +185,23 @@ export default function App() {
 
     return () =>
       window.document.body.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (currentSection) {
+      setViewState(INITIAL_STATE);
+    }
+  }, [currentSection]);
+
+  useEffect(() => {
+    const sectionFromURL = getSectionFromURL();
+    if (sectionFromURL) {
+      const el = document.getElementById(sectionFromURL);
+      if (el) {
+        setCurrentSection(sectionFromURL);
+        el.scrollIntoView();
+      }
+    }
   }, []);
 
   const zoomIn = () => {
