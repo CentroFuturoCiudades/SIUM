@@ -47,9 +47,9 @@ const SUBCENTERS = [
 ];
 const PERIFERY_LAYER = {
   id: "perfifery-layer",
-  data: "data/municipalities.json",
+  data: "data/Division_Municipal.geojson",
   dataTransform: (d) =>
-    d.features.filter((x) => PERIFERIES.includes(x.properties.NOMBRE)),
+    d.features.filter((x) => PERIFERIES.includes(x.properties.NOMGEO)),
   stroked: true,
   filled: true,
   lineWidthScale: 10,
@@ -60,9 +60,9 @@ const PERIFERY_LAYER = {
 };
 const CENTER_LAYER = {
   id: "center-layer",
-  data: "data/municipalities.json",
+  data: "data/Division_Municipal.geojson",
   dataTransform: (d) =>
-    d.features.filter((x) => SUBCENTERS.includes(x.properties.NOMBRE)),
+    d.features.filter((x) => SUBCENTERS.includes(x.properties.NOMGEO)),
   stroked: true,
   filled: true,
   lineWidthScale: 10,
