@@ -20,25 +20,23 @@ section {
   scroll-snap-stop: always;
 }
 
-section > div {
-  width: 300px;
-  height: 400px;
-  position: relative;
-}
-
 .card {
   margin: 1rem;
   width: 100%;
   padding: 1rem;
-  font-size: 1.25rem;
+  font-size: 1rem;
   border-radius: 0.6rem;
   height: calc(100vh - 2rem);
   background-color: rgba(255, 255, 255, 0.8);
 }
 
-.cardMap {
-  width: 75%;
-  width: calc(75% - 1rem);
+.cardsContainer {
+  width: 30%;
+}
+
+.mapContainer {
+  width: 70%;
+  width: calc(70% - 1rem);
   border-radius: 0.6rem;
   height: calc(100vh - 2rem);
   overflow: hidden;
@@ -49,9 +47,8 @@ section > div {
 }
 
 .highlightAccent {
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-  background: rgb(255, 194, 81);
-  color: black;
+  font-family: Inter;
+  color: rgb(245, 159, 0);
   font-weight: 600;
   cursor: pointer;
   padding: 0.1rem 0.2rem;
@@ -63,25 +60,69 @@ section > div {
   color: white;
 }
 
-.highlightPrimary {
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-  background: rgb(81, 142, 255);
-  color: black;
+.highlightSubcenters {
+  font-family: Inter;
+  color: rgb(85, 0, 255);
   font-weight: 600;
   cursor: pointer;
   padding: 0.1rem 0.2rem;
   border-radius: 0.4rem;
 }
 
-.highlightPrimary:hover {
-  background: rgb(43, 43, 254);
+.highlightSubcenters:hover {
+  background: rgb(117, 62, 255);
   color: white;
 }
 
+.highlightCenters {
+  font-family: Inter;
+  color: rgb(0, 89, 255);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.1rem 0.2rem;
+  border-radius: 0.4rem;
+}
+
+.highlightCenters:hover {
+  background: rgb(62, 62, 255);
+  color: white;
+}
+
+p {
+  margin-top: 0.5rem;
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+}
+
 .title {
+  font-family: Inter;
+  text-transform: uppercase;
+  font-size: 1.5rem;
   color: rgb(39, 40, 42);
   text-align: center;
+  line-height: 1.6rem;
   margin-bottom: 0.3rem;
-  font-size: 3rem;
+  font-weight: 700;
+}
+
+.response {
+  font-family: Inter;
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.3rem;
+  color: rgb(49, 83, 150);
+  font-weight: 600;
+}
+
+.context {
+  font-family: Inter;
+  text-align: center;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  font-size: 1.1rem;
+  font-style: italic;
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+  color: rgb(49, 83, 150);
   font-weight: 600;
 }
