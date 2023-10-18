@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/SIUM/static/css/main.1886e4e0.css",
-    "main.js": "/SIUM/static/js/main.7b3ade1a.js",
-    "static/js/483.43a1be48.chunk.js": "/SIUM/static/js/483.43a1be48.chunk.js",
+    "main.js": "/SIUM/static/js/main.99be28b5.js",
+    "static/js/483.62be29b7.chunk.js": "/SIUM/static/js/483.62be29b7.chunk.js",
     "static/js/787.c787b993.chunk.js": "/SIUM/static/js/787.c787b993.chunk.js",
     "index.html": "/SIUM/index.html",
     "main.1886e4e0.css.map": "/SIUM/static/css/main.1886e4e0.css.map",
-    "main.7b3ade1a.js.map": "/SIUM/static/js/main.7b3ade1a.js.map",
-    "483.43a1be48.chunk.js.map": "/SIUM/static/js/483.43a1be48.chunk.js.map",
+    "main.99be28b5.js.map": "/SIUM/static/js/main.99be28b5.js.map",
+    "483.62be29b7.chunk.js.map": "/SIUM/static/js/483.62be29b7.chunk.js.map",
     "787.c787b993.chunk.js.map": "/SIUM/static/js/787.c787b993.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1886e4e0.css",
-    "static/js/main.7b3ade1a.js"
+    "static/js/main.99be28b5.js"
   ]
 }
