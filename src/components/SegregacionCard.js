@@ -1,13 +1,11 @@
-import { Card, SubcentersSpan, PeripherySpan } from "./Card";
-import styles from "../styles.module.css";
+import { Card, PeripherySpan, ResponseTitle, ContextTitle } from "./Card";
 
 export function SegregacionCard({ setOutline }) {
   return (
-    <Card id="segregacion">
-      <h2 className={styles.title}>¿Por qué la expansión segrega?</h2>
-      <h4 className={styles.response}>
+    <Card id="segregacion" color="sage">
+      <ResponseTitle color="sage">
         Aisla a personas con menos recursos de zonas con mayor inversión.
-      </h4>
+      </ResponseTitle>
       <p>
         La expansión urbana causa segregación económica, es decir la separación
         entre barrios pobres y barrios afluentes.
@@ -25,10 +23,10 @@ export function SegregacionCard({ setOutline }) {
       </p>
       <br />
       <br />
-      <p className={styles.context}>
+      <ContextTitle color="sage">
         La segregación crea zonas marginadas que presentan desafíos en servicios
         públicos y crimen.
-      </p>
+      </ContextTitle>
     </Card>
   );
 }

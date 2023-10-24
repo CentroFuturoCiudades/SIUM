@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import { GeoJsonLayer } from "@deck.gl/layers";
+import { Box } from "@chakra-ui/react";
 
+import { Sidebar, sectionsInfo } from "./components/Sidebar";
+import { Header } from "./components/Header";
+import { CustomMap, INITIAL_STATE } from "./components/CustomMap";
 import { ExpansionUrbanaCard } from "./components/ExpansionUrbanaCard";
 import { TransporteCard } from "./components/TransporteCard";
 import { EmpleoCard } from "./components/EmpleoCard";
-import { CustomMap, INITIAL_STATE } from "./components/CustomMap";
-
-import "maplibre-gl/dist/maplibre-gl.css";
-import styles from "./styles.module.css";
 import { ViviendaCard } from "./components/ViviendaCard";
 import { SegregacionCard } from "./components/SegregacionCard";
 import { DelincuenciaCard } from "./components/DelincuenciaCard";
 import { CostosCard } from "./components/CostosCard";
+
+import "./index.css";
 
 const isSectionInView = (section) => {
   const { top, bottom } = section.getBoundingClientRect();
@@ -37,7 +39,8 @@ const getSectionFromURL = () => {
 export default function App() {
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const [outline, setOutline] = useState(null);
-  const [currentSection, setCurrentSection] = useState(1);
+  const [currentSection, setCurrentSection] = useState("expansion-urbana");
+  const currentInfo = sectionsInfo[currentSection];
   const layers = outline ? [new GeoJsonLayer(outline)] : [];
 
   useEffect(() => {
@@ -76,7 +79,13 @@ export default function App() {
 
   return (
     <div style={{ display: "flex" }}>
-      <div className={styles.cardsContainer}>
+      <Sidebar section={currentSection} setSection={setCurrentSection} />
+      <div className="cardsContainer">
+        <Header
+          section={currentSection}
+          color={currentInfo.color}
+          title={currentInfo.title}
+        />
         <ExpansionUrbanaCard setOutline={setOutline} />
         <EmpleoCard setOutline={setOutline} />
         <TransporteCard setOutline={setOutline} />
@@ -85,13 +94,16 @@ export default function App() {
         <DelincuenciaCard setOutline={setOutline} />
         <CostosCard setOutline={setOutline} />
       </div>
-      <div className={styles.mapContainer}>
+      <Box
+        className="mapContainer"
+        borderColor={`${sectionsInfo[currentSection].color}.500`}
+      >
         <CustomMap
           viewState={viewState}
           setViewState={setViewState}
           layers={layers}
         />
-      </div>
+      </Box>
     </div>
   );
 }

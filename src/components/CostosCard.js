@@ -1,15 +1,11 @@
-import { Card, SubcentersSpan, PeripherySpan } from "./Card";
-import styles from "../styles.module.css";
+import { Card, ResponseTitle, ContextTitle } from "./Card";
 
 export function CostosCard({ setOutline }) {
   return (
-    <Card id="costos">
-      <h2 className={styles.title}>
-        ¿Por qué la expansión nos cuesta tanto dinero?
-      </h2>
-      <h4 className={styles.response}>
+    <Card id="costos" color="teal">
+      <ResponseTitle color="teal">
         Porque hay que llevar servicios públicos cada vez más lejos.
-      </h4>
+      </ResponseTitle>
       <p>
         Incidencias delictivas como el robos en calles o a viviendas, así como
         violencia familiar se concentran en regiones segregadas.
@@ -21,10 +17,10 @@ export function CostosCard({ setOutline }) {
       </p>
       <br />
       <br />
-      <p className={styles.context}>
+      <ContextTitle color="teal">
         La malas condiciones de vida en zonas marginadas contribuyen a la falta
         de oportunidades y a la delincuencia.
-      </p>
+      </ContextTitle>
     </Card>
   );
 }
