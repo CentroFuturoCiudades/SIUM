@@ -1,5 +1,5 @@
 import React from "react";
-import { CENTER_LAYER, PERIPHERY_LAYER } from "../utils/constants";
+import { CENTER_LAYER, PERIPHERY_LAYER, EMPLOYMENT_LAYER, MASIVE_TRANSPORT_LAYER } from "../utils/constants";
 import styles from "../styles.module.css";
 
 export const PeripherySpan = ({ setOutline }) => (
@@ -11,7 +11,7 @@ export const PeripherySpan = ({ setOutline }) => (
     periferia
   </span>
 );
-
+  
 export const CenterSpan = ({ setOutline }) => (
   <span
     className={styles.highlightCenters}
@@ -19,6 +19,26 @@ export const CenterSpan = ({ setOutline }) => (
     onMouseOut={() => setOutline(null)}
   >
     centro
+  </span>
+);
+
+export const EmploymentSpan = ({ setOutline }) => (
+  <span
+    className={styles.highlightEmployments}
+    onMouseOver={() => setOutline(EMPLOYMENT_LAYER)}
+    onMouseOut={() => setOutline(null)}
+  >
+    empleos
+  </span>
+);
+
+export const MasiveTransportSpan = ({ setOutline }) => (
+  <span
+    className={styles.highlightTransport}
+    onMouseOver={() => setOutline(MASIVE_TRANSPORT_LAYER)}
+    onMouseOut={() => setOutline(null)}
+  >
+    transporte público
   </span>
 );
 

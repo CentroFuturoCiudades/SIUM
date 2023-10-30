@@ -1,13 +1,13 @@
-import { Card, SubcentersSpan, PeripherySpan, CenterSpan } from "./Card";
+import { Card, SubcentersSpan, PeripherySpan, CenterSpan, EmploymentSpan } from "./Card";
 import styles from "../styles.module.css";
-
+ 
 export function EmpleoCard({ setOutline }) {
   return (
     <Card id="empleo">
       <h2 className={styles.title}>¿En dónde trabajamos?</h2>
       <h4 className={styles.response}>En el centro.</h4>
       <p>
-        El <b>X%</b> de los empleos se concentra en el{" "}
+        El <b>X%</b> de los <EmploymentSpan setOutline={setOutline} /> se concentra en el{" "} 
         <CenterSpan setOutline={setOutline} />. Debido a que las familias han
         migrado hacia la <PeripherySpan setOutline={setOutline} />, se ha
         perdido población en los <SubcentersSpan setOutline={setOutline} /> y

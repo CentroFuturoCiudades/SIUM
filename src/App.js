@@ -12,6 +12,12 @@ import { ViviendaCard } from "./components/ViviendaCard";
 import { SegregacionCard } from "./components/SegregacionCard";
 import { DelincuenciaCard } from "./components/DelincuenciaCard";
 import { CostosCard } from "./components/CostosCard";
+import { dictionaryMaps } from "./utils/constants";
+
+  // Imports for layers defined at constants.js
+import { EMPLOYMENT_LAYER } from "./utils/constants";   
+import { EMPLOYMENT_LAYER_1 } from "./utils/constants";
+import { PRIMARY_ROUTES } from "./utils/constants";
 
 const isSectionInView = (section) => {
   const { top, bottom } = section.getBoundingClientRect();
@@ -22,6 +28,11 @@ const isSectionInView = (section) => {
     (bottom > midScreen && bottom <= window.innerHeight)
   );
 };
+
+ // ----------------------------------------------------------------------
+const section = 'empleo'
+new GeoJsonLayer(dictionaryMaps[section])
+ // -------------------------------------------------------------------------
 
 const getCurrentSectionId = () => {
   const sections = document.querySelectorAll("section");
@@ -38,7 +49,11 @@ export default function App() {
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const [outline, setOutline] = useState(null);
   const [currentSection, setCurrentSection] = useState(1);
-  const layers = outline ? [new GeoJsonLayer(outline)] : [];
+  const currentLayer = dictionaryMaps[currentSection] ? new GeoJsonLayer(dictionaryMaps[currentSection]) : null;
+  const extralayers = outline ? [new GeoJsonLayer(outline)] : []; // Change in layer
+  const layers = currentLayer ? [currentLayer, ...extralayers] : [...extralayers];
+  
+
 
   useEffect(() => {
     const handleScroll = () => {
