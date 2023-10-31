@@ -1,7 +1,8 @@
-import { DeckGL } from "deck.gl";
+import DeckGL from "@deck.gl/react";
 import { ButtonGroup, IconButton } from "@chakra-ui/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
-import ReactMapGL from "react-map-gl";
+import { Map } from "react-map-gl";
+import { FlyToInterpolator, GeoJsonLayer } from "deck.gl";
 import mapboxgl from "mapbox-gl";
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
@@ -37,13 +38,14 @@ export function CustomMap({ viewState, setViewState, layers }) {
         style={{ position: "relative" }}
         viewState={viewState}
         onViewStateChange={({ viewState }) => setViewState(viewState)}
-        layers={layers}
+        layers={layers.map((layer) => new GeoJsonLayer(layer))}
         controller={DECK_GL_CONTROLLER}
       >
-        <ReactMapGL
+        <Map
+          width="100%"
+          height="100%"
           mapStyle="mapbox://styles/mapbox/light-v11"
           mapboxAccessToken="pk.eyJ1IjoidXJpZWxzYTk2IiwiYSI6ImNsbnV2MzBkZDBlajYya211bWk2eTNuc2MifQ.ZnhFC3SyhckuIQBLO59HxA"
-          style={{ width: "100%", height: "100%" }}
         />
       </DeckGL>
       <div style={{ position: "absolute", top: 10, right: 10 }}>

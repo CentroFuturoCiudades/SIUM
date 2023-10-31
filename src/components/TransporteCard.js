@@ -6,7 +6,14 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Card, CenterSpan, PeripherySpan, ResponseTitle, ContextTitle } from "./Card";
+import {
+  Card,
+  CenterSpan,
+  PeripherySpan,
+  ResponseTitle,
+  ContextTitle,
+  MasiveTransportSpan,
+} from "./Card";
 
 export const CustomBarChart = ({ data }) => (
   <ResponsiveContainer width="100%" height={150}>
@@ -56,7 +63,8 @@ export function TransporteCard({ setOutline }) {
         viajes son hechos en automóvil, donde más de la mitad viajan solos.
       </p>
       <p>
-        El <b>21%</b> se mueve en transporte público y 19% a pie. 1 de cada 3
+        El <b>21%</b> se mueve en{" "}
+        <MasiveTransportSpan setOutline={setOutline} /> y 19% a pie. 1 de cada 3
         personas pasan 3 horas al día en ir y venir de su viaje principal en
         transporte público. En promedio se espera 21 minutos a que llegue el
         transporte público.

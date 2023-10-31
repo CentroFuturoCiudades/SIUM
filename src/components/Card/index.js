@@ -3,6 +3,8 @@ import {
   SUBCENTERS_LAYER,
   CENTER_LAYER,
   PERIPHERY_LAYER,
+  EMPLOYMENT_LAYER,
+  MASIVE_TRANSPORT_LAYER,
 } from "../../utils/constants";
 import { Box, Heading, Text } from "@chakra-ui/react";
 import { AnimatedText } from "../AnimatedText";
@@ -25,6 +27,26 @@ export const CenterSpan = ({ setOutline }) => (
     onMouseOut={() => setOutline(null)}
   >
     centro
+  </span>
+);
+
+export const EmploymentSpan = ({ setOutline }) => (
+  <span
+    className="highlightEmployments"
+    onMouseOver={() => setOutline(EMPLOYMENT_LAYER)}
+    onMouseOut={() => setOutline(null)}
+  >
+    empleos
+  </span>
+);
+
+export const MasiveTransportSpan = ({ setOutline }) => (
+  <span
+    className="highlightTransport"
+    onMouseOver={() => setOutline(MASIVE_TRANSPORT_LAYER)}
+    onMouseOut={() => setOutline(null)}
+  >
+    transporte público
   </span>
 );
 

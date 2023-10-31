@@ -47,6 +47,24 @@
   color: white;
 }
 
+.highlightTransport {
+  font-family: Inter;
+  color: rgb(255, 105, 180, 128);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.1rem 0.2rem;
+  border-radius: 0.4rem;
+}
+
+.highlightEmployments {
+  font-family: Inter;
+  color: rgb(64, 224, 208, 128);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.1rem 0.2rem;
+  border-radius: 0.4rem;
+}
+
 .highlightCenters {
   font-family: Inter;
   color: rgb(0, 89, 255);

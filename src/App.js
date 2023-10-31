@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { GeoJsonLayer } from "@deck.gl/layers";
 import { Box } from "@chakra-ui/react";
 
 import { Sidebar, sectionsInfo } from "./components/Sidebar";
@@ -12,7 +11,7 @@ import { ViviendaCard } from "./components/ViviendaCard";
 import { SegregacionCard } from "./components/SegregacionCard";
 import { DelincuenciaCard } from "./components/DelincuenciaCard";
 import { CostosCard } from "./components/CostosCard";
-
+import { geojsonsMapping } from "./utils/constants";
 import "./index.css";
 
 const isSectionInView = (section) => {
@@ -41,7 +40,13 @@ export default function App() {
   const [outline, setOutline] = useState(null);
   const [currentSection, setCurrentSection] = useState("expansion-urbana");
   const currentInfo = sectionsInfo[currentSection];
-  const layers = outline ? [new GeoJsonLayer(outline)] : [];
+  const currentLayer = geojsonsMapping[currentSection]
+    ? geojsonsMapping[currentSection]
+    : null;
+  const extraLayers = outline ? [outline] : []; // Change in layer
+  const layers = currentLayer
+    ? [currentLayer, ...extraLayers]
+    : [...extraLayers];
 
   useEffect(() => {
     const handleScroll = () => {
