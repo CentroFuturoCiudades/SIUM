@@ -35,18 +35,8 @@ const getSectionFromURL = () => {
   return window.location.hash?.replace("#", "") || null;
 };
 
-export default function App() {
-  const [viewState, setViewState] = useState(INITIAL_STATE);
-  const [outline, setOutline] = useState(null);
-  const [currentSection, setCurrentSection] = useState("expansion-urbana");
-  const currentInfo = sectionsInfo[currentSection];
-  const currentLayer = geojsonsMapping[currentSection]
-    ? geojsonsMapping[currentSection]
-    : null;
-  const extraLayers = outline ? [outline] : []; // Change in layer
-  const layers = currentLayer
-    ? [currentLayer, ...extraLayers]
-    : [...extraLayers];
+const useSection = (initialSection) => {
+  const [currentSection, setCurrentSection] = useState(initialSection);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,12 +56,6 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (currentSection) {
-      setViewState(INITIAL_STATE);
-    }
-  }, [currentSection]);
-
-  useEffect(() => {
     const sectionFromURL = getSectionFromURL();
     if (sectionFromURL) {
       const el = document.getElementById(sectionFromURL);
@@ -81,6 +65,28 @@ export default function App() {
       }
     }
   }, []);
+
+  return [currentSection, setCurrentSection];
+};
+
+export default function App() {
+  const [viewState, setViewState] = useState(INITIAL_STATE);
+  const [outline, setOutline] = useState(null);
+  const [currentSection, setCurrentSection] = useSection("expansion-urbana");
+  const currentInfo = sectionsInfo[currentSection];
+  const currentLayer = geojsonsMapping[currentSection]
+    ? geojsonsMapping[currentSection]
+    : null;
+  const extraLayers = outline ? [outline] : []; // Change in layer
+  const layers = currentLayer
+    ? [currentLayer, ...extraLayers]
+    : [...extraLayers];
+
+  useEffect(() => {
+    if (currentSection) {
+      setViewState(INITIAL_STATE);
+    }
+  }, [currentSection]);
 
   return (
     <div style={{ display: "flex" }}>
