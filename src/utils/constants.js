@@ -131,6 +131,58 @@ export const PRIMARY_ROUTES = {
   getLineWidth: 150,
 };
 
+export const TRANSPORTE_JEANNETTE = {
+  id: "primary_routes",
+  //data: "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/Transporte.json",
+  data: "data/TRANSPORTEJEANNETTE.geojson",
+  getLineColor: [100, 100, 100, 200],
+  getLineWidth: 150,
+  dataTransform: (d) => {
+    // Aquí se puede realizar el filtrado por hora en el objeto 'd'
+    // Asegúrate de implementar la lógica para filtrar en función del atributo de hora
+    const filteredData = d.features.filter((feature) => {
+      const horaOri = feature.properties.HoraOri.split(":"); // Separar la hora de los minutos
+      const horaDest = feature.properties.HoraDest.split(":"); // Separar la hora de los minutos
+
+      // Convertir las horas y minutos en valores numéricos
+      const horaOriNum = parseInt(horaOri[0], 10);
+      const horaDestNum = parseInt(horaDest[0], 10);
+
+      // Implementar la lógica de filtrado según las horas
+      // Por ejemplo, puedes filtrar los datos donde la hora de origen sea mayor que 18 y menor que 19
+      // y la hora de destino sea mayor que 18 y menor que 19 para filtrar los datos entre 18:00 y 19:00
+      if (horaOriNum >= 18 && horaOriNum < 19 && horaDestNum >= 18 && horaDestNum < 19) {
+        return true; // Mantener los datos si la condición se cumple
+      } else {
+        return false; // Descartar los datos si la condición no se cumple
+      }
+    });
+
+      // Asegúrate de devolver los datos filtrados
+      //return filteredData;
+      return { ...d, features: filteredData }; // Devolver los datos filtrados
+  },
+};
+
+/*const filteredTransportData = transportData.features.filter(feature => {
+  const horaOri = feature.properties.HoraOri; // Asumiendo que la hora está en formato "18:50"
+  const horaDest = feature.properties.HoraDest; // Asumiendo que la hora está en formato "19:00"
+
+  const hourStart = parseInt(horaOri.split(":")[0]);
+  const hourEnd = parseInt(horaDest.split(":")[0]);
+  const selected = selectedHour;
+
+  return selected >= hourStart && selected <= hourEnd;
+});*/
+
+export const TRANSPORTE_JEANNETTE2 = {
+  id: "primary_routes",
+  data: "data/TRANSPORTEJEANNETTE.geojson",
+  getLineColor: [100, 100, 100, 200],
+  getLineWidth: 150
+}
+
+
 export const EMPLOYMENT_LAYER_1 = {
   id: "employment_layer_1",
   data: "data/DENUE2010_Empleos_Hexagonos_2.geojson",
@@ -193,7 +245,9 @@ export const PRUEBA_SECCION_COSTOS_LAYER = {
 
 export const geojsonsMapping = {
   // Dictionary for layer loading depending on the section in page
-  transporte: PRIMARY_ROUTES,
+  //transporte: PRIMARY_ROUTES,
+  transporte: TRANSPORTE_JEANNETTE, //lee los datos filtrados entre las 6 y 7 pm
+  //transporte: TRANSPORTE_JEANNETTE2, //lee todos los datos
   empleo: EMPLOYMENT_LAYER_1,
   "expansion-urbana": PRUEBA_SECCION_CRECIMIENTO_LAYER,
   vivienda: PRUEBA_SECCION_VIVIENDA_LAYER,

@@ -4,6 +4,8 @@ import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { Map } from "react-map-gl";
 import { FlyToInterpolator, GeoJsonLayer } from "deck.gl";
 import mapboxgl from "mapbox-gl";
+import React, { useState, useEffect } from 'react';
+
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
 mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
@@ -25,6 +27,24 @@ export const INITIAL_STATE = {
 };
 
 export function CustomMap({ viewState, setViewState, layers }) {
+  const [transportData, setTransportData] = useState(null);
+  const [selectedHour, setSelectedHour] = useState(0); // Valor inicial del slider
+  const minHour = 0; // Hora mínima posible
+  const maxHour = 23; // Hora máxima posible
+
+  // Asumiendo que tienes un estado para la hora seleccionada, llamado selectedHour
+/*const filteredTransportData = transportData.features.filter(feature => {
+  const horaOri = feature.properties.HoraOri; // Asumiendo que la hora está en formato "18:50"
+  const horaDest = feature.properties.HoraDest; // Asumiendo que la hora está en formato "19:00"
+
+  const hourStart = parseInt(horaOri.split(":")[0]);
+  const hourEnd = parseInt(horaDest.split(":")[0]);
+  const selected = selectedHour;
+
+  return selected >= hourStart && selected <= hourEnd;
+});*/
+
+
   const zoomIn = () => {
     setViewState((v) => ({ ...v, zoom: v.zoom + 1, transitionDuration: 100 }));
   };
@@ -32,6 +52,23 @@ export function CustomMap({ viewState, setViewState, layers }) {
   const zoomOut = () => {
     setViewState((v) => ({ ...v, zoom: v.zoom - 1, transitionDuration: 100 }));
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/Transporte.json"
+        );
+        const data = await response.json();
+        setTransportData(data);
+        console.log('si lo leyo')
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <>
       <DeckGL
@@ -39,6 +76,14 @@ export function CustomMap({ viewState, setViewState, layers }) {
         viewState={viewState}
         onViewStateChange={({ viewState }) => setViewState(viewState)}
         layers={layers.map((layer) => new GeoJsonLayer(layer))}
+        /*layers={[
+          new GeoJsonLayer({
+            id: "transport-layer",
+            data: filteredTransportData,
+            getLineColor: [100, 100, 100, 200],
+            getLineWidth: 150,
+          }),
+        ]}*/
         controller={DECK_GL_CONTROLLER}
       >
         <Map
@@ -62,6 +107,16 @@ export function CustomMap({ viewState, setViewState, layers }) {
           />
         </ButtonGroup>
       </div>
+      <div style={{ position: "absolute", bottom: 10, left: 0, width: "100%", padding: "0 20px" }}>
+      {/*<input
+        type="range"
+        min={minHour}
+        max={maxHour}
+        value={selectedHour}
+        onChange={(e) => setSelectedHour(parseInt(e.target.value))}
+        style={{ width: "100%" }}
+      />*/}
+    </div>/*
     </>
   );
 }
