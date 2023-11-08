@@ -3,6 +3,8 @@ import { json } from 'd3-fetch';
   // Normalization for EMPLOYMENT_LAYER values
 let minEmpleo = Infinity;
 let maxEmpleo = -Infinity;
+let minIncome = Infinity; // Normalization for income_pc values
+let maxIncome = -Infinity;
 
 json("data/DENUE2020_Empleos_Hexagonos_2.geojson").then(data => {
   data.features.forEach(feature => {
@@ -13,6 +15,17 @@ json("data/DENUE2020_Empleos_Hexagonos_2.geojson").then(data => {
     }
   });
 });
+
+function initializeIncomeData() {
+  return json("data/income.geojson").then(data => {
+    data.features.forEach(feature => {
+      const income = feature.properties.income_pc;
+      if (income < minIncome) minIncome = income;
+      if (income > maxIncome) maxIncome = income;
+    });
+    // Ahora minIncome y maxIncome están configurados
+  });
+}
 
 export const PERIPHERIES = [
   "Juárez",
@@ -79,7 +92,7 @@ export const EMPLOYMENT_LAYER = {  // New layer for employment geoJson excluding
 
 export const MASIVE_TRANSPORT_LAYER = {  // New layer for public transport and its types
   id: "masive-transport-layer",
-  data: "data/Sistemas_TransporteMasivo.geojson",
+  data: "data/transporte-masivo.geojson",
   stroked: true,
   filled: true,
   lineWidthScale: 10,
@@ -123,15 +136,27 @@ export const PRIMARY_ROUTES = {
   filled: true,
   lineWidthScale: 10,
   lineWidthMinPixels: 2,
+  getLineColor: [128, 128, 128, 255],
 };
 
 export const EMPLOYMENT_LAYER_1 = {
   id: "employment_layer_1",
   data: "data/DENUE2010_Empleos_Hexagonos_2.geojson",
   stroked: true,
-  filled: false,
+  filled: true,
   lineWidthScale: 10,
   lineWidthMinPixels: 2,
+  getFillColor: (d) => {
+    const empleo = d.properties.Empleos;
+    if (empleo === 0) return [0, 0, 0, 0]; // Transparent for value 0
+    const normalized = (empleo - minEmpleo) / (maxEmpleo - minEmpleo);
+    const red = 255 * normalized; // R: 0 para empleo bajo, 255 para empleo alto
+    const green = 128 * (1 - normalized); // G: 128 para empleo bajo, 0 para empleo alto
+    const blue = 255 * (1 - normalized); // B: 255 para empleo bajo, 0 para empleo alto
+    return [red, green, blue, 200]; // Alpha incrementada para menos transparencia
+  },
+  getLineColor: [0, 0, 0],
+  getLineWidth: 10,
   dataTransform: (d) => {
     return d.features.filter((feature) => feature.properties.Empleos !== 0);
   },
@@ -139,13 +164,73 @@ export const EMPLOYMENT_LAYER_1 = {
 
 export const PRUEBA_SECCION_CRECIMIENTO_LAYER = {
   id: "prueba_seccion_crecimiento_layer",
-  data: "data/POB_2010.geojson",
+  data: "data/agebs-sum-20.geojson",
   stroked: true,
   filled: true,
   lineWidthScale: 10,
   lineWidthMinPixels: 2,
-  getFillColor: [204, 153, 255, 255],
-  getLineColor: [255, 174, 0, 200],
+  getFillColor: d => {
+    const value = d.properties.POBTOT_x;
+    if (value >= -8411 && value < -6461) {
+      return [255, 0, 0, 255]; // Rojo
+    } else if (value >= -6461 && value < -4510) {
+      return [128, 0, 0, 255]; // Tinto
+    } else if (value >= -4510 && value < -2560) {
+      return [255, 192, 203, 255]; // Rosa
+    } else if (value >= -2560 && value < -609) {
+      return [255, 179, 71, 255]; // Naranja claro
+    } else if (value >= -609 && value <= 1) {
+      return [245, 245, 220, 255]; // Crema
+    } else if (value > 1 && value < 3292) {
+      return [128, 128, 128, 255]; 
+    } else if (value >= 3292 && value <= 5243) {
+      return [0, 255, 255, 255]; // Cian
+    } else if (value > 5243 && value <= 7193) {
+      return [173, 216, 230, 255]; // Azul Claro
+    } else if (value > 7193 && value <= 9144) {
+      return [0, 0, 255, 255]; // Azul Fuerte
+    } else if (value > 9144 && value <= 11094) {
+      return [128, 0, 128, 255]; // Morado
+    }
+    return [204, 153, 255, 255]; // Color por defecto para cualquier otro valor fuera de los rangos
+  },
+  getLineColor: [128, 128, 128, 255],
+  getLineWidth: 10,
+}
+
+export const PRUEBA_SECCION_CRECIMIENTO_LAYER_1990 = {
+  id: "prueba_seccion_crecimiento_layer_1990",
+  data: "data/agebs-sum-2090.geojson",
+  stroked: true,
+  filled: true,
+  lineWidthScale: 10,
+  lineWidthMinPixels: 2,
+  getFillColor: d => {
+    const value = d.properties.POBTOT90;
+    if (value >= -8411 && value < -6461) {
+      return [255, 0, 0, 255]; // Rojo
+    } else if (value >= -6461 && value < -4510) {
+      return [128, 0, 0, 255]; // Tinto
+    } else if (value >= -4510 && value < -2560) {
+      return [255, 192, 203, 255]; // Rosa
+    } else if (value >= -2560 && value < -609) {
+      return [255, 179, 71, 255]; // Naranja claro
+    } else if (value >= -609 && value <= 1) {
+      return [245, 245, 220, 255]; // Crema
+    } else if (value > 1 && value < 3292) {
+      return [128, 128, 128, 255]; 
+    } else if (value >= 3292 && value <= 5243) {
+      return [0, 255, 255, 255]; // Cian
+    } else if (value > 5243 && value <= 7193) {
+      return [173, 216, 230, 255]; // Azul Claro
+    } else if (value > 7193 && value <= 9144) {
+      return [0, 0, 255, 255]; // Azul Fuerte
+    } else if (value > 9144 && value <= 11094) {
+      return [128, 0, 128, 255]; // Morado
+    }
+    return [204, 153, 255, 255]; // Color por defecto para cualquier otro valor fuera de los rangos
+  },
+  getLineColor: [128, 128, 128, 255],
   getLineWidth: 10,
 }
 
@@ -163,13 +248,34 @@ export const PRUEBA_SECCION_VIVIENDA_LAYER = {
 
 export const PRUEBA_SECCION_SEGREGACION_LAYER = {
   id: "prueba_seccion_segregacion_layer",
-  data: "data/POB_2000.geojson",
+  data: "data/income.geojson",
   stroked: true,
   filled: true,
   lineWidthScale: 10,
   lineWidthMinPixels: 2,
-  getFillColor: [64, 224, 208, 255],
-  getLineColor: [255, 174, 0, 200],
+  getFillColor: (d) => {
+    const income = d.properties.income_pc;
+    const normalized = (income - minIncome) / (maxIncome - minIncome);
+    return [
+      255 * normalized, // R: 0 para ingreso bajo, 255 para ingreso alto
+      255 * (1 - normalized), // G: 255 para ingreso bajo, 0 para ingreso alto
+      0, // B: constante en 0
+      128 // Alpha: semi-transparente
+    ];
+  },
+  getLineColor: [128, 128, 128, 255],
+  getLineWidth: 10,
+}
+
+export const PRUEBA_SECCION_SEGREGACION__QUINTIL_LAYER = {
+  id: "prueba_seccion_segregacion_quintil_layer",
+  data: "data/pobres.geojson",
+  stroked: true,
+  filled: true,
+  lineWidthScale: 10,
+  lineWidthMinPixels: 2,
+  getFillColor: [50, 50, 50, 255],
+  getLineColor: [128, 128, 128, 255],
   getLineWidth: 10,
 }
 

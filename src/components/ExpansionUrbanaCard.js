@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, SubcentersSpan, PeripherySpan, CenterSpan } from "./Card";
+import { Card, SubcentersSpan, PeripherySpan, CenterSpan, ExpansionSpan } from "./Card";
 import styles from "../styles.module.css";
 
 export function ExpansionUrbanaCard({ setOutline }) {
@@ -10,7 +10,7 @@ export function ExpansionUrbanaCard({ setOutline }) {
         Hacia las periferias, lejos unos de otros.
       </h4>
       <p>
-        En <b>1990</b> los <b>adultos mayores</b> vivían en el{" "}
+        En <ExpansionSpan setOutline={setOutline} /> los <b>adultos mayores</b> vivían en el{" "}
         <CenterSpan setOutline={setOutline} /> de Monterrey, mientras que las{" "}
         <b>familias jóvenes</b> vivían en{" "}
         <SubcentersSpan setOutline={setOutline} /> como Guadalupe, San Pedro,

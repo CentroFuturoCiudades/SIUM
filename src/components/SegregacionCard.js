@@ -1,4 +1,4 @@
-import { Card, SubcentersSpan, PeripherySpan } from "./Card";
+import { Card, SubcentersSpan, PeripherySpan, SegregacionSpan } from "./Card";
 import styles from "../styles.module.css";
 
 export function SegregacionCard({ setOutline }) {
@@ -19,7 +19,7 @@ export function SegregacionCard({ setOutline }) {
         capital social y más.
       </p>
       <p>
-        Las zonas con mayor segregación se tienden concentrar en las{" "}
+        Las zonas con mayor <SegregacionSpan setOutline={setOutline}/> se tienden concentrar en las{" "}
         <PeripherySpan setOutline={setOutline} /> como Juarez, Garcia, Pesquería
         y Cadereyta.
       </p>
