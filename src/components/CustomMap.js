@@ -4,8 +4,6 @@ import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { Map } from "react-map-gl";
 import { FlyToInterpolator, GeoJsonLayer } from "deck.gl";
 import mapboxgl from "mapbox-gl";
-import React, { useState, useEffect } from 'react';
-
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
 mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
@@ -26,11 +24,7 @@ export const INITIAL_STATE = {
   bearing: 0,
 };
 
-export function CustomMap({ viewState, setViewState, layers }) {
-  const [transportData, setTransportData] = useState(null);
-  const [selectedHour, setSelectedHour] = useState(0); // Valor inicial del slider
-  const minHour = 0; // Hora mínima posible
-  const maxHour = 23; // Hora máxima posible
+export function CustomMap({ viewState, setViewState, layers, handleSliderChange, time }) {
 
   // Asumiendo que tienes un estado para la hora seleccionada, llamado selectedHour
 /*const filteredTransportData = transportData.features.filter(feature => {
@@ -53,21 +47,7 @@ export function CustomMap({ viewState, setViewState, layers }) {
     setViewState((v) => ({ ...v, zoom: v.zoom - 1, transitionDuration: 100 }));
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/Transporte.json"
-        );
-        const data = await response.json();
-        setTransportData(data);
-        console.log('si lo leyo')
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, []);
+
 
   return (
     <>
@@ -116,6 +96,15 @@ export function CustomMap({ viewState, setViewState, layers }) {
         onChange={(e) => setSelectedHour(parseInt(e.target.value))}
         style={{ width: "100%" }}
       />*/}
+      <input
+        style={{ width: '100%' }}
+        type="range"
+        min="0"
+        max="23" // Ajusta el valor máximo según tus necesidades de tiempo
+        step="1" // O ajusta el paso según tus necesidades
+        value={time}
+        onChange={handleSliderChange} // Envía el evento del cambio del slider al componente App
+      />
     </div>/*
     </>
   );

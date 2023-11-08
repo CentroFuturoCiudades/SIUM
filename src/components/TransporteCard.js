@@ -36,7 +36,7 @@ export const CustomBarChart = ({ data }) => (
   </ResponsiveContainer>
 );
 
-export function TransporteCard({ setOutline }) {
+export function TransporteCard({ setOutline, handleSliderChange, time }) {
   const data = [
     {
       municipality: "Monterrey",
@@ -82,6 +82,15 @@ export function TransporteCard({ setOutline }) {
         a que el tráfico aumente.
       </ContextTitle>
       <CustomBarChart data={data.sort((a, b) => a.time - b.time).reverse()} />
+      <input
+        style={{ width: '100%' }}
+        type="range"
+        min="0"
+        max="23" // Ajusta el valor máximo según tus necesidades de tiempo
+        step="1" // O ajusta el paso según tus necesidades
+        value={time}
+        onChange={handleSliderChange} // Envía el evento del cambio del slider al componente App
+      />
     </Card>
   );
 }

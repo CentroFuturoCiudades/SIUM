@@ -36,6 +36,7 @@ const getSectionFromURL = () => {
 };
 
 export default function App() {
+  // Estado para manejar los datos filtrados
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const [outline, setOutline] = useState(null);
   const [currentSection, setCurrentSection] = useState("expansion-urbana");
@@ -47,6 +48,13 @@ export default function App() {
   const layers = currentLayer
     ? [currentLayer, ...extraLayers]
     : [...extraLayers];
+  const [time, setTime] = useState(0); //el time que se va a mandar a filterdata de la const de TRANSPORTE_JEANNETTE2
+
+    
+  /*const currentLayer2 = geojsonsMapping[currentSection]
+    ? geojsonsMapping[currentSection].dataTransform(data, time)
+    : null;*/
+  
 
   useEffect(() => {
     const handleScroll = () => {
@@ -82,6 +90,13 @@ export default function App() {
     }
   }, []);
 
+  //nuevo jeannette
+  const handleSliderChange = (event) => {
+    const newTime = event.target.value; //Se obtiene el valor del tiempo del slider
+    console.log("New Time:", newTime); //checar que valor tiene el slider
+    setTime(newTime); //actualiza el estado de 'time' con el nuevo valor
+  };
+
   return (
     <div style={{ display: "flex" }}>
       <Sidebar section={currentSection} setSection={setCurrentSection} />
@@ -93,7 +108,7 @@ export default function App() {
         />
         <ExpansionUrbanaCard setOutline={setOutline} />
         <EmpleoCard setOutline={setOutline} />
-        <TransporteCard setOutline={setOutline} />
+        <TransporteCard setOutline={setOutline} handleSliderChange={handleSliderChange} time={time}/>
         <ViviendaCard setOutline={setOutline} />
         <SegregacionCard setOutline={setOutline} />
         <DelincuenciaCard setOutline={setOutline} />
@@ -106,7 +121,12 @@ export default function App() {
         <CustomMap
           viewState={viewState}
           setViewState={setViewState}
-          layers={layers}
+          layers={layers.map(layer => layer.id === "primary_routes" ? { //solo para la layer de primary_routes (osea la de transporte)
+            ...layer,
+            dataTransform: (d) => layer.dataTransform(d, time) //se pasa el valor de 'time' a dataTransform
+          } : layer)}
+          handleSliderChange={handleSliderChange} 
+          time={time}
         />
       </Box>
     </div>

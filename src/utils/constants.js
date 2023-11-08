@@ -137,9 +137,10 @@ export const TRANSPORTE_JEANNETTE = {
   data: "data/TRANSPORTEJEANNETTE.geojson",
   getLineColor: [100, 100, 100, 200],
   getLineWidth: 150,
+
+  //IMPLEMENTACION 1 DE FILTRADO
   dataTransform: (d) => {
-    // Aquí se puede realizar el filtrado por hora en el objeto 'd'
-    // Asegúrate de implementar la lógica para filtrar en función del atributo de hora
+    //filtrado por hora en el objeto 'd'
     const filteredData = d.features.filter((feature) => {
       const horaOri = feature.properties.HoraOri.split(":"); // Separar la hora de los minutos
       const horaDest = feature.properties.HoraDest.split(":"); // Separar la hora de los minutos
@@ -148,17 +149,13 @@ export const TRANSPORTE_JEANNETTE = {
       const horaOriNum = parseInt(horaOri[0], 10);
       const horaDestNum = parseInt(horaDest[0], 10);
 
-      // Implementar la lógica de filtrado según las horas
-      // Por ejemplo, puedes filtrar los datos donde la hora de origen sea mayor que 18 y menor que 19
-      // y la hora de destino sea mayor que 18 y menor que 19 para filtrar los datos entre 18:00 y 19:00
+      //ahora se estan filtrando los datos para que solo aparezcan los de entre las 18 y 19
       if (horaOriNum >= 18 && horaOriNum < 19 && horaDestNum >= 18 && horaDestNum < 19) {
         return true; // Mantener los datos si la condición se cumple
       } else {
         return false; // Descartar los datos si la condición no se cumple
       }
     });
-
-      // Asegúrate de devolver los datos filtrados
       //return filteredData;
       return { ...d, features: filteredData }; // Devolver los datos filtrados
   },
@@ -179,7 +176,28 @@ export const TRANSPORTE_JEANNETTE2 = {
   id: "primary_routes",
   data: "data/TRANSPORTEJEANNETTE.geojson",
   getLineColor: [100, 100, 100, 200],
-  getLineWidth: 150
+  getLineWidth: 150,
+
+  //IMPLEMENTACION 2 DE FILTRADO
+  dataTransform: (d, time) => {
+    const filteredData = d.features.filter((feature) => {
+      const horaOri = feature.properties.HoraOri.split(":"); //separa la hora de los minutos
+      const horaDest = feature.properties.HoraDest.split(":"); //separar la hora de los minutos
+
+      //convertir las horas en valores numéricos
+      const horaOriNum = parseInt(horaOri[0], 10);
+      const horaDestNum = parseInt(horaDest[0], 10);
+
+      //filtrado
+      if (horaOriNum >= time && horaOriNum < time + 1 && horaDestNum >= time && horaDestNum < time+1) {
+        return true; //pone los datos que entran en el rango
+      } else {
+        return false; //descarta los datos si no se cumple
+      }
+    });
+
+    return { ...d, features: filteredData };
+  },
 }
 
 
@@ -246,8 +264,8 @@ export const PRUEBA_SECCION_COSTOS_LAYER = {
 export const geojsonsMapping = {
   // Dictionary for layer loading depending on the section in page
   //transporte: PRIMARY_ROUTES,
-  transporte: TRANSPORTE_JEANNETTE, //lee los datos filtrados entre las 6 y 7 pm
-  //transporte: TRANSPORTE_JEANNETTE2, //lee todos los datos
+  //transporte: TRANSPORTE_JEANNETTE, //lee los datos filtrados entre las 6 y 7 pm
+  transporte: TRANSPORTE_JEANNETTE2, //lee todos los datos
   empleo: EMPLOYMENT_LAYER_1,
   "expansion-urbana": PRUEBA_SECCION_CRECIMIENTO_LAYER,
   vivienda: PRUEBA_SECCION_VIVIENDA_LAYER,
