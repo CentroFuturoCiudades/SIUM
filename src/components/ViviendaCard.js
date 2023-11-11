@@ -1,13 +1,17 @@
-import { Card, SubcentersSpan, PeripherySpan } from "./Card";
-import styles from "../styles.module.css";
+import {
+  Card,
+  SubcentersSpan,
+  PeripherySpan,
+  ResponseTitle,
+  ContextTitle,
+} from "./Card";
 
 export function ViviendaCard({ setOutline }) {
   return (
-    <Card id="vivienda">
-      <h2 className={styles.title}>¿Por qué nos expandimos?</h2>
-      <h4 className={styles.response}>
+    <Card id="vivienda" color="yellow">
+      <ResponseTitle color="yellow">
         La vivienda es más asequible en las periferias.
-      </h4>
+      </ResponseTitle>
       <p>
         En <b>1990</b> había vivienda asequible en los{" "}
         <SubcentersSpan setOutline={setOutline} />, como Santa Catarina,
@@ -30,10 +34,10 @@ export function ViviendaCard({ setOutline }) {
       </p>
       <br />
       <br />
-      <p className={styles.context}>
+      <ContextTitle color="yellow">
         Aunque los costos de la vivienda son menores en las periferias, otros
         costos se elevan, aumentando la desigualdad.
-      </p>
+      </ContextTitle>
     </Card>
   );
 }

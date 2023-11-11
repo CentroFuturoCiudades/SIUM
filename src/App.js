@@ -1,23 +1,18 @@
 import { useEffect, useState } from "react";
-import { GeoJsonLayer } from "@deck.gl/layers";
+import { Box } from "@chakra-ui/react";
 
+import { Sidebar, sectionsInfo } from "./components/Sidebar";
+import { Header } from "./components/Header";
+import { CustomMap, INITIAL_STATE } from "./components/CustomMap";
 import { ExpansionUrbanaCard } from "./components/ExpansionUrbanaCard";
 import { TransporteCard } from "./components/TransporteCard";
 import { EmpleoCard } from "./components/EmpleoCard";
-import { CustomMap, INITIAL_STATE } from "./components/CustomMap";
-
-import "maplibre-gl/dist/maplibre-gl.css";
-import styles from "./styles.module.css";
 import { ViviendaCard } from "./components/ViviendaCard";
 import { SegregacionCard } from "./components/SegregacionCard";
 import { DelincuenciaCard } from "./components/DelincuenciaCard";
 import { CostosCard } from "./components/CostosCard";
-import { dictionaryMaps } from "./utils/constants";
-
-  // Imports for layers defined at constants.js
-import { EMPLOYMENT_LAYER } from "./utils/constants";   
-import { EMPLOYMENT_LAYER_1 } from "./utils/constants";
-import { PRIMARY_ROUTES } from "./utils/constants";
+import { geojsonsMapping } from "./utils/constants";
+import "./index.css";
 
 const isSectionInView = (section) => {
   const { top, bottom } = section.getBoundingClientRect();
@@ -30,8 +25,7 @@ const isSectionInView = (section) => {
 };
 
  // ----------------------------------------------------------------------
-const section = 'empleo'
-new GeoJsonLayer(dictionaryMaps[section])
+
  // -------------------------------------------------------------------------
 
 const getCurrentSectionId = () => {
@@ -48,12 +42,15 @@ const getSectionFromURL = () => {
 export default function App() {
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const [outline, setOutline] = useState(null);
-  const [currentSection, setCurrentSection] = useState(1);
-  const currentLayer = dictionaryMaps[currentSection] ? new GeoJsonLayer(dictionaryMaps[currentSection]) : null;
-  const extralayers = outline ? [new GeoJsonLayer(outline)] : []; // Change in layer
-  const layers = currentLayer ? [currentLayer, ...extralayers] : [...extralayers];
-  
-
+  const [currentSection, setCurrentSection] = useState("expansion-urbana");
+  const currentInfo = sectionsInfo[currentSection];
+  const currentLayer = geojsonsMapping[currentSection]
+    ? geojsonsMapping[currentSection]
+    : null;
+  const extraLayers = outline ? [outline] : []; // Change in layer
+  const layers = currentLayer
+    ? [currentLayer, ...extraLayers]
+    : [...extraLayers];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -91,7 +88,13 @@ export default function App() {
 
   return (
     <div style={{ display: "flex" }}>
-      <div className={styles.cardsContainer}>
+      <Sidebar section={currentSection} setSection={setCurrentSection} />
+      <div className="cardsContainer">
+        <Header
+          section={currentSection}
+          color={currentInfo.color}
+          title={currentInfo.title}
+        />
         <ExpansionUrbanaCard setOutline={setOutline} />
         <EmpleoCard setOutline={setOutline} />
         <TransporteCard setOutline={setOutline} />
@@ -100,13 +103,16 @@ export default function App() {
         <DelincuenciaCard setOutline={setOutline} />
         <CostosCard setOutline={setOutline} />
       </div>
-      <div className={styles.mapContainer}>
+      <Box
+        className="mapContainer"
+        borderColor={`${sectionsInfo[currentSection].color}.500`}
+      >
         <CustomMap
           viewState={viewState}
           setViewState={setViewState}
           layers={layers}
         />
-      </div>
+      </Box>
     </div>
   );
 }

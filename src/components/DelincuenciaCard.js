@@ -1,15 +1,11 @@
-import { Card, SubcentersSpan, PeripherySpan } from "./Card";
-import styles from "../styles.module.css";
+import { Card, ResponseTitle, ContextTitle } from "./Card";
 
 export function DelincuenciaCard({ setOutline }) {
   return (
-    <Card id="delincuencia">
-      <h2 className={styles.title}>
-        ¿Por qué la expansión aumenta la inseguridad?
-      </h2>
-      <h4 className={styles.response}>
+    <Card id="delincuencia" color="green">
+      <ResponseTitle color="green">
         Porque la segregación aumenta la delincuencia.
-      </h4>
+      </ResponseTitle>
       <p>
         Incidencias delictivas como el robos en calles o a viviendas, así como
         violencia familiar se concentran en regiones segregadas.
@@ -21,10 +17,10 @@ export function DelincuenciaCard({ setOutline }) {
       </p>
       <br />
       <br />
-      <p className={styles.context}>
+      <ContextTitle color="green">
         La malas condiciones de vida en zonas marginadas contribuyen a la falta
         de oportunidades y a la delincuencia.
-      </p>
+      </ContextTitle>
     </Card>
   );
 }

@@ -6,8 +6,14 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Card, CenterSpan, PeripherySpan, MasiveTransportSpan} from "./Card";
-import styles from "../styles.module.css";
+import {
+  Card,
+  CenterSpan,
+  PeripherySpan,
+  ResponseTitle,
+  ContextTitle,
+  MasiveTransportSpan,
+} from "./Card";
 
 export const CustomBarChart = ({ data }) => (
   <ResponsiveContainer width="100%" height={150}>
@@ -50,15 +56,15 @@ export function TransporteCard({ setOutline }) {
     },
   ];
   return (
-    <Card id="transporte">
-      <h2 className={styles.title}>¿Como nos movemos?</h2>
-      <h4 className={styles.response}>Mayormente en automovil.</h4>
+    <Card id="transporte" color="orange">
+      <ResponseTitle color="orange">Mayormente en automovil.</ResponseTitle>
       <p>
         El <b>45%</b> de los viajes son hechos al trabajo y el <b>47%</b> de los
         viajes son hechos en automóvil, donde más de la mitad viajan solos.
       </p>
       <p>
-        El <b>21%</b> se mueve en <MasiveTransportSpan setOutline={setOutline} /> y 19% a pie. 1 de cada 3
+        El <b>21%</b> se mueve en{" "}
+        <MasiveTransportSpan setOutline={setOutline} /> y 19% a pie. 1 de cada 3
         personas pasan 3 horas al día en ir y venir de su viaje principal en
         transporte público. En promedio se espera 21 minutos a que llegue el
         transporte público.
@@ -71,11 +77,10 @@ export function TransporteCard({ setOutline }) {
         <b>68 minutos</b> por viaje redondo, el equivalente a doce días por año.
       </p>
       <br />
-      <br />
-      <p className={styles.context}>
-        La expansión urbana aumenta la dependencia del automovil, contribuyendo a
-        que el tráfico aumente.
-      </p>
+      <ContextTitle color="orange">
+        La expansión urbana aumenta la dependencia del automovil, contribuyendo
+        a que el tráfico aumente.
+      </ContextTitle>
       <CustomBarChart data={data.sort((a, b) => a.time - b.time).reverse()} />
     </Card>
   );

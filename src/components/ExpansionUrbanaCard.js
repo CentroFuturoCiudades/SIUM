@@ -1,14 +1,20 @@
 import React from "react";
-import { Card, SubcentersSpan, PeripherySpan, CenterSpan, ExpansionSpan } from "./Card";
-import styles from "../styles.module.css";
+import {
+  Card,
+  SubcentersSpan,
+  PeripherySpan,
+  CenterSpan,
+  ResponseTitle,
+  ContextTitle,
+  ExpansionSpan
+} from "./Card";
 
 export function ExpansionUrbanaCard({ setOutline }) {
   return (
-    <Card id="expansion-urbana">
-      <h2 className={styles.title}>¿Hacia dónde crecemos?</h2>
-      <h4 className={styles.response}>
+    <Card id="expansion-urbana" color="brown">
+      <ResponseTitle color="brown">
         Hacia las periferias, lejos unos de otros.
-      </h4>
+      </ResponseTitle>
       <p>
         En <ExpansionSpan setOutline={setOutline} /> los <b>adultos mayores</b> vivían en el{" "}
         <CenterSpan setOutline={setOutline} /> de Monterrey, mientras que las{" "}
@@ -25,10 +31,10 @@ export function ExpansionUrbanaCard({ setOutline }) {
       </p>
       <br />
       <br />
-      <p className={styles.context}>
+      <ContextTitle color="brown">
         La migración de subcentros a la periferia, conocido como expansión
         urbana, nos aleja de servicios y empleo.
-      </p>
+      </ContextTitle>
     </Card>
   );
 }

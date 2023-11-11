@@ -1,8 +1,12 @@
-import { DeckGL } from "deck.gl";
-import StaticMap from "react-map-gl";
-import maplibregl from "maplibre-gl";
+import DeckGL from "@deck.gl/react";
 import { ButtonGroup, IconButton } from "@chakra-ui/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
+import { Map } from "react-map-gl";
+import { FlyToInterpolator, GeoJsonLayer } from "deck.gl";
+import mapboxgl from "mapbox-gl";
+
+// eslint-disable-next-line import/no-webpack-loader-syntax
+mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
 export const DECK_GL_CONTROLLER = {
   scrollZoom: false,
@@ -34,12 +38,14 @@ export function CustomMap({ viewState, setViewState, layers }) {
         style={{ position: "relative" }}
         viewState={viewState}
         onViewStateChange={({ viewState }) => setViewState(viewState)}
-        layers={layers}
+        layers={layers.map((layer) => new GeoJsonLayer(layer))}
         controller={DECK_GL_CONTROLLER}
       >
-        <StaticMap
-          mapLib={maplibregl}
-          mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
+        <Map
+          width="100%"
+          height="100%"
+          mapStyle="mapbox://styles/mapbox/light-v11"
+          mapboxAccessToken="pk.eyJ1IjoidXJpZWxzYTk2IiwiYSI6ImNsbnV2MzBkZDBlajYya211bWk2eTNuc2MifQ.ZnhFC3SyhckuIQBLO59HxA"
         />
       </DeckGL>
       <div style={{ position: "absolute", top: 10, right: 10 }}>

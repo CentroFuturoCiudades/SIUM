@@ -1,49 +1,22 @@
-html {
-  overflow: hidden;
-}
-
-body {
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  scroll-snap-type: y mandatory;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-section {
+.cardSection {
   display: flex;
+  top: 0px;
+  left: 0px;
+  margin: 0px;
   scroll-snap-align: center;
   scroll-snap-stop: always;
+  width: calc(100% - 0.4rem);
 }
 
 .card {
-  margin: 1rem;
-  width: 100%;
   padding: 1rem;
-  font-size: 1rem;
-  border-radius: 0.6rem;
-  height: calc(100vh - 2rem);
-  background-color: rgba(255, 255, 255, 0.8);
-}
-
-.cardsContainer {
-  width: 30%;
-}
-
-.mapContainer {
-  width: 70%;
-  width: calc(70% - 1rem);
-  border-radius: 0.6rem;
-  height: calc(100vh - 2rem);
-  overflow: hidden;
-  position: sticky;
-  right: 1rem;
-  top: 1rem;
-  bottom: 1rem;
+  border: 0.14rem solid;
+  margin-top: 4rem;
+  padding-top: 4rem;
+  margin-bottom: 0.4rem;
+  border-radius: 2rem;
+  height: calc(100vh - 4.4rem);
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 .highlightAccent {
@@ -72,6 +45,24 @@ section {
 .highlightSubcenters:hover {
   background: rgb(117, 62, 255);
   color: white;
+}
+
+.highlightTransport {
+  font-family: Inter;
+  color: rgb(255, 105, 180, 128);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.1rem 0.2rem;
+  border-radius: 0.4rem;
+}
+
+.highlightEmployments {
+  font-family: Inter;
+  color: rgb(64, 224, 208, 128);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.1rem 0.2rem;
+  border-radius: 0.4rem;
 }
 
 .highlightCenters {
@@ -106,29 +97,10 @@ section {
   color: white;
 }
 
-p {
-  margin-top: 0.5rem;
-  margin-bottom: 0.3rem;
-  font-size: 0.9rem;
-}
-
-.title {
-  font-family: Inter;
-  text-transform: uppercase;
-  font-size: 1.5rem;
-  color: rgb(39, 40, 42);
-  text-align: center;
-  line-height: 1.6rem;
-  margin-bottom: 0.3rem;
-  font-weight: 700;
-}
-
 .response {
   font-family: Inter;
-  font-size: 1.1rem;
   margin-top: 0.5rem;
   margin-bottom: 0.3rem;
-  color: rgb(49, 83, 150);
   font-weight: 600;
 }
 
@@ -137,10 +109,8 @@ p {
   text-align: center;
   margin-left: 1rem;
   margin-right: 1rem;
-  font-size: 1.1rem;
   font-style: italic;
   margin-top: 0.3rem;
   margin-bottom: 0.3rem;
-  color: rgb(49, 83, 150);
   font-weight: 600;
 }
