@@ -44,13 +44,18 @@ export default function App() {
   const [outline, setOutline] = useState(null);
   const [currentSection, setCurrentSection] = useState("expansion-urbana");
   const currentInfo = sectionsInfo[currentSection];
-  const currentLayer = geojsonsMapping[currentSection]
-    ? geojsonsMapping[currentSection]
-    : null;
+
+  const currentLayers = geojsonsMapping[currentSection] || [];  // New declaration for multiple layers on section
+  // const currentLayer = geojsonsMapping[currentSection]
+  //   ? geojsonsMapping[currentSection]
+  //   : null;
+
   const extraLayers = outline ? [outline] : []; // Change in layer
-  const layers = currentLayer
-    ? [currentLayer, ...extraLayers]
-    : [...extraLayers];
+
+  const layers = [...currentLayers, ...extraLayers];   // New declaration for multiple layers on section
+  // const layers = currentLayers
+  //   ? [currentLayers, ...extraLayers]
+  //   : [...extraLayers];
 
   useEffect(() => {
     const handleScroll = () => {
