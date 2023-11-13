@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/SIUM/static/css/main.1886e4e0.css",
-    "main.js": "/SIUM/static/js/main.5ca0e5fc.js",
+    "main.css": "/SIUM/static/css/main.c5dd767b.css",
+    "main.js": "/SIUM/static/js/main.ce25bdf3.js",
     "static/js/787.c787b993.chunk.js": "/SIUM/static/js/787.c787b993.chunk.js",
     "static/js/mapbox-gl-csp-worker.91fba117.worker.js": "/SIUM/static/js/mapbox-gl-csp-worker.91fba117.worker.js",
     "index.html": "/SIUM/index.html",
-    "main.1886e4e0.css.map": "/SIUM/static/css/main.1886e4e0.css.map",
-    "main.5ca0e5fc.js.map": "/SIUM/static/js/main.5ca0e5fc.js.map",
+    "main.c5dd767b.css.map": "/SIUM/static/css/main.c5dd767b.css.map",
+    "main.ce25bdf3.js.map": "/SIUM/static/js/main.ce25bdf3.js.map",
     "787.c787b993.chunk.js.map": "/SIUM/static/js/787.c787b993.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.1886e4e0.css",
-    "static/js/main.5ca0e5fc.js"
+    "static/css/main.c5dd767b.css",
+    "static/js/main.ce25bdf3.js"
   ]
 }
