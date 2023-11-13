@@ -5,7 +5,6 @@ import {
   CenterSpan,
   ResponseTitle,
   ContextTitle,
-  EmploymentSpan,
   ExpansionSpan,
 } from "./Card";
 
@@ -14,7 +13,7 @@ export function EmpleoCard({ setOutline }) {
     <Card id="empleo" color="brown2">
       <ResponseTitle color="brown2">En el centro.</ResponseTitle>
       <p>
-        El <b>X%</b> de los <EmploymentSpan setOutline={setOutline} /> se concentra en el{" "}
+        El <b>X%</b> de los empleos se concentra en el{" "}
         <CenterSpan setOutline={setOutline} />. Debido a que las familias han
         migrado hacia la <PeripherySpan setOutline={setOutline} />, se ha
         perdido población en los <SubcentersSpan setOutline={setOutline} /> y

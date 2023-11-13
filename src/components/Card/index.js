@@ -3,7 +3,6 @@ import {
   SUBCENTERS_LAYER,
   CENTER_LAYER,
   PERIPHERY_LAYER,
-  EMPLOYMENT_LAYER,
   MASIVE_TRANSPORT_LAYER,
   PRUEBA_SECCION_SEGREGACION__QUINTIL_LAYER,
   PRUEBA_SECCION_CRECIMIENTO_LAYER_1990,
@@ -29,16 +28,6 @@ export const CenterSpan = ({ setOutline }) => (
     onMouseOut={() => setOutline(null)}
   >
     centro
-  </span>
-);
-
-export const EmploymentSpan = ({ setOutline }) => (
-  <span
-    className="highlightEmployments"
-    onMouseOver={() => setOutline(EMPLOYMENT_LAYER)}
-    onMouseOut={() => setOutline(null)}
-  >
-    empleos
   </span>
 );
 

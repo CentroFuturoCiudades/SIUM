@@ -20,7 +20,7 @@ export const addNormalized = (data, column) => {
   return (x) => (x[column] - min) / (max - min);
 };
 
-export const cleanedGeoData = (data, column) => {
+export const cleanedGeoData = (data, column, reversed = false) => {
   const toNormalize = addNormalized(
     data.map((x) => x.properties),
     column
@@ -32,7 +32,9 @@ export const cleanedGeoData = (data, column) => {
         ...feature,
         properties: {
           ...feature.properties,
-          normalized: toNormalize(feature.properties),
+          normalized: reversed
+            ? 1 - toNormalize(feature.properties)
+            : toNormalize(feature.properties),
         },
       };
     });
@@ -83,7 +85,8 @@ export const SUBCENTERS_LAYER = {
   getLineWidth: 120,
 };
 
-export const MASIVE_TRANSPORT_LAYER = {  // New layer for public transport and its types
+export const MASIVE_TRANSPORT_LAYER = {
+  // New layer for public transport and its types
   id: "masive-transport-layer",
   data: "data/transporte-masivo.geojson",
   stroked: true,
@@ -92,17 +95,18 @@ export const MASIVE_TRANSPORT_LAYER = {  // New layer for public transport and i
   lineWidthMinPixels: 2,
   getLineWidth: 10,
   getLineColor: (feature) => {
-    const nombrePropiedad = feature.properties.NOMBRE; 
+    const nombrePropiedad = feature.properties.NOMBRE;
 
-    const colorMapping = {   // Change color based on type of transport
-      ECOVIA: [255, 0, 0, 128], // Rojo
-      'Linea 1 - Metro': [0, 255, 0, 200], 
-      'Linea 2 - Metro': [0, 0, 255, 200], 
-      'Linea 3 - Metro': [255, 255, 0, 200], 
-      Transmetro: [255, 105, 180, 200], 
+    const colorMapping = {
+      // Change color based on type of transport
+      ECOVIA: [0, 200, 0, 255], // Rojo
+      "Linea 1 - Metro": [0, 200, 0, 255],
+      "Linea 2 - Metro": [0, 200, 0, 255],
+      "Linea 3 - Metro": [0, 200, 0, 255],
+      Transmetro: [0, 200, 0, 255],
     };
 
-    return colorMapping[nombrePropiedad] || [64, 224, 208, 128]; 
+    return colorMapping[nombrePropiedad] || [64, 224, 208, 128];
   },
 };
 
@@ -116,34 +120,23 @@ export const CENTER_LAYER = {
   getLineWidth: 120,
 };
 
-export const EMPLOYMENT_LAYER = {
-  // New layer for employment geoJson excluding hex with value 0 on property
-  id: "employment-layer",
-  data: "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2020_Municipios_Geo2.json",
-  dataTransform: (d) => cleanedGeoData(d.features, "Empleos"),
-  getFillColor: (d) =>
-    colorInterpolate(d.properties.normalized, "blue", "red", 3),
-  getLineColor: (d) => colorInterpolate(d.properties.normalized, "blue", "red"),
-};
-
 export const PRIMARY_ROUTES = {
   id: "primary_routes",
   data: "data/Vias_Primarias.geojson",
-  getLineColor: [100, 100, 100, 125],
+  getLineColor: [200, 150, 150, 255],
   getLineWidth: 50,
 };
 
-export const EMPLOYMENT_LAYER_1 = {
-  id: "employment_layer_1",
-  data: "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2010_Municipios_Geo2.json",
-  dataTransform: (d) => cleanedGeoData(d.features, "Empleos"),
+export const PRUEBA_SECCION_SEGREGACION__QUINTIL_LAYER = {
+  id: "prueba_seccion_segregacion_quintil_layer",
+  data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/pobres.geojson",
+  dataTransform: (d) => cleanedGeoData(d.features, "Ingreso"),
   getFillColor: (d) =>
-    colorInterpolate(d.properties.normalized, "blue", "red", 3),
-  getLineColor: (d) => colorInterpolate(d.properties.normalized, "blue", "red"),
-  getLineWidth: 10,
+    colorInterpolate(d.properties.normalized, "blue", "blue", 2),
+  getLineColor: (d) =>
+    colorInterpolate(d.properties.normalized, "blue", "blue", 2),
+  getLineWidth: 50,
 };
-
-// Layers for dictionary, the data will apear deppending on the section chosen
 
 export const PRUEBA_SECCION_CRECIMIENTO_LAYER_1990 = {
   id: "prueba_seccion_crecimiento_layer_1990",
@@ -151,77 +144,86 @@ export const PRUEBA_SECCION_CRECIMIENTO_LAYER_1990 = {
   dataTransform: (d) => cleanedGeoData(d.features, "1990"),
   getFillColor: (d) =>
     colorInterpolate(d.properties.normalized, "blue", "red", 1.5),
-  getLineColor: [50, 50, 50, 50],
+  getLineColor: (d) =>
+    colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
   getLineWidth: 30,
-}
+};
 
-export const PRUEBA_SECCION_CRECIMIENTO_LAYER = {
+export const EXPANSION_LAYER = {
   id: "prueba_seccion_crecimiento_layer",
   data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob-1990-2020.geojson",
   dataTransform: (d) => cleanedGeoData(d.features, "2020"),
   getFillColor: (d) =>
     colorInterpolate(d.properties.normalized, "blue", "red", 1.5),
-  getLineColor: [50, 50, 50, 50],
+  getLineColor: (d) =>
+    colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
   getLineWidth: 30,
 };
 
-export const PRUEBA_SECCION_VIVIENDA_LAYER = {
+export const EMPLEO_LAYER = {
+  id: "employment_layer_1",
+  data: "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2010_Municipios_Geo2.json",
+  dataTransform: (d) => cleanedGeoData(d.features, "Empleos"),
+  getFillColor: (d) =>
+    colorInterpolate(d.properties.normalized, "yellow", "red", 2),
+  getLineColor: (d) =>
+    colorInterpolate(d.properties.normalized, "yellow", "red", 0.5),
+  getLineWidth: 10,
+};
+
+export const VIVIENDA_LAYER = {
   id: "prueba_seccion_vivienda_layer",
   data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda-hex.geojson",
-  dataTransform: (d) => cleanedGeoData(d.features, "IM_PRECIO_VENTA"),
+  dataTransform: (d) => cleanedGeoData(d.features, "IM_PRECIO_VENTA", true),
   getFillColor: (d) =>
-    colorInterpolate(d.properties.normalized, "blue", "red", 1.5),
-  getLineColor: [50, 50, 50, 50],
-  getLineWidth: 30,
+    colorInterpolate(d.properties.normalized, "blue", "red", 1),
+  getLineColor: (d) =>
+    colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
+  getLineWidth: 10,
 };
 
-export const PRUEBA_SECCION_SEGREGACION__QUINTIL_LAYER = {
-  id: "prueba_seccion_segregacion_quintil_layer",
-  data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/pobres.geojson",
-  dataTransform: (d) => cleanedGeoData(d.features, "local_centralization_1"),
-  getFillColor: (d) =>
-    colorInterpolate(d.properties.normalized, "blue", "red", 1.5),
-  getLineColor: [50, 50, 50, 50],
-  getLineWidth: 30,
-}
-
-export const PRUEBA_SECCION_SEGREGACION_LAYER = {
+export const SEGREGACION_LAYER = {
   id: "prueba_seccion_segregacion_layer",
   data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income.geojson",
-  dataTransform: (d) => cleanedGeoData(d.features, "local_centralization_q_1_k_100"),
+  dataTransform: (d) =>
+    cleanedGeoData(d.features, "local_centralization_q_1_k_100"),
   getFillColor: (d) =>
-    colorInterpolate(d.properties.normalized, "blue", "red", 1.5),
-  getLineColor: [50, 50, 50, 50],
-  getLineWidth: 30,
+    colorInterpolate(d.properties.normalized, "blue", "red", 1),
+  getLineColor: (d) =>
+    colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
+  getLineWidth: 20,
 };
 
-export const PRUEBA_SECCION_DELINCUENCIA_LAYER = {
+export const DELINCUENCIA_LAYER = {
   id: "prueba_seccion_delincuencia_layer",
-  data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income.geojson",
-  dataTransform: (d) => cleanedGeoData(d.features, "local_centralization_q_5_k_100"),
+  data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson",
+  dataTransform: (d) => cleanedGeoData(d.features, "num_crimen"),
   getFillColor: (d) =>
-    colorInterpolate(d.properties.normalized, "blue", "red", 1.5),
-  getLineColor: [50, 50, 50, 50],
-  getLineWidth: 30,
+    colorInterpolate(d.properties.normalized, "blue", "red", 1),
+  getLineColor: (d) =>
+    colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
+  getLineWidth: 10,
 };
 
-export const PRUEBA_SECCION_COSTOS_LAYER = {
+export const COSTOS_LAYER = {
   id: "prueba_seccion_costos_layer",
   data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income.geojson",
-  dataTransform: (d) => cleanedGeoData(d.features, "local_centralization_q_5_k_100"),
+  dataTransform: (d) =>
+    cleanedGeoData(d.features, "local_centralization_q_5_k_100"),
   getFillColor: (d) =>
-    colorInterpolate(d.properties.normalized, "blue", "red", 1.5),
-  getLineColor: [50, 50, 50, 50],
+    colorInterpolate(d.properties.normalized, "blue", "red", 1),
+  getLineColor: (d) =>
+    colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
   getLineWidth: 30,
 };
 
 export const geojsonsMapping = {
   // Dictionary for layer loading depending on the section in page
-  transporte: [PRIMARY_ROUTES, MASIVE_TRANSPORT_LAYER], 
-  empleo: [EMPLOYMENT_LAYER_1],
-  "expansion-urbana": [PRUEBA_SECCION_CRECIMIENTO_LAYER],
-  vivienda: [PRUEBA_SECCION_VIVIENDA_LAYER],
-  segregacion: [PRUEBA_SECCION_SEGREGACION_LAYER],
-  delincuencia: [PRUEBA_SECCION_DELINCUENCIA_LAYER],
-  costos: [PRUEBA_SECCION_COSTOS_LAYER],
+  "expansion-urbana": [EXPANSION_LAYER],
+  empleo: [EMPLEO_LAYER],
+  transporte: [PRIMARY_ROUTES, MASIVE_TRANSPORT_LAYER],
+  vivienda: [VIVIENDA_LAYER],
+  segregacion: [SEGREGACION_LAYER],
+  delincuencia: [DELINCUENCIA_LAYER],
+  costos: [COSTOS_LAYER],
 };

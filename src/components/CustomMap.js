@@ -2,7 +2,7 @@ import DeckGL from "@deck.gl/react";
 import { ButtonGroup, IconButton } from "@chakra-ui/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { Map } from "react-map-gl";
-import { FlyToInterpolator, GeoJsonLayer } from "deck.gl";
+import { GeoJsonLayer } from "deck.gl";
 import mapboxgl from "mapbox-gl";
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
@@ -16,9 +16,9 @@ export const DECK_GL_CONTROLLER = {
   inertia: true,
 };
 export const INITIAL_STATE = {
-  latitude: 25.652983,
+  latitude: 25.675,
   longitude: -100.286419,
-  zoom: 10,
+  zoom: 9.6,
   transitionDuration: 800,
   pitch: 0,
   bearing: 0,
