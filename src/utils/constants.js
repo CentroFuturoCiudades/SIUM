@@ -67,7 +67,7 @@ export const CENTER = ["Monterrey"];
 
 export const PERIPHERY_LAYER = {
   id: "perfifery-layer",
-  data: "data/Division_Municipal.geojson",
+  data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/div-municipal.geojson",
   dataTransform: (d) =>
     d.features.filter((x) => PERIPHERIES.includes(x.properties.NOMGEO)),
   getFillColor: [255, 174, 0, 10],
@@ -77,9 +77,19 @@ export const PERIPHERY_LAYER = {
 
 export const SUBCENTERS_LAYER = {
   id: "subcenters-layer",
-  data: "data/Division_Municipal.geojson",
+  data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/div-municipal.geojson",
   dataTransform: (d) =>
     d.features.filter((x) => SUBCENTERS.includes(x.properties.NOMGEO)),
+  getFillColor: [7, 3, 252, 10],
+  getLineColor: [7, 3, 252, 200],
+  getLineWidth: 120,
+};
+
+export const CENTER_LAYER = {
+  id: "center-layer",
+  data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/div-municipal.geojson",
+  dataTransform: (d) =>
+    d.features.filter((x) => CENTER.includes(x.properties.NOMGEO)),
   getFillColor: [7, 3, 252, 10],
   getLineColor: [7, 3, 252, 200],
   getLineWidth: 120,
@@ -88,7 +98,7 @@ export const SUBCENTERS_LAYER = {
 export const MASIVE_TRANSPORT_LAYER = {
   // New layer for public transport and its types
   id: "masive-transport-layer",
-  data: "data/transporte-masivo.geojson",
+  data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte-masivo.geojson",
   stroked: true,
   filled: true,
   lineWidthScale: 10,
@@ -110,20 +120,10 @@ export const MASIVE_TRANSPORT_LAYER = {
   },
 };
 
-export const CENTER_LAYER = {
-  id: "center-layer",
-  data: "data/Division_Municipal.geojson",
-  dataTransform: (d) =>
-    d.features.filter((x) => CENTER.includes(x.properties.NOMGEO)),
-  getFillColor: [7, 3, 252, 10],
-  getLineColor: [7, 3, 252, 200],
-  getLineWidth: 120,
-};
-
-export const PRIMARY_ROUTES = {
+export const PRIMARY_ROUTES_LAYER = {
   id: "primary_routes",
-  data: "data/Vias_Primarias.geojson",
-  getLineColor: [200, 150, 150, 255],
+  data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vias-primarias.geojson",
+  getLineColor: [180, 180, 180, 255],
   getLineWidth: 50,
 };
 
@@ -221,7 +221,7 @@ export const geojsonsMapping = {
   // Dictionary for layer loading depending on the section in page
   "expansion-urbana": [EXPANSION_LAYER],
   empleo: [EMPLEO_LAYER],
-  transporte: [PRIMARY_ROUTES, MASIVE_TRANSPORT_LAYER],
+  transporte: [PRIMARY_ROUTES_LAYER, MASIVE_TRANSPORT_LAYER],
   vivienda: [VIVIENDA_LAYER],
   segregacion: [SEGREGACION_LAYER],
   delincuencia: [DELINCUENCIA_LAYER],
