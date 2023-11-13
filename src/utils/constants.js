@@ -1,5 +1,7 @@
 import { rgb } from "d3-color";
 import { interpolateRgb } from "d3-interpolate";
+import * as d3 from 'd3';
+
 
 function colorInterpolate(normalizedValue, startColor, endColor, opacity = 1) {
   const interpolator = interpolateRgb(startColor, endColor);
@@ -131,46 +133,94 @@ export const PRIMARY_ROUTES = {
   getLineWidth: 150,
 };
 
+
 export const TRANSPORTE_JEANNETTE = {
   id: "primary_routes",
-  //data: "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/Transporte.json",
   data: "data/TRANSPORTEJEANNETTE.geojson",
   getLineColor: [100, 100, 100, 200],
   getLineWidth: 150,
 
-  //IMPLEMENTACION 1 DE FILTRADO
-  dataTransform: (d) => {
-    //filtrado por hora en el objeto 'd'
-    const filteredData = d.features.filter((feature) => {
-      const horaOri = feature.properties.HoraOri.split(":"); // Separar la hora de los minutos
-      const horaDest = feature.properties.HoraDest.split(":"); // Separar la hora de los minutos
+  //IMPLEMENTACION 2 DE FILTRADO
+  dataTransform: (d, time) => {
+    console.log("Entrando a dataTransform");
 
-      // Convertir las horas y minutos en valores numéricos
-      const horaOriNum = parseInt(horaOri[0], 10);
-      const horaDestNum = parseInt(horaDest[0], 10);
+  const lineStringGenerator = d3.line();
 
-      //ahora se estan filtrando los datos para que solo aparezcan los de entre las 18 y 19
-      if (horaOriNum >= 18 && horaOriNum < 19 && horaDestNum >= 18 && horaDestNum < 19) {
-        return true; // Mantener los datos si la condición se cumple
-      } else {
-        return false; // Descartar los datos si la condición no se cumple
-      }
-    });
-      //return filteredData;
-      return { ...d, features: filteredData }; // Devolver los datos filtrados
-  },
+  const transformedData = d.features.map((feature) => {
+    const horaOri = feature.properties.HoraOri.split(":");
+    const horaDest = feature.properties.HoraDest.split(":");
+    const horaOriNum = parseInt(horaOri[0], 10) * 60 + parseInt(horaOri[1], 10);
+    const horaDestNum = parseInt(horaDest[0], 10) * 60 + parseInt(horaDest[1], 10);
+
+    const timeInMinutes = time * 10;
+
+    if (
+      (horaOriNum <= timeInMinutes && timeInMinutes <= horaDestNum) ||
+      (horaOriNum >= timeInMinutes && timeInMinutes >= horaDestNum)
+    ) {
+      // Tomar solo la primera y última coordenada del LineString
+      const startCoords = feature.geometry.coordinates[0];
+      const endCoords = feature.geometry.coordinates[feature.geometry.coordinates.length - 1];
+
+      //const startAngle = (horaOriNum / 144) * Math.PI * 2;
+      //const endAngle = (horaDestNum / 144) * Math.PI * 2;
+      // Calcular el ángulo entre la primera y última coordenada
+      const startAngle = Math.atan2(startCoords[1], startCoords[0]);
+      const endAngle = Math.atan2(endCoords[1], endCoords[0]);
+      const startAltitude = startCoords[2] || 0; // Asegurarse de tener una altitud
+      const endAltitude = endCoords[2] || 0;
+
+      // Calcular puntos a lo largo del arco (aquí puedes ajustar la densidad)
+      const numPoints = 100;
+      // Puedes ajustar la longitud del arco multiplicando x e y por algún factor
+      const factor = 0.1;
+      const arcPoints = Array.from({ length: numPoints }, (_, i) => {
+        const t = i / (numPoints - 1);
+        //const angle = startAngle + t * (endAngle - startAngle);
+        //const altitude = startAltitude + t * (endAltitude - startAltitude);
+        //const x = Math.cos(angle);
+        //const y = Math.sin(angle);
+        const x = startCoords[0] + t * (endCoords[0] - startCoords[0]);
+        const y = startCoords[1] + factor * Math.sin(Math.PI * t);
+
+        
+        //const lon = feature.geometry.coordinates[0][0] + factor * x;
+        //const lat = feature.geometry.coordinates[0][1] + factor * y;
+        //const lon = startCoords[0] + factor * x;
+        //const lat = startCoords[1] + factor * y;
+
+        //return [lon, lat, altitude];
+        return [x, y, 0]; // Altitud puede ser 0 por ahora
+      });
+
+      const coordinates = arcPoints.map(([lon, lat, altitude]) => [lon, lat, altitude]);
+
+      const lineString = lineStringGenerator(coordinates);
+
+      /*console.log("Datos transformados:", {
+        coordinates,
+        lineString,
+      });*/
+      return {
+        ...feature,
+        geometry: {
+          type: 'LineString',
+          coordinates,
+        },
+        lineString,
+      };
+    } else {
+      return null;
+    }
+  });
+
+  const filteredData = transformedData.filter((feature) => feature !== null);
+
+  //console.log("Datos filtrados:", filteredData);
+
+  return { ...d, features: filteredData };
+}
 };
-
-/*const filteredTransportData = transportData.features.filter(feature => {
-  const horaOri = feature.properties.HoraOri; // Asumiendo que la hora está en formato "18:50"
-  const horaDest = feature.properties.HoraDest; // Asumiendo que la hora está en formato "19:00"
-
-  const hourStart = parseInt(horaOri.split(":")[0]);
-  const hourEnd = parseInt(horaDest.split(":")[0]);
-  const selected = selectedHour;
-
-  return selected >= hourStart && selected <= hourEnd;
-});*/
 
 export const TRANSPORTE_JEANNETTE2 = {
   id: "primary_routes",
@@ -180,16 +230,19 @@ export const TRANSPORTE_JEANNETTE2 = {
 
   //IMPLEMENTACION 2 DE FILTRADO
   dataTransform: (d, time) => {
+
     const filteredData = d.features.filter((feature) => {
       const horaOri = feature.properties.HoraOri.split(":"); //separa la hora de los minutos
       const horaDest = feature.properties.HoraDest.split(":"); //separar la hora de los minutos
 
-      //convertir las horas en valores numéricos
-      const horaOriNum = parseInt(horaOri[0], 10);
-      const horaDestNum = parseInt(horaDest[0], 10);
+      // Convertir las horas y minutos en valores numéricos en minutos
+      const horaOriNum = parseInt(horaOri[0], 10) * 60 + parseInt(horaOri[1], 10);
+      const horaDestNum = parseInt(horaDest[0], 10) * 60 + parseInt(horaDest[1], 10);
 
+      const timeInMinutes = time * 10; // Convertir el valor del slider a minutos
       //filtrado
-      if (horaOriNum >= time && horaOriNum < time + 1 && horaDestNum >= time && horaDestNum < time+1) {
+      //if (horaOriNum >= time && horaOriNum < time + 1 && horaDestNum >= time && horaDestNum < time+1) {
+      if (horaOriNum >= timeInMinutes && horaOriNum < timeInMinutes + 10 && horaDestNum >= timeInMinutes && horaDestNum < timeInMinutes + 10) {
         return true; //pone los datos que entran en el rango
       } else {
         return false; //descarta los datos si no se cumple
@@ -265,7 +318,9 @@ export const geojsonsMapping = {
   // Dictionary for layer loading depending on the section in page
   //transporte: PRIMARY_ROUTES,
   //transporte: TRANSPORTE_JEANNETTE, //lee los datos filtrados entre las 6 y 7 pm
-  transporte: TRANSPORTE_JEANNETTE2, //lee todos los datos
+
+
+ // transporte: TRANSPORTE_JEANNETTE, //lee todos los datos
   empleo: EMPLOYMENT_LAYER_1,
   "expansion-urbana": PRUEBA_SECCION_CRECIMIENTO_LAYER,
   vivienda: PRUEBA_SECCION_VIVIENDA_LAYER,

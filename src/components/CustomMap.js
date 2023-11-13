@@ -4,6 +4,8 @@ import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { Map } from "react-map-gl";
 import { FlyToInterpolator, GeoJsonLayer } from "deck.gl";
 import mapboxgl from "mapbox-gl";
+import { Button } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
 mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
@@ -25,19 +27,14 @@ export const INITIAL_STATE = {
 };
 
 export function CustomMap({ viewState, setViewState, layers, handleSliderChange, time }) {
-
-  // Asumiendo que tienes un estado para la hora seleccionada, llamado selectedHour
-/*const filteredTransportData = transportData.features.filter(feature => {
-  const horaOri = feature.properties.HoraOri; // Asumiendo que la hora está en formato "18:50"
-  const horaDest = feature.properties.HoraDest; // Asumiendo que la hora está en formato "19:00"
-
-  const hourStart = parseInt(horaOri.split(":")[0]);
-  const hourEnd = parseInt(horaDest.split(":")[0]);
-  const selected = selectedHour;
-
-  return selected >= hourStart && selected <= hourEnd;
-});*/
-
+  //const [deckLayers, setDeckLayers] = useState([]);
+  // Actualizar las capas cuando cambia el tiempo
+  /*useEffect(() => {
+    const updatedLayers = layers.map((layer) =>
+      layer.id === "primary_routes" ? { ...layer, dataTransform: (d) => layer.dataTransform(d, time) } : layer
+    );
+    setDeckLayers(updatedLayers);
+  }, [layers, time]);*/
 
   const zoomIn = () => {
     setViewState((v) => ({ ...v, zoom: v.zoom + 1, transitionDuration: 100 }));
@@ -47,7 +44,9 @@ export function CustomMap({ viewState, setViewState, layers, handleSliderChange,
     setViewState((v) => ({ ...v, zoom: v.zoom - 1, transitionDuration: 100 }));
   };
 
-
+  /*useEffect(() => {
+    // No necesitas manejar la transformación de datos aquí
+  }, [time]);*/
 
   return (
     <>
@@ -88,19 +87,11 @@ export function CustomMap({ viewState, setViewState, layers, handleSliderChange,
         </ButtonGroup>
       </div>
       <div style={{ position: "absolute", bottom: 10, left: 0, width: "100%", padding: "0 20px" }}>
-      {/*<input
-        type="range"
-        min={minHour}
-        max={maxHour}
-        value={selectedHour}
-        onChange={(e) => setSelectedHour(parseInt(e.target.value))}
-        style={{ width: "100%" }}
-      />*/}
       <input
         style={{ width: '100%' }}
         type="range"
         min="0"
-        max="23" // Ajusta el valor máximo según tus necesidades de tiempo
+        max="143"
         step="1" // O ajusta el paso según tus necesidades
         value={time}
         onChange={handleSliderChange} // Envía el evento del cambio del slider al componente App

@@ -14,6 +14,9 @@ import {
   ContextTitle,
   MasiveTransportSpan,
 } from "./Card";
+import { useMemo, useState, useEffect } from "react";
+import { CustomMap, INITIAL_STATE } from "./CustomMap.js";
+import * as d3 from 'd3';
 
 export const CustomBarChart = ({ data }) => (
   <ResponsiveContainer width="100%" height={150}>
@@ -36,7 +39,90 @@ export const CustomBarChart = ({ data }) => (
   </ResponsiveContainer>
 );
 
-export function TransporteCard({ setOutline, handleSliderChange, time }) {
+export function TransporteCard({ setOutline, handleSliderChange, time}) {
+  const [viewState, setViewState] = useState(INITIAL_STATE);
+  const [originalData, setOriginalData] = useState(null);
+
+  useEffect(() => {
+    // Lógica para cargar el GeoJSON desde un archivo
+    fetch("data/TRANSPORTEJEANNETTE.geojson")
+      .then(response => response.json())
+      .then(data => setOriginalData(data))
+      .catch(error => console.error("Error cargando el GeoJSON:", error));
+  }, []); // Esto se ejecutará solo una vez al montar el componente
+
+
+  // Función de transformación y filtrado de datos
+  const transformData = (data, time) => {
+    const lineStringGenerator = d3.line();
+  
+    const transformedData = data.features.map((feature) => {
+      const horaOri = feature.properties.HoraOri.split(":");
+      const horaDest = feature.properties.HoraDest.split(":");
+      const horaOriNum = parseInt(horaOri[0], 10) * 60 + parseInt(horaOri[1], 10);
+      const horaDestNum = parseInt(horaDest[0], 10) * 60 + parseInt(horaDest[1], 10);
+  
+      const timeInMinutes = time * 10;
+  
+      if (
+        (horaOriNum <= timeInMinutes && timeInMinutes <= horaDestNum) ||
+        (horaOriNum >= timeInMinutes && timeInMinutes >= horaDestNum)
+      ) {
+        const startCoords = feature.geometry.coordinates[0];
+        const endCoords = feature.geometry.coordinates[feature.geometry.coordinates.length - 1];
+  
+        const numPoints = 100;
+        const factor = 0.1;
+        const arcPoints = Array.from({ length: numPoints }, (_, i) => {
+          const t = i / (numPoints - 1);
+          const x = startCoords[0] + t * (endCoords[0] - startCoords[0]);
+          const y = startCoords[1] + factor * Math.sin(Math.PI * t);
+  
+          return [x, y, 0];
+        });
+  
+        const coordinates = arcPoints.map(([lon, lat, altitude]) => [lon, lat, altitude]);
+        const lineString = lineStringGenerator(coordinates);
+  
+        return {
+          ...feature,
+          geometry: {
+            type: 'LineString',
+            coordinates,
+          },
+          lineString,
+        };
+      } else {
+        return null;
+      }
+    });
+  
+    const filteredData = transformedData.filter((feature) => feature !== null);
+  
+    return { ...data, features: filteredData };
+  };
+  
+  // En tu componente TransporteCard
+  const primaryRoutesLayer = useMemo(() => {
+    // ...
+    if (!originalData) {
+      return null;
+    }
+  
+    const filteredData = transformData(originalData, time);
+  
+    return {
+      id: "primary_routes",
+      data: filteredData,
+      getLineColor: [100, 100, 100, 200],
+      getLineWidth: 150,
+    };
+  }, [originalData, time]);
+  
+
+
+
+
   const data = [
     {
       municipality: "Monterrey",
@@ -90,6 +176,15 @@ export function TransporteCard({ setOutline, handleSliderChange, time }) {
         step="1" // O ajusta el paso según tus necesidades
         value={time}
         onChange={handleSliderChange} // Envía el evento del cambio del slider al componente App
+      />
+      <CustomMap
+        viewState={viewState}
+        setViewState={setViewState}
+        //layers={[primaryRoutesLayer]}
+        layers={primaryRoutesLayer ? [primaryRoutesLayer] : []}
+
+        handleSliderChange={handleSliderChange} 
+        time={time}
       />
     </Card>
   );

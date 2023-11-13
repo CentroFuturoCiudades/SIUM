@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Box } from "@chakra-ui/react";
 
 import { Sidebar, sectionsInfo } from "./components/Sidebar";
@@ -48,6 +48,10 @@ export default function App() {
   const layers = currentLayer
     ? [currentLayer, ...extraLayers]
     : [...extraLayers];
+  // Estado local para manejar las capas
+  /*const [layers, setLayers] = useState(
+    currentLayer ? [currentLayer, ...extraLayers] : [...extraLayers]
+  );*/
   const [time, setTime] = useState(0); //el time que se va a mandar a filterdata de la const de TRANSPORTE_JEANNETTE2
 
     
@@ -76,6 +80,7 @@ export default function App() {
   useEffect(() => {
     if (currentSection) {
       setViewState(INITIAL_STATE);
+      console.log("Se volvio a crear el map")
     }
   }, [currentSection]);
 
@@ -108,7 +113,7 @@ export default function App() {
         />
         <ExpansionUrbanaCard setOutline={setOutline} />
         <EmpleoCard setOutline={setOutline} />
-        <TransporteCard setOutline={setOutline} handleSliderChange={handleSliderChange} time={time}/>
+        <TransporteCard setOutline={setOutline} handleSliderChange={handleSliderChange} time={time} />
         <ViviendaCard setOutline={setOutline} />
         <SegregacionCard setOutline={setOutline} />
         <DelincuenciaCard setOutline={setOutline} />
@@ -119,12 +124,14 @@ export default function App() {
         borderColor={`${sectionsInfo[currentSection].color}.500`}
       >
         <CustomMap
+          //key={time} // Agrega una key que cambia con el tiempo
           viewState={viewState}
           setViewState={setViewState}
           layers={layers.map(layer => layer.id === "primary_routes" ? { //solo para la layer de primary_routes (osea la de transporte)
             ...layer,
             dataTransform: (d) => layer.dataTransform(d, time) //se pasa el valor de 'time' a dataTransform
           } : layer)}
+          //layers={layers}  // Pasar las capas actualizadas directamente
           handleSliderChange={handleSliderChange} 
           time={time}
         />
