@@ -320,7 +320,7 @@ export const geojsonsMapping = {
   //transporte: TRANSPORTE_JEANNETTE, //lee los datos filtrados entre las 6 y 7 pm
 
 
- // transporte: TRANSPORTE_JEANNETTE, //lee todos los datos
+  transporte: TRANSPORTE_JEANNETTE, //lee todos los datos
   empleo: EMPLOYMENT_LAYER_1,
   "expansion-urbana": PRUEBA_SECCION_CRECIMIENTO_LAYER,
   vivienda: PRUEBA_SECCION_VIVIENDA_LAYER,

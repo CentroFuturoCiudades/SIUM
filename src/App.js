@@ -13,6 +13,10 @@ import { DelincuenciaCard } from "./components/DelincuenciaCard";
 import { CostosCard } from "./components/CostosCard";
 import { geojsonsMapping } from "./utils/constants";
 import "./index.css";
+import * as d3 from 'd3';
+//import { isMobile } from "./util/mobile";
+//import { TripsLayer } from "@deck.gl/geo-layers";
+//import { StaticMap } from "react-map-gl";
 
 const isSectionInView = (section) => {
   const { top, bottom } = section.getBoundingClientRect();
@@ -48,17 +52,11 @@ export default function App() {
   const layers = currentLayer
     ? [currentLayer, ...extraLayers]
     : [...extraLayers];
-  // Estado local para manejar las capas
-  /*const [layers, setLayers] = useState(
-    currentLayer ? [currentLayer, ...extraLayers] : [...extraLayers]
-  );*/
   const [time, setTime] = useState(0); //el time que se va a mandar a filterdata de la const de TRANSPORTE_JEANNETTE2
+  const [originalData, setOriginalData] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false); // Nuevo estado para manejar la reproducción
 
-    
-  /*const currentLayer2 = geojsonsMapping[currentSection]
-    ? geojsonsMapping[currentSection].dataTransform(data, time)
-    : null;*/
-  
+ 
 
   useEffect(() => {
     const handleScroll = () => {
@@ -102,6 +100,91 @@ export default function App() {
     setTime(newTime); //actualiza el estado de 'time' con el nuevo valor
   };
 
+  const togglePlay = () => {
+    setIsPlaying(!isPlaying);
+  };
+
+  useEffect(() => {
+    // Lógica para cargar el GeoJSON desde un archivo
+    fetch("data/TRANSPORTEJEANNETTE.geojson")
+      .then(response => response.json())
+      .then(data => setOriginalData(data))
+      .catch(error => console.error("Error cargando el GeoJSON:", error));
+  }, []); // Esto se ejecutará solo una vez al montar el componente
+
+  // Función de transformación y filtrado de datos
+  const transformData = (data, time) => {
+    const lineStringGenerator = d3.line();
+  
+    const transformedData = data.features.map((feature) => {
+      const horaOri = feature.properties.HoraOri.split(":");
+      const horaDest = feature.properties.HoraDest.split(":");
+      const horaOriNum = parseInt(horaOri[0], 10) * 60 + parseInt(horaOri[1], 10);
+      const horaDestNum = parseInt(horaDest[0], 10) * 60 + parseInt(horaDest[1], 10);
+  
+      const timeInMinutes = time * 10;
+  
+      if (
+        (horaOriNum <= timeInMinutes && timeInMinutes <= horaDestNum) ||
+        (horaOriNum >= timeInMinutes && timeInMinutes >= horaDestNum)
+      ) {
+        const startCoords = feature.geometry.coordinates[0];
+        const endCoords = feature.geometry.coordinates[feature.geometry.coordinates.length - 1];
+  
+        const numPoints = 100;
+        const factor = 0.1;
+        const arcPoints = Array.from({ length: numPoints }, (_, i) => {
+          const t = i / (numPoints - 1);
+          const x = startCoords[0] + t * (endCoords[0] - startCoords[0]);
+          const y = startCoords[1] + factor * Math.sin(Math.PI * t);
+  
+          return [x, y, 0];
+        });
+  
+        const coordinates = arcPoints.map(([lon, lat, altitude]) => [lon, lat, altitude]);
+        const lineString = lineStringGenerator(coordinates);
+  
+        return {
+          ...feature,
+          geometry: {
+            type: 'LineString',
+            coordinates,
+          },
+          lineString,
+        };
+      } else {
+        return null;
+      }
+    });
+  
+    const filteredData = transformedData.filter((feature) => feature !== null);
+  
+    return { ...data, features: filteredData };
+  };
+  
+  // En tu componente TransporteCard
+  const primaryRoutesLayer = useMemo(() => {
+    // ...
+    if (!originalData) {
+      return null;
+    }
+  
+    const filteredData = transformData(originalData, time);
+  
+    return {
+      id: "primary_routes",
+      data: filteredData,
+      getLineColor: [100, 100, 100, 200],
+      getLineWidth: 150,
+    };
+  }, [originalData, time]);
+
+  // Agregar la capa específica de transporte si es la sección actual
+  //const currentSection = "transporte";
+  const modifiedLayers = layers.map((layer) =>
+    layer.id === "primary_routes" ? (primaryRoutesLayer ? primaryRoutesLayer : []) : layer
+  );
+
   return (
     <div style={{ display: "flex" }}>
       <Sidebar section={currentSection} setSection={setCurrentSection} />
@@ -118,6 +201,11 @@ export default function App() {
         <SegregacionCard setOutline={setOutline} />
         <DelincuenciaCard setOutline={setOutline} />
         <CostosCard setOutline={setOutline} />
+        <div>
+          <button onClick={togglePlay}>
+            {isPlaying ? "Pause" : "Play"}
+          </button>
+        </div>
       </div>
       <Box
         className="mapContainer"
@@ -127,13 +215,17 @@ export default function App() {
           //key={time} // Agrega una key que cambia con el tiempo
           viewState={viewState}
           setViewState={setViewState}
-          layers={layers.map(layer => layer.id === "primary_routes" ? { //solo para la layer de primary_routes (osea la de transporte)
+          /*layers={layers.map(layer => layer.id === "primary_routes" ? { //solo para la layer de primary_routes (osea la de transporte)
             ...layer,
             dataTransform: (d) => layer.dataTransform(d, time) //se pasa el valor de 'time' a dataTransform
-          } : layer)}
+          } : layer)}*/
           //layers={layers}  // Pasar las capas actualizadas directamente
+          //layers={primaryRoutesLayer ? [primaryRoutesLayer] : []}
+          layers={modifiedLayers}
           handleSliderChange={handleSliderChange} 
           time={time}
+          isPlaying={isPlaying} // Pasa el estado de reproducción al componente CustomMap
+
         />
       </Box>
     </div>
