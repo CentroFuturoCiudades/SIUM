@@ -15,7 +15,9 @@ import { geojsonsMapping } from "./utils/constants";
 import "./index.css";
 import * as d3 from 'd3';
 //import { isMobile } from "./util/mobile";
-//import { TripsLayer } from "@deck.gl/geo-layers";
+import { TripsLayer } from "@deck.gl/geo-layers";
+import { Button, Slider, SliderTrack, SliderFilledTrack, SliderThumb } from "@chakra-ui/react";
+
 //import { StaticMap } from "react-map-gl";
 
 const isSectionInView = (section) => {
@@ -52,10 +54,12 @@ export default function App() {
   const layers = currentLayer
     ? [currentLayer, ...extraLayers]
     : [...extraLayers];
-  const [time, setTime] = useState(0); //el time que se va a mandar a filterdata de la const de TRANSPORTE_JEANNETTE2
-  const [originalData, setOriginalData] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false); // Nuevo estado para manejar la reproducción
-
+  //VARIABLES JEANNETTE NUEVAS
+  const [time, setTime] = useState(0); //el tiempo que filtra los datos
+  const [originalData, setOriginalData] = useState(null); //data que va a ser la de la layer
+  const [isPlaying, setIsPlaying] = useState(false); //var de estado para manejar el play de la animacion
+  const [animationTime, setAnimationTime] = useState(0); //tiempo cambiante de la animacion
+  
  
 
   useEffect(() => {
@@ -78,7 +82,6 @@ export default function App() {
   useEffect(() => {
     if (currentSection) {
       setViewState(INITIAL_STATE);
-      console.log("Se volvio a crear el map")
     }
   }, [currentSection]);
 
@@ -93,17 +96,41 @@ export default function App() {
     }
   }, []);
 
-  //nuevo jeannette
+  //****************************CONSTANTES JEANNETTE (a partir de aqui)
+  //para el slider (sigo trabajando con poner el de chakra pero me da un errorsillo)
   const handleSliderChange = (event) => {
-    const newTime = event.target.value; //Se obtiene el valor del tiempo del slider
+    const newTime = event.target.value; //obtiene el valor del tiempo del slider
     console.log("New Time:", newTime); //checar que valor tiene el slider
     setTime(newTime); //actualiza el estado de 'time' con el nuevo valor
+    setAnimationTime(newTime); 
+    setIsPlaying(false); //pausa la animación al cambiar manualmente el slider
   };
 
+  //para la animacion
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
+    setAnimationTime(time); //inicia la animación desde la posición actual del slider
   };
 
+  //esto para el cambio del tiempo y la animacion (no funciona yet)
+  useEffect(() => {
+    let animationFrame;
+  
+    const animate = () => {
+      setAnimationTime((prevTime) => (prevTime + 1) % 144);
+      animationFrame = requestAnimationFrame(animate);
+    };
+  
+    if (isPlaying) {
+      animate();
+    } else {
+      cancelAnimationFrame(animationFrame);
+    }
+  
+    return () => cancelAnimationFrame(animationFrame);
+  }, [isPlaying]);
+
+  //Lectura del geoJSON de transporte
   useEffect(() => {
     // Lógica para cargar el GeoJSON desde un archivo
     fetch("data/TRANSPORTEJEANNETTE.geojson")
@@ -112,8 +139,12 @@ export default function App() {
       .catch(error => console.error("Error cargando el GeoJSON:", error));
   }, []); // Esto se ejecutará solo una vez al montar el componente
 
-  // Función de transformación y filtrado de datos
+  //Transformación y filtrado de datos
   const transformData = (data, time) => {
+    //solo un catch porq en una de mis pruebas me dio error (pero creo que si se quita no pasa nada)
+    if (!data || !data.features) {
+      return { ...data, features: [] };
+    }
     const lineStringGenerator = d3.line();
   
     const transformedData = data.features.map((feature) => {
@@ -124,6 +155,7 @@ export default function App() {
   
       const timeInMinutes = time * 10;
   
+      //Filtrado del tiempo
       if (
         (horaOriNum <= timeInMinutes && timeInMinutes <= horaDestNum) ||
         (horaOriNum >= timeInMinutes && timeInMinutes >= horaDestNum)
@@ -138,7 +170,7 @@ export default function App() {
           const x = startCoords[0] + t * (endCoords[0] - startCoords[0]);
           const y = startCoords[1] + factor * Math.sin(Math.PI * t);
   
-          return [x, y, 0];
+          return [x, y, 0]; //puse el 0 de por mientras
         });
   
         const coordinates = arcPoints.map(([lon, lat, altitude]) => [lon, lat, altitude]);
@@ -159,17 +191,17 @@ export default function App() {
   
     const filteredData = transformedData.filter((feature) => feature !== null);
   
-    return { ...data, features: filteredData };
+    return { ...data, features: filteredData, transformedData };
   };
   
-  // En tu componente TransporteCard
+  //Esto es los datos finales del geoJSON de transporte filtrados
   const primaryRoutesLayer = useMemo(() => {
-    // ...
     if (!originalData) {
       return null;
     }
   
     const filteredData = transformData(originalData, time);
+    console.log("Los datos filtrados para manual",filteredData)
   
     return {
       id: "primary_routes",
@@ -179,11 +211,57 @@ export default function App() {
     };
   }, [originalData, time]);
 
-  // Agregar la capa específica de transporte si es la sección actual
-  //const currentSection = "transporte";
-  const modifiedLayers = layers.map((layer) =>
+
+
+  //console.log("Transformed Data:", transformedData);
+  //console.log("Filtered Data:", filteredData);
+
+  /*const modifiedLayers = layers.map((layer) =>
+    //layer.id === "primary_routes" ? (primaryRoutesLayer ? primaryRoutesLayer : []) : layer
     layer.id === "primary_routes" ? (primaryRoutesLayer ? primaryRoutesLayer : []) : layer
-  );
+  );*/
+
+
+  const convertToMinutes = (timeString) => {
+    const [hours, minutes] = timeString.split(":").map(Number);
+    return hours * 60 + minutes;
+  };
+
+  //Aqui checa que layer va
+  const modifiedLayers = layers.map((layer) => {
+    if (layer.id === 'primary_routes' && isPlaying) { //el primer if es para la animacion (pero aun tengo errores)
+      //agrega la capa de arcos solo si es la capa primaryRoutesLayer y está reproduciéndose
+      const filteredData = transformData(originalData, animationTime);
+      //console.log("Los datos filtrados para trip layer", filteredData)
+      console.log("Current animation time:", animationTime); // Agrega esta línea
+
+      const arcsLayer = new TripsLayer({
+        id: 'trips',
+        data: filteredData, // Usa filteredData en lugar de transformedData
+        getPath: (d) => d.geometry.coordinates, // Usa las coordenadas directas del GeoJSON
+        getColor: [100, 100, 100, 200],
+        getWidth: 150,
+        currentTime: animationTime, // Pasa el tiempo actual
+        trailLength: 50, // Longitud de la estela
+        getTimestamps: (d) => [
+          convertToMinutes(d.properties.HoraOri),
+          convertToMinutes(d.properties.HoraDest),
+        ],
+        loopLength: 144, // Longitud del bucle en segundos
+        animationSpeed: 1, // Velocidad de la animación
+      });
+      return arcsLayer;
+    } 
+    else if(layer.id === 'primary_routes' && !isPlaying) //si es la de primary_routes pero esta manual con el slider
+    {
+      return primaryRoutesLayer ? primaryRoutesLayer : [] //pone los datos de primaryRoutesLayer
+    }
+    
+    else {
+      //sino usa las otras capas tal como están
+      return layer;
+    }
+  });
 
   return (
     <div style={{ display: "flex" }}>
@@ -201,16 +279,17 @@ export default function App() {
         <SegregacionCard setOutline={setOutline} />
         <DelincuenciaCard setOutline={setOutline} />
         <CostosCard setOutline={setOutline} />
-        <div>
-          <button onClick={togglePlay}>
-            {isPlaying ? "Pause" : "Play"}
-          </button>
-        </div>
       </div>
       <Box
         className="mapContainer"
         borderColor={`${sectionsInfo[currentSection].color}.500`}
       >
+        <div>
+          <button onClick={togglePlay}>
+            {isPlaying ? "Pause" : "Play"}
+          </button>
+        </div>
+
         <CustomMap
           //key={time} // Agrega una key que cambia con el tiempo
           viewState={viewState}
@@ -221,11 +300,11 @@ export default function App() {
           } : layer)}*/
           //layers={layers}  // Pasar las capas actualizadas directamente
           //layers={primaryRoutesLayer ? [primaryRoutesLayer] : []}
-          layers={modifiedLayers}
+          layers={modifiedLayers} //esto es lo que checa que capa va
           handleSliderChange={handleSliderChange} 
           time={time}
           isPlaying={isPlaying} // Pasa el estado de reproducción al componente CustomMap
-
+          togglePlay={togglePlay}
         />
       </Box>
     </div>
