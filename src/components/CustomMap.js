@@ -4,7 +4,7 @@ import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { Map } from "react-map-gl";
 import { FlyToInterpolator, GeoJsonLayer } from "deck.gl";
 import mapboxgl from "mapbox-gl";
-import { Button, Slider, SliderTrack, SliderFilledTrack, SliderThumb } from "@chakra-ui/react";
+import { Button, Slider, SliderTrack, SliderFilledTrack, SliderThumb, SliderMark } from "@chakra-ui/react";
 import { useState, useEffect, useRef } from "react";
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
@@ -55,6 +55,32 @@ export function CustomMap({ viewState, setViewState, layers, handleSliderChange,
     setViewState((v) => ({ ...v, zoom: v.zoom - 1, transitionDuration: 100 }));
   };
 
+  const marks = [
+    { value: 5.95, label: '0' },
+    { value: 11.9, label: '1' },
+    { value: 17.85, label: '2' },
+    { value: 23.8, label: '3' },
+    { value: 29.75, label: '4' },
+    { value: 35.7, label: '5' },
+    { value: 41.65, label: '6' },
+    { value: 47.6, label: '7' },
+    { value: 53.55, label: '8' },
+    { value: 59.5, label: '9' },
+    { value: 65.45, label: '10' },
+    { value: 71.4, label: '11' },
+    { value: 77.35, label: '12' },
+    { value: 83.3, label: '13' },
+    { value: 89.25, label: '14' },
+    { value: 95.2, label: '15' },
+    { value: 101.15, label: '16' },
+    { value: 107.1, label: '17' },
+    { value: 113.05, label: '18' },
+    { value: 119, label: '19' },
+    { value: 124.95, label: '20' },
+    { value: 130.9, label: '21' },
+    { value: 136.85, label: '22' },
+    { value: 142.8, label: '23' },
+  ];
 
 
   return (
@@ -100,16 +126,25 @@ export function CustomMap({ viewState, setViewState, layers, handleSliderChange,
         </button>
       </div>
       </div>
-      <div style={{ position: "absolute", bottom: 10, left: 0, width: "100%", padding: "0 20px" }}>
-      <input
-        style={{ width: '100%' }}
-        type="range"
-        min="0"
-        max="143" //cada hora tiene 6 intervalos de 10 min y un dia tiene 24 horas (6*24)
-        step="1" // O ajusta el paso según tus necesidades
+      <div style={{ position: "absolute", bottom: 20, left: 0, width: "100%", padding: "0 20px" }}>
+      <Slider aria-label='slider-ex-1' 
+        id='slider'
+        defaultValue={0}
+        min={0}
+        max={143}
         value={time}
-        onChange={handleSliderChange} // Envía el evento del cambio del slider al componente App
-      />
+        onChange={(value) => handleSliderChange(value)}
+        >
+          {marks.map(({ value, label }) => (
+        <SliderMark key={value} value={value} mt='1' ml='-2.5' fontSize='sm'>
+          {label}
+        </SliderMark>
+      ))}
+          <SliderTrack>
+            <SliderFilledTrack />
+          </SliderTrack>
+          <SliderThumb />
+        </Slider>
     </div>/*
     </>
   );

@@ -14,9 +14,7 @@ import { CostosCard } from "./components/CostosCard";
 import { geojsonsMapping } from "./utils/constants";
 import "./index.css";
 import * as d3 from 'd3';
-//import { isMobile } from "./util/mobile";
 import { TripsLayer } from "@deck.gl/geo-layers";
-import { Button, Slider, SliderTrack, SliderFilledTrack, SliderThumb } from "@chakra-ui/react";
 
 //import { StaticMap } from "react-map-gl";
 
@@ -58,8 +56,7 @@ export default function App() {
   const [time, setTime] = useState(0); //el tiempo que filtra los datos
   const [originalData, setOriginalData] = useState(null); //data que va a ser la de la layer
   const [isPlaying, setIsPlaying] = useState(false); //var de estado para manejar el play de la animacion
-  const [animationTime, setAnimationTime] = useState(0); //tiempo cambiante de la animacion
-  
+  const [animationTime, setAnimationTime] = useState(0); //tiempo cambiante de la animacion  
  
 
   useEffect(() => {
@@ -98,8 +95,8 @@ export default function App() {
 
   //****************************CONSTANTES JEANNETTE (a partir de aqui)
   //para el slider (sigo trabajando con poner el de chakra pero me da un errorsillo)
-  const handleSliderChange = (event) => {
-    const newTime = event.target.value; //obtiene el valor del tiempo del slider
+  const handleSliderChange = (newTime) => {
+    //const newTime = event.target.value; //obtiene el valor del tiempo del slider
     console.log("New Time:", newTime); //checar que valor tiene el slider
     setTime(newTime); //actualiza el estado de 'time' con el nuevo valor
     setAnimationTime(newTime); 
@@ -289,7 +286,7 @@ export default function App() {
             {isPlaying ? "Pause" : "Play"}
           </button>
         </div>
-
+        
         <CustomMap
           //key={time} // Agrega una key que cambia con el tiempo
           viewState={viewState}
