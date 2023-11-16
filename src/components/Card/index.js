@@ -3,9 +3,8 @@ import {
   SUBCENTERS_LAYER,
   CENTER_LAYER,
   PERIPHERY_LAYER,
-  MASIVE_TRANSPORT_LAYER,
-  PRUEBA_SECCION_SEGREGACION__QUINTIL_LAYER,
-  PRUEBA_SECCION_CRECIMIENTO_LAYER_1990,
+  SECCION_SEGREGACION__QUINTIL_LAYER,
+  SECCION_CRECIMIENTO_LAYER_1990,
 } from "../../utils/constants";
 import { Box, Heading, Text } from "@chakra-ui/react";
 import { AnimatedText } from "../AnimatedText";
@@ -33,8 +32,8 @@ export const CenterSpan = ({ setOutline }) => (
 
 export const SegregacionSpan = ({ setOutline }) => (
   <span
-    className= "highlightEmployments"
-    onMouseOver={() => setOutline(PRUEBA_SECCION_SEGREGACION__QUINTIL_LAYER)}
+    className="highlightEmployments"
+    onMouseOver={() => setOutline(SECCION_SEGREGACION__QUINTIL_LAYER)}
     onMouseOut={() => setOutline(null)}
   >
     segregación
@@ -43,21 +42,11 @@ export const SegregacionSpan = ({ setOutline }) => (
 
 export const ExpansionSpan = ({ setOutline }) => (
   <span
-    className= "highlightAccent"
-    onMouseOver={() => setOutline(PRUEBA_SECCION_CRECIMIENTO_LAYER_1990)}
+    className="highlightAccent"
+    onMouseOver={() => setOutline(SECCION_CRECIMIENTO_LAYER_1990)}
     onMouseOut={() => setOutline(null)}
   >
     1990
-  </span>
-);
-
-export const MasiveTransportSpan = ({ setOutline }) => (
-  <span
-    className="highlightTransport"
-    onMouseOver={() => setOutline(MASIVE_TRANSPORT_LAYER)}
-    onMouseOut={() => setOutline(null)}
-  >
-    transporte público
   </span>
 );
 

@@ -1,5 +1,6 @@
+import { useEffect } from "react";
+import { useCardContext } from "../views/Body";
 import {
-  Card,
   SubcentersSpan,
   PeripherySpan,
   CenterSpan,
@@ -7,11 +8,19 @@ import {
   ContextTitle,
   ExpansionSpan,
 } from "./Card";
+import { EMPLEO_LAYER } from "../utils/constants";
 
-export function EmpleoCard({ setOutline }) {
+export function EmpleoCard({ color, isCurrentSection }) {
+  const { setLayers, setOutline } = useCardContext();
+  useEffect(() => {
+    if (isCurrentSection) {
+      setLayers([EMPLEO_LAYER]);
+    }
+  }, [isCurrentSection, setLayers]);
+
   return (
-    <Card id="empleo" color="brown2">
-      <ResponseTitle color="brown2">En el centro.</ResponseTitle>
+    <>
+      <ResponseTitle color={color}>En el centro.</ResponseTitle>
       <p>
         El <b>X%</b> de los empleos se concentra en el{" "}
         <CenterSpan setOutline={setOutline} />. Debido a que las familias han
@@ -20,16 +29,16 @@ export function EmpleoCard({ setOutline }) {
         los translados hacia el trabajo han aumentado.
       </p>
       <p>
-        De <ExpansionSpan setOutline={setOutline} /> a 2010 la <b>población</b> de la Zona Metropolitana de Monterrey
-        aumentó <b>2 veces</b>, pero la <b>expansión urbana</b> creció{" "}
-        <b>2.8 veces</b>.
+        De <ExpansionSpan setOutline={setOutline} /> a 2010 la <b>población</b>{" "}
+        de la Zona Metropolitana de Monterrey aumentó <b>2 veces</b>, pero la{" "}
+        <b>expansión urbana</b> creció <b>2.8 veces</b>.
       </p>
       <br />
       <br />
-      <ContextTitle color="brown2">
+      <ContextTitle color={color}>
         La gente migran a la periferia, lejos de oportunidades laborales y con
         menor cobertura de transporte público.
       </ContextTitle>
-    </Card>
+    </>
   );
 }

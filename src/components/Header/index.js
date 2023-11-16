@@ -7,6 +7,7 @@ export const Header = ({ section, color, title }) => (
     <img
       className="headerImage"
       src="https://tec-expansion-urbana-p.s3.amazonaws.com/general/Oficial.png"
+      alt="Tec de Monterrey"
     />
     <Box className="titleContainer" bgColor={`${color}.500`}>
       <Heading

@@ -1,24 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
-  Card,
   SubcentersSpan,
   PeripherySpan,
   CenterSpan,
   ResponseTitle,
   ContextTitle,
-  ExpansionSpan
+  ExpansionSpan,
 } from "./Card";
+import { useCardContext } from "../views/Body";
+import { EXPANSION_LAYER } from "../utils/constants";
 
-export function ExpansionUrbanaCard({ setOutline }) {
+export function ExpansionUrbanaCard({ color, isCurrentSection }) {
+  const { setLayers, setOutline } = useCardContext();
+  useEffect(() => {
+    if (isCurrentSection) {
+      setLayers([EXPANSION_LAYER]);
+    }
+  }, [isCurrentSection, setLayers]);
+
   return (
-    <Card id="expansion-urbana" color="brown">
-      <ResponseTitle color="brown">
+    <>
+      <ResponseTitle color={color}>
         Hacia las periferias, lejos unos de otros.
       </ResponseTitle>
       <p>
-        En <ExpansionSpan setOutline={setOutline} /> los <b>adultos mayores</b> vivían en el{" "}
-        <CenterSpan setOutline={setOutline} /> de Monterrey, mientras que las{" "}
-        <b>familias jóvenes</b> vivían en{" "}
+        En <ExpansionSpan setOutline={setOutline} /> los <b>adultos mayores</b>{" "}
+        vivían en el <CenterSpan setOutline={setOutline} /> de Monterrey,
+        mientras que las <b>familias jóvenes</b> vivían en{" "}
         <SubcentersSpan setOutline={setOutline} /> como Guadalupe, San Pedro,
         San Nicolás y Cumbres.
       </p>
@@ -31,10 +39,10 @@ export function ExpansionUrbanaCard({ setOutline }) {
       </p>
       <br />
       <br />
-      <ContextTitle color="brown">
+      <ContextTitle color={color}>
         La migración de subcentros a la periferia, conocido como expansión
         urbana, nos aleja de servicios y empleo.
       </ContextTitle>
-    </Card>
+    </>
   );
 }

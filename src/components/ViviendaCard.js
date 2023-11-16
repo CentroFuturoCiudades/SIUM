@@ -1,15 +1,24 @@
+import { useEffect } from "react";
+import { useCardContext } from "../views/Body";
 import {
-  Card,
   SubcentersSpan,
   PeripherySpan,
   ResponseTitle,
   ContextTitle,
 } from "./Card";
+import { VIVIENDA_LAYER } from "../utils/constants";
 
-export function ViviendaCard({ setOutline }) {
+export function ViviendaCard({ color, isCurrentSection }) {
+  const { setLayers, setOutline } = useCardContext();
+  useEffect(() => {
+    if (isCurrentSection) {
+      setLayers([VIVIENDA_LAYER]);
+    }
+  }, [isCurrentSection, setLayers]);
+
   return (
-    <Card id="vivienda" color="yellow">
-      <ResponseTitle color="yellow">
+    <>
+      <ResponseTitle color={color}>
         La vivienda es más asequible en las periferias.
       </ResponseTitle>
       <p>
@@ -34,10 +43,10 @@ export function ViviendaCard({ setOutline }) {
       </p>
       <br />
       <br />
-      <ContextTitle color="yellow">
+      <ContextTitle color={color}>
         Aunque los costos de la vivienda son menores en las periferias, otros
         costos se elevan, aumentando la desigualdad.
       </ContextTitle>
-    </Card>
+    </>
   );
 }

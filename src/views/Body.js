@@ -1,19 +1,16 @@
-// Body.js
-import React, { useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { Box } from "@chakra-ui/react";
 
-import { Sidebar, sectionsInfo } from "../components/Sidebar";
+import { Sidebar } from "../components/Sidebar";
 import { Header } from "../components/Header";
 import { CustomMap, INITIAL_STATE } from "../components/CustomMap";
-import { ExpansionUrbanaCard } from "../components/ExpansionUrbanaCard";
-import { TransporteCard } from "../components/TransporteCard";
-import { EmpleoCard } from "../components/EmpleoCard";
-import { ViviendaCard } from "../components/ViviendaCard";
-import { SegregacionCard } from "../components/SegregacionCard";
-import { DelincuenciaCard } from "../components/DelincuenciaCard";
-import { CostosCard } from "../components/CostosCard";
-import { geojsonsMapping } from "../utils/constants";
 import "../index.css";
+import { Card } from "../components/Card";
+import { sectionsInfo } from "../utils/constants";
+
+const CardContext = createContext();
+
+export const useCardContext = () => useContext(CardContext);
 
 const isSectionInView = (section) => {
   const { top, bottom } = section.getBoundingClientRect();
@@ -36,14 +33,48 @@ const getSectionFromURL = () => {
   return window.location.hash?.replace("#", "") || null;
 };
 
+export const CardsContainer = ({
+  currentSection,
+  currentInfo,
+  setLayers,
+  setControlsProps,
+  setOutline,
+}) => {
+  return (
+    <div className="cardsContainer">
+      <Header
+        section={currentSection}
+        color={currentInfo.color}
+        title={currentInfo.title}
+      />
+      <CardContext.Provider
+        value={{ currentSection, setLayers, setControlsProps, setOutline }}
+      >
+        {Object.keys(sectionsInfo).map((key) => {
+          const CardContent = sectionsInfo[key].component;
+          return (
+            <Card id={key} key={key} color={sectionsInfo[key].color}>
+              <CardContent
+                isCurrentSection={currentSection === key}
+                color={sectionsInfo[key].color}
+              />
+            </Card>
+          );
+        })}
+      </CardContext.Provider>
+    </div>
+  );
+};
+
 export default function Body() {
   const [viewState, setViewState] = useState(INITIAL_STATE);
-  const [outline, setOutline] = useState(null);
   const [currentSection, setCurrentSection] = useState("expansion-urbana");
+  const [layers, setLayers] = useState([]);
+  const [outline, setOutline] = useState();
+  const [controlsProps, setControlsProps] = useState(null);
   const currentInfo = sectionsInfo[currentSection];
-  const currentLayer = geojsonsMapping[currentSection] || [];
-  const extraLayers = outline ? [outline] : [];
-  const layers = [...currentLayer, ...extraLayers];
+  const CurrentControls = sectionsInfo[currentSection].controls;
+  let filteredLayers =  outline ? [...layers, outline] : [...layers];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -82,20 +113,13 @@ export default function Body() {
   return (
     <div style={{ display: "flex" }}>
       <Sidebar section={currentSection} setSection={setCurrentSection} />
-      <div className="cardsContainer">
-        <Header
-          section={currentSection}
-          color={currentInfo.color}
-          title={currentInfo.title}
-        />
-        <ExpansionUrbanaCard setOutline={setOutline} />
-        <EmpleoCard setOutline={setOutline} />
-        <TransporteCard setOutline={setOutline} />
-        <ViviendaCard setOutline={setOutline} />
-        <SegregacionCard setOutline={setOutline} />
-        <DelincuenciaCard setOutline={setOutline} />
-        <CostosCard setOutline={setOutline} />
-      </div>
+      <CardsContainer
+        currentSection={currentSection}
+        currentInfo={currentInfo}
+        setLayers={setLayers}
+        setControlsProps={setControlsProps}
+        setOutline={setOutline}
+      />
       <Box
         className="mapContainer"
         borderColor={`${sectionsInfo[currentSection].color}.500`}
@@ -103,8 +127,10 @@ export default function Body() {
         <CustomMap
           viewState={viewState}
           setViewState={setViewState}
-          layers={layers}
+          layers={filteredLayers}
+          currentSection={currentSection}
         />
+        {CurrentControls && <CurrentControls {...controlsProps} />}
       </Box>
     </div>
   );

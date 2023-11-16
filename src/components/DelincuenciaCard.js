@@ -1,9 +1,19 @@
-import { Card, ResponseTitle, ContextTitle } from "./Card";
+import { useEffect } from "react";
+import { ResponseTitle, ContextTitle } from "./Card";
+import { useCardContext } from "../views/Body";
+import { DELINCUENCIA_LAYER } from "../utils/constants";
 
-export function DelincuenciaCard({ setOutline }) {
+export function DelincuenciaCard({ color, isCurrentSection }) {
+  const { setLayers } = useCardContext();
+  useEffect(() => {
+    if (isCurrentSection) {
+      setLayers([DELINCUENCIA_LAYER]);
+    }
+  }, [isCurrentSection, setLayers]);
+
   return (
-    <Card id="delincuencia" color="green">
-      <ResponseTitle color="green">
+    <>
+      <ResponseTitle color={color}>
         Porque la segregación aumenta la delincuencia.
       </ResponseTitle>
       <p>
@@ -17,10 +27,10 @@ export function DelincuenciaCard({ setOutline }) {
       </p>
       <br />
       <br />
-      <ContextTitle color="green">
+      <ContextTitle color={color}>
         La malas condiciones de vida en zonas marginadas contribuyen a la falta
         de oportunidades y a la delincuencia.
       </ContextTitle>
-    </Card>
+    </>
   );
 }

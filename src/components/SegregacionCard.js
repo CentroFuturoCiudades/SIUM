@@ -1,9 +1,24 @@
-import { Card, PeripherySpan, ResponseTitle, ContextTitle, SegregacionSpan } from "./Card";
+import { useEffect } from "react";
+import { useCardContext } from "../views/Body";
+import {
+  PeripherySpan,
+  ResponseTitle,
+  ContextTitle,
+  SegregacionSpan,
+} from "./Card";
+import { SEGREGACION_LAYER } from "../utils/constants";
 
-export function SegregacionCard({ setOutline }) {
+export function SegregacionCard({ color, isCurrentSection }) {
+  const { setLayers, setOutline } = useCardContext();
+  useEffect(() => {
+    if (isCurrentSection) {
+      setLayers([SEGREGACION_LAYER]);
+    }
+  }, [isCurrentSection, setLayers]);
+
   return (
-    <Card id="segregacion" color="sage">
-      <ResponseTitle color="sage">
+    <>
+      <ResponseTitle color={color}>
         Aisla a personas con menos recursos de zonas con mayor inversión.
       </ResponseTitle>
       <p>
@@ -17,16 +32,16 @@ export function SegregacionCard({ setOutline }) {
         capital social y más.
       </p>
       <p>
-        Las zonas con mayor <SegregacionSpan setOutline={setOutline}/> se tienden concentrar en las{" "}
-        <PeripherySpan setOutline={setOutline} /> como Juarez, Garcia, Pesquería
-        y Cadereyta.
+        Las zonas con mayor <SegregacionSpan setOutline={setOutline} /> se
+        tienden concentrar en las <PeripherySpan setOutline={setOutline} /> como
+        Juarez, Garcia, Pesquería y Cadereyta.
       </p>
       <br />
       <br />
-      <ContextTitle color="sage">
+      <ContextTitle color={color}>
         La segregación crea zonas marginadas que presentan desafíos en servicios
         públicos y crimen.
       </ContextTitle>
-    </Card>
+    </>
   );
 }

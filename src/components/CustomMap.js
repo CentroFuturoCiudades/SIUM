@@ -2,11 +2,6 @@ import DeckGL from "@deck.gl/react";
 import { ButtonGroup, IconButton } from "@chakra-ui/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { Map } from "react-map-gl";
-import { GeoJsonLayer } from "deck.gl";
-import mapboxgl from "mapbox-gl";
-
-// eslint-disable-next-line import/no-webpack-loader-syntax
-mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
 export const DECK_GL_CONTROLLER = {
   scrollZoom: false,
@@ -24,7 +19,8 @@ export const INITIAL_STATE = {
   bearing: 0,
 };
 
-export function CustomMap({ viewState, setViewState, layers }) {
+export function CustomMap({ layers, viewState, setViewState }) {
+  const filteredLayers = layers ? layers.map((x) => new x.type(x.props)) : [];
   const zoomIn = () => {
     setViewState((v) => ({ ...v, zoom: v.zoom + 1, transitionDuration: 100 }));
   };
@@ -32,13 +28,14 @@ export function CustomMap({ viewState, setViewState, layers }) {
   const zoomOut = () => {
     setViewState((v) => ({ ...v, zoom: v.zoom - 1, transitionDuration: 100 }));
   };
+
   return (
     <>
       <DeckGL
         style={{ position: "relative" }}
         viewState={viewState}
+        layers={filteredLayers}
         onViewStateChange={({ viewState }) => setViewState(viewState)}
-        layers={layers.map((layer) => new GeoJsonLayer(layer))}
         controller={DECK_GL_CONTROLLER}
       >
         <Map

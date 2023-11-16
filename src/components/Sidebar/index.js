@@ -1,44 +1,7 @@
 import { Box, Button, Icon, Tooltip } from "@chakra-ui/react";
-import { MdHome, MdDirectionsCar, MdOutlineAttachMoney } from "react-icons/md";
-import { HiMiniBuildingOffice } from "react-icons/hi2";
-import { GiInjustice, GiRobber } from "react-icons/gi";
-import { FaPeopleArrows } from "react-icons/fa";
 
 import "./index.css";
-
-export const sectionsInfo = {
-  "expansion-urbana": {
-    title: "¿Hacia dónde crecemos?",
-    color: "brown",
-    icon: FaPeopleArrows,
-  },
-  empleo: {
-    title: "¿En dónde trabajamos?",
-    color: "brown2",
-    icon: HiMiniBuildingOffice,
-  },
-  transporte: {
-    title: "¿Cómo nos movemos?",
-    color: "orange",
-    icon: MdDirectionsCar,
-  },
-  vivienda: {
-    title: "¿Por qué nos expandimos?",
-    color: "yellow",
-    icon: MdHome,
-  },
-  segregacion: { title: "¿Qué nos segrega?", color: "sage", icon: GiInjustice },
-  delincuencia: {
-    title: "¿Qué causa inseguridad?",
-    color: "green",
-    icon: GiRobber,
-  },
-  costos: {
-    title: "¿Cuánto cuesta expandirnos?",
-    color: "teal",
-    icon: MdOutlineAttachMoney,
-  },
-};
+import { sectionsInfo } from "../../utils/constants";
 
 export const Sidebar = ({ section, setSection }) => {
   function goToSection(url) {
@@ -53,6 +16,7 @@ export const Sidebar = ({ section, setSection }) => {
       <div className="sidebarContainer">
         {Object.keys(sectionsInfo).map((k) => (
           <Tooltip
+            key={k}
             label={sectionsInfo[k].title}
             hasArrow
             padding="0.5rem"

@@ -1,9 +1,19 @@
-import { Card, ResponseTitle, ContextTitle } from "./Card";
+import { useEffect } from "react";
+import { ResponseTitle, ContextTitle } from "./Card";
+import { COSTOS_LAYER } from "../utils/constants";
+import { useCardContext } from "../views/Body";
 
-export function CostosCard({ setOutline }) {
+export function CostosCard({ color, isCurrentSection }) {
+  const { setLayers } = useCardContext();
+  useEffect(() => {
+    if (isCurrentSection) {
+      setLayers([COSTOS_LAYER]);
+    }
+  }, [isCurrentSection, setLayers]);
+
   return (
-    <Card id="costos" color="teal">
-      <ResponseTitle color="teal">
+    <>
+      <ResponseTitle color={color}>
         Porque hay que llevar servicios públicos cada vez más lejos.
       </ResponseTitle>
       <p>
@@ -17,10 +27,10 @@ export function CostosCard({ setOutline }) {
       </p>
       <br />
       <br />
-      <ContextTitle color="teal">
+      <ContextTitle color={color}>
         La malas condiciones de vida en zonas marginadas contribuyen a la falta
         de oportunidades y a la delincuencia.
       </ContextTitle>
-    </Card>
+    </>
   );
 }
