@@ -1,45 +1,55 @@
+import { Card, Icon } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
-const CardBody = ({ text, color }) => {
+const CardBody = ({ id, question, answer, icon, color }) => {
   const [isFlipped, setIsFlipped] = useState(false);
-
-  const handleCardClick = () => {
-    setIsFlipped(!isFlipped);
-  };
 
   return (
     <div
-      style={{
-        width: "200px",
-        height: "100px",
-        backgroundColor: color,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        cursor: "pointer",
-        transform: isFlipped ? "rotateY(180deg)" : "rotateY(0)",
-        transformStyle: "preserve-3d",
-        transition: "transform 0.5s",
-      }}
-      onClick={handleCardClick}
+      onMouseEnter={() => setIsFlipped(true)}
+      onMouseLeave={() => setIsFlipped(false)}
     >
-      <div
-        style={{
-          transform: isFlipped ? "rotateY(180deg)" : "rotateY(0)",
-          backfaceVisibility: "hidden",
-        }}
-      >
-        <p>{text}</p>
-      </div>
-      <div
-        style={{
-          position: "absolute",
-          transform: "rotateY(180deg)",
-          backfaceVisibility: "hidden",
-        }}
-      >
-        <p>Otro texto</p>
-      </div>
+      <Link to={`/problematica#${id}`}>
+        <Card
+          backgroundColor={color}
+          color="white"
+          borderRadius={20}
+          p="4"
+          style={{
+            width: "200px",
+            height: "200px",
+            display: "flex",
+            justifyContent: "center",
+            cursor: "pointer",
+            transform: isFlipped ? "rotateY(180deg)" : "rotateY(0)",
+            transformStyle: "preserve-3d",
+            transition: "transform 0.7s",
+          }}
+        >
+          <div
+            style={{
+              transform: isFlipped ? "rotateY(180deg)" : "rotateY(0)",
+              backfaceVisibility: "hidden",
+              textAlign: "center",
+            }}
+          >
+            {isFlipped ? (
+              <div>
+                <Icon as={icon} boxSize={10} />
+                <h3>{answer}</h3>
+              </div>
+            ) : (
+              <div>
+                <Icon as={icon} boxSize={10} />
+                <h1 style={{ fontFamily: "Inter", fontSize: "18px" }}>
+                  <b>{question}</b>
+                </h1>
+              </div>
+            )}
+          </div>
+        </Card>
+      </Link>
     </div>
   );
 };

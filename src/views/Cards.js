@@ -1,6 +1,7 @@
-import React from 'react'
-import CardBody from '../components/CardBody';
-import { Link } from 'react-router-dom';
+import React from "react";
+import CardBody from "../components/CardBody";
+import { Link } from "react-router-dom";
+import { sectionsInfo } from "../utils/constants";
 
 const arrowStyle = {
   position: "fixed",
@@ -12,35 +13,44 @@ const arrowStyle = {
 };
 
 const Cards = () => {
-  const cardData = [
-    { text: 'Texto 1', color: 'red' },
-    { text: 'Texto 2', color: 'blue' },
-    { text: 'Texto 3', color: 'green' },
-    { text: 'Texto 4', color: 'orange' },
-    { text: 'Texto 5', color: 'purple' },
-  ];
-
   return (
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',  backgroundColor: "#fff"}}>
-    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#fff",
+      }}
+    >
+      <div
+        style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
+      >
+        {Object.keys(sectionsInfo).map((key) => (
+          <div key={key} style={{ margin: "9vh" }}>
+            <CardBody
+              id={key}
+              icon={sectionsInfo[key].icon}
+              question={sectionsInfo[key].title}
+              answer={sectionsInfo[key].answer}
+              color={`${sectionsInfo[key].color}.500`}
+            />
+          </div>
+        ))}
+      </div>
+      {/* <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
       {cardData.map((card, index) => (
         <div key={index} style={{ margin: '9vh' }}>
           <CardBody text={card.text} color={card.color} />
         </div>
       ))}
-    </div>
-    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-      {cardData.map((card, index) => (
-        <div key={index} style={{ margin: '9vh' }}>
-          <CardBody text={card.text} color={card.color} />
-        </div>
-      ))}
-    </div>
-    <Link to="/problematica">
+    </div> */}
+      <Link to="/problematica">
         <div style={arrowStyle}>&#9654;</div>
       </Link>
-  </div>
+    </div>
   );
-}
+};
 
 export default Cards;

@@ -407,6 +407,7 @@ export const COSTOS_LAYER = {
 export const sectionsInfo = {
   "expansion-urbana": {
     title: "¿Hacia dónde crecemos?",
+    answer: "Hacia las periferias, lejos unos de otros.",
     color: "brown",
     icon: FaPeopleArrows,
     component: ExpansionUrbanaCard,
@@ -414,6 +415,7 @@ export const sectionsInfo = {
   },
   empleo: {
     title: "¿En dónde trabajamos?",
+    answer: "En el centro.",
     color: "brown2",
     icon: HiMiniBuildingOffice,
     component: EmpleoCard,
@@ -421,6 +423,7 @@ export const sectionsInfo = {
   },
   transporte: {
     title: "¿Cómo nos movemos?",
+    answer: "Mayormente en automovil.",
     color: "orange",
     icon: MdDirectionsCar,
     component: TransporteCard,
@@ -428,6 +431,7 @@ export const sectionsInfo = {
   },
   vivienda: {
     title: "¿Por qué nos expandimos?",
+    answer: "La vivienda es más asequible en las periferias.",
     color: "yellow",
     icon: MdHome,
     component: ViviendaCard,
@@ -435,6 +439,7 @@ export const sectionsInfo = {
   },
   segregacion: {
     title: "¿Qué nos segrega?",
+    answer: "Aisla a personas con menos recursos de zonas con mayor inversión.",
     color: "sage",
     icon: GiInjustice,
     component: SegregacionCard,
@@ -442,6 +447,7 @@ export const sectionsInfo = {
   },
   delincuencia: {
     title: "¿Qué causa inseguridad?",
+    answer: "Porque la segregación aumenta la delincuencia.",
     color: "green",
     icon: GiRobber,
     component: DelincuenciaCard,
@@ -449,6 +455,7 @@ export const sectionsInfo = {
   },
   costos: {
     title: "¿Cuánto cuesta expandirnos?",
+    answer: "Porque hay que llevar servicios públicos cada vez más lejos.",
     color: "teal",
     icon: MdOutlineAttachMoney,
     component: CostosCard,
