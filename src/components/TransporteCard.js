@@ -22,6 +22,8 @@ import {
   MASIVE_TRANSPORT_LAYER,
   PRIMARY_ROUTES_LAYER,
 } from "../utils/constants.js";
+import { ArcLayer } from "@deck.gl/layers"; // Agrega esta importación
+
 
 export const CustomBarChart = ({ data }) => (
   <ResponsiveContainer width="100%" height={150}>
@@ -187,7 +189,57 @@ const transformData = (data, time) => {
 
   return { ...data, features: filteredData, transformedData };
 };
+//---------algo nuevo que quiero intentar con los arcos-------------------
+const transformDataForArcsLayer = (data, time) => {
+  if (!data || !data.features) {
+    return [];
+  }
 
+  const arcsData = data.features
+    .filter((feature) => {
+      const horaOri = feature.properties.HoraOri.split(":");
+      const horaDest = feature.properties.HoraDest.split(":");
+      const horaOriNum = parseInt(horaOri[0], 10) * 60 + parseInt(horaOri[1], 10);
+      const horaDestNum = parseInt(horaDest[0], 10) * 60 + parseInt(horaDest[1], 10);
+      const timeInMinutes = time * 10;
+
+      return (
+        (horaOriNum <= timeInMinutes && timeInMinutes <= horaDestNum) ||
+        (horaOriNum >= timeInMinutes && timeInMinutes >= horaDestNum)
+      );
+    })
+    .map((feature) => {
+      const startCoords = feature.geometry.coordinates[0];
+      const endCoords = feature.geometry.coordinates[feature.geometry.coordinates.length - 1];
+
+      const numPoints = 100;
+      const factor = 0.03;
+      const arcPoints = Array.from({ length: numPoints }, (_, i) => {
+        const t = i / (numPoints - 1);
+        const x = startCoords[0] + t * (endCoords[0] - startCoords[0]);
+        const y = startCoords[1] + factor * Math.sin(Math.PI * t);
+
+        return [x, y, 0]; // Supongamos que la altitud es siempre 0 por ahora
+      });
+
+      const coordinates = arcPoints.map(([lon, lat, altitude]) => [
+        lon,
+        lat,
+        altitude,
+      ]);
+
+      return {
+        sourcePosition: coordinates[0],
+        targetPosition: coordinates[coordinates.length - 1],
+      };
+    });
+
+  return arcsData;
+};
+
+
+
+//****************AQUI EMPIEZA TRANSPORTE CARD********************************/
 export function TransporteCard({ color, isCurrentSection }) {
   const { setLayers, setControlsProps, setOutline } = useCardContext();
   const [time, setTime] = useState(0); //el tiempo que filtra los datos
@@ -233,16 +285,33 @@ export function TransporteCard({ color, isCurrentSection }) {
       //     animationSpeed: 1, // Velocidad de la animación
       //   },
       // };
+
+      const arcsLayer = {
+        type: ArcLayer,
+        props: {
+          id: "trips",
+          data: transformDataForArcsLayer(originalData, time),
+          getSourcePosition: (d) => d.sourcePosition,
+          getTargetPosition: (d) => d.targetPosition,
+          getColor: [255, 0, 0, 255],
+          getWidth: 3,
+          currentTime: animationTime,
+          trailLength: 100,
+          // Otros props...
+        },
+      };
+
       setLayers([
         {
-          type: GeoJsonLayer,
+          type: GeoJsonLayer, //aqui puedo cambiar ArcLayer
           props: {
             id: "seccion_transporte_layer",
-            data: filteredData,
+            data: filteredData, //aqui puedo cambiar a filteredDataForArcLayer
             getLineColor: [150, 0, 0, 80],
             getLineWidth: 150,
           },
         },
+        arcsLayer, //y puedo borrar esta
         MASIVE_TRANSPORT_LAYER,
         PRIMARY_ROUTES_LAYER,
       ]);
