@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useCardContext } from "../views/Body";
 import {
   SubcentersSpan,
@@ -9,9 +9,21 @@ import {
   ExpansionSpan,
 } from "./Card";
 import { EMPLEO_LAYER } from "../utils/constants";
+import { Chart } from "./Chart";
 
 export function EmpleoCard({ color, isCurrentSection }) {
   const { setLayers, setOutline } = useCardContext();
+  const [chartData, setChartData] = useState([]);
+
+  useEffect(() => {
+    if (isCurrentSection) {
+      fetch("SIUM/data/empleo_municipality.json")
+        .then((response) => response.json())
+        .then((data) => setChartData(data));
+    } else {
+      setChartData([]);
+    }
+  }, [isCurrentSection]);
   useEffect(() => {
     if (isCurrentSection) {
       setLayers([EMPLEO_LAYER]);
@@ -39,6 +51,13 @@ export function EmpleoCard({ color, isCurrentSection }) {
         La gente migran a la periferia, lejos de oportunidades laborales y con
         menor cobertura de transporte público.
       </ContextTitle>
+      <Chart
+        data={chartData}
+        setOutline={setOutline}
+        column="per_ocu"
+        columnKey="nom_mun"
+        formatter={(d) => `${d.toLocaleString("en-US")} empleos`}
+      />
     </>
   );
 }

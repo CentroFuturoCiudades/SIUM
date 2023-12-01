@@ -22,6 +22,8 @@ import {
   MASIVE_TRANSPORT_LAYER,
   PRIMARY_ROUTES_LAYER,
 } from "../utils/constants.js";
+import { Chart } from "./Chart.js";
+import _ from "lodash";
 
 export const CustomBarChart = ({ data }) => (
   <ResponsiveContainer width="100%" height={150}>
@@ -194,6 +196,20 @@ export function TransporteCard({ color, isCurrentSection }) {
   const [isPlaying, setIsPlaying] = useState(false); //var de estado para manejar el play de la animacion
   const [animationTime, setAnimationTime] = useState(0); //tiempo cambiante de la animacion
   const [originalData, setOriginalData] = useState([]); //datos filtrados
+  const [chartData, setChartData] = useState([]);
+
+  useEffect(() => {
+    if (isCurrentSection) {
+      fetch("SIUM/data/transporte_municipality.json")
+        .then((response) => response.json())
+        .then((data) => {
+          const newData = data.filter((x) => x["Transporte"] === "TPUB" && x["Motivo"] === "Regreso A Casa");
+          setChartData(newData);
+        });
+    } else {
+      setChartData([]);
+    }
+  }, [isCurrentSection]);
 
   useEffect(() => {
     if (isCurrentSection) {
@@ -313,7 +329,14 @@ export function TransporteCard({ color, isCurrentSection }) {
         La expansión urbana aumenta la dependencia del automovil, contribuyendo
         a que el tráfico aumente.
       </ContextTitle>
-      <CustomBarChart data={data.sort((a, b) => a.time - b.time).reverse()} />
+      <Chart
+        data={chartData}
+        setOutline={setOutline}
+        column="TiempoTraslado"
+        columnKey="MunDest"
+        formatter={(d) => `${d.toLocaleString("en-US")} min`}
+        reducer={_.meanBy}
+      />
     </>
   );
 }

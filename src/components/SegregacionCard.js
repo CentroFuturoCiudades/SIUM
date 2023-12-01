@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useCardContext } from "../views/Body";
 import {
   PeripherySpan,
@@ -7,9 +7,21 @@ import {
   SegregacionSpan,
 } from "./Card";
 import { SEGREGACION_LAYER } from "../utils/constants";
+import { Chart } from "./Chart";
 
 export function SegregacionCard({ color, isCurrentSection }) {
   const { setLayers, setOutline } = useCardContext();
+  const [chartData, setChartData] = useState([]);
+
+  useEffect(() => {
+    if (isCurrentSection) {
+      fetch("SIUM/data/income_municipality.json")
+        .then((response) => response.json())
+        .then((data) => setChartData(data));
+    } else {
+      setChartData([]);
+    }
+  }, [isCurrentSection]);
   useEffect(() => {
     if (isCurrentSection) {
       setLayers([SEGREGACION_LAYER]);
@@ -42,6 +54,13 @@ export function SegregacionCard({ color, isCurrentSection }) {
         La segregación crea zonas marginadas que presentan desafíos en servicios
         públicos y crimen.
       </ContextTitle>
+      <Chart
+        data={chartData}
+        setOutline={setOutline}
+        column="income_pc"
+        columnKey="NOM_MUN"
+        formatter={(d) => `$ ${d.toLocaleString("en-US")}`}
+      />
     </>
   );
 }
