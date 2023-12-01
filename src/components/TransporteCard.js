@@ -113,6 +113,8 @@ export const TransporteControls = ({
         <Box
           bgColor="orange.100"
           borderRadius="16px"
+          borderWidth={1}
+          borderColor="orange.200"
           style={{ display: "flex", width: "100%" }}
         >
           <IconButton
