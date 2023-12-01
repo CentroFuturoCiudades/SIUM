@@ -8,6 +8,7 @@ import {
 } from "./Card";
 import { VIVIENDA_LAYER, separateLegendItems } from "../utils/constants";
 import { Legend } from "./Legend";
+import { Chart } from "./Chart";
 
 export const ViviendaControls = () => {
   const [legendItems, setLegendItems] = useState([]);
@@ -42,6 +43,20 @@ export const ViviendaControls = () => {
 
 export function ViviendaCard({ color, isCurrentSection }) {
   const { setLayers, setOutline } = useCardContext();
+  const [chartData, setChartData] = useState([]);
+
+  useEffect(() => {
+    if (isCurrentSection) {
+      fetch("SIUM/data/vivienda_municipality.json")
+        .then((response) => response.json())
+        .then((data) => {
+          const newData = data.filter((x) => x.year === 2019);
+          setChartData(newData);
+        });
+    } else {
+      setChartData([]);
+    }
+  }, [isCurrentSection]);
   useEffect(() => {
     if (isCurrentSection) {
       setLayers([VIVIENDA_LAYER]);
@@ -75,10 +90,17 @@ export function ViviendaCard({ color, isCurrentSection }) {
       </p>
       <br />
       <br />
-      <ContextTitle color={color}>
+      {/* <ContextTitle color={color}>
         Aunque los costos de la vivienda son menores en las periferias, otros
         costos se elevan, aumentando la desigualdad.
-      </ContextTitle>
+      </ContextTitle> */}
+      <Chart
+        data={chartData}
+        setOutline={setOutline}
+        column="IM_PRECIO_VENTA"
+        columnKey="NOMGEO"
+        formatter={(d) => `$${d.toLocaleString("en-US")}`}
+      />
     </>
   );
 }
