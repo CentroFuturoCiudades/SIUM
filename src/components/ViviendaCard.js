@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useCardContext } from "../views/Body";
 import {
   SubcentersSpan,
@@ -7,6 +7,52 @@ import {
   ContextTitle,
 } from "./Card";
 import { VIVIENDA_LAYER } from "../utils/constants";
+import { LEGEND_ITEMS } from "../utils/constants";
+import { colorInterpolate } from "../utils/constants";
+
+export const ViviendaControls = () => {
+  const [legendItems, setLegendItems] = useState([]);
+
+  useEffect(() => {
+    // Carga los datos GeoJSON y actualiza las leyendas
+    fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda-hex.geojson")
+      .then(response => response.json())
+      .then(data => {
+        const features = data.features;
+        const valuesPrecio = features.map(feat => feat.properties["IM_PRECIO_VENTA"]);
+        const minVal = Math.min(...valuesPrecio);
+        const maxVal = Math.max(...valuesPrecio);
+        const range = maxVal - minVal;
+        const breakpoints = [0, 0.2, 0.4, 0.6, 0.8, 1].map(bp => minVal + bp * range);
+
+        const newLegendItems = breakpoints.slice(0, -1).map((breakpoint, index) => {
+          const nextBreakpoint = breakpoints[index + 1];
+          const midpoint = (breakpoint + nextBreakpoint) / 2;
+          const normalizedMidpoint = (midpoint - minVal) / range;
+          const interpolatedColor = colorInterpolate(normalizedMidpoint, "blue", "red", 1);
+          return {
+            color: `rgba(${interpolatedColor.join(',')})`,
+            label: `${breakpoint.toFixed(0)} - ${nextBreakpoint.toFixed(0)}`,
+          };
+        });
+
+        setLegendItems(newLegendItems);
+      })
+      .catch(error => console.error('Error fetching the geojson data: ', error));
+  }, []);
+
+  return (
+    <div className="legend-container">
+      {legendItems.map((item, index) => (
+        <div key={index} className="legend-item">
+          <div className="legend-color" style={{ backgroundColor: item.color }} />
+          <span className="legend-label">{item.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 
 export function ViviendaCard({ color, isCurrentSection }) {
   const { setLayers, setOutline } = useCardContext();
