@@ -17,6 +17,8 @@ import { ViviendaCard } from "../components/ViviendaCard";
 import { SegregacionCard } from "../components/SegregacionCard";
 import { DelincuenciaCard } from "../components/DelincuenciaCard";
 import { CostosCard } from "../components/CostosCard";
+import {BrushingExtension} from '@deck.gl/extensions';
+
 
 function colorInterpolate(normalizedValue, startColor, endColor, opacity = 1) {
   const interpolator = interpolateRgb(startColor, endColor);
@@ -401,6 +403,9 @@ export const COSTOS_LAYER = {
     getLineColor: (d) =>
       colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
     getLineWidth: 30,
+    brushingEnabled: true,
+    brushingRadius: 5000,
+    extensions: [new BrushingExtension()]
   },
 };
 
