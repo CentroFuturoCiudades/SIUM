@@ -6,8 +6,40 @@ import {
   ContextTitle,
   SegregacionSpan,
 } from "./Card";
-import { SEGREGACION_LAYER } from "../utils/constants";
+import { SEGREGACION_LAYER, separateLegendItems } from "../utils/constants";
 import { Chart } from "./Chart";
+import { Legend } from "./Legend";
+
+export const SegregacionControls = () => {
+  const [legendItems, setLegendItems] = useState([]);
+
+  useEffect(() => {
+    fetch(
+      "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income.geojson"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const values = data.features.map(
+          (feat) => feat.properties["income_pc"]
+        );
+        console.log(values);
+        setLegendItems(
+          separateLegendItems(values, 4, "blue", "red", (x) =>
+            x.toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+              maximumFractionDigits: 0,
+            })
+          )
+        );
+      })
+      .catch((error) =>
+        console.error("Error fetching the empleo data: ", error)
+      );
+  }, []);
+
+  return <Legend title="Ingreso" legendItems={legendItems} />;
+};
 
 export function SegregacionCard({ color, isCurrentSection }) {
   const { setLayers, setOutline } = useCardContext();

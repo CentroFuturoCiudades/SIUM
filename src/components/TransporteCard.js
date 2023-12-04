@@ -48,25 +48,6 @@ export const CustomBarChart = ({ data }) => (
   </ResponsiveContainer>
 );
 
-const data = [
-  {
-    municipality: "Monterrey",
-    time: 20,
-  },
-  {
-    municipality: "San Pedro",
-    time: 15,
-  },
-  {
-    municipality: "Juárez",
-    time: 40,
-  },
-  {
-    municipality: "García",
-    time: 50,
-  },
-];
-
 const marks = [
   { value: 0, label: "0:00" },
   { value: 60, label: "1:00" },

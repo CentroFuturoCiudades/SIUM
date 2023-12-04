@@ -14,8 +14,8 @@ import {
 } from "../components/TransporteCard";
 import { EmpleoCard, EmpleoControls } from "../components/EmpleoCard";
 import { ViviendaCard, ViviendaControls } from "../components/ViviendaCard";
-import { SegregacionCard } from "../components/SegregacionCard";
-import { DelincuenciaCard } from "../components/DelincuenciaCard";
+import { SegregacionCard, SegregacionControls } from "../components/SegregacionCard";
+import { DelincuenciaCard, DelincuenciaControls } from "../components/DelincuenciaCard";
 import { CostosCard } from "../components/CostosCard";
 
 export function colorInterpolate(normalizedValue, startColor, endColor, opacity = 1) {
@@ -420,7 +420,8 @@ export function separateLegendItems(data, quartiles, colorStart, colorEnd, filte
     const interpolatedColor = colorInterpolate(normalizedMidpoint, colorStart, colorEnd, 1);
     return {
       color: `rgba(${interpolatedColor.join(',')})`, // Convierte el color a cadena para CSS
-      label: `${filteringFn(breakpoint)} - ${filteringFn(nextBreakpoint)}`, // Formatea la etiqueta
+      item1: filteringFn(breakpoint),
+      item2: filteringFn(breakpoint),
     };
   });
   return newLegendItems;
@@ -465,7 +466,7 @@ export const sectionsInfo = {
     color: "sage",
     icon: GiInjustice,
     component: SegregacionCard,
-    controls: null,
+    controls: SegregacionControls,
   },
   delincuencia: {
     title: "¿Qué causa inseguridad?",
@@ -473,7 +474,7 @@ export const sectionsInfo = {
     color: "green",
     icon: GiRobber,
     component: DelincuenciaCard,
-    controls: null,
+    controls: DelincuenciaControls,
   },
   costos: {
     title: "¿Cuánto cuesta expandirnos?",

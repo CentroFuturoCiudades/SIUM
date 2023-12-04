@@ -1,8 +1,34 @@
 import { useEffect, useState } from "react";
 import { ResponseTitle, ContextTitle } from "./Card";
 import { useCardContext } from "../views/Body";
-import { DELINCUENCIA_LAYER } from "../utils/constants";
+import { DELINCUENCIA_LAYER, separateLegendItems } from "../utils/constants";
 import { Chart } from "./Chart";
+import { Legend } from "./Legend";
+
+export const DelincuenciaControls = () => {
+  const [legendItems, setLegendItems] = useState([]);
+
+  useEffect(() => {
+    fetch(
+      "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const values = data.features.map(
+          (feat) => feat.properties["num_crimen"]
+        );
+        setLegendItems(
+          separateLegendItems(values, 4, "blue", "red")
+        );
+      })
+      .catch((error) =>
+        console.error("Error fetching the empleo data: ", error)
+      );
+  }, []);
+
+  return <Legend title="Crimenes" legendItems={legendItems} />;
+};
+
 
 export function DelincuenciaCard({ color, isCurrentSection }) {
   const { setLayers, setOutline } = useCardContext();
