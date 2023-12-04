@@ -35,3 +35,39 @@ p {
   top: 0rem;
   bottom: 0.5rem;
 }
+
+/* Estilos nuevos para leyendas iniciales */
+
+.legend-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.9); 
+  padding: 5px 10px;
+  box-shadow: 0 2px 8px rgba(50, 50, 50, 0.3); 
+  z-index: 10;
+}
+
+.legend-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.legend-color {
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+}
+
+.legend-label {
+  font-size: 0.75rem;
+  text-align: left;
+  color: #333; /* Color de texto oscuro para mejor legibilidad */
+}

@@ -7,20 +7,19 @@ import { HiMiniBuildingOffice } from "react-icons/hi2";
 import { GiInjustice, GiRobber } from "react-icons/gi";
 import { FaPeopleArrows } from "react-icons/fa";
 
-import { ExpansionUrbanaCard } from "../components/ExpansionUrbanaCard";
+import { ExpansionUrbanaCard, ExpansionUrbanaControls } from "../components/ExpansionUrbanaCard";
 import {
   TransporteCard,
   TransporteControls,
 } from "../components/TransporteCard";
-import { EmpleoCard } from "../components/EmpleoCard";
-import { ViviendaCard } from "../components/ViviendaCard";
-import { SegregacionCard } from "../components/SegregacionCard";
-import { DelincuenciaCard } from "../components/DelincuenciaCard";
+import { EmpleoCard, EmpleoControls } from "../components/EmpleoCard";
+import { ViviendaCard, ViviendaControls } from "../components/ViviendaCard";
+import { SegregacionCard, SegregacionControls } from "../components/SegregacionCard";
+import { DelincuenciaCard, DelincuenciaControls } from "../components/DelincuenciaCard";
 import { CostosCard } from "../components/CostosCard";
-
 import {BrushingExtension} from '@deck.gl/extensions';
 
-function colorInterpolate(normalizedValue, startColor, endColor, opacity = 1) {
+export function colorInterpolate(normalizedValue, startColor, endColor, opacity = 1) {
   const interpolator = interpolateRgb(startColor, endColor);
   const resultColor = rgb(interpolator(normalizedValue));
 
@@ -409,6 +408,29 @@ export const COSTOS_LAYER = {
   },
 };
 
+
+export function separateLegendItems(data, quartiles, colorStart, colorEnd, filtering = null) {
+  const filteringFn = filtering || ((d) => d.toLocaleString('en-US', { maximumFractionDigits: 0 }));
+  const minVal = Math.min(...data);
+  const maxVal = Math.max(...data);
+  // Genera puntos de quiebre basados en el rango de valores normalizados
+  const breakpoints = Array.from({ length: quartiles + 1 }, (_, i) => minVal + i * (maxVal - minVal) / quartiles);
+  const newLegendItems = breakpoints.slice(0, -1).map((breakpoint, index) => {
+    const nextBreakpoint = breakpoints[index + 1];
+    // El punto medio se utiliza para calcular el color de la leyenda
+    const midpoint = (breakpoint + nextBreakpoint) / 2;
+    // Normaliza el punto medio para la interpolación de colores
+    const normalizedMidpoint = (midpoint - minVal) / (maxVal - minVal);
+    const interpolatedColor = colorInterpolate(normalizedMidpoint, colorStart, colorEnd, 1);
+    return {
+      color: `rgba(${interpolatedColor.join(',')})`, // Convierte el color a cadena para CSS
+      item1: filteringFn(breakpoint),
+      item2: filteringFn(breakpoint),
+    };
+  });
+  return newLegendItems;
+}
+
 export const sectionsInfo = {
   "expansion-urbana": {
     title: "¿Hacia dónde crecemos?",
@@ -416,7 +438,7 @@ export const sectionsInfo = {
     color: "brown",
     icon: FaPeopleArrows,
     component: ExpansionUrbanaCard,
-    controls: null,
+    controls: ExpansionUrbanaControls,
   },
   empleo: {
     title: "¿En dónde trabajamos?",
@@ -424,7 +446,7 @@ export const sectionsInfo = {
     color: "brown2",
     icon: HiMiniBuildingOffice,
     component: EmpleoCard,
-    controls: null,
+    controls: EmpleoControls,
   },
   transporte: {
     title: "¿Cómo nos movemos?",
@@ -440,7 +462,7 @@ export const sectionsInfo = {
     color: "yellow",
     icon: MdHome,
     component: ViviendaCard,
-    controls: null,
+    controls: ViviendaControls,
   },
   segregacion: {
     title: "¿Qué nos segrega?",
@@ -448,7 +470,7 @@ export const sectionsInfo = {
     color: "sage",
     icon: GiInjustice,
     component: SegregacionCard,
-    controls: null,
+    controls: SegregacionControls,
   },
   delincuencia: {
     title: "¿Qué causa inseguridad?",
@@ -456,7 +478,7 @@ export const sectionsInfo = {
     color: "green",
     icon: GiRobber,
     component: DelincuenciaCard,
-    controls: null,
+    controls: DelincuenciaControls,
   },
   costos: {
     title: "¿Cuánto cuesta expandirnos?",

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SubcentersSpan,
   PeripherySpan,
@@ -8,10 +8,45 @@ import {
   ExpansionSpan,
 } from "./Card";
 import { useCardContext } from "../views/Body";
-import { EXPANSION_LAYER } from "../utils/constants";
+import { EXPANSION_LAYER, separateLegendItems } from "../utils/constants";
+import "../index.css";
+import { Legend } from "./Legend";
+import { Chart } from "./Chart";
+
+export const ExpansionUrbanaControls = () => {
+  const [legendItems, setLegendItems] = useState([]);
+
+  useEffect(() => {
+    // Carga los datos GeoJSON y actualiza las leyendas
+    fetch(
+      "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob-1990-2020.geojson"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const values = data.features.map((feat) => feat.properties["2020"]);
+        setLegendItems(separateLegendItems(values, 4, "blue", "red"));
+      })
+      .catch((error) =>
+        console.error("Error fetching the geojson data: ", error)
+      );
+  }, []);
+
+  return <Legend title="Cambio Poblacional" legendItems={legendItems} />;
+};
 
 export function ExpansionUrbanaCard({ color, isCurrentSection }) {
   const { setLayers, setOutline } = useCardContext();
+  const [chartData, setChartData] = useState([]);
+
+  useEffect(() => {
+    if (isCurrentSection) {
+      fetch("SIUM/data/expansion_municipality.json")
+        .then((response) => response.json())
+        .then((data) => setChartData(data));
+    } else {
+      setChartData([]);
+    }
+  }, [isCurrentSection]);
   useEffect(() => {
     if (isCurrentSection) {
       setLayers([EXPANSION_LAYER]);
@@ -43,6 +78,13 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
         La migración de subcentros a la periferia, conocido como expansión
         urbana, nos aleja de servicios y empleo.
       </ContextTitle>
+      <Chart
+        data={chartData}
+        setOutline={setOutline}
+        column="2020"
+        columnKey="nom_mun"
+        formatter={(d) => `${d.toLocaleString("en-US")} pob`}
+      />
     </>
   );
 }

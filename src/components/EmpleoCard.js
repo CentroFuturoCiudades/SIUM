@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useCardContext } from "../views/Body";
 import {
   SubcentersSpan,
@@ -8,10 +8,45 @@ import {
   ContextTitle,
   ExpansionSpan,
 } from "./Card";
-import { EMPLEO_LAYER } from "../utils/constants";
+import { EMPLEO_LAYER, separateLegendItems } from "../utils/constants";
+import { Legend } from "./Legend";
+import { Chart } from "./Chart";
+
+export const EmpleoControls = () => {
+  const [legendItems, setLegendItems] = useState([]);
+
+  useEffect(() => {
+    fetch(
+      "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2010_Municipios_Geo2.json"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const valuesEmpleos = data.features.map(
+          (feat) => feat.properties["Empleos"]
+        );
+        setLegendItems(separateLegendItems(valuesEmpleos, 4, "yellow", "red"));
+      })
+      .catch((error) =>
+        console.error("Error fetching the empleo data: ", error)
+      );
+  }, []);
+
+  return <Legend title="Número de Trabajadores" legendItems={legendItems} />;
+};
 
 export function EmpleoCard({ color, isCurrentSection }) {
   const { setLayers, setOutline } = useCardContext();
+  const [chartData, setChartData] = useState([]);
+
+  useEffect(() => {
+    if (isCurrentSection) {
+      fetch("SIUM/data/empleo_municipality.json")
+        .then((response) => response.json())
+        .then((data) => setChartData(data));
+    } else {
+      setChartData([]);
+    }
+  }, [isCurrentSection]);
   useEffect(() => {
     if (isCurrentSection) {
       setLayers([EMPLEO_LAYER]);
@@ -39,6 +74,13 @@ export function EmpleoCard({ color, isCurrentSection }) {
         La gente migran a la periferia, lejos de oportunidades laborales y con
         menor cobertura de transporte público.
       </ContextTitle>
+      <Chart
+        data={chartData}
+        setOutline={setOutline}
+        column="per_ocu"
+        columnKey="nom_mun"
+        formatter={(d) => `${d.toLocaleString("en-US")} empleos`}
+      />
     </>
   );
 }
