@@ -26,6 +26,7 @@ import { TripsLayer } from "@deck.gl/geo-layers";
 import { MdPause, MdPlayArrow } from "react-icons/md";
 import { Chart } from "./Chart.js";
 import _ from "lodash";
+import { TimeComponent } from "./TimeComponent.js";
 
 export const CustomBarChart = ({ data }) => (
   <ResponsiveContainer width="100%" height={150}>
@@ -172,11 +173,13 @@ const transformDataForTrips = (data) => {
 
 export function TransporteCard({ color, isCurrentSection }) {
   const { setLayers, setControlsProps, setOutline } = useCardContext();
-  const [time, setTime] = useState(0); //el tiempo que filtra los datos
-  const [isPlaying, setIsPlaying] = useState(false); //var de estado para manejar el play de la animacion
-  const [animationTime, setAnimationTime] = useState(0); //tiempo cambiante de la animacion
+  //const [time, setTime] = useState(0); //el tiempo que filtra los datos
+  //const [isPlaying, setIsPlaying] = useState(false); //var de estado para manejar el play de la animacion
+  //const [animationTime, setAnimationTime] = useState(0); //tiempo cambiante de la animacion
   const [originalData, setOriginalData] = useState([]); //datos filtrados
   const [chartData, setChartData] = useState([]);
+  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponent(0, 1440, 2);
+
 
   useEffect(() => {
     if (isCurrentSection) {
@@ -205,10 +208,10 @@ export function TransporteCard({ color, isCurrentSection }) {
   useEffect(() => {
     //para la animacion
     if (isCurrentSection && originalData) {
-      const togglePlay = () => {
+      /*const togglePlay = () => {
         setIsPlaying(!isPlaying);
         setAnimationTime(time); //inicia la animación desde la posición actual del slider
-      };
+      };*/
       setControlsProps({ time, togglePlay, isPlaying, handleSliderChange });
 
       const tripsLayer = {
@@ -239,7 +242,7 @@ export function TransporteCard({ color, isCurrentSection }) {
     animationTime,
   ]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     let animationFrame;
 
     const animate = () => {
@@ -260,7 +263,7 @@ export function TransporteCard({ color, isCurrentSection }) {
     console.log("New Time:", newTime); //checar que valor tiene el slider
     setTime(newTime); //actualiza el estado de 'time' con el nuevo valor
     setAnimationTime(newTime);
-  };
+  };*/
 
   return (
     <>
