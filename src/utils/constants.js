@@ -22,7 +22,7 @@ export function colorInterpolate(normalizedValue, startColor, endColor, opacity 
   const interpolator = interpolateRgb(startColor, endColor);
   const resultColor = rgb(interpolator(normalizedValue));
 
-  return [
+  return [ 
     resultColor.r,
     resultColor.g,
     resultColor.b,
@@ -187,19 +187,85 @@ export const SECCION_CRECIMIENTO_LAYER_1990 = {
   },
 };
 
-export const EXPANSION_LAYER = {
+// export const EXPANSION_LAYER = {
+//   type: GeoJsonLayer,
+//   props: {
+//     id: "seccion_crecimiento_layer",
+//     data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob-1990-2020.geojson",
+//     dataTransform: (d) => cleanedGeoData(d.features, "2020"),
+//     getFillColor: (d) =>
+//       colorInterpolate(d.properties.normalized, "blue", "red", 1.5),
+//     getLineColor: (d) =>
+//       colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
+//     getLineWidth: 30,
+//   },
+// };
+
+// export const EXPANSION_LAYER = (setTooltipInfo) => ({
+//   type: GeoJsonLayer,
+//   props: {
+//     // ... (otras propiedades)
+//     id: "seccion_crecimiento_layer",
+//     data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob-1990-2020.geojson",
+//     dataTransform: (d) => cleanedGeoData(d.features, "2020"),
+//     getFillColor: (d) =>
+//       colorInterpolate(d.properties.normalized, "blue", "red", 1.5),
+//     getLineColor: (d) =>
+//       colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
+//     getLineWidth: 30,
+//     pickable: true,
+//     onClick: ({object, x, y}) => {
+//       if (object) {
+//         setTooltipInfo({
+//           isVisible: true,
+//           x: x,
+//           y: y,
+//           text: `Valor de la propiedad 2020: ${object.properties["2020"]}`
+//         });
+//       }
+//     }
+//   },
+// });
+
+export const EXPANSION_LAYER = (setTooltipInfo) => ({
   type: GeoJsonLayer,
   props: {
-    id: "seccion_crecimiento_layer",
-    data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob-1990-2020.geojson",
-    dataTransform: (d) => cleanedGeoData(d.features, "2020"),
-    getFillColor: (d) =>
-      colorInterpolate(d.properties.normalized, "blue", "red", 1.5),
-    getLineColor: (d) =>
-      colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
+    id: 'expansion-layer',
+    data: 'https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob-1990-2020.geojson',
+    dataTransform: (d) => cleanedGeoData(d.features, '2020'),
+    getFillColor: (d) => colorInterpolate(d.properties.normalized, 'blue', 'red', 1.5),
+    getLineColor: (d) => colorInterpolate(d.properties.normalized, 'blue', 'red', 0.5),
     getLineWidth: 30,
+    pickable: true,
+    onClick: ({ object }) => {
+      if (object) {
+        setTooltipInfo({
+          isVisible: true,
+          text: `Valor de la propiedad 2020: ${object.properties['2020']}`,
+          // Nota: Las coordenadas x e y se manejarán con eventos onMouseMove del componente
+        });
+      }
+    },
+    onHover: ({ object, x, y }) => {
+      if (object) {
+        setTooltipInfo({
+          isVisible: true,
+          x, // Coordenada x del ratón
+          y, // Coordenada y del ratón
+          text: `Valor de la propiedad 2020: ${object.properties['2020']}`
+        });
+      } else {
+        setTooltipInfo({
+          isVisible: false,
+          x: 0,
+          y: 0,
+          text: ''
+        });
+      }
+    },
+    // Aquí irían otras propiedades necesarias para tu GeoJsonLayer
   },
-};
+});
 
 export const EMPLEO_LAYER = {
   type: GeoJsonLayer,

@@ -73,3 +73,16 @@ p {
   text-align: left;
   color: #333; /* Color de texto oscuro para mejor legibilidad */
 }
+
+/* Estilos nuevos para tooltip inicial */
+
+.tooltip {
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  pointer-events: none; /* Esto asegurará que el tooltip no interfiera con otros eventos del ratón */
+}
+
