@@ -14,8 +14,8 @@ import {
 } from "../components/TransporteCard";
 import { EmpleoCard, EmpleoControls } from "../components/EmpleoCard";
 import { ViviendaCard, ViviendaControls } from "../components/ViviendaCard";
-import { SegregacionCard } from "../components/SegregacionCard";
-import { DelincuenciaCard } from "../components/DelincuenciaCard";
+import { SegregacionCard, SegregacionControls } from "../components/SegregacionCard";
+import { DelincuenciaCard, DelincuenciaControls } from "../components/DelincuenciaCard";
 import { CostosCard } from "../components/CostosCard";
 
 export function colorInterpolate(normalizedValue, startColor, endColor, opacity = 1) {
@@ -470,27 +470,28 @@ export const COSTOS_LAYER = {
   },
 };
 
-// ----------------------------- PRUEBA 1 LEYENDAS -----------------------------------------------
 
-// Función para generar los colores de la leyenda basada en el degradado 
-function generateLegendColors(interpolateFunc, steps) {
-  return Array.from({ length: steps }, (_, i) => interpolateFunc(i / (steps - 1)));
+export function separateLegendItems(data, quartiles, colorStart, colorEnd, filtering = null) {
+  const filteringFn = filtering || ((d) => d.toLocaleString('en-US', { maximumFractionDigits: 0 }));
+  const minVal = Math.min(...data);
+  const maxVal = Math.max(...data);
+  // Genera puntos de quiebre basados en el rango de valores normalizados
+  const breakpoints = Array.from({ length: quartiles + 1 }, (_, i) => minVal + i * (maxVal - minVal) / quartiles);
+  const newLegendItems = breakpoints.slice(0, -1).map((breakpoint, index) => {
+    const nextBreakpoint = breakpoints[index + 1];
+    // El punto medio se utiliza para calcular el color de la leyenda
+    const midpoint = (breakpoint + nextBreakpoint) / 2;
+    // Normaliza el punto medio para la interpolación de colores
+    const normalizedMidpoint = (midpoint - minVal) / (maxVal - minVal);
+    const interpolatedColor = colorInterpolate(normalizedMidpoint, colorStart, colorEnd, 1);
+    return {
+      color: `rgba(${interpolatedColor.join(',')})`, // Convierte el color a cadena para CSS
+      item1: filteringFn(breakpoint),
+      item2: filteringFn(breakpoint),
+    };
+  });
+  return newLegendItems;
 }
-
-const maxDataValue = 0;
-
-const breakpointsPercentage = [0, 0.2, 0.4, 0.6, 0.8, 1].map(bp => bp * maxDataValue);
-
-export const LEGEND_ITEMS = breakpointsPercentage.slice(0, -1).map((breakpoint, index) => {
-  const nextBreakpoint = breakpointsPercentage[index + 1];
-  const color = colorInterpolate((breakpoint + nextBreakpoint) / 2 / maxDataValue, "blue", "red", 1);
-  return {
-    color: `rgba(${color.join(',')})`,
-    label: `${breakpoint.toFixed(0)} - ${nextBreakpoint.toFixed(0)}`,
-  };
-});
-
-// ---------------------------------------------------------------------------------------------
 
 export const sectionsInfo = {
   "expansion-urbana": {
@@ -531,7 +532,7 @@ export const sectionsInfo = {
     color: "sage",
     icon: GiInjustice,
     component: SegregacionCard,
-    controls: null,
+    controls: SegregacionControls,
   },
   delincuencia: {
     title: "¿Qué causa inseguridad?",
@@ -539,7 +540,7 @@ export const sectionsInfo = {
     color: "green",
     icon: GiRobber,
     component: DelincuenciaCard,
-    controls: null,
+    controls: DelincuenciaControls,
   },
   costos: {
     title: "¿Cuánto cuesta expandirnos?",
