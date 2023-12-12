@@ -18,6 +18,7 @@ import { SegregacionCard, SegregacionControls } from "../components/SegregacionC
 import { DelincuenciaCard, DelincuenciaControls } from "../components/DelincuenciaCard";
 import { CostosCard } from "../components/CostosCard";
 
+
 export function colorInterpolate(normalizedValue, startColor, endColor, opacity = 1) {
   const interpolator = interpolateRgb(startColor, endColor);
   const resultColor = rgb(interpolator(normalizedValue));
@@ -56,6 +57,7 @@ export const cleanedGeoData = (data, column, reversed = false) => {
       };
     });
 };
+
 
 export const PERIPHERIES = [
   "Juárez",

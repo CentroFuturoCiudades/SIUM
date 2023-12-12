@@ -1,4 +1,91 @@
 import { useState, useEffect, useRef } from 'react';
+import {
+  Box,
+  IconButton,
+  Slider,
+  SliderFilledTrack,
+  SliderMark,
+  SliderThumb,
+  SliderTrack,
+} from "@chakra-ui/react";
+import { MdPause, MdPlayArrow } from "react-icons/md";
+import _ from "lodash";
+import { Legend } from "./Legend";
+
+export function SliderHTML({time,
+  min,
+  max,
+  step,
+  title,
+  togglePlay,
+  isPlaying,
+  handleSliderChange,
+  marks,
+  legendItems,
+})
+{
+  return (
+    <>
+    <div>
+    <Legend title={title} legendItems={legendItems} />
+    </div>
+      <div
+        style={{
+          position: "absolute",
+          bottom: 25,
+          left: 0,
+          width: "100%",
+          padding: "0 20px",
+        }}
+      >
+        <Box
+          bgColor="orange.100"
+          borderRadius="16px"
+          borderWidth={1}
+          borderColor="orange.200"
+          style={{ display: "flex", width: "100%" }}
+        >
+          <IconButton
+            colorScheme="orange"
+            isRound={true}
+            onClick={togglePlay}
+            size="xs"
+            icon={isPlaying ? <MdPause /> : <MdPlayArrow />}
+          />
+          <Slider
+            aria-label="slider-ex-1"
+            id="slider"
+            defaultValue={min}
+            min={min}
+            step={step}
+            max={max}
+            value={time}
+            onChange={(value) => handleSliderChange(value)}
+            mr="4"
+            ml="3"
+          >
+            {marks.map(({ value, label }) => (
+              <SliderMark
+                key={value}
+                value={value}
+                textAlign="center"
+                mt="5"
+                ml="-3"
+                fontSize="xs"
+              >
+                {label}
+              </SliderMark>
+            ))}
+            <SliderTrack bg="orange.200">
+              <SliderFilledTrack bg="orange.500" />
+            </SliderTrack>
+            <SliderThumb boxSize={3} bgColor="orange.600" />
+          </Slider>
+        </Box>
+      </div>
+    </>
+  );
+}
 
 export function TimeComponent (startTime, endTime, step)
 {
@@ -12,7 +99,7 @@ export function TimeComponent (startTime, endTime, step)
         const animate = () => {
         //setTime((prevTime) => (prevTime + 2) % 2023);
         //setTime((prevTime) => (prevTime + 1) % (2023) + 1990);
-        setTime((prevTime) => (prevTime + step) % (endTime - startTime) + startTime);
+        setTime((prevTime) => (prevTime + step) % ((endTime - startTime)) + startTime);
         setAnimationTime(time); // Actualizar animationTime con el valor actualizado de time
 
         console.log(time);

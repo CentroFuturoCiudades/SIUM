@@ -173,10 +173,7 @@ const transformDataForTrips = (data) => {
 
 export function TransporteCard({ color, isCurrentSection }) {
   const { setLayers, setControlsProps, setOutline } = useCardContext();
-  //const [time, setTime] = useState(0); //el tiempo que filtra los datos
-  //const [isPlaying, setIsPlaying] = useState(false); //var de estado para manejar el play de la animacion
-  //const [animationTime, setAnimationTime] = useState(0); //tiempo cambiante de la animacion
-  const [originalData, setOriginalData] = useState([]); //datos filtrados
+  const [originalData, setOriginalData] = useState([]); 
   const [chartData, setChartData] = useState([]);
   const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponent(0, 1440, 2);
 
