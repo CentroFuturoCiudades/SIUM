@@ -15,6 +15,7 @@ import { render } from "react-dom";
 import { Legend } from "./Legend";
 import { Chart } from "./Chart";
 
+
 export const ExpansionUrbanaControls = () => {
   const [legendItems, setLegendItems] = useState([]);
 
@@ -57,11 +58,14 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
   }, [isCurrentSection, setLayers]);
 
   const handleMouseMove = (event) => {
+    // Coordenadas del mouse con respecto al viewport
+    const { clientX, clientY } = event;
+  
     if (tooltipInfo.isVisible) {
       setTooltipInfo({
         ...tooltipInfo,
-        x: event.clientX,
-        y: event.clientY,
+        x: clientX,
+        y: clientY,
       });
     }
   };
@@ -76,13 +80,12 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
         position: 'absolute',
         zIndex: 1,
         pointerEvents: 'none',
-        left: tooltipInfo.x,
-        top: tooltipInfo.y,
+        left: `${tooltipInfo.x}px`,
+        top: `${tooltipInfo.y}px`,
         backgroundColor: 'white',
         padding: '10px',
         border: '1px solid black',
         borderRadius: '3px',
-        transform: 'translate(-50%, -100%)', // Ajusta la posición del tooltip
         whiteSpace: 'nowrap',
       };
 

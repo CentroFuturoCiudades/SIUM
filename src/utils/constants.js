@@ -14,8 +14,8 @@ import {
 } from "../components/TransporteCard";
 import { EmpleoCard, EmpleoControls } from "../components/EmpleoCard";
 import { ViviendaCard, ViviendaControls } from "../components/ViviendaCard";
-import { SegregacionCard, SegregacionControls } from "../components/SegregacionCard";
-import { DelincuenciaCard, DelincuenciaControls } from "../components/DelincuenciaCard";
+import { SegregacionCard } from "../components/SegregacionCard";
+import { DelincuenciaCard } from "../components/DelincuenciaCard";
 import { CostosCard } from "../components/CostosCard";
 
 export function colorInterpolate(normalizedValue, startColor, endColor, opacity = 1) {
@@ -263,7 +263,6 @@ export const EXPANSION_LAYER = (setTooltipInfo) => ({
         });
       }
     },
-    // Aquí irían otras propiedades necesarias para tu GeoJsonLayer
   },
 });
 
@@ -470,6 +469,27 @@ export const COSTOS_LAYER = {
   },
 };
 
+// ----------------------------- PRUEBA 1 LEYENDAS -----------------------------------------------
+
+// Función para generar los colores de la leyenda basada en el degradado 
+function generateLegendColors(interpolateFunc, steps) {
+  return Array.from({ length: steps }, (_, i) => interpolateFunc(i / (steps - 1)));
+}
+
+const maxDataValue = 0;
+
+const breakpointsPercentage = [0, 0.2, 0.4, 0.6, 0.8, 1].map(bp => bp * maxDataValue);
+
+export const LEGEND_ITEMS = breakpointsPercentage.slice(0, -1).map((breakpoint, index) => {
+  const nextBreakpoint = breakpointsPercentage[index + 1];
+  const color = colorInterpolate((breakpoint + nextBreakpoint) / 2 / maxDataValue, "blue", "red", 1);
+  return {
+    color: `rgba(${color.join(',')})`,
+    label: `${breakpoint.toFixed(0)} - ${nextBreakpoint.toFixed(0)}`,
+  };
+});
+
+// ---------------------------------------------------------------------------------------------
 
 export function separateLegendItems(data, quartiles, colorStart, colorEnd, filtering = null) {
   const filteringFn = filtering || ((d) => d.toLocaleString('en-US', { maximumFractionDigits: 0 }));
@@ -532,7 +552,7 @@ export const sectionsInfo = {
     color: "sage",
     icon: GiInjustice,
     component: SegregacionCard,
-    controls: SegregacionControls,
+    controls: null,
   },
   delincuencia: {
     title: "¿Qué causa inseguridad?",
@@ -540,7 +560,7 @@ export const sectionsInfo = {
     color: "green",
     icon: GiRobber,
     component: DelincuenciaCard,
-    controls: DelincuenciaControls,
+    controls: null,
   },
   costos: {
     title: "¿Cuánto cuesta expandirnos?",
