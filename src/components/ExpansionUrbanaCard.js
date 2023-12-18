@@ -8,12 +8,26 @@ import {
   ExpansionSpan,
 } from "./Card";
 import { useCardContext } from "../views/Body";
-import { EXPANSION_LAYER, separateLegendItems } from "../utils/constants";
+import { separateLegendItems, filterDataAll } from "../utils/constants";
 import "../index.css";
-import { Legend } from "./Legend";
 import { Chart } from "./Chart";
+import _ from "lodash";
+import { GeoJsonLayer } from "@deck.gl/layers";
+import { SliderHTML, TimeComponentClean } from "./TimeComponent";
+import { colorInterpolate } from "../utils/constants";
 
-export const ExpansionUrbanaControls = () => {
+const marks = [
+  { value: 1990, label: "1990" },
+  { value: 2000, label: "2000" },
+  { value: 2010, label: "2010" },
+  { value: 2020, label: "2020" },
+];
+
+export const ExpansionUrbanaControls = ({time,
+  togglePlay,
+  isPlaying,
+  handleSliderChange,
+}) => {
   const [legendItems, setLegendItems] = useState([]);
 
   useEffect(() => {
@@ -31,12 +45,28 @@ export const ExpansionUrbanaControls = () => {
       );
   }, []);
 
-  return <Legend title="Cambio Poblacional" legendItems={legendItems} />;
+  return (
+    <SliderHTML
+      time={time}
+      min={1990}
+      max={2020}
+      step={10}
+      title={"Cambio Poblacional"}
+      togglePlay={togglePlay}
+      isPlaying={isPlaying}
+      handleSliderChange={handleSliderChange}
+      marks={marks}
+      legendItems={legendItems}
+    />
+  );
 };
 
 export function ExpansionUrbanaCard({ color, isCurrentSection }) {
-  const { setLayers, setOutline } = useCardContext();
+  const { setLayers, setOutline, setControlsProps } = useCardContext();
   const [chartData, setChartData] = useState([]);
+  const [originalData, setOriginalData] = useState([]);
+  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(1990, 2020, 10, 3000, false);
+
 
   useEffect(() => {
     if (isCurrentSection) {
@@ -47,11 +77,48 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
       setChartData([]);
     }
   }, [isCurrentSection]);
+
   useEffect(() => {
     if (isCurrentSection) {
-      setLayers([EXPANSION_LAYER]);
+      console.log("Se llamaron a los datos de expansion")
+      fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/expansion.geojson")
+        .then((response) => response.json())
+        .then((data) => setOriginalData(data))
+        .catch((error) => console.error("Error cargando el GeoJSON:", error));
+    } else {
+      setOriginalData(null);
     }
-  }, [isCurrentSection, setLayers]);
+  }, [isCurrentSection]);
+
+
+  useEffect(() => {
+    if (isCurrentSection && originalData) {
+
+      setControlsProps({ time, togglePlay, isPlaying, handleSliderChange });
+
+      const expansionLayer = {
+        type: GeoJsonLayer,
+        props: {
+          id: "seccion_expansion_layer",
+          data: filterDataAll(originalData, time, "population_change", true, "year"),
+          getFillColor: (d) =>
+            colorInterpolate(d.properties.normalized, "blue", "red", 1),
+          getLineColor: (d) =>
+            colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
+          getLineWidth: 10,
+        },
+      };
+      setLayers([expansionLayer]);
+    }
+  }, [
+    isCurrentSection,
+    originalData,
+    setLayers,
+    setControlsProps,
+    isPlaying,
+    time,
+    animationTime,
+  ]);
 
   return (
     <>
