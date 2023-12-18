@@ -87,7 +87,7 @@ export function SliderHTML({time,
   );
 }
 
-export function TimeComponent (startTime, endTime, step)
+/*export function TimeComponent (startTime, endTime, step)
 {
     const [time, setTime] = useState(startTime);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -174,7 +174,7 @@ export function TimeComponentNew(startTime, endTime, step, frameInterval) {
 
   return { time, isPlaying, animationTime, handleSliderChange, togglePlay };
 }
-
+*/
 
 export function TimeComponentClean(startTime, endTime, step, frameInterval=0, animationType) {
   const [time, setTime] = useState(startTime);
