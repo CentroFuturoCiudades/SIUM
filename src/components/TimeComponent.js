@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect} from 'react';
 import {
   Box,
   IconButton,
@@ -87,6 +87,8 @@ export function SliderHTML({time,
   );
 }
 
+//dejo la funcion de TimeComponent comentada por cualquier cosa que se ofrezca o por si hay conflicto con otros cambios
+//pero ya se maneja con la de TimeComponentClean
 /*export function TimeComponent (startTime, endTime, step)
 {
     const [time, setTime] = useState(startTime);
@@ -126,55 +128,7 @@ export function SliderHTML({time,
       };
 
       return { time, isPlaying, animationTime, handleSliderChange, togglePlay };
-}
-
-
-export function TimeComponentNew(startTime, endTime, step, frameInterval) {
-  const [time, setTime] = useState(startTime);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [animationTime, setAnimationTime] = useState(startTime);
-  let animationTimeout;
-
-  useEffect(() => {
-    const animate = () => {
-      setTime((prevTime) => {
-        const nextTime = prevTime + step;
-        return nextTime > endTime ? startTime : nextTime;
-      });
-
-      setAnimationTime(time);
-      console.log("Time con lo nuevo que va al reves", time);
-
-      if (isPlaying) {
-        animationTimeout = setTimeout(() => {
-          requestAnimationFrame(animate);
-        }, frameInterval);
-      }
-    };
-
-    if (isPlaying) {
-      animate();
-    }
-
-    return () => {
-      clearTimeout(animationTimeout);
-    };
-  }, [isPlaying, startTime, endTime, step, frameInterval]);
-
-  const handleSliderChange = (newTime) => {
-    console.log("New Time del nuevo componente:", newTime);
-    setTime(newTime);
-    setAnimationTime(newTime);
-  };
-
-  const togglePlay = () => {
-    setIsPlaying(!isPlaying);
-    setAnimationTime(time);
-  };
-
-  return { time, isPlaying, animationTime, handleSliderChange, togglePlay };
-}
-*/
+}*/
 
 export function TimeComponentClean(startTime, endTime, step, frameInterval=0, animationType) {
   const [time, setTime] = useState(startTime);
@@ -185,13 +139,13 @@ export function TimeComponentClean(startTime, endTime, step, frameInterval=0, an
     let animationFrame;
     let animationTimeout;
   
-    const animateFluid = () => {
+    const animateFluid = () => {  //para animar fluido con requestAnimationFrame
       setTime((prevTime) => Math.round((prevTime + step) % ((endTime - startTime)) + startTime));
       setAnimationTime(time);
       animationFrame = requestAnimationFrame(animateFluid);
     };
   
-    const animateWithFrames = () => {
+    const animateWithFrames = () => { //para animar cada cierto tiempo con frames con setTimeout
       setTime((prevTime) => {
         const nextTime = prevTime + step;
         return nextTime > endTime ? startTime : nextTime;
@@ -203,7 +157,7 @@ export function TimeComponentClean(startTime, endTime, step, frameInterval=0, an
     };
   
     if (isPlaying) {
-      animationType ? animateFluid() : animateWithFrames();
+      animationType ? animateFluid() : animateWithFrames(); //checa cual
     } else {
       cancelAnimationFrame(animationFrame);
       clearTimeout(animationTimeout);

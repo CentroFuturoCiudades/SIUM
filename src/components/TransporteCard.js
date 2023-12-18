@@ -16,7 +16,7 @@ import {
 import { TripsLayer } from "@deck.gl/geo-layers";
 import { Chart } from "./Chart.js";
 import _ from "lodash";
-import { TimeComponent, SliderHTML, TimeComponentClean } from "./TimeComponent.js";
+import { SliderHTML, TimeComponentClean } from "./TimeComponent.js";
 
 export const CustomBarChart = ({ data }) => (
   <ResponsiveContainer width="100%" height={150}>
@@ -121,7 +121,6 @@ export function TransporteCard({ color, isCurrentSection }) {
   const { setLayers, setControlsProps, setOutline } = useCardContext();
   const [originalData, setOriginalData] = useState([]); 
   const [chartData, setChartData] = useState([]);
-  //const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponent(0, 1440, 2);
   const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(0, 1440, 2, true);
 
 

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { ResponseTitle, ContextTitle } from "./Card";
 import { useCardContext } from "../views/Body";
-import { DELINCUENCIA_LAYER, separateLegendItems, filterDataAll } from "../utils/constants";
+import { separateLegendItems, filterDataAll } from "../utils/constants";
 import { Chart } from "./Chart";
 import _ from "lodash";
 import { GeoJsonLayer } from "@deck.gl/layers";
-import { TimeComponent, SliderHTML, TimeComponentNew, TimeComponentClean} from "./TimeComponent";
-import { colorInterpolate, addNormalized } from "../utils/constants";
+import { SliderHTML, TimeComponentClean} from "./TimeComponent";
+import { colorInterpolate } from "../utils/constants";
 
 const marks = [
   { value: 2017, label: "2017" },
@@ -63,7 +63,7 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
   const { setLayers, setOutline, setControlsProps } = useCardContext();
   const [chartData, setChartData] = useState([]);
   const [originalData, setOriginalData] = useState([]); 
-  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(2017, 2020, 1, 5000, false);
+  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(2017, 2020, 1, 3000, false);
 
 
   //los datos que se leen para los charts
@@ -82,11 +82,6 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
     }
   }, [isCurrentSection]);
 
-  /*useEffect(() => {
-    if (isCurrentSection) {
-      setLayers([DELINCUENCIA_LAYER]);
-    }
-  }, [isCurrentSection, setLayers]);*/
 
   useEffect(() => {
     if (isCurrentSection) {
@@ -100,43 +95,8 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
     }
   }, [isCurrentSection]);
 
-  /*const transformDataCrimen = (data, selectedYear, column, reversed = false) => {
-    if (!data || !data.features || !Array.isArray(data.features)) {
-      return [];
-    }
-
-    const toNormalize = addNormalized(
-      data.features.map((x) => x.properties),
-      column
-    );
-  
-    const filteredData = data.features
-      .filter((feature) => feature[column] !== 0 && feature.properties.year === selectedYear)
-      .map((feature) => {
-        const coordinates = feature.geometry.coordinates[0]; // Obtener las coordenadas del primer anillo del polígono
-        return {
-          ...feature,
-          properties: {
-            ...feature.properties,
-            normalized: reversed
-              ? 1 - toNormalize(feature.properties)
-              : toNormalize(feature.properties),
-          },
-          geometry: {
-            type: "Polygon",
-            coordinates: [coordinates], // Conservar solo el primer anillo
-          },
-        };
-      });
-  
-    return filteredData
-  };*/
-
- // const answer = filterDataAll(originalData, )
-
 
   useEffect(() => {
-    //para la animacion
     if (isCurrentSection && originalData) {
 
       setControlsProps({ time, togglePlay, isPlaying, handleSliderChange });
@@ -145,7 +105,6 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
         type: GeoJsonLayer,
         props: {
           id: "seccion_crimen_layer",
-          //data: transformDataCrimen(originalData, time, "num_crimen"),
           data: filterDataAll(originalData, time, "num_crimen", false, "year"),
           getFillColor: (d) =>
             colorInterpolate(d.properties.normalized, "blue", "red", 1),

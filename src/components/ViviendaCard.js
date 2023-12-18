@@ -6,12 +6,12 @@ import {
   ResponseTitle,
   ContextTitle,
 } from "./Card";
-import { VIVIENDA_LAYER, separateLegendItems, filterDataAll } from "../utils/constants";
+import { separateLegendItems, filterDataAll } from "../utils/constants";
 import { Chart } from "./Chart";
 import _ from "lodash";
 import { GeoJsonLayer } from "@deck.gl/layers";
-import { TimeComponent, SliderHTML, TimeComponentClean } from "./TimeComponent";
-import { colorInterpolate, addNormalized } from "../utils/constants";
+import { SliderHTML, TimeComponentClean } from "./TimeComponent";
+import { colorInterpolate } from "../utils/constants";
 
 
 const marks = [
@@ -73,14 +73,13 @@ export const ViviendaControls = ({time,
 };
 
 
-//***************************************************************** */
+
 export function ViviendaCard({ color, isCurrentSection }) {
   const { setLayers, setOutline, setControlsProps} = useCardContext();
   const [chartData, setChartData] = useState([]);
   const [originalData, setOriginalData] = useState([]); //datos filtrados
   const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(1990, 2020, 5, 3000, false);
 
-  
 
   useEffect(() => { //esto lee para las bar charts
     if (isCurrentSection) {
@@ -108,48 +107,9 @@ export function ViviendaCard({ color, isCurrentSection }) {
       setOriginalData(null);
     }
   }, [isCurrentSection]);
-
-  /*useEffect(() => { //pone la vivienda layer
-    if (isCurrentSection) {
-      setLayers([VIVIENDA_LAYER]);
-    }
-  }, [isCurrentSection, setLayers]);*/
-
-  const transformDataVivienda = (data, selectedYear, column, reversed = false) => {
-    if (!data || !data.features || !Array.isArray(data.features)) {
-      return [];
-    }
-
-    const toNormalize = addNormalized(
-      data.features.map((x) => x.properties),
-      column
-    );
-  
-    const filteredData = data.features
-      .filter((feature) => feature[column] !== 0 && feature.properties.year_end === selectedYear)
-      .map((feature) => {
-        const coordinates = feature.geometry.coordinates[0]; // Obtener las coordenadas del primer anillo del polígono
-        return {
-          ...feature,
-          properties: {
-            ...feature.properties,
-            normalized: reversed
-              ? 1 - toNormalize(feature.properties)
-              : toNormalize(feature.properties),
-          },
-          geometry: {
-            type: "Polygon",
-            coordinates: [coordinates], // Conservar solo el primer anillo
-          },
-        };
-      });
-  
-    return filteredData
-  };
   
 
   useEffect(() => {
-    //para la animacion
     if (isCurrentSection && originalData) {
 
       setControlsProps({ time, togglePlay, isPlaying, handleSliderChange });
@@ -158,7 +118,6 @@ export function ViviendaCard({ color, isCurrentSection }) {
         type: GeoJsonLayer,
         props: {
           id: "seccion_vivienda_layer",
-          //data: transformDataVivienda(originalData, time, "IM_PRECIO_VENTA", true),
           data: filterDataAll(originalData, time, "IM_PRECIO_VENTA", true, "year_end"),
           getFillColor: (d) =>
             colorInterpolate(d.properties.normalized, "blue", "red", 1),
@@ -178,20 +137,7 @@ export function ViviendaCard({ color, isCurrentSection }) {
     isPlaying,
     time,
     animationTime,
-    handleSliderChange,
-    togglePlay,
   ]);
-
-  /*
-    const animate = () => {
-      //setTime((prevTime) => (prevTime + 2) % 2023);
-      //setTime((prevTime) => (prevTime + 1) % (2023) + 1990);
-      setTime((prevTime) => (prevTime + 15) % (2020 - 1990) + 1990);
-      console.log(time);
-      animationFrame = requestAnimationFrame(animate);
-    };*/
-
-
 
   return (
     <>

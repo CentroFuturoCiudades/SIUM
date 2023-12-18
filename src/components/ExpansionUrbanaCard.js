@@ -8,13 +8,13 @@ import {
   ExpansionSpan,
 } from "./Card";
 import { useCardContext } from "../views/Body";
-import { EXPANSION_LAYER, separateLegendItems, filterDataAll } from "../utils/constants";
+import { separateLegendItems, filterDataAll } from "../utils/constants";
 import "../index.css";
 import { Chart } from "./Chart";
 import _ from "lodash";
 import { GeoJsonLayer } from "@deck.gl/layers";
-import { TimeComponent, SliderHTML, TimeComponentNew, TimeComponentClean } from "./TimeComponent";
-import { colorInterpolate, addNormalized } from "../utils/constants";
+import { SliderHTML, TimeComponentClean } from "./TimeComponent";
+import { colorInterpolate } from "../utils/constants";
 
 const marks = [
   { value: 1990, label: "1990" },
@@ -65,7 +65,7 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
   const { setLayers, setOutline, setControlsProps } = useCardContext();
   const [chartData, setChartData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
-  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(1990, 2020, 10, 5000, false);
+  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(1990, 2020, 10, 3000, false);
 
 
   useEffect(() => {
@@ -90,46 +90,8 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
     }
   }, [isCurrentSection]);
 
-  /*useEffect(() => {
-    if (isCurrentSection) {
-      setLayers([EXPANSION_LAYER]);
-    }
-  }, [isCurrentSection, setLayers]);*/
-
-  const transformDataExpansion = (data, selectedYear, column, reversed = false) => {
-    if (!data || !data.features || !Array.isArray(data.features)) {
-      return [];
-    }
-
-    const toNormalize = addNormalized(
-      data.features.map((x) => x.properties),
-      column
-    );
-  
-    const filteredData = data.features
-      .filter((feature) => feature[column] !== 0 && parseInt(feature.properties.year) === selectedYear)
-      .map((feature) => {
-        const coordinates = feature.geometry.coordinates[0]; // Obtener las coordenadas del primer anillo del polígono
-        return {
-          ...feature,
-          properties: {
-            ...feature.properties,
-            normalized: reversed
-              ? 1 - toNormalize(feature.properties)
-              : toNormalize(feature.properties),
-          },
-          geometry: {
-            type: "Polygon",
-            coordinates: [coordinates], // Conservar solo el primer anillo
-          },
-        };
-      });
-    
-    return filteredData
-  };
 
   useEffect(() => {
-    //para la animacion
     if (isCurrentSection && originalData) {
 
       setControlsProps({ time, togglePlay, isPlaying, handleSliderChange });
@@ -138,7 +100,6 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
         type: GeoJsonLayer,
         props: {
           id: "seccion_expansion_layer",
-          //data: transformDataExpansion(originalData, time, "population_change", true),
           data: filterDataAll(originalData, time, "population_change", true, "year"),
           getFillColor: (d) =>
             colorInterpolate(d.properties.normalized, "blue", "red", 1),
@@ -147,7 +108,6 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
           getLineWidth: 10,
         },
       };
-
       setLayers([expansionLayer]);
     }
   }, [
