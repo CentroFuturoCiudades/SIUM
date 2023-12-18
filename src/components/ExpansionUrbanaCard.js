@@ -8,12 +8,12 @@ import {
   ExpansionSpan,
 } from "./Card";
 import { useCardContext } from "../views/Body";
-import { EXPANSION_LAYER, separateLegendItems } from "../utils/constants";
+import { EXPANSION_LAYER, separateLegendItems, filterDataAll } from "../utils/constants";
 import "../index.css";
 import { Chart } from "./Chart";
 import _ from "lodash";
 import { GeoJsonLayer } from "@deck.gl/layers";
-import { TimeComponent, SliderHTML } from "./TimeComponent";
+import { TimeComponent, SliderHTML, TimeComponentNew, TimeComponentClean } from "./TimeComponent";
 import { colorInterpolate, addNormalized } from "../utils/constants";
 
 const marks = [
@@ -65,7 +65,8 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
   const { setLayers, setOutline, setControlsProps } = useCardContext();
   const [chartData, setChartData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
-  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponent(1990, 2020, 1);
+  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(1990, 2020, 10, 5000, false);
+
 
   useEffect(() => {
     if (isCurrentSection) {
@@ -124,7 +125,6 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
         };
       });
     
-    console.log('filteredData:', filteredData);
     return filteredData
   };
 
@@ -138,7 +138,8 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
         type: GeoJsonLayer,
         props: {
           id: "seccion_expansion_layer",
-          data: transformDataExpansion(originalData, time, "population_change", true),
+          //data: transformDataExpansion(originalData, time, "population_change", true),
+          data: filterDataAll(originalData, time, "population_change", true, "year"),
           getFillColor: (d) =>
             colorInterpolate(d.properties.normalized, "blue", "red", 1),
           getLineColor: (d) =>

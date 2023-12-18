@@ -16,12 +16,12 @@ export function SliderHTML({time,
   min,
   max,
   step,
-  title,
+  title = "Default Title",
   togglePlay,
   isPlaying,
   handleSliderChange,
   marks,
-  legendItems,
+  legendItems = [],
 })
 {
   return (
@@ -92,18 +92,16 @@ export function TimeComponent (startTime, endTime, step)
     const [time, setTime] = useState(startTime);
     const [isPlaying, setIsPlaying] = useState(false);
     const [animationTime, setAnimationTime] = useState(startTime);
-    //const animationFrameRef = useRef();
 
     useEffect(() => {
         let animationFrame;
         const animate = () => {
-        //setTime((prevTime) => (prevTime + 2) % 2023);
-        //setTime((prevTime) => (prevTime + 1) % (2023) + 1990);
-        setTime((prevTime) => (prevTime + step) % ((endTime - startTime)) + startTime);
-        setAnimationTime(time); // Actualizar animationTime con el valor actualizado de time
+          setTime((prevTime) => Math.round((prevTime + step) % ((endTime - startTime)) + startTime));
+          setAnimationTime(time); // Actualizar animationTime con el valor actualizado de time
 
-        console.log(time);
-        animationFrame = requestAnimationFrame(animate);
+          console.log("Time con round", time);
+          animationFrame = requestAnimationFrame(animate);
+
         };
 
         if (isPlaying) {
@@ -128,5 +126,107 @@ export function TimeComponent (startTime, endTime, step)
       };
 
       return { time, isPlaying, animationTime, handleSliderChange, togglePlay };
+}
 
+
+export function TimeComponentNew(startTime, endTime, step, frameInterval) {
+  const [time, setTime] = useState(startTime);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [animationTime, setAnimationTime] = useState(startTime);
+  let animationTimeout;
+
+  useEffect(() => {
+    const animate = () => {
+      setTime((prevTime) => {
+        const nextTime = prevTime + step;
+        return nextTime > endTime ? startTime : nextTime;
+      });
+
+      setAnimationTime(time);
+      console.log("Time con lo nuevo que va al reves", time);
+
+      if (isPlaying) {
+        animationTimeout = setTimeout(() => {
+          requestAnimationFrame(animate);
+        }, frameInterval);
+      }
+    };
+
+    if (isPlaying) {
+      animate();
+    }
+
+    return () => {
+      clearTimeout(animationTimeout);
+    };
+  }, [isPlaying, startTime, endTime, step, frameInterval]);
+
+  const handleSliderChange = (newTime) => {
+    console.log("New Time del nuevo componente:", newTime);
+    setTime(newTime);
+    setAnimationTime(newTime);
+  };
+
+  const togglePlay = () => {
+    setIsPlaying(!isPlaying);
+    setAnimationTime(time);
+  };
+
+  return { time, isPlaying, animationTime, handleSliderChange, togglePlay };
+}
+
+
+export function TimeComponentClean(startTime, endTime, step, frameInterval=0, animationType) {
+  const [time, setTime] = useState(startTime);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [animationTime, setAnimationTime] = useState(startTime);
+
+  useEffect(() => {
+    let animationFrame;
+    let animationTimeout;
+  
+    const animateFluid = () => {
+      setTime((prevTime) => Math.round((prevTime + step) % ((endTime - startTime)) + startTime));
+      setAnimationTime(time);
+      animationFrame = requestAnimationFrame(animateFluid);
+    };
+  
+    const animateWithFrames = () => {
+      setTime((prevTime) => {
+        const nextTime = prevTime + step;
+        return nextTime > endTime ? startTime : nextTime;
+      });
+      setAnimationTime(time);
+      animationTimeout = setTimeout(() => {
+        requestAnimationFrame(animateWithFrames);
+      }, frameInterval);
+    };
+  
+    if (isPlaying) {
+      animationType ? animateFluid() : animateWithFrames();
+    } else {
+      cancelAnimationFrame(animationFrame);
+      clearTimeout(animationTimeout);
+    }
+  
+    return () => {
+      cancelAnimationFrame(animationFrame);
+      clearTimeout(animationTimeout);
+    };
+  }, [isPlaying, startTime, endTime, step, frameInterval, animationType]);
+  
+  
+
+  const handleSliderChange = (newTime) => {
+    console.log("New Time del nuevo componente:", newTime);
+    setTime(newTime);
+    setAnimationTime(newTime);
+  };
+
+  const togglePlay = () => {
+    setIsPlaying(!isPlaying);
+    setAnimationTime(time);
+  };
+
+  return { time, isPlaying, animationTime, handleSliderChange, togglePlay };
 }

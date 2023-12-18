@@ -8,25 +8,15 @@ import {
 } from "recharts";
 import { CenterSpan, PeripherySpan, ResponseTitle, ContextTitle } from "./Card";
 import { useState, useEffect } from "react";
-import {
-  Box,
-  IconButton,
-  Slider,
-  SliderFilledTrack,
-  SliderMark,
-  SliderThumb,
-  SliderTrack,
-} from "@chakra-ui/react";
 import { useCardContext } from "../views/Body.js";
 import {
   MASIVE_TRANSPORT_LAYER,
   PRIMARY_ROUTES_LAYER,
 } from "../utils/constants.js";
 import { TripsLayer } from "@deck.gl/geo-layers";
-import { MdPause, MdPlayArrow } from "react-icons/md";
 import { Chart } from "./Chart.js";
 import _ from "lodash";
-import { TimeComponent } from "./TimeComponent.js";
+import { TimeComponent, SliderHTML, TimeComponentClean } from "./TimeComponent.js";
 
 export const CustomBarChart = ({ data }) => (
   <ResponsiveContainer width="100%" height={150}>
@@ -84,62 +74,18 @@ export const TransporteControls = ({
   handleSliderChange,
 }) => {
   return (
-    <>
-      <div
-        style={{
-          position: "absolute",
-          bottom: 25,
-          left: 0,
-          width: "100%",
-          padding: "0 20px",
-        }}
-      >
-        <Box
-          bgColor="orange.100"
-          borderRadius="16px"
-          borderWidth={1}
-          borderColor="orange.200"
-          style={{ display: "flex", width: "100%" }}
-        >
-          <IconButton
-            colorScheme="orange"
-            isRound={true}
-            onClick={togglePlay}
-            size="xs"
-            icon={isPlaying ? <MdPause /> : <MdPlayArrow />}
-          />
-          <Slider
-            aria-label="slider-ex-1"
-            id="slider"
-            defaultValue={0}
-            min={0}
-            step={30}
-            max={1440}
-            value={time}
-            onChange={(value) => handleSliderChange(value)}
-            mr="4"
-            ml="3"
-          >
-            {marks.map(({ value, label }) => (
-              <SliderMark
-                key={value}
-                value={value}
-                textAlign="center"
-                mt="5"
-                ml="-3"
-                fontSize="xs"
-              >
-                {label}
-              </SliderMark>
-            ))}
-            <SliderTrack bg="orange.200">
-              <SliderFilledTrack bg="orange.500" />
-            </SliderTrack>
-            <SliderThumb boxSize={3} bgColor="orange.600" />
-          </Slider>
-        </Box>
-      </div>
-    </>
+    <SliderHTML
+      time={time}
+      min={0}
+      max={1440}
+      step={3}
+      //title={"Precio de Venta"}
+      togglePlay={togglePlay}
+      isPlaying={isPlaying}
+      handleSliderChange={handleSliderChange}
+      marks={marks}
+      //legendItems={legendItems}
+    />
   );
 };
 
@@ -175,7 +121,8 @@ export function TransporteCard({ color, isCurrentSection }) {
   const { setLayers, setControlsProps, setOutline } = useCardContext();
   const [originalData, setOriginalData] = useState([]); 
   const [chartData, setChartData] = useState([]);
-  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponent(0, 1440, 2);
+  //const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponent(0, 1440, 2);
+  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(0, 1440, 2, true);
 
 
   useEffect(() => {
@@ -203,12 +150,9 @@ export function TransporteCard({ color, isCurrentSection }) {
   }, [isCurrentSection]);
 
   useEffect(() => {
-    //para la animacion
+
     if (isCurrentSection && originalData) {
-      /*const togglePlay = () => {
-        setIsPlaying(!isPlaying);
-        setAnimationTime(time); //inicia la animación desde la posición actual del slider
-      };*/
+
       setControlsProps({ time, togglePlay, isPlaying, handleSliderChange });
 
       const tripsLayer = {
@@ -238,29 +182,6 @@ export function TransporteCard({ color, isCurrentSection }) {
     time,
     animationTime,
   ]);
-
-  /*useEffect(() => {
-    let animationFrame;
-
-    const animate = () => {
-      setTime((prevTime) => (prevTime + 2) % 1440);
-      animationFrame = requestAnimationFrame(animate);
-    };
-
-    if (isPlaying) {
-      animate();
-    } else {
-      cancelAnimationFrame(animationFrame);
-    }
-
-    return () => cancelAnimationFrame(animationFrame);
-  }, [isPlaying]);
-
-  const handleSliderChange = (newTime) => {
-    console.log("New Time:", newTime); //checar que valor tiene el slider
-    setTime(newTime); //actualiza el estado de 'time' con el nuevo valor
-    setAnimationTime(newTime);
-  };*/
 
   return (
     <>

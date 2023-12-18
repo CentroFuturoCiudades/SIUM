@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { ResponseTitle, ContextTitle } from "./Card";
 import { useCardContext } from "../views/Body";
-import { DELINCUENCIA_LAYER, separateLegendItems, transformSomeData } from "../utils/constants";
+import { DELINCUENCIA_LAYER, separateLegendItems, filterDataAll } from "../utils/constants";
 import { Chart } from "./Chart";
 import _ from "lodash";
 import { GeoJsonLayer } from "@deck.gl/layers";
-import { TimeComponent, SliderHTML } from "./TimeComponent";
+import { TimeComponent, SliderHTML, TimeComponentNew, TimeComponentClean} from "./TimeComponent";
 import { colorInterpolate, addNormalized } from "../utils/constants";
 
 const marks = [
@@ -14,6 +14,8 @@ const marks = [
   { value: 2019, label: "2019" },
   { value: 2020, label: "2020" },
 ];
+
+
 
 export const DelincuenciaControls = ({time,
   togglePlay,
@@ -60,8 +62,9 @@ export const DelincuenciaControls = ({time,
 export function DelincuenciaCard({ color, isCurrentSection }) {
   const { setLayers, setOutline, setControlsProps } = useCardContext();
   const [chartData, setChartData] = useState([]);
-  const [originalData, setOriginalData] = useState([]); //datos filtrados
-  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponent(2017, 2020, 1);
+  const [originalData, setOriginalData] = useState([]); 
+  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(2017, 2020, 1, 5000, false);
+
 
   //los datos que se leen para los charts
   useEffect(() => {
@@ -97,7 +100,7 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
     }
   }, [isCurrentSection]);
 
-  const transformDataCrimen = (data, selectedYear, column, reversed = false) => {
+  /*const transformDataCrimen = (data, selectedYear, column, reversed = false) => {
     if (!data || !data.features || !Array.isArray(data.features)) {
       return [];
     }
@@ -127,7 +130,9 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
       });
   
     return filteredData
-  };
+  };*/
+
+ // const answer = filterDataAll(originalData, )
 
 
   useEffect(() => {
@@ -140,8 +145,8 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
         type: GeoJsonLayer,
         props: {
           id: "seccion_crimen_layer",
-          data: transformDataCrimen(originalData, time, "num_crimen"),
-          //data: transformSomeData2(originalData, time, "num_crimen", "year"),
+          //data: transformDataCrimen(originalData, time, "num_crimen"),
+          data: filterDataAll(originalData, time, "num_crimen", false, "year"),
           getFillColor: (d) =>
             colorInterpolate(d.properties.normalized, "blue", "red", 1),
           getLineColor: (d) =>

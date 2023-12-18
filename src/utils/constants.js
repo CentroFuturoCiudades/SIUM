@@ -58,6 +58,54 @@ export const cleanedGeoData = (data, column, reversed = false) => {
     });
 };
 
+export const filterDataAll = (data, selectedYear, column, reversed=false, nomcol)=>
+{
+    if (!data || !data.features || !Array.isArray(data.features)) {
+      return [];
+    }
+
+    const toNormalize = addNormalized(
+      data.features.map((x) => x.properties),
+      column
+    );
+    
+    const filteredData = data.features
+    //.filter((feature) => feature[column] !== 0 && feature.properties.year_end === selectedYear)
+      .filter((feature) => feature[column] !== 0 && parseInt(feature.properties[nomcol]) === selectedYear)
+      .map((feature) => {
+        const coordinates = feature.geometry.coordinates[0]; // Obtener las coordenadas del primer anillo del polígono
+        return {
+          ...feature,
+          properties: {
+            ...feature.properties,
+            normalized: reversed
+              ? 1 - toNormalize(feature.properties)
+              : toNormalize(feature.properties),
+          },
+          geometry: {
+            type: "Polygon",
+            coordinates: [coordinates], // Conservar solo el primer anillo
+          },
+        };
+      });
+  
+    return filteredData
+  };
+  /*return data
+    .filter((feature) => feature[column] !== 0)
+    .map((feature) => {
+      return {
+        ...feature,
+        properties: {
+          ...feature.properties,
+          normalized: reversed
+            ? 1 - toNormalize(feature.properties)
+            : toNormalize(feature.properties),
+        },
+      };
+    });*/
+
+
 
 export const PERIPHERIES = [
   "Juárez",

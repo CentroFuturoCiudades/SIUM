@@ -6,11 +6,11 @@ import {
   ResponseTitle,
   ContextTitle,
 } from "./Card";
-import { VIVIENDA_LAYER, separateLegendItems } from "../utils/constants";
+import { VIVIENDA_LAYER, separateLegendItems, filterDataAll } from "../utils/constants";
 import { Chart } from "./Chart";
 import _ from "lodash";
 import { GeoJsonLayer } from "@deck.gl/layers";
-import { TimeComponent, SliderHTML } from "./TimeComponent";
+import { TimeComponent, SliderHTML, TimeComponentClean } from "./TimeComponent";
 import { colorInterpolate, addNormalized } from "../utils/constants";
 
 
@@ -78,8 +78,9 @@ export function ViviendaCard({ color, isCurrentSection }) {
   const { setLayers, setOutline, setControlsProps} = useCardContext();
   const [chartData, setChartData] = useState([]);
   const [originalData, setOriginalData] = useState([]); //datos filtrados
-  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponent(1990, 2020, 15);
+  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(1990, 2020, 5, 3000, false);
 
+  
 
   useEffect(() => { //esto lee para las bar charts
     if (isCurrentSection) {
@@ -157,7 +158,8 @@ export function ViviendaCard({ color, isCurrentSection }) {
         type: GeoJsonLayer,
         props: {
           id: "seccion_vivienda_layer",
-          data: transformDataVivienda(originalData, time, "IM_PRECIO_VENTA", true),
+          //data: transformDataVivienda(originalData, time, "IM_PRECIO_VENTA", true),
+          data: filterDataAll(originalData, time, "IM_PRECIO_VENTA", true, "year_end"),
           getFillColor: (d) =>
             colorInterpolate(d.properties.normalized, "blue", "red", 1),
           getLineColor: (d) =>
