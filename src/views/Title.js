@@ -1,5 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import BodyText from "./BodyText";
+import Cards from "./Cards";
+import ParallaxComponent from "./ParallaxComponent";
 
 const containerStyle = {
   height: "100vh",
@@ -34,6 +37,8 @@ const arrowStyle = {
 
 const Title = () => {
   return (
+    <>
+
     <div style={containerStyle}>
       <h1 style={titleStyle}>Ciudad finita</h1>
       <h1 style={textStyle}>Expansión urbana en la</h1>
@@ -42,6 +47,12 @@ const Title = () => {
         <div style={arrowStyle}>&#9654; {/* Carácter Unicode para la flecha derecha */}</div>
       </Link>
     </div>
+    <BodyText/>
+    <Cards/>
+    <ParallaxComponent/>    
+
+    </>
+
   );
 }
 
