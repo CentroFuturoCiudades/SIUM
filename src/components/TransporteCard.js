@@ -8,28 +8,19 @@ import {
 } from "recharts";
 import { CenterSpan, PeripherySpan, ResponseTitle, ContextTitle } from "./Card";
 import { useState, useEffect } from "react";
-import {
-  Box,
-  IconButton,
-  Slider,
-  SliderFilledTrack,
-  SliderMark,
-  SliderThumb,
-  SliderTrack,
-} from "@chakra-ui/react";
 import { useCardContext } from "../views/Body.js";
 import {
   MASIVE_TRANSPORT_LAYER,
   PRIMARY_ROUTES_LAYER,
 } from "../utils/constants.js";
 import { TripsLayer } from "@deck.gl/geo-layers";
-import { MdPause, MdPlayArrow } from "react-icons/md";
 import { Chart } from "./Chart.js";
 import _ from "lodash";
 import { Tabs, TabList, Tab } from '@chakra-ui/react'
 import { Button, ButtonGroup } from '@chakra-ui/react'
 
 
+import { SliderHTML, TimeComponentClean } from "./TimeComponent.js";
 
 export const CustomBarChart = ({ data }) => (
   <ResponsiveContainer width="100%" height={150}>
@@ -87,72 +78,18 @@ export const TransporteControls = ({
   handleSliderChange,
 }) => {
   return (
-    <>
-      <div
-        style={{
-          position: "absolute",
-          bottom: 25,
-          left: 0,
-          width: "100%",
-          padding: "0 20px",
-        }}
-      >
-        <Box
-          bgColor="orange.100"
-          borderRadius="16px"
-          borderWidth={1}
-          borderColor="orange.200"
-          style={{ display: "flex", width: "100%" }}
-        >
-          <IconButton
-            colorScheme="orange"
-            isRound={true}
-            onClick={togglePlay}
-            size="xs"
-            icon={isPlaying ? <MdPause /> : <MdPlayArrow />}
-          />
-          <Slider
-            aria-label="slider-ex-1"
-            id="slider"
-            defaultValue={0}
-            min={0}
-            step={30}
-            max={1440}
-            value={time}
-            onChange={(value) => handleSliderChange(value)}
-            mr="4"
-            ml="3"
-          >
-            {marks.map(({ value, label }) => (
-              <SliderMark
-                key={value}
-                value={value}
-                textAlign="center"
-                mt="5"
-                ml="-3"
-                fontSize="xs"
-              >
-                {label}
-              </SliderMark>
-            ))}
-            <SliderTrack bg="orange.200">
-              <SliderFilledTrack bg="orange.500" />
-            </SliderTrack>
-            <SliderThumb boxSize={3} bgColor="orange.600" />
-          </Slider>
-        </Box>
-      </div>
-      <div style={{ position: "absolute", top: 10, left: "25%" }}>
-      <Tabs variant='soft-rounded' colorScheme='green'>
-        <TabList>
-          <Tab onClick={() => console.log(0)}>Auto</Tab>
-          <Tab onClick={() => console.log(0)}>Transporte público</Tab>
-          <Tab onClick={() => console.log(0)}>Ciclista</Tab>
-          <Tab onClick={() => console.log(0)}>Peatón</Tab>
-        </TabList>
-      </Tabs>
-      </div>
-    </>
+    <SliderHTML
+      time={time}
+      min={0}
+      max={1440}
+      step={3}
+      //title={"Precio de Venta"}
+      togglePlay={togglePlay}
+      isPlaying={isPlaying}
+      handleSliderChange={handleSliderChange}
+      marks={marks}
+      //legendItems={legendItems}
+    />
   );
 };
 
@@ -186,11 +123,15 @@ const transformDataForTrips = (data) => {
 
 export function TransporteCard({ color, isCurrentSection }) {
   const { setLayers, setControlsProps, setOutline } = useCardContext();
-  const [time, setTime] = useState(0); //el tiempo que filtra los datos
-  const [isPlaying, setIsPlaying] = useState(false); //var de estado para manejar el play de la animacion
-  const [animationTime, setAnimationTime] = useState(0); //tiempo cambiante de la animacion
-  const [originalData, setOriginalData] = useState([]); //datos filtrados
+  const [originalData, setOriginalData] = useState([]); 
   const [chartData, setChartData] = useState([]);
+  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(0, 1440, 2, true);
+  
+  const [automovilLayer, setAutomovilLayer] = useState([]);
+  const [transPublicoLayer, setTransPublicoLayer] = useState([]);
+  const [ciclistaLayer, setCiclistaLayer] = useState([]);
+  const [peatonLayer, setPeatonLayer] = useState([]);
+
 
   useEffect(() => {
     if (isCurrentSection) {
@@ -205,28 +146,20 @@ export function TransporteCard({ color, isCurrentSection }) {
     }
   }, [isCurrentSection]);
 
-  function filterData(data){
-    // console.log(data.properties.Transporte);
-    // if(data.properties.Transporte == 'Autómovil'){
-    //   console.log(true);
-    // } else{
-    //   console.log(false);
-    // }
-    return data.properties.Transporte == 'Autómovil';
-  }
 
   useEffect(() => {
     if (isCurrentSection) {
       fetch("SIUM/data/TRANSPORTEJEANNETTE.geojson")
         .then((response) => response.json())
         .then((data) => {
-          // console.log(data)
-          // const newData = data.filter((x) => x["Transporte"] === "TPUB" && x["Motivo"] === "Regreso A Casa");
-          // setChartData(newData);
-          // console.log(data.features);
-          const newFeatures = data.features.filter(filterData);
-          data.features = newFeatures;
+          // // Autómovil - TPUB - Bicicleta - Caminando
+          // const automovilFeatures = data.features.filter((feature) => feature.properties.Transporte == 'Autómovil');
+          // const transPublicoFeatures = data.features.filter((feature) => feature.properties.Transporte == 'Autómovil');
+          // const ciclistaFeatures = data.features.filter((feature) => feature.properties.Transporte == 'Autómovil');
+          // const peatonFeatures = data.features.filter((feature) => feature.properties.Transporte == 'Autómovil');
+          // data.features = automovilFeatures;
           console.log(data);
+
           setOriginalData(data);
         })
         // .then((data) => setOriginalData(data))
@@ -239,23 +172,8 @@ export function TransporteCard({ color, isCurrentSection }) {
 
 
   useEffect(() => {
-    // try{
-    //   if(originalData){
-    //     console.log(originalData.features.length);
-    //     console.log(originalData.features[0].properties.Motivo);
-    //   }
-    //   originalData.features.filter(filterData);
-    //   console.log(originalData);
-    // } catch {
-      
-    // }
-    // console.log(originalData);
-    //para la animacion
     if (isCurrentSection && originalData) {
-      const togglePlay = () => {
-        setIsPlaying(!isPlaying);
-        setAnimationTime(time); //inicia la animación desde la posición actual del slider
-      };
+
       setControlsProps({ time, togglePlay, isPlaying, handleSliderChange });
 
       const tripsLayer = {
@@ -286,29 +204,6 @@ export function TransporteCard({ color, isCurrentSection }) {
     animationTime,
   ]);
 
-  useEffect(() => {
-    let animationFrame;
-
-    const animate = () => {
-      setTime((prevTime) => (prevTime + 2) % 1440);
-      animationFrame = requestAnimationFrame(animate);
-    };
-
-    if (isPlaying) {
-      animate();
-    } else {
-      cancelAnimationFrame(animationFrame);
-    }
-
-    return () => cancelAnimationFrame(animationFrame);
-  }, [isPlaying]);
-
-  const handleSliderChange = (newTime) => {
-    console.log("New Time:", newTime); //checar que valor tiene el slider
-    setTime(newTime); //actualiza el estado de 'time' con el nuevo valor
-    setAnimationTime(newTime);
-  };
-
   return (
     <>
       <ResponseTitle color={color}>Mayormente en automovil.</ResponseTitle>
@@ -330,10 +225,30 @@ export function TransporteCard({ color, isCurrentSection }) {
         <b>68 minutos</b> por viaje redondo, el equivalente a doce días por año.
       </p>
       <ButtonGroup size='sm' isAttached variant='outline'>
-        <Button>Auto</Button>
-        <Button>Transporte público</Button>
-        <Button>Ciclista</Button>
-        <Button>Peatón</Button>
+        <Button 
+          _focus={{
+            boxShadow:
+              '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)',
+          }}
+        >Auto</Button>
+        <Button
+          _focus={{
+            boxShadow:
+              '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)',
+          }}
+        >Transporte público</Button>
+        <Button
+          _focus={{
+            boxShadow:
+              '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)',
+          }}
+        >Ciclista</Button>
+        <Button
+          _focus={{
+            boxShadow:  
+              '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)',
+          }}
+        >Peatón</Button>
       </ButtonGroup>
       <br />
       <ContextTitle color={color}>

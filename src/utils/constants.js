@@ -19,6 +19,7 @@ import { DelincuenciaCard, DelincuenciaControls } from "../components/Delincuenc
 import { CostosCard } from "../components/CostosCard";
 import {BrushingExtension} from '@deck.gl/extensions';
 
+
 export function colorInterpolate(normalizedValue, startColor, endColor, opacity = 1) {
   const interpolator = interpolateRgb(startColor, endColor);
   const resultColor = rgb(interpolator(normalizedValue));
@@ -57,6 +58,42 @@ export const cleanedGeoData = (data, column, reversed = false) => {
       };
     });
 };
+
+//lo que filtra los datos en base al tiempo para (vivienda, expansion y delincuencia)
+export const filterDataAll = (data, selectedYear, column, reversed=false, nomcol)=>
+{
+    if (!data || !data.features || !Array.isArray(data.features)) {
+      return [];
+    }
+
+    const toNormalize = addNormalized(
+      data.features.map((x) => x.properties),
+      column
+    );
+    
+    const filteredData = data.features
+      .filter((feature) => feature[column] !== 0 && parseInt(feature.properties[nomcol]) === selectedYear)
+      .map((feature) => {
+        const coordinates = feature.geometry.coordinates[0]; // Obtener las coordenadas del primer anillo del polígono
+        return {
+          ...feature,
+          properties: {
+            ...feature.properties,
+            normalized: reversed
+              ? 1 - toNormalize(feature.properties)
+              : toNormalize(feature.properties),
+          },
+          geometry: {
+            type: "Polygon",
+            coordinates: [coordinates], // Conservar solo el primer anillo
+          },
+        };
+      });
+  
+    return filteredData
+  };
+
+
 
 export const PERIPHERIES = [
   "Juárez",
@@ -215,137 +252,6 @@ export const EMPLEO_LAYER = {
     getLineWidth: 10,
   },
 };
-
-// export const TRANSPORTE_JEANNETTE = {
-//   id: "seccion_transporte_layer",
-//   data: "SIUM/data/TRANSPORTEJEANNETTE.geojson",
-//   getLineColor: [100, 100, 100, 200],
-//   getLineWidth: 150,
-
-//   //IMPLEMENTACION 2 DE FILTRADO
-//   dataTransform: (d, time) => {
-//     console.log("Entrando a dataTransform");
-
-//     const lineStringGenerator = d3.line();
-
-//     const transformedData = d.features.map((feature) => {
-//       const horaOri = feature.properties.HoraOri.split(":");
-//       const horaDest = feature.properties.HoraDest.split(":");
-//       const horaOriNum =
-//         parseInt(horaOri[0], 10) * 60 + parseInt(horaOri[1], 10);
-//       const horaDestNum =
-//         parseInt(horaDest[0], 10) * 60 + parseInt(horaDest[1], 10);
-
-//       const timeInMinutes = time * 10;
-
-//       if (
-//         (horaOriNum <= timeInMinutes && timeInMinutes <= horaDestNum) ||
-//         (horaOriNum >= timeInMinutes && timeInMinutes >= horaDestNum)
-//       ) {
-//         // Tomar solo la primera y última coordenada del LineString
-//         const startCoords = feature.geometry.coordinates[0];
-//         const endCoords =
-//           feature.geometry.coordinates[feature.geometry.coordinates.length - 1];
-
-//         //const startAngle = (horaOriNum / 144) * Math.PI * 2;
-//         //const endAngle = (horaDestNum / 144) * Math.PI * 2;
-//         // Calcular el ángulo entre la primera y última coordenada
-//         const startAngle = Math.atan2(startCoords[1], startCoords[0]);
-//         const endAngle = Math.atan2(endCoords[1], endCoords[0]);
-//         const startAltitude = startCoords[2] || 0; // Asegurarse de tener una altitud
-//         const endAltitude = endCoords[2] || 0;
-
-//         // Calcular puntos a lo largo del arco (aquí puedes ajustar la densidad)
-//         const numPoints = 100;
-//         // Puedes ajustar la longitud del arco multiplicando x e y por algún factor
-//         const factor = 1;
-//         const arcPoints = Array.from({ length: numPoints }, (_, i) => {
-//           const t = i / (numPoints - 1);
-//           //const angle = startAngle + t * (endAngle - startAngle);
-//           //const altitude = startAltitude + t * (endAltitude - startAltitude);
-//           //const x = Math.cos(angle);
-//           //const y = Math.sin(angle);
-//           const x = startCoords[0] + t * (endCoords[0] - startCoords[0]);
-//           const y = startCoords[1] + factor * Math.sin(Math.PI * t);
-
-//           //const lon = feature.geometry.coordinates[0][0] + factor * x;
-//           //const lat = feature.geometry.coordinates[0][1] + factor * y;
-//           //const lon = startCoords[0] + factor * x;
-//           //const lat = startCoords[1] + factor * y;
-
-//           //return [lon, lat, altitude];
-//           return [x, y, 0]; // Altitud puede ser 0 por ahora
-//         });
-
-//         const coordinates = arcPoints.map(([lon, lat, altitude]) => [
-//           lon,
-//           lat,
-//           altitude,
-//         ]);
-
-//         const lineString = lineStringGenerator(coordinates);
-
-//         /*console.log("Datos transformados:", {
-//         coordinates,
-//         lineString,
-//       });*/
-//         return {
-//           ...feature,
-//           geometry: {
-//             type: "LineString",
-//             coordinates,
-//           },
-//           lineString,
-//         };
-//       } else {
-//         return null;
-//       }
-//     });
-
-//     const filteredData = transformedData.filter((feature) => feature !== null);
-
-//     //console.log("Datos filtrados:", filteredData);
-
-//     return { ...d, features: filteredData };
-//   },
-// };
-
-// export const TRANSPORTE_JEANNETTE2 = {
-//   id: "primary_routes",
-//   data: "data/TRANSPORTEJEANNETTE.geojson",
-//   getLineColor: [100, 100, 100, 200],
-//   getLineWidth: 150,
-
-//   //IMPLEMENTACION 2 DE FILTRADO
-//   dataTransform: (d, time) => {
-//     const filteredData = d.features.filter((feature) => {
-//       const horaOri = feature.properties.HoraOri.split(":"); //separa la hora de los minutos
-//       const horaDest = feature.properties.HoraDest.split(":"); //separar la hora de los minutos
-
-//       // Convertir las horas y minutos en valores numéricos en minutos
-//       const horaOriNum =
-//         parseInt(horaOri[0], 10) * 60 + parseInt(horaOri[1], 10);
-//       const horaDestNum =
-//         parseInt(horaDest[0], 10) * 60 + parseInt(horaDest[1], 10);
-
-//       const timeInMinutes = time * 10; // Convertir el valor del slider a minutos
-//       //filtrado
-//       //if (horaOriNum >= time && horaOriNum < time + 1 && horaDestNum >= time && horaDestNum < time+1) {
-//       if (
-//         horaOriNum >= timeInMinutes &&
-//         horaOriNum < timeInMinutes + 10 &&
-//         horaDestNum >= timeInMinutes &&
-//         horaDestNum < timeInMinutes + 10
-//       ) {
-//         return true; //pone los datos que entran en el rango
-//       } else {
-//         return false; //descarta los datos si no se cumple
-//       }
-//     });
-
-//     return { ...d, features: filteredData };
-//   },
-// };
 
 export const VIVIENDA_LAYER = {
   type: GeoJsonLayer,

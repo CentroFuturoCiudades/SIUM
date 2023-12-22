@@ -6,11 +6,29 @@ import {
   ResponseTitle,
   ContextTitle,
 } from "./Card";
-import { VIVIENDA_LAYER, separateLegendItems } from "../utils/constants";
-import { Legend } from "./Legend";
+import { separateLegendItems, filterDataAll } from "../utils/constants";
 import { Chart } from "./Chart";
+import _ from "lodash";
+import { GeoJsonLayer } from "@deck.gl/layers";
+import { SliderHTML, TimeComponentClean } from "./TimeComponent";
+import { colorInterpolate } from "../utils/constants";
 
-export const ViviendaControls = () => {
+
+const marks = [
+  { value: 1990, label: "1990" },
+  { value: 1995, label: "1995" },
+  { value: 2000, label: "2000" },
+  { value: 2005, label: "2005" },
+  { value: 2010, label: "2010" },
+  { value: 2015, label: "2015" },
+  { value: 2020, label: "2020" },
+];
+
+export const ViviendaControls = ({time,
+  togglePlay,
+  isPlaying,
+  handleSliderChange,
+}) => {
   const [legendItems, setLegendItems] = useState([]);
 
   useEffect(() => {
@@ -38,14 +56,32 @@ export const ViviendaControls = () => {
       );
   }, []);
 
-  return <Legend title="Precio de Venta" legendItems={legendItems} />;
+  return (
+    <SliderHTML
+      time={time}
+      min={1990}
+      max={2020}
+      step={5}
+      title={"Precio de Venta"}
+      togglePlay={togglePlay}
+      isPlaying={isPlaying}
+      handleSliderChange={handleSliderChange}
+      marks={marks}
+      legendItems={legendItems}
+    />
+  );
 };
 
-export function ViviendaCard({ color, isCurrentSection }) {
-  const { setLayers, setOutline } = useCardContext();
-  const [chartData, setChartData] = useState([]);
 
-  useEffect(() => {
+
+export function ViviendaCard({ color, isCurrentSection }) {
+  const { setLayers, setOutline, setControlsProps} = useCardContext();
+  const [chartData, setChartData] = useState([]);
+  const [originalData, setOriginalData] = useState([]); //datos filtrados
+  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(1990, 2020, 5, 3000, false);
+
+
+  useEffect(() => { //esto lee para las bar charts
     if (isCurrentSection) {
       fetch("SIUM/data/vivienda_municipality.json")
         .then((response) => response.json())
@@ -57,11 +93,51 @@ export function ViviendaCard({ color, isCurrentSection }) {
       setChartData([]);
     }
   }, [isCurrentSection]);
+
+
   useEffect(() => {
     if (isCurrentSection) {
-      setLayers([VIVIENDA_LAYER]);
+      console.log("Se llamaron a los datos de vivienda")
+      //fetch("SIUM/data/vivienda-hex.geojson")
+      fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda-hex.geojson")
+        .then((response) => response.json())
+        .then((data) => setOriginalData(data))
+        .catch((error) => console.error("Error cargando el GeoJSON:", error));
+    } else {
+      setOriginalData(null);
     }
-  }, [isCurrentSection, setLayers]);
+  }, [isCurrentSection]);
+  
+
+  useEffect(() => {
+    if (isCurrentSection && originalData) {
+
+      setControlsProps({ time, togglePlay, isPlaying, handleSliderChange });
+      
+      const viviendaLayer = {
+        type: GeoJsonLayer,
+        props: {
+          id: "seccion_vivienda_layer",
+          data: filterDataAll(originalData, time, "IM_PRECIO_VENTA", true, "year_end"),
+          getFillColor: (d) =>
+            colorInterpolate(d.properties.normalized, "blue", "red", 1),
+          getLineColor: (d) =>
+            colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
+          getLineWidth: 10,
+        },
+      };
+
+      setLayers([viviendaLayer]);
+    }
+  }, [
+    isCurrentSection,
+    originalData,
+    setLayers,
+    setControlsProps,
+    isPlaying,
+    time,
+    animationTime,
+  ]);
 
   return (
     <>
