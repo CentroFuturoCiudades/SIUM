@@ -26,6 +26,10 @@ import { TripsLayer } from "@deck.gl/geo-layers";
 import { MdPause, MdPlayArrow } from "react-icons/md";
 import { Chart } from "./Chart.js";
 import _ from "lodash";
+import { Tabs, TabList, Tab } from '@chakra-ui/react'
+import { Button, ButtonGroup } from '@chakra-ui/react'
+
+
 
 export const CustomBarChart = ({ data }) => (
   <ResponsiveContainer width="100%" height={150}>
@@ -138,6 +142,16 @@ export const TransporteControls = ({
           </Slider>
         </Box>
       </div>
+      <div style={{ position: "absolute", top: 10, left: "25%" }}>
+      <Tabs variant='soft-rounded' colorScheme='green'>
+        <TabList>
+          <Tab onClick={() => console.log(0)}>Auto</Tab>
+          <Tab onClick={() => console.log(0)}>Transporte público</Tab>
+          <Tab onClick={() => console.log(0)}>Ciclista</Tab>
+          <Tab onClick={() => console.log(0)}>Peatón</Tab>
+        </TabList>
+      </Tabs>
+      </div>
     </>
   );
 };
@@ -191,18 +205,51 @@ export function TransporteCard({ color, isCurrentSection }) {
     }
   }, [isCurrentSection]);
 
+  function filterData(data){
+    // console.log(data.properties.Transporte);
+    // if(data.properties.Transporte == 'Autómovil'){
+    //   console.log(true);
+    // } else{
+    //   console.log(false);
+    // }
+    return data.properties.Transporte == 'Autómovil';
+  }
+
   useEffect(() => {
     if (isCurrentSection) {
       fetch("SIUM/data/TRANSPORTEJEANNETTE.geojson")
         .then((response) => response.json())
-        .then((data) => setOriginalData(data))
+        .then((data) => {
+          // console.log(data)
+          // const newData = data.filter((x) => x["Transporte"] === "TPUB" && x["Motivo"] === "Regreso A Casa");
+          // setChartData(newData);
+          // console.log(data.features);
+          const newFeatures = data.features.filter(filterData);
+          data.features = newFeatures;
+          console.log(data);
+          setOriginalData(data);
+        })
+        // .then((data) => setOriginalData(data))
         .catch((error) => console.error("Error cargando el GeoJSON:", error));
     } else {
       setOriginalData(null);
     }
   }, [isCurrentSection]);
 
+
+
   useEffect(() => {
+    // try{
+    //   if(originalData){
+    //     console.log(originalData.features.length);
+    //     console.log(originalData.features[0].properties.Motivo);
+    //   }
+    //   originalData.features.filter(filterData);
+    //   console.log(originalData);
+    // } catch {
+      
+    // }
+    // console.log(originalData);
     //para la animacion
     if (isCurrentSection && originalData) {
       const togglePlay = () => {
@@ -282,6 +329,12 @@ export function TransporteCard({ color, isCurrentSection }) {
         <CenterSpan setOutline={setOutline} />. En promedio se invierten{" "}
         <b>68 minutos</b> por viaje redondo, el equivalente a doce días por año.
       </p>
+      <ButtonGroup size='sm' isAttached variant='outline'>
+        <Button>Auto</Button>
+        <Button>Transporte público</Button>
+        <Button>Ciclista</Button>
+        <Button>Peatón</Button>
+      </ButtonGroup>
       <br />
       <ContextTitle color={color}>
         La expansión urbana aumenta la dependencia del automovil, contribuyendo

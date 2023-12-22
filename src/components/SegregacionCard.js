@@ -10,6 +10,7 @@ import { SEGREGACION_LAYER, separateLegendItems } from "../utils/constants";
 import { Chart } from "./Chart";
 import { Legend } from "./Legend";
 
+
 export const SegregacionControls = () => {
   const [legendItems, setLegendItems] = useState([]);
 
@@ -38,7 +39,11 @@ export const SegregacionControls = () => {
       );
   }, []);
 
-  return <Legend title="Ingreso" legendItems={legendItems} />;
+  return (
+    <>
+      <Legend title="Ingreso" legendItems={legendItems} />;
+    </>
+  ) 
 };
 
 export function SegregacionCard({ color, isCurrentSection }) {

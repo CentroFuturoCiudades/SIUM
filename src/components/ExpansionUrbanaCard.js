@@ -12,10 +12,13 @@ import { EXPANSION_LAYER, separateLegendItems } from "../utils/constants";
 import "../index.css";
 import { Legend } from "./Legend";
 import { Chart } from "./Chart";
+import { Tabs, TabList, Tab } from '@chakra-ui/react'
+
 
 export const ExpansionUrbanaControls = () => {
   const [legendItems, setLegendItems] = useState([]);
 
+  
   useEffect(() => {
     // Carga los datos GeoJSON y actualiza las leyendas
     fetch(
@@ -31,7 +34,21 @@ export const ExpansionUrbanaControls = () => {
       );
   }, []);
 
-  return <Legend title="Cambio Poblacional" legendItems={legendItems} />;
+
+  return (
+    <>
+      <div style={{ position: "absolute", top: 10, left: "40%" }}>
+      <Tabs variant='soft-rounded' colorScheme='green'>
+        <TabList>
+          <Tab onClick={() => {}}>POB Joven</Tab>
+          <Tab onClick={() => {}}>POB +65</Tab>
+        </TabList>
+      </Tabs>
+      </div>
+      <Legend title="Cambio Poblacional" legendItems={legendItems} />;
+    </>
+
+  );
 };
 
 export function ExpansionUrbanaCard({ color, isCurrentSection }) {
@@ -78,6 +95,12 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
         La migración de subcentros a la periferia, conocido como expansión
         urbana, nos aleja de servicios y empleo.
       </ContextTitle>
+      <Tabs variant='soft-rounded' colorScheme='green'>
+        <TabList>
+          <Tab onClick={() => setLayers([EXPANSION_LAYER])}>POB Joven</Tab>
+          <Tab onClick={() => setLayers([EXPANSION_LAYER])}>POB +65</Tab>
+        </TabList>
+      </Tabs>
       <Chart
         data={chartData}
         setOutline={setOutline}
@@ -85,6 +108,7 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
         columnKey="nom_mun"
         formatter={(d) => `${d.toLocaleString("en-US")} pob`}
       />
+
     </>
   );
 }

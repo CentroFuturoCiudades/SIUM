@@ -5,6 +5,7 @@ import { DELINCUENCIA_LAYER, separateLegendItems } from "../utils/constants";
 import { Chart } from "./Chart";
 import { Legend } from "./Legend";
 
+
 export const DelincuenciaControls = () => {
   const [legendItems, setLegendItems] = useState([]);
 
@@ -26,7 +27,11 @@ export const DelincuenciaControls = () => {
       );
   }, []);
 
-  return <Legend title="Crimenes" legendItems={legendItems} />;
+  return (
+    <>
+      <Legend title="Crimenes" legendItems={legendItems} />;
+    </>
+  )
 };
 
 
