@@ -124,20 +124,20 @@ const transformDataForTrips = (data) => {
 export function TransporteCard({ color, isCurrentSection }) {
   const { setLayers, setControlsProps, setOutline } = useCardContext();
   const [originalData, setOriginalData] = useState([]); 
-  const [todosLayer, setTodosLayer] = useState([]);
+  const [generalLayer, setGeneralLayer] = useState([]);
   const [chartData, setChartData] = useState([]);
-  const [todosChartData, setTodosChartData] = useState([]);
+  const [generalChartData, setGeneralChartData] = useState([]);
   const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(0, 1440, 2, true);
 
-  
+
+  // Cargar la información utilizada para la gráfica
   useEffect(() => {
     if (isCurrentSection) {
       fetch("SIUM/data/transporte_municipality.json")
       .then((response) => response.json())
       .then((data) => {
           setChartData(data);
-          setTodosChartData(data);
-
+          setGeneralChartData(data);
         });
     } else {
       setChartData([]);
@@ -145,18 +145,22 @@ export function TransporteCard({ color, isCurrentSection }) {
   }, [isCurrentSection]);
 
 
+  // Manejar clic en el boton para cambiar la información en base al id del botón
   function handleDataChange(event) {
+
+    // Obtener el id del botón presionado
     const idBoton = event.target.id;
 
-    if(idBoton == 'Todos'){
-      setOriginalData(todosLayer);
-      setChartData(todosChartData);
+    if(idBoton == 'General'){
+      setOriginalData(generalLayer);
+      setChartData(generalChartData);
     } else {
-      let actualLayerData = {...todosLayer};
-      let actualChartData = {...todosChartData};
+      let actualLayerData = {...generalLayer};
+      let actualChartData = {...generalChartData};
 
-      actualLayerData.features = todosLayer.features.filter((feature) => feature.properties.Transporte == idBoton);
-      actualChartData = todosChartData.filter((feature) => feature["Transporte"] == idBoton);
+      // Filtrar en base al id del botón presionado
+      actualLayerData.features = generalLayer.features.filter((feature) => feature.properties.Transporte == idBoton);
+      actualChartData = generalChartData.filter((feature) => feature["Transporte"] == idBoton);
 
       setOriginalData(actualLayerData);
       setChartData(actualChartData)
@@ -164,13 +168,14 @@ export function TransporteCard({ color, isCurrentSection }) {
   }
 
 
+  // Cargar la información utilizada para el mapa
   useEffect(() => {
     if (isCurrentSection) {
       fetch("SIUM/data/TRANSPORTEJEANNETTE.geojson")
         .then((response) => response.json())
         .then((data) => {
           setOriginalData(data);
-          setTodosLayer(data);
+          setGeneralLayer(data);
 
         })
         .catch((error) => console.error("Error cargando el GeoJSON:", error));
@@ -237,7 +242,7 @@ export function TransporteCard({ color, isCurrentSection }) {
       </p>
 
         <Button 
-          id='Todos'
+          id='General'
           size='sm'
           variant='outline'
           onClick={handleDataChange}
@@ -245,7 +250,7 @@ export function TransporteCard({ color, isCurrentSection }) {
             boxShadow:
               '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)',
           }}
-        >Todos</Button>
+        >General</Button>
 
       <ButtonGroup 
       size='sm' 
