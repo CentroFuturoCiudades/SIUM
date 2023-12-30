@@ -124,22 +124,20 @@ const transformDataForTrips = (data) => {
 export function TransporteCard({ color, isCurrentSection }) {
   const { setLayers, setControlsProps, setOutline } = useCardContext();
   const [originalData, setOriginalData] = useState([]); 
+  const [todosLayer, setTodosLayer] = useState([]);
   const [chartData, setChartData] = useState([]);
+  const [todosChartData, setTodosChartData] = useState([]);
   const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(0, 1440, 2, true);
+
   
-  const [automovilLayer, setAutomovilLayer] = useState([]);
-  const [transPublicoLayer, setTransPublicoLayer] = useState([]);
-  const [ciclistaLayer, setCiclistaLayer] = useState([]);
-  const [peatonLayer, setPeatonLayer] = useState([]);
-
-
   useEffect(() => {
     if (isCurrentSection) {
       fetch("SIUM/data/transporte_municipality.json")
-        .then((response) => response.json())
-        .then((data) => {
-          const newData = data.filter((x) => x["Transporte"] === "TPUB" && x["Motivo"] === "Regreso A Casa");
-          setChartData(newData);
+      .then((response) => response.json())
+      .then((data) => {
+          setChartData(data);
+          setTodosChartData(data);
+
         });
     } else {
       setChartData([]);
@@ -147,22 +145,34 @@ export function TransporteCard({ color, isCurrentSection }) {
   }, [isCurrentSection]);
 
 
+  function handleDataChange(event) {
+    const idBoton = event.target.id;
+
+    if(idBoton == 'Todos'){
+      setOriginalData(todosLayer);
+      setChartData(todosChartData);
+    } else {
+      let actualLayerData = {...todosLayer};
+      let actualChartData = {...todosChartData};
+
+      actualLayerData.features = todosLayer.features.filter((feature) => feature.properties.Transporte == idBoton);
+      actualChartData = todosChartData.filter((feature) => feature["Transporte"] == idBoton);
+
+      setOriginalData(actualLayerData);
+      setChartData(actualChartData)
+    }
+  }
+
+
   useEffect(() => {
     if (isCurrentSection) {
       fetch("SIUM/data/TRANSPORTEJEANNETTE.geojson")
         .then((response) => response.json())
         .then((data) => {
-          // // Autómovil - TPUB - Bicicleta - Caminando
-          // const automovilFeatures = data.features.filter((feature) => feature.properties.Transporte == 'Autómovil');
-          // const transPublicoFeatures = data.features.filter((feature) => feature.properties.Transporte == 'Autómovil');
-          // const ciclistaFeatures = data.features.filter((feature) => feature.properties.Transporte == 'Autómovil');
-          // const peatonFeatures = data.features.filter((feature) => feature.properties.Transporte == 'Autómovil');
-          // data.features = automovilFeatures;
-          console.log(data);
-
           setOriginalData(data);
+          setTodosLayer(data);
+
         })
-        // .then((data) => setOriginalData(data))
         .catch((error) => console.error("Error cargando el GeoJSON:", error));
     } else {
       setOriginalData(null);
@@ -172,6 +182,7 @@ export function TransporteCard({ color, isCurrentSection }) {
 
 
   useEffect(() => {
+
     if (isCurrentSection && originalData) {
 
       setControlsProps({ time, togglePlay, isPlaying, handleSliderChange });
@@ -224,32 +235,61 @@ export function TransporteCard({ color, isCurrentSection }) {
         <CenterSpan setOutline={setOutline} />. En promedio se invierten{" "}
         <b>68 minutos</b> por viaje redondo, el equivalente a doce días por año.
       </p>
-      <ButtonGroup size='sm' isAttached variant='outline'>
+
         <Button 
+          id='Todos'
+          size='sm'
+          variant='outline'
+          onClick={handleDataChange}
+          _focus={{
+            boxShadow:
+              '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)',
+          }}
+        >Todos</Button>
+
+      <ButtonGroup 
+      size='sm' 
+      isAttached 
+      variant='outline'>
+
+        <Button 
+          id="Autómovil"
+          onClick={handleDataChange}
           _focus={{
             boxShadow:
               '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)',
           }}
         >Auto</Button>
+
         <Button
+          id='TPUB'
+          onClick={handleDataChange}
           _focus={{
             boxShadow:
-              '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)',
+            '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)',
           }}
-        >Transporte público</Button>
+          >Transporte público</Button>
+
         <Button
+          id='Bicicleta'
+          onClick={handleDataChange}
           _focus={{
             boxShadow:
-              '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)',
+            '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)',
           }}
-        >Ciclista</Button>
+          >Ciclista</Button>
+
         <Button
+        id='Caminando'
+          onClick={handleDataChange}
           _focus={{
             boxShadow:  
               '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)',
           }}
         >Peatón</Button>
+
       </ButtonGroup>
+
       <br />
       <ContextTitle color={color}>
         La expansión urbana aumenta la dependencia del automovil, contribuyendo
