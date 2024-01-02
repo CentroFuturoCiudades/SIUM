@@ -83,7 +83,7 @@ export function ViviendaCard({ color, isCurrentSection }) {
 
   useEffect(() => { //esto lee para las bar charts
     if (isCurrentSection) {
-      fetch("SIUM/data/vivienda_municipality.json")
+      fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda_municipality.json")
         .then((response) => response.json())
         .then((data) => {
           const newData = data.filter((x) => x.year === 2019);
@@ -97,8 +97,6 @@ export function ViviendaCard({ color, isCurrentSection }) {
 
   useEffect(() => {
     if (isCurrentSection) {
-      console.log("Se llamaron a los datos de vivienda")
-      //fetch("SIUM/data/vivienda-hex.geojson")
       fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda-hex.geojson")
         .then((response) => response.json())
         .then((data) => setOriginalData(data))

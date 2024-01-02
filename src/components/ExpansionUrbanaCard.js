@@ -70,7 +70,7 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
 
   useEffect(() => {
     if (isCurrentSection) {
-      fetch("SIUM/data/expansion_municipality.json")
+      fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/expansion_municipality.json")
         .then((response) => response.json())
         .then((data) => setChartData(data));
     } else {

@@ -126,7 +126,7 @@ export function TransporteCard({ color, isCurrentSection }) {
 
   useEffect(() => {
     if (isCurrentSection) {
-      fetch("SIUM/data/transporte_municipality.json")
+      fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte_municipality.json")
         .then((response) => response.json())
         .then((data) => {
           const newData = data.filter((x) => x["Transporte"] === "TPUB" && x["Motivo"] === "Regreso A Casa");
@@ -139,7 +139,7 @@ export function TransporteCard({ color, isCurrentSection }) {
 
   useEffect(() => {
     if (isCurrentSection) {
-      fetch("SIUM/data/TRANSPORTEJEANNETTE.geojson")
+      fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/TRANSPORTEJEANNETTE.geojson")
         .then((response) => response.json())
         .then((data) => setOriginalData(data))
         .catch((error) => console.error("Error cargando el GeoJSON:", error));

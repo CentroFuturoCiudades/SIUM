@@ -69,7 +69,7 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
   //los datos que se leen para los charts
   useEffect(() => {
     if (isCurrentSection) {
-      fetch("SIUM/data/crimen_municipality.json")
+      fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen_municipality.json")
         .then((response) => response.json())
         .then((data) => {
           const newData = data.filter(
