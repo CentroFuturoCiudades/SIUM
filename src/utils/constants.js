@@ -327,7 +327,7 @@ export function separateLegendItems(data, quartiles, colorStart, colorEnd, filte
     return {
       color: `rgba(${interpolatedColor.join(',')})`, // Convierte el color a cadena para CSS
       item1: filteringFn(breakpoint),
-      item2: filteringFn(breakpoint),
+      item2: filteringFn(nextBreakpoint),
     };
   });
   return newLegendItems;
