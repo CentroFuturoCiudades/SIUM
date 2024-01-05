@@ -8,7 +8,7 @@ import {
   ExpansionSpan,
 } from "./Card";
 import { useCardContext } from "../views/Body";
-import { separateLegendItems, filterDataAll } from "../utils/constants";
+import { separateLegendItems, filterDataAll, cleanedGeoData } from "../utils/constants";
 import "../index.css";
 import { Chart } from "./Chart";
 import _ from "lodash";
@@ -60,12 +60,18 @@ export const ExpansionUrbanaControls = ({time,
     />
   );
 };
+const mapping = {
+  1990: {column: "POBTOT90", name: 'agebs-sum-2090'},
+  2000: {column: "POBTOT00", name: 'agebs-sum-2000'},
+  2010: {column: "POBTOT10", name: 'agebs-sum-2010'},
+  2020: {column: "POBTOT_x", name: 'agebs-sum-20'},
+}
 
 export function ExpansionUrbanaCard({ color, isCurrentSection }) {
   const { setLayers, setOutline, setControlsProps } = useCardContext();
   const [chartData, setChartData] = useState([]);
-  const [originalData, setOriginalData] = useState([]);
-  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(1990, 2020, 10, 3000, false);
+  const [originalData, setOriginalData] = useState(null);
+  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(1990, 2020, 10, 1000, false);
 
 
   useEffect(() => {
@@ -81,28 +87,26 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
   useEffect(() => {
     if (isCurrentSection) {
       console.log("Se llamaron a los datos de expansion")
-      fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/expansion.geojson")
+      fetch(`https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/${mapping[time].name}.geojson`)
         .then((response) => response.json())
         .then((data) => setOriginalData(data))
         .catch((error) => console.error("Error cargando el GeoJSON:", error));
     } else {
       setOriginalData(null);
     }
-  }, [isCurrentSection]);
+  }, [isCurrentSection, time, isPlaying, animationTime]);
 
 
   useEffect(() => {
-    if (isCurrentSection && originalData) {
-
+    if (isCurrentSection) {
       setControlsProps({ time, togglePlay, isPlaying, handleSliderChange });
-
+      console.log(originalData)
       const expansionLayer = {
         type: GeoJsonLayer,
         props: {
           id: "seccion_expansion_layer",
-          data: filterDataAll(originalData, time, "population_change", true, "year"),
-          getFillColor: (d) =>
-            colorInterpolate(d.properties.normalized, "blue", "red", 1),
+          data: originalData ? cleanedGeoData(originalData.features, mapping[time].column) : [],
+          getFillColor: (d) => colorInterpolate(d.properties.normalized, "blue", "red", 1),
           getLineColor: (d) =>
             colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
           getLineWidth: 10,
@@ -115,9 +119,6 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
     originalData,
     setLayers,
     setControlsProps,
-    isPlaying,
-    time,
-    animationTime,
   ]);
 
   return (

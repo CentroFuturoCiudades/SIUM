@@ -24,7 +24,7 @@ export const SegregacionControls = () => {
         );
         console.log(values);
         setLegendItems(
-          separateLegendItems(values, 4, "blue", "red", (x) =>
+          separateLegendItems(values, 4, "red", "blue", (x) =>
             x.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
@@ -38,7 +38,7 @@ export const SegregacionControls = () => {
       );
   }, []);
 
-  return <Legend title="Ingreso" legendItems={legendItems} />;
+  return <Legend title="Ingreso per capita" legendItems={legendItems} />;
 };
 
 export function SegregacionCard({ color, isCurrentSection }) {

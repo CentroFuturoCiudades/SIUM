@@ -40,11 +40,6 @@ export const CustomBarChart = ({ data }) => (
 );
 
 const marks = [
-  { value: 0, label: "0:00" },
-  { value: 60, label: "1:00" },
-  { value: 120, label: "2:00" },
-  { value: 180, label: "3:00" },
-  { value: 240, label: "4:00" },
   { value: 300, label: "5:00" },
   { value: 360, label: "6:00" },
   { value: 420, label: "7:00" },
@@ -63,8 +58,6 @@ const marks = [
   { value: 1200, label: "20:00" },
   { value: 1260, label: "21:00" },
   { value: 1320, label: "22:00" },
-  { value: 1380, label: "23:00" },
-  { value: 1440, label: "24:00" },
 ];
 
 export const TransporteControls = ({
@@ -76,8 +69,8 @@ export const TransporteControls = ({
   return (
     <SliderHTML
       time={time}
-      min={0}
-      max={1440}
+      min={300}
+      max={1320}
       step={3}
       //title={"Precio de Venta"}
       togglePlay={togglePlay}

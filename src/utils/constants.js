@@ -22,12 +22,13 @@ import { CostosCard } from "../components/CostosCard";
 export function colorInterpolate(normalizedValue, startColor, endColor, opacity = 1) {
   const interpolator = interpolateRgb(startColor, endColor);
   const resultColor = rgb(interpolator(normalizedValue));
+  const minOpacity = 0.3;
 
   return [
     resultColor.r,
     resultColor.g,
     resultColor.b,
-    normalizedValue * opacity * 255,
+    normalizedValue > 0 ? Math.max(opacity * normalizedValue, minOpacity) * 255 : 0,
   ];
 }
 
@@ -73,7 +74,6 @@ export const filterDataAll = (data, selectedYear, column, reversed=false, nomcol
     const filteredData = data.features
       .filter((feature) => feature[column] !== 0 && parseInt(feature.properties[nomcol]) === selectedYear)
       .map((feature) => {
-        const coordinates = feature.geometry.coordinates[0]; // Obtener las coordenadas del primer anillo del polígono
         return {
           ...feature,
           properties: {
@@ -81,10 +81,6 @@ export const filterDataAll = (data, selectedYear, column, reversed=false, nomcol
             normalized: reversed
               ? 1 - toNormalize(feature.properties)
               : toNormalize(feature.properties),
-          },
-          geometry: {
-            type: "Polygon",
-            coordinates: [coordinates], // Conservar solo el primer anillo
           },
         };
       });
@@ -245,9 +241,9 @@ export const EMPLEO_LAYER = {
     data: "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2010_Municipios_Geo2.json",
     dataTransform: (d) => cleanedGeoData(d.features, "Empleos"),
     getFillColor: (d) =>
-      colorInterpolate(d.properties.normalized, "yellow", "red", 2),
+      colorInterpolate(d.properties.normalized, "yellow", "red", 8),
     getLineColor: (d) =>
-      colorInterpolate(d.properties.normalized, "yellow", "red", 0.5),
+      colorInterpolate(d.properties.normalized, "yellow", "red", 5),
     getLineWidth: 10,
   },
 };

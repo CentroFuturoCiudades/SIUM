@@ -49,6 +49,11 @@ const CustomBarLabel = memo((props) => {
     </text>
   );
 });
+const excludedMunicipalities = [
+  "Abasolo",
+  "Hidalgo",
+  "El Carmen",
+]
 
 export const Chart = ({
   data,
@@ -67,8 +72,8 @@ export const Chart = ({
           [column]: (reducer || _.sumBy)(objs, column),
         }))
         .value()
-        .sort((a, b) => b[column] - a[column])
-        .slice(0, 12),
+        .filter((x) => excludedMunicipalities.indexOf(x[columnKey]) === -1)
+        .sort((a, b) => b[column] - a[column]),
     [data, columnKey, column, reducer]
   );
   const [activeMunicipality, setActiveMunicipality] = useState(null);

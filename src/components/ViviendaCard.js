@@ -15,8 +15,8 @@ import { colorInterpolate } from "../utils/constants";
 
 
 const marks = [
-  { value: 1990, label: "1990" },
-  { value: 1995, label: "1995" },
+  // { value: 1990, label: "1990" },
+  // { value: 1995, label: "1995" },
   { value: 2000, label: "2000" },
   { value: 2005, label: "2005" },
   { value: 2010, label: "2010" },
@@ -42,7 +42,7 @@ export const ViviendaControls = ({time,
           (feat) => feat.properties["IM_PRECIO_VENTA"]
         );
         setLegendItems(
-          separateLegendItems(valuesPrecio, 4, "blue", "red", (x) =>
+          separateLegendItems(valuesPrecio, 4, "red", "blue", (x) =>
             x.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
@@ -59,7 +59,7 @@ export const ViviendaControls = ({time,
   return (
     <SliderHTML
       time={time}
-      min={1990}
+      min={2000}
       max={2020}
       step={5}
       title={"Precio de Venta"}
@@ -78,7 +78,7 @@ export function ViviendaCard({ color, isCurrentSection }) {
   const { setLayers, setOutline, setControlsProps} = useCardContext();
   const [chartData, setChartData] = useState([]);
   const [originalData, setOriginalData] = useState([]); //datos filtrados
-  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(1990, 2020, 5, 3000, false);
+  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(1990, 2020, 5, 1000, false);
 
 
   useEffect(() => { //esto lee para las bar charts
