@@ -22,7 +22,7 @@ import { CostosCard } from "../components/CostosCard";
 export function colorInterpolate(normalizedValue, startColor, endColor, opacity = 1) {
   const interpolator = interpolateRgb(startColor, endColor);
   const resultColor = rgb(interpolator(normalizedValue));
-  const minOpacity = 0.3;
+  const minOpacity = 0.8;
 
   return [
     resultColor.r,
@@ -238,7 +238,7 @@ export const EMPLEO_LAYER = {
   type: GeoJsonLayer,
   props: {
     id: "empleo_layer",
-    data: "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2010_Municipios_Geo2.json",
+    data: "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2020_Municipios_Geo.json",
     dataTransform: (d) => cleanedGeoData(d.features, "Empleos"),
     getFillColor: (d) =>
       colorInterpolate(d.properties.normalized, "yellow", "red", 8),

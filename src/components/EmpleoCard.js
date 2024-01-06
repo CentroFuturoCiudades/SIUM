@@ -17,7 +17,7 @@ export const EmpleoControls = () => {
 
   useEffect(() => {
     fetch(
-      "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2010_Municipios_Geo2.json"
+      "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2020_Municipios_Geo.json"
     )
       .then((response) => response.json())
       .then((data) => {

@@ -15,7 +15,7 @@ export const Legend = ({ title, legendItems }) => {
             alignItems="center" justifyContent="space-between"
           />
           <span className="legend-label">{item.item1}</span>
-          <span className="legend-label"> - </span>
+          <span className="legend-label"> — </span>
           <span className="legend-label">{item.item2}</span>
         </Flex>
       ))}
