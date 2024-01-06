@@ -87,7 +87,7 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
         .then((data) => setChartData(data));
       console.log("Se llamaron a los datos de expansion");
       fetch(
-        `https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob.geojson`
+        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob.geojson"
       )
         .then((response) => response.json())
         .then((data) => setOriginalData(data))
@@ -151,11 +151,12 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
         urbana, nos aleja de servicios y empleo.
       </ContextTitle>
       <Chart
+        title={`Población en ${time}`}
         data={chartData}
         setOutline={setOutline}
-        column="2020"
+        column={time}
         columnKey="nom_mun"
-        formatter={(d) => `${d.toLocaleString("en-US")} pob`}
+        formatter={(d) => `${Math.round(d).toLocaleString("en-US")}`}
       />
     </>
   );

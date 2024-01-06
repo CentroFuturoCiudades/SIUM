@@ -73,7 +73,7 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
         .then((response) => response.json())
         .then((data) => {
           const newData = data.filter(
-            (x) => x.year === 2020 && x.TIPO_INCIDENCIA === "VIOLENCIA FAMILIAR"
+            (x) => x.year === 2020 && x.TIPO_INCIDENCIA === "ROBO A TRANSEUNTE"
           );
           setChartData(newData);
         });
@@ -147,11 +147,12 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
         de oportunidades y a la delincuencia.
       </ContextTitle>
       <Chart
+        title="Número de Robos a transeúntes de 2017 a 2020"
         data={chartData}
         setOutline={setOutline}
         column="num_crimen"
         columnKey="NOMGEO"
-        formatter={(d) => `${d.toLocaleString("en-US")} crimen`}
+        formatter={(d) => `${Math.round(d).toLocaleString("en-US")}`}
       />
     </>
   );

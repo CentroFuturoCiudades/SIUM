@@ -87,11 +87,12 @@ export function SegregacionCard({ color, isCurrentSection }) {
         públicos y crimen.
       </ContextTitle>
       <Chart
+        title="Ingreso per capita en ????"
         data={chartData}
         setOutline={setOutline}
         column="income_pc"
         columnKey="NOM_MUN"
-        formatter={(d) => `$ ${d.toLocaleString("en-US")}`}
+        formatter={(d) => `$ ${Math.round(d).toLocaleString("en-US")}`}
       />
     </>
   );

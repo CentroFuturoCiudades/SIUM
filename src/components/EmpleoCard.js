@@ -31,7 +31,7 @@ export const EmpleoControls = () => {
       );
   }, []);
 
-  return <Legend title="Número de Trabajadores" legendItems={legendItems} />;
+  return <Legend title="Número de Empleos" legendItems={legendItems} />;
 };
 
 export function EmpleoCard({ color, isCurrentSection }) {
@@ -75,11 +75,12 @@ export function EmpleoCard({ color, isCurrentSection }) {
         menor cobertura de transporte público.
       </ContextTitle>
       <Chart
+        title="Número de empleos en 2020"
         data={chartData}
         setOutline={setOutline}
         column="per_ocu"
         columnKey="nom_mun"
-        formatter={(d) => `${d.toLocaleString("en-US")} empleos`}
+        formatter={(d) => `${Math.round(d).toLocaleString("en-US")}`}
       />
     </>
   );

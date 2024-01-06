@@ -87,7 +87,9 @@ export const ContextTitle = ({ children, color }) => (
 export const Card = ({ id, children, color }) => (
   <section className="cardSection" id={id}>
     <Box className="card" borderColor={`${color}.500`}>
-      {children}
+      <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+        {children}
+      </div>
     </Box>
   </section>
 );

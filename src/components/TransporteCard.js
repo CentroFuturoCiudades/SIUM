@@ -201,11 +201,12 @@ export function TransporteCard({ color, isCurrentSection }) {
         a que el tráfico aumente.
       </ContextTitle>
       <Chart
+        title="Tiempo de traslado regreso a casa"
         data={chartData}
         setOutline={setOutline}
         column="TiempoTraslado"
         columnKey="MunDest"
-        formatter={(d) => `${d.toLocaleString("en-US")} min`}
+        formatter={(d) => `${Math.round(d).toLocaleString("en-US")} min`}
         reducer={_.meanBy}
       />
     </>

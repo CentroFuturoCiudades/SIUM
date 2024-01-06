@@ -85,14 +85,11 @@ export function ViviendaCard({ color, isCurrentSection }) {
     if (isCurrentSection) {
       fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda_municipality.json")
         .then((response) => response.json())
-        .then((data) => {
-          const newData = data.filter((x) => x.year === 2019);
-          setChartData(newData);
-        });
+        .then((data) => setChartData(data));
     } else {
       setChartData([]);
     }
-  }, [isCurrentSection]);
+  }, [isCurrentSection, time]);
 
 
   useEffect(() => {
@@ -169,11 +166,13 @@ export function ViviendaCard({ color, isCurrentSection }) {
         costos se elevan, aumentando la desigualdad.
       </ContextTitle> */}
       <Chart
+        title={`Número de Creditos acumulados en ${time}`}
         data={chartData}
         setOutline={setOutline}
-        column="IM_PRECIO_VENTA"
+        column="creditos"
         columnKey="NOMGEO"
-        formatter={(d) => `$${d.toLocaleString("en-US")}`}
+        formatter={(d) => `${Math.round(d).toLocaleString("en-US")}`}
+        filtering={(x) => x.year_end === time}
       />
     </>
   );
