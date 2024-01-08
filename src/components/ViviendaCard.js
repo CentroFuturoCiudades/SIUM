@@ -126,6 +126,7 @@ export function ViviendaCard({ color, isCurrentSection }) {
       setLayers([viviendaLayer]);
     }
   }, [
+    isCurrentSection,
     originalData,
     setLayers,
     setControlsProps,
@@ -134,35 +135,26 @@ export function ViviendaCard({ color, isCurrentSection }) {
     animationTime,
     handleSliderChange,
     togglePlay,
-    isCurrentSection,
   ]);
 
   return (
     <>
       <ResponseTitle color={color}>
-        La vivienda es más asequible en las periferias.
+        La vivienda es más asequible en las periferias
       </ResponseTitle>
       <p>
-        En <b>1990</b> había vivienda asequible en los{" "}
-        <SubcentersSpan setOutline={setOutline} />, como Santa Catarina,
-        Cumbres, San Nicolás y Guadalupe. <b>Actualmente</b> la vivienda barata
-        se encuentra en la <PeripherySpan setOutline={setOutline} /> como
-        García, Juárez, Pesquería, Zuazua y Cadereyta.
+        La zona central de Monterrey se ha ido transformando en una zona
+        comercial sin residentes: los hogares migran y los comercios se quedan.
+        El centro es la zona mejor conectada de la ciudad porque, durante
+        décadas, la mejor infrastructura de transporte y vialidades se construyó
+        para conectar la zona del empleo, el centro, con el resto de las zonas
+        residenciales. El centro es la zona mejor conectada y accesible de la
+        ciudad y eso le otorga un gran valor comercial, y por tanto, un alto
+        valor a su suelo. El alto valor del suelo hace inviable la producción de
+        vivienda asequible en la zona central de la ciudad; la vivienda
+        económica se construye en las periferias urbanas y hacia allá migran los
+        hogares en busca de un espacio para poder habitar.
       </p>
-      <p>
-        De 1990 a 2020 el costo de la vivienda asequible aumentó en un{" "}
-        <b>50%</b> y la vivienda en general en más del <b>300%</b>. El{" "}
-        <b>45%</b> de viviendas han sido financiadas con crédito{" "}
-        <b>INFONAVIT</b> de los cuales el <b>87%</b> se encuentran en la{" "}
-        <PeripherySpan setOutline={setOutline} />.
-      </p>
-      <p>
-        El 50% de las solicitudes para el crédito tienen ingresos inferiores a
-        $12,614. Considerando que el 60% de hogares viven con menos de $12,800,
-        los costos de comprar casa y automóvil son, en la mayoría de los casos,
-        incosteables.
-      </p>
-      <br />
       <ContextTitle color={color}>
         Aunque los costos de la vivienda son menores en las periferias, otros
         costos se elevan, aumentando la desigualdad.

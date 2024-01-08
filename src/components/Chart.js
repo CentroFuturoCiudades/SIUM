@@ -50,11 +50,7 @@ const CustomBarLabel = memo((props) => {
     </text>
   );
 });
-const excludedMunicipalities = [
-  "Abasolo",
-  "Hidalgo",
-  "El Carmen",
-]
+const excludedMunicipalities = ["Abasolo", "Hidalgo", "El Carmen"];
 
 export const Chart = ({
   data,
@@ -78,13 +74,14 @@ export const Chart = ({
         .value()
         .filter((x) => excludedMunicipalities.indexOf(x[columnKey]) === -1)
         .sort((a, b) => b[column] - a[column]),
-    [data, columnKey, column, reducer]
+    [data, columnKey, column, reducer, filtering]
   );
-  let domain = useMemo(
-    () => {
-      const tempData = data.map((x) => x[column]);
-      return data.length > 0 ? [Math.min(...tempData) * 0.99, Math.max(...tempData) * 1.01] : undefined;
-    }, [data, column]);
+  let domain = useMemo(() => {
+    const tempData = data.map((x) => x[column]);
+    return data.length > 0
+      ? [Math.min(...tempData) * 0.99, Math.max(...tempData) * 1.01]
+      : undefined;
+  }, [data, column]);
   const [activeMunicipality, setActiveMunicipality] = useState(null);
   const [mouseLeave, setMouseLeave] = useState(true);
   const handleMouseMove = (state) => {
@@ -110,44 +107,50 @@ export const Chart = ({
     }
   };
   return (
-    <div style={{ position: 'absolute', bottom: '0', width: '100%' }}>
-    <ResponsiveContainer width="100%" height={230}>
-      <BarChart
-        layout="vertical"
-        data={filteredData}
-        onMouseMove={handleMouseMove}
-        barCategoryGap={0}
-      >
-        <XAxis
-          tickFormatter={formatter}
-          type="number"
-          dataKey={column}
-          style={{ fontSize: "0.6rem" }}
-          domain={domain}
-          tickCount={15}
-        />
-        <YAxis type="category" dataKey={columnKey} hide />
-        <Bar background dataKey={column} style={{ cursor: "pointer" }}>
-          <LabelList
-            content={
-              <CustomBarLabel columnKey={columnKey} data={filteredData} />
-            }
+    <div style={{ position: "absolute", bottom: "0", width: "100%" }}>
+      <ResponsiveContainer width="100%" height={220}>
+        <BarChart
+          layout="vertical"
+          data={filteredData}
+          onMouseMove={handleMouseMove}
+          barCategoryGap={0}
+        >
+          <XAxis
+            tickFormatter={formatter}
+            type="number"
+            dataKey={column}
+            style={{ fontSize: "0.6rem" }}
+            domain={domain}
+            tickCount={15}
           />
-          {filteredData.map((item, index) => (
-            <Cell
-              key={`cell-${index}`}
-              fill={
-                activeMunicipality && activeMunicipality === item[columnKey]
-                  ? "#FFAE00"
-                  : "#ffcb54"
+          <YAxis type="category" dataKey={columnKey} hide />
+          <Bar background dataKey={column} style={{ cursor: "pointer" }}>
+            <LabelList
+              content={
+                <CustomBarLabel columnKey={columnKey} data={filteredData} />
               }
-              style={{ cursor: "pointer", transition: "fill 0.05s ease" }}
             />
-          ))}
-        </Bar>
-      </BarChart>
-    </ResponsiveContainer>
-    <Heading size="xs" color="green.700" style={{ textAlign: 'center', marginTop: '-15px' }}>{title}</Heading>
+            {filteredData.map((item, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={
+                  activeMunicipality && activeMunicipality === item[columnKey]
+                    ? "#FFAE00"
+                    : "#ffcb54"
+                }
+                style={{ cursor: "pointer", transition: "fill 0.05s ease" }}
+              />
+            ))}
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+      <Heading
+        size="xs"
+        color="green.700"
+        style={{ textAlign: "center", marginTop: "-15px" }}
+      >
+        {title}
+      </Heading>
     </div>
   );
 };

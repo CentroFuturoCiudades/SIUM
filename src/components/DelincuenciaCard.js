@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { ResponseTitle, ContextTitle } from "./Card";
 import { useCardContext } from "../views/Body";
-import { separateLegendItems, cleanedGeoData, colorInterpolate } from "../utils/constants";
+import {
+  separateLegendItems,
+  cleanedGeoData,
+  colorInterpolate,
+} from "../utils/constants";
 import { Chart } from "./Chart";
 import { Legend } from "./Legend";
 import { GeoJsonLayer } from "deck.gl";
@@ -69,7 +73,7 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
               colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
             getLineWidth: 10,
           },
-        }
+        },
       ]);
     }
   }, [isCurrentSection, originalData, setLayers]);
@@ -77,22 +81,29 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
   return (
     <>
       <ResponseTitle color={color}>
-        Porque la segregación aumenta la delincuencia.
+        Porque al estar alejados, no nos podemos cuidar los unos a los otros
       </ResponseTitle>
       <p>
-        Incidencias delictivas como el robos en calles o a viviendas, así como
-        violencia familiar se concentran en regiones segregadas.
+        Entre más aumenta la mancha urbana, más aumenta la inseguridad: cuando
+        la mancha urbana aumenta un kilómetro, el robo a casa habitación
+        incrementa en un 0.04%.
       </p>
       <p>
-        Estar alejado de actividades económicas como el comercio al por mayor
-        aumentan la incidencia delictiva, mientras que estar cercano a centros
-        con comercio al por menor la disminuyen.
+        De forma similar, las incidencias delictivas como robos en calles o a
+        viviendas, así como violencia familiar se concentran en regiones
+        segregadas. Estar alejado de actividades económicas como el comercio al
+        por mayor aumentan la incidencia delictiva, mientras que estar cercano a
+        centros con comercio al por menor, la disminuyen.
       </p>
-      <br />
-      <br />
+      <p>
+        Las ciudades compactas y multifuncionales incentivan una vida pública
+        activa, lo que podría disminuir los indices delictivos en la Zona
+        Metropolitana de Monterrey.
+      </p>
       <ContextTitle color={color}>
-        La malas condiciones de vida en zonas marginadas contribuyen a la falta
-        de oportunidades y a la delincuencia.
+        Una mayor densificación, una diversificación de usos de suelo y
+        transporte colectivo, incrementa los flujos peatonales e incentiva la
+        vigilancia colectiva.
       </ContextTitle>
       <Chart
         title="Robos a transeúntes por 10 mil personas (2017-2020)"

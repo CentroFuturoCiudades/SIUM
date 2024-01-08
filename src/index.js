@@ -16,7 +16,7 @@ const theme = extendTheme({
         bg: "linear-gradient(#dde3e3, #f7f2e4)",
       },
       p: {
-        fontSize: { md: "0.7rem", lg: "0.9rem", sm: "0.6rem" },
+        fontSize: { md: "0.7rem", lg: "0.75rem", sm: "0.6rem" },
       },
     }),
   },

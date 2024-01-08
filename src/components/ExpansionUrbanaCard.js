@@ -8,16 +8,14 @@ import {
   ExpansionSpan,
 } from "./Card";
 import { useCardContext } from "../views/Body";
-import {
-  separateLegendItems,
-  cleanedGeoData,
-} from "../utils/constants";
+import { separateLegendItems, cleanedGeoData } from "../utils/constants";
 import "../index.css";
 import { Chart } from "./Chart";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import { SliderHTML, TimeComponentClean } from "./TimeComponent";
 import { colorInterpolate } from "../utils/constants";
 import { Legend } from "./Legend";
+import { Text } from "@chakra-ui/react";
 
 const marks = [
   { value: 1990, label: "1990-2020" },
@@ -132,27 +130,32 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
   return (
     <>
       <ResponseTitle color={color}>
-        Hacia las periferias, lejos unos de otros.
+        Hacia las Periferias, lejos unos de otros
       </ResponseTitle>
       <p>
-        En <ExpansionSpan setOutline={setOutline} /> los <b>adultos mayores</b>{" "}
-        vivían en el <CenterSpan setOutline={setOutline} /> de Monterrey,
-        mientras que las <b>familias jóvenes</b> vivían en{" "}
-        <SubcentersSpan setOutline={setOutline} /> como Guadalupe, San Pedro,
-        San Nicolás y Cumbres.
+        <b>En 1990</b>, las familias jóvenes, con edades comprendidas entre 19 y
+        65 años, residían principalmente en las zonas centrales de la zona
+        metropolitana, en Monterrey, Guadalupe, San Pedro y San Nicolás.
       </p>
       <p>
-        En contraste, <b>actualmente</b> los <b>adultos mayores</b> viven en los{" "}
-        <SubcentersSpan setOutline={setOutline} />, mientras que las{" "}
-        <b>familias jóvenes</b> viven en la{" "}
-        <PeripherySpan setOutline={setOutline} />, como Juárez, García, Apodaca,
-        Santa Catarina y Suaza.
+        <b>En 2020</b>, se observa un cambio: las familias jóvenes han migrado
+        hacia la <PeripherySpan setOutline={setOutline} />, estableciéndose en
+        lugares como Juárez, García, Apodaca, Santa Catarina y General Zuazua.
+        Los adultos mayores permanecen en la zona central.
       </p>
-      <br />
-      <br />
+      <p>
+        En los últimos años, ha habido un cambio significativo en la
+        distribución de la población en Monterrey, reflejando dinámicas
+        demográficas notables. Se plantea la necesidad de una adaptación
+        cuidadosa de las políticas públicas y servicios urbanos a las nuevas
+        dinámicas. Una de las causas principales de la migración de los hogares
+        jóvenes a la periferia urbana es la falta de una oferta de vivienda
+        adecuada a su nivel de ingreso y estilo de vida en la zona central.
+      </p>
       <ContextTitle color={color}>
-        La migración de subcentros a la periferia, conocido como expansión
-        urbana, nos aleja de servicios y empleo.
+        Promover programas de densificación y optar por soluciones
+        habitacionales asequibles, fomentará la permanencia de una demografía
+        diversa en centros y subcentros urbanos
       </ContextTitle>
       <Chart
         title={`Población en ${time}`}

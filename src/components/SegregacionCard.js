@@ -92,28 +92,28 @@ export function SegregacionCard({ color, isCurrentSection }) {
   return (
     <>
       <ResponseTitle color={color}>
-        Aisla a personas con menos recursos de zonas con mayor inversión.
+        Porque expulsa a los más vulnerables a la periferia
       </ResponseTitle>
       <p>
-        La expansión urbana causa segregación económica, es decir la separación
-        entre barrios pobres y barrios afluentes.
+        Al expandirnos en estos niveles es innevitable que ciertos grupos
+        poblacionales queden alejados de las áreas con mejores oportunidades y
+        acceso a servicios.
       </p>
       <p>
-        La segregación tiene efectos negativos en la calidad de vida de la
-        gente, como la 🏥falta de servicios, falta de 👷mantenimiento en
-        infraestructura, 🚌altos costos y tiempo de traslados, 🥂falta de
-        capital social y más.
+        De igual forma, la expansión provoca que zonas con mayores ingresos
+        queden rodeadas de zonas de menor ingreso, ya que los costos del suelo
+        son más bajos, como sucede en Céntrika y Loma Larga, y en Estanzuela
+        Fomerrey y los límites de la colonia Independencia con Loma Larga.
       </p>
       <p>
-        Las zonas con mayor <SegregacionSpan setOutline={setOutline} /> se
-        tienden concentrar en las <PeripherySpan setOutline={setOutline} /> como
-        Juarez, Garcia, Pesquería y Cadereyta.
+        Integrar las zonas marginadas e informales por medio de transporte
+        colectivo, disminuirá la segregación económica que la expansión provoca.
+        Similarmente, se deben de generar políticas de vivienda asequible menos
+        desconectadas de las zonas funcionales de la ciudad.
       </p>
-      <br />
-      <br />
       <ContextTitle color={color}>
-        La segregación crea zonas marginadas que presentan desafíos en servicios
-        públicos y crimen.
+        La segregación aleja y separa, tanto de nosotros mismos, como de áreas
+        urbanas imprescindibles para el desarrollo humano pleno.
       </ContextTitle>
       <Chart
         title="Ingreso per capita en ????"

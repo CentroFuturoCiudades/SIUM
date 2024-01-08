@@ -86,24 +86,40 @@ export function EmpleoCard({ color, isCurrentSection }) {
 
   return (
     <>
-      <ResponseTitle color={color}>En el centro.</ResponseTitle>
+      <ResponseTitle color={color}>
+        Principalmente en el centro, aunque hay nuevas centralidades.
+      </ResponseTitle>
       <p>
-        El <b>X%</b> de los empleos se concentra en el{" "}
-        <CenterSpan setOutline={setOutline} />. Debido a que las familias han
-        migrado hacia la <PeripherySpan setOutline={setOutline} />, se ha
-        perdido población en los <SubcentersSpan setOutline={setOutline} /> y
-        los translados hacia el trabajo han aumentado.
+        La migración de las familias jóvenes hacia la periferia provoca una
+        disminución de la población en centros y subcentros urbanos, generando
+        un aumento en los desplazamientos hacia los lugares de empleo.
       </p>
       <p>
-        De <ExpansionSpan setOutline={setOutline} /> a 2010 la <b>población</b>{" "}
-        de la Zona Metropolitana de Monterrey aumentó <b>2 veces</b>, pero la{" "}
-        <b>expansión urbana</b> creció <b>2.8 veces</b>.
+        Aunque{" "}
+        <b>
+          la mayoría de los empleos continúan concentrándose en el centro, a
+          unos diez kilómetros alrededor de la Macroplaza
+        </b>
+        , también han surgido nuevas centralidades. En 2010, el 53% de los
+        empleos se concentraba en esta zona, cifra que disminuyó al 47% para el
+        año 2020. Destaca que los{" "}
+        <b>
+          ritmos de crecimiento de los centros de empleo son menores en
+          comparación con la migración residencial hacia la periferia urbana.
+        </b>
       </p>
-      <br />
-      <br />
+      <p>
+        Durante el periodo de 1990 a 2020, la población de la Zona Metropolitana
+        de Monterrey se duplicó, mientras que la expansión de la mancha urbana
+        creció a un ritmo de 2.8 veces,{" "}
+        <b>
+          incrementando el tiempo de traslado a diferentes servicios y
+          equipamientos.
+        </b>
+      </p>
       <ContextTitle color={color}>
-        La gente migran a la periferia, lejos de oportunidades laborales y con
-        menor cobertura de transporte público.
+        Incrementar la atracción de personas a centros y subcentros urbanos para
+        una mejor accesibilidad a empleos.
       </ContextTitle>
       <Chart
         title="Número de empleos en 2020"

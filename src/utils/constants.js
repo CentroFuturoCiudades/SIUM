@@ -297,8 +297,8 @@ export function separateLegendItems(
 
 export const sectionsInfo = {
   "expansion-urbana": {
-    title: "¿Hacia dónde crecemos?",
-    answer: "Hacia las periferias, lejos unos de otros.",
+    title: "¿Hacia dónde nos expandimos?",
+    answer: "Hacia las Periferias, lejos unos de otros",
     color: "brown",
     icon: FaPeopleArrows,
     component: ExpansionUrbanaCard,
@@ -306,7 +306,7 @@ export const sectionsInfo = {
   },
   empleo: {
     title: "¿En dónde trabajamos?",
-    answer: "En el centro.",
+    answer: "Principalmente en el centro, aunque hay nuevas centralidades",
     color: "brown2",
     icon: HiMiniBuildingOffice,
     component: EmpleoCard,
@@ -314,7 +314,7 @@ export const sectionsInfo = {
   },
   transporte: {
     title: "¿Cómo nos movemos?",
-    answer: "Mayormente en automovil.",
+    answer: "Demasiados de nosotros en auto",
     color: "orange",
     icon: MdDirectionsCar,
     component: TransporteCard,
@@ -322,31 +322,32 @@ export const sectionsInfo = {
   },
   vivienda: {
     title: "¿Por qué nos expandimos?",
-    answer: "La vivienda es más asequible en las periferias.",
+    answer: "La vivienda es más asequible en las periferias",
     color: "yellow",
     icon: MdHome,
     component: ViviendaCard,
     controls: ViviendaControls,
   },
   segregacion: {
-    title: "¿Qué nos segrega?",
-    answer: "Aisla a personas con menos recursos de zonas con mayor inversión.",
+    title: "¿Por qué la expansión segrega?",
+    answer: "Porque expulsa a los más vulnerables a la periferia",
     color: "sage",
     icon: GiInjustice,
     component: SegregacionCard,
     controls: SegregacionControls,
   },
   delincuencia: {
-    title: "¿Qué causa inseguridad?",
-    answer: "Porque la segregación aumenta la delincuencia.",
+    title: "¿Por qué la expansión aumenta la inseguridad?",
+    answer:
+      "Porque al estar alejados, no nos podemos cuidar los unos a los otros",
     color: "green",
     icon: GiRobber,
     component: DelincuenciaCard,
     controls: DelincuenciaControls,
   },
   costos: {
-    title: "¿Cuánto cuesta expandirnos?",
-    answer: "Porque hay que llevar servicios públicos cada vez más lejos.",
+    title: "¿Por qué la expansión nos cuenta tanto dinero?",
+    answer: "Hay que llevar servicios públicos más lejos",
     color: "teal",
     icon: MdOutlineAttachMoney,
     component: CostosCard,
