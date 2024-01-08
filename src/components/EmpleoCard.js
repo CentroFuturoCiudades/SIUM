@@ -8,9 +8,14 @@ import {
   ContextTitle,
   ExpansionSpan,
 } from "./Card";
-import { EMPLEO_LAYER, separateLegendItems } from "../utils/constants";
+import {
+  cleanedGeoData,
+  colorInterpolate,
+  separateLegendItems,
+} from "../utils/constants";
 import { Legend } from "./Legend";
 import { Chart } from "./Chart";
+import { GeoJsonLayer } from "deck.gl";
 
 export const EmpleoControls = () => {
   const [legendItems, setLegendItems] = useState([]);
@@ -37,21 +42,47 @@ export const EmpleoControls = () => {
 export function EmpleoCard({ color, isCurrentSection }) {
   const { setLayers, setOutline } = useCardContext();
   const [chartData, setChartData] = useState([]);
+  const [originalData, setOriginalData] = useState(null);
 
   useEffect(() => {
     if (isCurrentSection) {
-      fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/empleo_municipality.json")
+      fetch(
+        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/empleo_municipality.json"
+      )
         .then((response) => response.json())
         .then((data) => setChartData(data));
+      fetch(
+        "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2020_Municipios_Geo.json"
+      )
+        .then((response) => response.json())
+        .then((data) => setOriginalData(data))
+        .catch((error) => console.error("Error cargando el GeoJSON:", error));
     } else {
       setChartData([]);
-    }
-  }, [isCurrentSection]);
-  useEffect(() => {
-    if (isCurrentSection) {
-      setLayers([EMPLEO_LAYER]);
+      setOriginalData(null);
+      setLayers([]);
     }
   }, [isCurrentSection, setLayers]);
+
+  useEffect(() => {
+    if (isCurrentSection && originalData) {
+      setLayers([
+        {
+          type: GeoJsonLayer,
+          props: {
+            id: "empleo_layer",
+            data: originalData,
+            dataTransform: (d) => cleanedGeoData(d.features, "Empleos"),
+            getFillColor: (d) =>
+              colorInterpolate(d.properties.normalized, "yellow", "red", 1.5),
+            getLineColor: (d) =>
+              colorInterpolate(d.properties.normalized, "yellow", "red", 0.5),
+            getLineWidth: 10,
+          },
+        },
+      ]);
+    }
+  }, [isCurrentSection, originalData, setLayers]);
 
   return (
     <>

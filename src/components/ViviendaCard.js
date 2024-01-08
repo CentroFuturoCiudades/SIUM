@@ -8,15 +8,12 @@ import {
 } from "./Card";
 import { separateLegendItems, filterDataAll } from "../utils/constants";
 import { Chart } from "./Chart";
-import _ from "lodash";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import { SliderHTML, TimeComponentClean } from "./TimeComponent";
 import { colorInterpolate } from "../utils/constants";
-
+import { Legend } from "./Legend";
 
 const marks = [
-  // { value: 1990, label: "1990" },
-  // { value: 1995, label: "1995" },
   { value: 2000, label: "2000" },
   { value: 2005, label: "2005" },
   { value: 2010, label: "2010" },
@@ -24,7 +21,8 @@ const marks = [
   { value: 2020, label: "2020" },
 ];
 
-export const ViviendaControls = ({time,
+export const ViviendaControls = ({
+  time,
   togglePlay,
   isPlaying,
   handleSliderChange,
@@ -57,63 +55,66 @@ export const ViviendaControls = ({time,
   }, []);
 
   return (
-    <SliderHTML
-      time={time}
-      min={2000}
-      max={2020}
-      step={5}
-      title={"Precio de Venta"}
-      togglePlay={togglePlay}
-      isPlaying={isPlaying}
-      handleSliderChange={handleSliderChange}
-      marks={marks}
-      legendItems={legendItems}
-    />
+    <>
+      <Legend title={"Precio de Venta"} legendItems={legendItems} />
+      <SliderHTML
+        time={time}
+        min={2000}
+        max={2020}
+        step={5}
+        defaultValue={time}
+        togglePlay={togglePlay}
+        isPlaying={isPlaying}
+        handleSliderChange={handleSliderChange}
+        marks={marks}
+      />
+    </>
   );
 };
 
-
-
 export function ViviendaCard({ color, isCurrentSection }) {
-  const { setLayers, setOutline, setControlsProps} = useCardContext();
+  const { setLayers, setOutline, setControlsProps } = useCardContext();
   const [chartData, setChartData] = useState([]);
   const [originalData, setOriginalData] = useState([]); //datos filtrados
-  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(1990, 2020, 5, 1000, false);
-
-
-  useEffect(() => { //esto lee para las bar charts
-    if (isCurrentSection) {
-      fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda_municipality.json")
-        .then((response) => response.json())
-        .then((data) => setChartData(data));
-    } else {
-      setChartData([]);
-    }
-  }, [isCurrentSection, time]);
-
+  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } =
+    TimeComponentClean(2000, 2020, 5, 1000, false, 2020);
 
   useEffect(() => {
+    //esto lee para las bar charts
     if (isCurrentSection) {
-      fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda-hex.geojson")
+      fetch(
+        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda_municipality.json"
+      )
+        .then((response) => response.json())
+        .then((data) => setChartData(data));
+      fetch(
+        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda-hex.geojson"
+      )
         .then((response) => response.json())
         .then((data) => setOriginalData(data))
         .catch((error) => console.error("Error cargando el GeoJSON:", error));
     } else {
+      setChartData([]);
       setOriginalData(null);
+      setLayers([]);
     }
-  }, [isCurrentSection]);
-  
+  }, [isCurrentSection, originalData, setLayers]);
 
   useEffect(() => {
     if (isCurrentSection && originalData) {
-
       setControlsProps({ time, togglePlay, isPlaying, handleSliderChange });
-      
+
       const viviendaLayer = {
         type: GeoJsonLayer,
         props: {
           id: "seccion_vivienda_layer",
-          data: filterDataAll(originalData, time, "IM_PRECIO_VENTA", true, "year_end"),
+          data: filterDataAll(
+            originalData,
+            time,
+            "IM_PRECIO_VENTA",
+            true,
+            "year_end"
+          ),
           getFillColor: (d) =>
             colorInterpolate(d.properties.normalized, "blue", "red", 1),
           getLineColor: (d) =>
@@ -125,13 +126,15 @@ export function ViviendaCard({ color, isCurrentSection }) {
       setLayers([viviendaLayer]);
     }
   }, [
-    isCurrentSection,
     originalData,
     setLayers,
     setControlsProps,
     isPlaying,
     time,
     animationTime,
+    handleSliderChange,
+    togglePlay,
+    isCurrentSection,
   ]);
 
   return (
@@ -160,11 +163,10 @@ export function ViviendaCard({ color, isCurrentSection }) {
         incosteables.
       </p>
       <br />
-      <br />
-      {/* <ContextTitle color={color}>
+      <ContextTitle color={color}>
         Aunque los costos de la vivienda son menores en las periferias, otros
         costos se elevan, aumentando la desigualdad.
-      </ContextTitle> */}
+      </ContextTitle>
       <Chart
         title={`Número de Creditos acumulados en ${time}`}
         data={chartData}

@@ -10,15 +10,14 @@ import {
 import { useCardContext } from "../views/Body";
 import {
   separateLegendItems,
-  filterDataAll,
   cleanedGeoData,
 } from "../utils/constants";
 import "../index.css";
 import { Chart } from "./Chart";
-import _ from "lodash";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import { SliderHTML, TimeComponentClean } from "./TimeComponent";
 import { colorInterpolate } from "../utils/constants";
+import { Legend } from "./Legend";
 
 const marks = [
   { value: 1990, label: "1990-2020" },
@@ -56,18 +55,20 @@ export const ExpansionUrbanaControls = ({
   }, []);
 
   return (
-    <SliderHTML
-      time={time}
-      min={1990}
-      max={2010}
-      step={10}
-      title={"Cambio Poblacional"}
-      togglePlay={togglePlay}
-      isPlaying={isPlaying}
-      handleSliderChange={handleSliderChange}
-      marks={marks}
-      legendItems={legendItems}
-    />
+    <>
+      <Legend title={"Cambio Poblacional"} legendItems={legendItems} />
+      <SliderHTML
+        time={time}
+        min={1990}
+        max={2010}
+        step={10}
+        defaultValue={1990}
+        togglePlay={togglePlay}
+        isPlaying={isPlaying}
+        handleSliderChange={handleSliderChange}
+        marks={marks}
+      />
+    </>
   );
 };
 
@@ -95,8 +96,9 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
     } else {
       setChartData([]);
       setOriginalData(null);
+      setLayers([]);
     }
-  }, [isCurrentSection]);
+  }, [isCurrentSection, setLayers]);
 
   useEffect(() => {
     if (isCurrentSection && originalData) {
@@ -123,6 +125,8 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
     animationTime,
     setLayers,
     setControlsProps,
+    handleSliderChange,
+    togglePlay,
   ]);
 
   return (

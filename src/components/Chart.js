@@ -124,7 +124,7 @@ export const Chart = ({
           dataKey={column}
           style={{ fontSize: "0.6rem" }}
           domain={domain}
-          tickCount={10}
+          tickCount={15}
         />
         <YAxis type="category" dataKey={columnKey} hide />
         <Bar background dataKey={column} style={{ cursor: "pointer" }}>
@@ -147,7 +147,7 @@ export const Chart = ({
         </Bar>
       </BarChart>
     </ResponsiveContainer>
-    <Heading size="sm" color="green.700" style={{ textAlign: 'center', marginTop: '-15px' }}>{title}</Heading>
+    <Heading size="xs" color="green.700" style={{ textAlign: 'center', marginTop: '-15px' }}>{title}</Heading>
     </div>
   );
 };

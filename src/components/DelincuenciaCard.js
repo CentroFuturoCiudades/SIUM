@@ -1,27 +1,12 @@
 import { useEffect, useState } from "react";
 import { ResponseTitle, ContextTitle } from "./Card";
 import { useCardContext } from "../views/Body";
-import { separateLegendItems, filterDataAll } from "../utils/constants";
+import { separateLegendItems, cleanedGeoData, colorInterpolate } from "../utils/constants";
 import { Chart } from "./Chart";
-import _ from "lodash";
-import { GeoJsonLayer } from "@deck.gl/layers";
-import { SliderHTML, TimeComponentClean} from "./TimeComponent";
-import { colorInterpolate } from "../utils/constants";
+import { Legend } from "./Legend";
+import { GeoJsonLayer } from "deck.gl";
 
-const marks = [
-  { value: 2017, label: "2017" },
-  { value: 2018, label: "2018" },
-  { value: 2019, label: "2019" },
-  { value: 2020, label: "2020" },
-];
-
-
-
-export const DelincuenciaControls = ({time,
-  togglePlay,
-  isPlaying,
-  handleSliderChange,
-}) => {
+export const DelincuenciaControls = () => {
   const [legendItems, setLegendItems] = useState([]);
 
   useEffect(() => {
@@ -33,98 +18,61 @@ export const DelincuenciaControls = ({time,
         const values = data.features.map(
           (feat) => feat.properties["num_crimen"]
         );
-        setLegendItems(
-          separateLegendItems(values, 4, "blue", "red")
-        );
+        setLegendItems(separateLegendItems(values, 4, "blue", "red"));
       })
       .catch((error) =>
         console.error("Error fetching the delincuencia data: ", error)
       );
   }, []);
 
-    return (
-      <SliderHTML
-        time={time}
-        min={2017}
-        max={2020}
-        step={1}
-        title={"Crimenes"}
-        togglePlay={togglePlay}
-        isPlaying={isPlaying}
-        handleSliderChange={handleSliderChange}
-        marks={marks}
-        legendItems={legendItems}
-      />
-    );
+  return <Legend title={"Crimenes"} legendItems={legendItems} />;
 };
 
-
 export function DelincuenciaCard({ color, isCurrentSection }) {
-  const { setLayers, setOutline, setControlsProps } = useCardContext();
+  const { setLayers, setOutline } = useCardContext();
   const [chartData, setChartData] = useState([]);
-  const [originalData, setOriginalData] = useState([]); 
-  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(2017, 2020, 1, 3000, false);
-
+  const [originalData, setOriginalData] = useState(null);
 
   //los datos que se leen para los charts
   useEffect(() => {
     if (isCurrentSection) {
-      fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen_municipality.json")
+      fetch(
+        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen_municipality.json"
+      )
         .then((response) => response.json())
-        .then((data) => {
-          const newData = data.filter(
-            (x) => x.year === 2020 && x.TIPO_INCIDENCIA === "ROBO A TRANSEUNTE"
-          );
-          setChartData(newData);
-        });
-    } else {
-      setChartData([]);
-    }
-  }, [isCurrentSection]);
-
-
-  useEffect(() => {
-    if (isCurrentSection) {
-      console.log("Se llamaron a los datos de crimen")
-      fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson")
+        .then((data) => setChartData(data));
+      fetch(
+        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson"
+      )
         .then((response) => response.json())
         .then((data) => setOriginalData(data))
         .catch((error) => console.error("Error cargando el GeoJSON:", error));
     } else {
+      setChartData([]);
       setOriginalData(null);
+      setLayers([]);
     }
-  }, [isCurrentSection]);
-
+  }, [isCurrentSection, setLayers]);
 
   useEffect(() => {
     if (isCurrentSection && originalData) {
-
-      setControlsProps({ time, togglePlay, isPlaying, handleSliderChange });
-
-      const crimenLayer = {
-        type: GeoJsonLayer,
-        props: {
-          id: "seccion_crimen_layer",
-          data: filterDataAll(originalData, time, "num_crimen", false, "year"),
-          getFillColor: (d) =>
-            colorInterpolate(d.properties.normalized, "blue", "red", 1),
-          getLineColor: (d) =>
-            colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
-          getLineWidth: 10,
-        },
-      };
-
-      setLayers([crimenLayer]);
+      setLayers([
+        {
+          type: GeoJsonLayer,
+          props: {
+            id: "seccion_delincuencia_layer",
+            data: originalData,
+            dataTransform: (d) => cleanedGeoData(d.features, "num_crimen"),
+            getFillColor: (d) =>
+              colorInterpolate(d.properties.normalized, "blue", "red", 1),
+            getLineColor: (d) =>
+              colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
+            getLineWidth: 10,
+          },
+        }
+      ]);
     }
-  }, [
-    isCurrentSection,
-    originalData,
-    setLayers,
-    setControlsProps,
-    isPlaying,
-    time,
-    animationTime,
-  ]);
+  }, [isCurrentSection, originalData, setLayers]);
 
   return (
     <>
@@ -147,7 +95,7 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
         de oportunidades y a la delincuencia.
       </ContextTitle>
       <Chart
-        title="Número de Robos a transeúntes de 2017 a 2020"
+        title="Robos a transeúntes por 10 mil personas (2017-2020)"
         data={chartData}
         setOutline={setOutline}
         column="num_crimen"

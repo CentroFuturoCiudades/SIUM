@@ -72,12 +72,11 @@ export const TransporteControls = ({
       min={300}
       max={1320}
       step={3}
-      //title={"Precio de Venta"}
+      defaultValue={1020}
       togglePlay={togglePlay}
       isPlaying={isPlaying}
       handleSliderChange={handleSliderChange}
       marks={marks}
-      //legendItems={legendItems}
     />
   );
 };
@@ -112,39 +111,39 @@ const transformDataForTrips = (data) => {
 
 export function TransporteCard({ color, isCurrentSection }) {
   const { setLayers, setControlsProps, setOutline } = useCardContext();
-  const [originalData, setOriginalData] = useState([]); 
+  const [originalData, setOriginalData] = useState([]);
   const [chartData, setChartData] = useState([]);
-  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(0, 1440, 2, true);
-
+  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } =
+    TimeComponentClean(300, 1320, 2, 0.05, false, 1020);
 
   useEffect(() => {
     if (isCurrentSection) {
-      fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte_municipality.json")
+      fetch(
+        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte_municipality.json"
+      )
         .then((response) => response.json())
         .then((data) => {
-          const newData = data.filter((x) => x["Transporte"] === "TPUB" && x["Motivo"] === "Regreso A Casa");
+          const newData = data.filter(
+            (x) =>
+              x["Transporte"] === "TPUB" && x["Motivo"] === "Regreso A Casa"
+          );
           setChartData(newData);
         });
-    } else {
-      setChartData([]);
-    }
-  }, [isCurrentSection]);
-
-  useEffect(() => {
-    if (isCurrentSection) {
-      fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/TRANSPORTEJEANNETTE.geojson")
+      fetch(
+        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/TRANSPORTEJEANNETTE.geojson"
+      )
         .then((response) => response.json())
         .then((data) => setOriginalData(data))
         .catch((error) => console.error("Error cargando el GeoJSON:", error));
     } else {
+      setChartData([]);
       setOriginalData(null);
+      setLayers([]);
     }
-  }, [isCurrentSection]);
+  }, [isCurrentSection, setLayers]);
 
   useEffect(() => {
-
     if (isCurrentSection && originalData) {
-
       setControlsProps({ time, togglePlay, isPlaying, handleSliderChange });
 
       const tripsLayer = {
@@ -173,6 +172,8 @@ export function TransporteCard({ color, isCurrentSection }) {
     isPlaying,
     time,
     animationTime,
+    handleSliderChange,
+    togglePlay,
   ]);
 
   return (

@@ -6,9 +6,14 @@ import {
   ContextTitle,
   SegregacionSpan,
 } from "./Card";
-import { SEGREGACION_LAYER, separateLegendItems } from "../utils/constants";
+import {
+  cleanedGeoData,
+  colorInterpolate,
+  separateLegendItems,
+} from "../utils/constants";
 import { Chart } from "./Chart";
 import { Legend } from "./Legend";
+import { GeoJsonLayer } from "deck.gl";
 
 export const SegregacionControls = () => {
   const [legendItems, setLegendItems] = useState([]);
@@ -22,7 +27,6 @@ export const SegregacionControls = () => {
         const values = data.features.map(
           (feat) => feat.properties["income_pc"]
         );
-        console.log(values);
         setLegendItems(
           separateLegendItems(values, 4, "red", "blue", (x) =>
             x.toLocaleString("en-US", {
@@ -44,21 +48,46 @@ export const SegregacionControls = () => {
 export function SegregacionCard({ color, isCurrentSection }) {
   const { setLayers, setOutline } = useCardContext();
   const [chartData, setChartData] = useState([]);
+  const [originalData, setOriginalData] = useState(null);
 
   useEffect(() => {
     if (isCurrentSection) {
-      fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income_municipality.json")
+      fetch(
+        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income_municipality.json"
+      )
         .then((response) => response.json())
         .then((data) => setChartData(data));
+      fetch(
+        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income.geojson"
+      )
+        .then((response) => response.json())
+        .then((data) => setOriginalData(data))
+        .catch((error) => console.error("Error cargando el GeoJSON:", error));
     } else {
       setChartData([]);
-    }
-  }, [isCurrentSection]);
-  useEffect(() => {
-    if (isCurrentSection) {
-      setLayers([SEGREGACION_LAYER]);
+      setOriginalData(null);
+      setLayers([]);
     }
   }, [isCurrentSection, setLayers]);
+  useEffect(() => {
+    if (isCurrentSection && originalData) {
+      setLayers([
+        {
+          type: GeoJsonLayer,
+          props: {
+            id: "seccion_segregacion_layer",
+            data: originalData,
+            dataTransform: (d) => cleanedGeoData(d.features, "income_pc"),
+            getFillColor: (d) =>
+              colorInterpolate(d.properties.normalized, "red", "blue", 1),
+            getLineColor: (d) =>
+              colorInterpolate(d.properties.normalized, "red", "blue", 0.5),
+            getLineWidth: 20,
+          },
+        },
+      ]);
+    }
+  }, [originalData, setLayers, isCurrentSection]);
 
   return (
     <>
@@ -92,7 +121,7 @@ export function SegregacionCard({ color, isCurrentSection }) {
         setOutline={setOutline}
         column="income_pc"
         columnKey="NOM_MUN"
-        formatter={(d) => `$ ${Math.round(d).toLocaleString("en-US")}`}
+        formatter={(d) => `$${Math.round(d).toLocaleString("en-US")}`}
       />
     </>
   );
