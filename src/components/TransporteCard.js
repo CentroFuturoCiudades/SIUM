@@ -164,7 +164,7 @@ export function TransporteCard({ color, isCurrentSection }) {
 
       setLayers([MASIVE_TRANSPORT_LAYER, PRIMARY_ROUTES_LAYER, tripsLayer]);
     }
-  }, [originalData, time, isPlaying]);
+  }, [originalData, time, isPlaying, animationTime]);
 
   return (
     <>
