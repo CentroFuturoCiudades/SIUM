@@ -62,14 +62,14 @@ export function SliderHTML({time,
             mr="4"
             ml="3"
           >
-            {marks.map(({ value, label }) => (
+            {marks.map(({ value, label }, i) => (
               <SliderMark
                 key={value}
                 value={value}
-                textAlign="center"
                 mt="5"
-                ml="-3"
+                ml={`-${label.length * 3.5}px`}
                 fontSize="xs"
+                style={{ textWrap: 'nowrap' }}
               >
                 {label}
               </SliderMark>

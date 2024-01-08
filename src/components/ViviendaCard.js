@@ -76,8 +76,8 @@ export function ViviendaCard({ color, isCurrentSection }) {
   const { setLayers, setOutline, setControlsProps } = useCardContext();
   const [chartData, setChartData] = useState([]);
   const [originalData, setOriginalData] = useState([]); //datos filtrados
-  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } =
-    TimeComponentClean(2000, 2020, 5, 1000, false, 2020);
+  const { time, isPlaying, handleSliderChange, togglePlay } =
+    TimeComponentClean(2000, 2020, 5, 2000, false, 2020);
 
   useEffect(() => {
     //esto lee para las bar charts
@@ -98,7 +98,7 @@ export function ViviendaCard({ color, isCurrentSection }) {
       setOriginalData(null);
       setLayers([]);
     }
-  }, [isCurrentSection, originalData, setLayers]);
+  }, [isCurrentSection]);
 
   useEffect(() => {
     if (isCurrentSection && originalData) {
@@ -125,17 +125,7 @@ export function ViviendaCard({ color, isCurrentSection }) {
 
       setLayers([viviendaLayer]);
     }
-  }, [
-    isCurrentSection,
-    originalData,
-    setLayers,
-    setControlsProps,
-    isPlaying,
-    time,
-    animationTime,
-    handleSliderChange,
-    togglePlay,
-  ]);
+  }, [originalData, time, isPlaying]);
 
   return (
     <>

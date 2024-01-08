@@ -140,7 +140,7 @@ export function TransporteCard({ color, isCurrentSection }) {
       setOriginalData(null);
       setLayers([]);
     }
-  }, [isCurrentSection, setLayers]);
+  }, [isCurrentSection]);
 
   useEffect(() => {
     if (isCurrentSection && originalData) {
@@ -164,17 +164,7 @@ export function TransporteCard({ color, isCurrentSection }) {
 
       setLayers([MASIVE_TRANSPORT_LAYER, PRIMARY_ROUTES_LAYER, tripsLayer]);
     }
-  }, [
-    isCurrentSection,
-    originalData,
-    setLayers,
-    setControlsProps,
-    isPlaying,
-    time,
-    animationTime,
-    handleSliderChange,
-    togglePlay,
-  ]);
+  }, [originalData, time, isPlaying]);
 
   return (
     <>

@@ -68,7 +68,7 @@ export function SegregacionCard({ color, isCurrentSection }) {
       setOriginalData(null);
       setLayers([]);
     }
-  }, [isCurrentSection, setLayers]);
+  }, [isCurrentSection]);
   useEffect(() => {
     if (isCurrentSection && originalData) {
       setLayers([
@@ -87,7 +87,7 @@ export function SegregacionCard({ color, isCurrentSection }) {
         },
       ]);
     }
-  }, [originalData, setLayers, isCurrentSection]);
+  }, [originalData]);
 
   return (
     <>

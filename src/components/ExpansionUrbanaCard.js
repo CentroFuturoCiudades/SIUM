@@ -74,8 +74,8 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
   const { setLayers, setOutline, setControlsProps } = useCardContext();
   const [chartData, setChartData] = useState([]);
   const [originalData, setOriginalData] = useState(null);
-  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } =
-    TimeComponentClean(1990, 2010, 10, 1000, false);
+  const { time, isPlaying, handleSliderChange, togglePlay } =
+    TimeComponentClean(1990, 2010, 10, 2000, false);
 
   useEffect(() => {
     if (isCurrentSection) {
@@ -96,7 +96,7 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
       setOriginalData(null);
       setLayers([]);
     }
-  }, [isCurrentSection, setLayers]);
+  }, [isCurrentSection]);
 
   useEffect(() => {
     if (isCurrentSection && originalData) {
@@ -115,17 +115,7 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
       };
       setLayers([expansionLayer]);
     }
-  }, [
-    isCurrentSection,
-    originalData,
-    time,
-    isPlaying,
-    animationTime,
-    setLayers,
-    setControlsProps,
-    handleSliderChange,
-    togglePlay,
-  ]);
+  }, [originalData, time, isPlaying]);
 
   return (
     <>

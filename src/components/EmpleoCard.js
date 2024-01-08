@@ -62,7 +62,7 @@ export function EmpleoCard({ color, isCurrentSection }) {
       setOriginalData(null);
       setLayers([]);
     }
-  }, [isCurrentSection, setLayers]);
+  }, [isCurrentSection]);
 
   useEffect(() => {
     if (isCurrentSection && originalData) {
@@ -82,7 +82,7 @@ export function EmpleoCard({ color, isCurrentSection }) {
         },
       ]);
     }
-  }, [isCurrentSection, originalData, setLayers]);
+  }, [originalData]);
 
   return (
     <>

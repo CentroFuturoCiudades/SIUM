@@ -131,7 +131,7 @@ export default function Body() {
           currentSection={currentSection}
           color={sectionsInfo[currentSection].color}
         />
-        {CurrentControls && <CurrentControls {...controlsProps} />}
+        {CurrentControls && filteredLayers.length > 0 && <CurrentControls {...controlsProps} />}
       </Box>
     </div>
   );

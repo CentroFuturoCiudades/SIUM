@@ -65,14 +65,13 @@ export const Chart = ({
   let filteredData = useMemo(
     () =>
       _(data)
-        .filter(filtering || (() => true))
+        .filter((x) => excludedMunicipalities.indexOf(x[columnKey]) === -1 && (!filtering || filtering(x)))
         .groupBy(columnKey)
         .map((objs, key) => ({
           [columnKey]: key,
           [column]: (reducer || _.sumBy)(objs, column),
         }))
         .value()
-        .filter((x) => excludedMunicipalities.indexOf(x[columnKey]) === -1)
         .sort((a, b) => b[column] - a[column]),
     [data, columnKey, column, reducer, filtering]
   );

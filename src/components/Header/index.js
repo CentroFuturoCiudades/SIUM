@@ -1,14 +1,17 @@
 import { Box, Heading } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import "./index.css";
+import { Link } from "react-router-dom";
 
 export const Header = ({ section, color, title }) => (
   <Box bgColor={`${color}.500`} className="headerContainer">
-    <img
-      className="headerImage"
-      src="https://tec-expansion-urbana-p.s3.amazonaws.com/general/Oficial.png"
-      alt="Tec de Monterrey"
-    />
+    <Link to="/">
+      <img
+        className="headerImage"
+        src="https://tec-expansion-urbana-p.s3.amazonaws.com/general/Oficial.png"
+        alt="Tec de Monterrey"
+      />
+    </Link>
     <Box className="titleContainer" bgColor={`${color}.500`}>
       <Heading
         className="title"
