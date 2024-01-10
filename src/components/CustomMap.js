@@ -3,11 +3,13 @@ import {
   ButtonGroup,
   IconButton,
   Skeleton,
-  SkeletonCircle,
   Spinner,
 } from "@chakra-ui/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { Map } from "react-map-gl";
+import mapboxgl from "mapbox-gl";
+
+mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
 export const DECK_GL_CONTROLLER = {
   scrollZoom: false,
