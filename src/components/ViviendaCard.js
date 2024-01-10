@@ -56,7 +56,7 @@ export const ViviendaControls = ({
 
   return (
     <>
-      <Legend title={"Precio de Venta"} legendItems={legendItems} />
+      <Legend title={"Precio de Venta 2000-2020"} legendItems={legendItems} />
       <SliderHTML
         time={time}
         min={2000}

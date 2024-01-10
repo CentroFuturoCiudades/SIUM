@@ -36,7 +36,7 @@ export const EmpleoControls = () => {
       );
   }, []);
 
-  return <Legend title="Número de Empleos" legendItems={legendItems} />;
+  return <Legend title="Número de Empleos en 2020" legendItems={legendItems} />;
 };
 
 export function EmpleoCard({ color, isCurrentSection }) {

@@ -1,5 +1,5 @@
 import { InfoIcon } from "@chakra-ui/icons";
-import { Box, Flex, Tooltip } from "@chakra-ui/react";
+import { Box, Flex, Heading, Tooltip } from "@chakra-ui/react";
 
 export const Legend = ({ title, legendItems }) => {
   if (legendItems.length === 0) {
@@ -11,11 +11,12 @@ export const Legend = ({ title, legendItems }) => {
       borderColor="gray.300"
       borderWidth="0.1rem"
       className="legend-container"
+      width="210px"
     >
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
-        <b style={{ fontSize: "0.8rem", marginRight: '6px' }}>{title}</b>
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px', marginTop: '5px' }}>
+        <Heading size="xs" color="gray.700">{title}</Heading>
         <Tooltip label="Datos obtenidos de blah blah blah" placement="top" hasArrow gutter={12}>
-          <InfoIcon boxSize={3} color="gray.400" style={{ cursor: 'pointer' }} />
+          <InfoIcon boxSize={3} color="gray.400" style={{ cursor: 'pointer' }} marginLeft="0.6rem" />
         </Tooltip>
       </div>
       {legendItems.map((item, index) => (

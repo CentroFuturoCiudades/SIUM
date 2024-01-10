@@ -148,12 +148,13 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
         diversa en centros y subcentros urbanos
       </ContextTitle>
       <Chart
-        title={`Población en ${time}`}
+        title={`Cambio poblacional de ${time} a 2020`}
         data={chartData}
         setOutline={setOutline}
-        column={time}
+        column="population_change"
         columnKey="nom_mun"
         formatter={(d) => `${Math.round(d).toLocaleString("en-US")}`}
+        filtering={(x) => x.year == time}
       />
     </>
   );

@@ -20,7 +20,7 @@ export const SegregacionControls = () => {
 
   useEffect(() => {
     fetch(
-      "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income.geojson"
+      "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income2.geojson"
     )
       .then((response) => response.json())
       .then((data) => {
@@ -42,7 +42,7 @@ export const SegregacionControls = () => {
       );
   }, []);
 
-  return <Legend title="Ingreso per capita" legendItems={legendItems} />;
+  return <Legend title="Ingreso mensual per capita en 2020" legendItems={legendItems} />;
 };
 
 export function SegregacionCard({ color, isCurrentSection }) {
@@ -58,7 +58,7 @@ export function SegregacionCard({ color, isCurrentSection }) {
         .then((response) => response.json())
         .then((data) => setChartData(data));
       fetch(
-        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income.geojson"
+        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income2.geojson"
       )
         .then((response) => response.json())
         .then((data) => setOriginalData(data))
@@ -116,11 +116,11 @@ export function SegregacionCard({ color, isCurrentSection }) {
         urbanas imprescindibles para el desarrollo humano pleno.
       </ContextTitle>
       <Chart
-        title="Ingreso per capita en ????"
+        title="Ingreso mensual per capita en 2020"
         data={chartData}
         setOutline={setOutline}
         column="income_pc"
-        columnKey="NOM_MUN"
+        columnKey="nom_mun"
         formatter={(d) => `$${Math.round(d).toLocaleString("en-US")}`}
       />
     </>

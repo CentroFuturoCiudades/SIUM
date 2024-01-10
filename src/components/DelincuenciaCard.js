@@ -29,7 +29,7 @@ export const DelincuenciaControls = () => {
       );
   }, []);
 
-  return <Legend title={"Crimenes"} legendItems={legendItems} />;
+  return <Legend title={"Incidencia delictiva 2017-2020"} legendItems={legendItems} />;
 };
 
 export function DelincuenciaCard({ color, isCurrentSection }) {
@@ -106,7 +106,7 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
         vigilancia colectiva.
       </ContextTitle>
       <Chart
-        title="Robos a transeúntes por 10 mil personas (2017-2020)"
+        title="Acumulado Robos a transeúntes por 10 mil personas (2017-2020)"
         data={chartData}
         setOutline={setOutline}
         column="num_crimen"
