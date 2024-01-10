@@ -84,3 +84,29 @@ p {
   pointer-events: none; /* Esto asegurará que el tooltip no interfiera con otros eventos del ratón */
 }
 
+.tooltip-content {
+  font-Size: "0.8rem"
+}
+
+.tooltip-label {
+  font-size: 0.75rem;
+  text-align: left; 
+  color: #333;
+}
+
+.tooltip-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.9); 
+  padding: 5px 10px;
+  box-shadow: 0 2px 8px rgba(50, 50, 50, 0.3); 
+  z-index: 10;
+  width: 340px;
+  box-shadow: 0 2px 8px rgba(50, 50, 50, 0.3);
+}

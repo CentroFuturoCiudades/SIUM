@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCardContext } from "../views/Body";
 import {
   SubcentersSpan,
@@ -11,6 +11,8 @@ import {
 import { EMPLEO_LAYER, separateLegendItems } from "../utils/constants";
 import { Legend } from "./Legend";
 import { Chart } from "./Chart";
+import "../index.css";
+import { render } from "react-dom";
 
 export const EmpleoControls = () => {
   const [legendItems, setLegendItems] = useState([]);
@@ -37,6 +39,7 @@ export const EmpleoControls = () => {
 export function EmpleoCard({ color, isCurrentSection }) {
   const { setLayers, setOutline } = useCardContext();
   const [chartData, setChartData] = useState([]);
+  const [tooltipInfo, setTooltipInfo] = useState({ isVisible: false, x: 0, y: 0, text: '' });
 
   useEffect(() => {
     if (isCurrentSection) {
@@ -49,9 +52,9 @@ export function EmpleoCard({ color, isCurrentSection }) {
   }, [isCurrentSection]);
   useEffect(() => {
     if (isCurrentSection) {
-      setLayers([EMPLEO_LAYER]);
+      setLayers([EMPLEO_LAYER(setTooltipInfo)]);
     }
-  }, [isCurrentSection, setLayers]);
+  }, [isCurrentSection, setLayers]); 
 
   return (
     <>
@@ -74,6 +77,7 @@ export function EmpleoCard({ color, isCurrentSection }) {
         La gente migran a la periferia, lejos de oportunidades laborales y con
         menor cobertura de transporte público.
       </ContextTitle>
+
       <Chart
         data={chartData}
         setOutline={setOutline}

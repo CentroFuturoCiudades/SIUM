@@ -1,10 +1,10 @@
 import { rgb } from "d3-color";
 import { interpolateRgb } from "d3-interpolate";
 import { GeoJsonLayer } from "@deck.gl/layers";
-
+ 
 import { MdHome, MdDirectionsCar, MdOutlineAttachMoney } from "react-icons/md";
 import { HiMiniBuildingOffice } from "react-icons/hi2";
-import { GiInjustice, GiRobber } from "react-icons/gi";
+import { GiHoleLadder, GiInjustice, GiRobber } from "react-icons/gi";
 import { FaPeopleArrows } from "react-icons/fa";
 
 import { ExpansionUrbanaCard, ExpansionUrbanaControls } from "../components/ExpansionUrbanaCard";
@@ -14,7 +14,7 @@ import {
 } from "../components/TransporteCard";
 import { EmpleoCard, EmpleoControls } from "../components/EmpleoCard";
 import { ViviendaCard, ViviendaControls } from "../components/ViviendaCard";
-import { SegregacionCard } from "../components/SegregacionCard";
+import { SegregacionCard, SegregacionControls } from "../components/SegregacionCard";
 import { DelincuenciaCard } from "../components/DelincuenciaCard";
 import { CostosCard } from "../components/CostosCard";
 
@@ -187,20 +187,6 @@ export const SECCION_CRECIMIENTO_LAYER_1990 = {
   },
 };
 
-// export const EXPANSION_LAYER = {
-//   type: GeoJsonLayer,
-//   props: {
-//     id: "seccion_crecimiento_layer",
-//     data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob-1990-2020.geojson",
-//     dataTransform: (d) => cleanedGeoData(d.features, "2020"),
-//     getFillColor: (d) =>
-//       colorInterpolate(d.properties.normalized, "blue", "red", 1.5),
-//     getLineColor: (d) =>
-//       colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
-//     getLineWidth: 30,
-//   },
-// };
-
 // export const EXPANSION_LAYER = (setTooltipInfo) => ({
 //   type: GeoJsonLayer,
 //   props: {
@@ -229,44 +215,17 @@ export const SECCION_CRECIMIENTO_LAYER_1990 = {
 
 export const EXPANSION_LAYER = (setTooltipInfo) => ({
   type: GeoJsonLayer,
-  props: {
+  props: { 
     id: 'expansion-layer',
     data: 'https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob-1990-2020.geojson',
     dataTransform: (d) => cleanedGeoData(d.features, '2020'),
     getFillColor: (d) => colorInterpolate(d.properties.normalized, 'blue', 'red', 1.5),
     getLineColor: (d) => colorInterpolate(d.properties.normalized, 'blue', 'red', 0.5),
     getLineWidth: 30,
-    pickable: true,
-    onClick: ({ object }) => {
-      if (object) {
-        setTooltipInfo({
-          isVisible: true,
-          text: `Valor de la propiedad 2020: ${object.properties['2020']}`,
-          // Nota: Las coordenadas x e y se manejarán con eventos onMouseMove del componente
-        });
-      }
-    },
-    onHover: ({ object, x, y }) => {
-      if (object) {
-        setTooltipInfo({
-          isVisible: true,
-          x, // Coordenada x del ratón
-          y, // Coordenada y del ratón
-          text: `Valor de la propiedad 2020: ${object.properties['2020']}`
-        });
-      } else {
-        setTooltipInfo({
-          isVisible: false,
-          x: 0,
-          y: 0,
-          text: ''
-        });
-      }
-    },
   },
 });
 
-export const EMPLEO_LAYER = {
+export const EMPLEO_LAYER = () => ({
   type: GeoJsonLayer,
   props: {
     id: "empleo_layer",
@@ -278,7 +237,7 @@ export const EMPLEO_LAYER = {
       colorInterpolate(d.properties.normalized, "yellow", "red", 0.5),
     getLineWidth: 10,
   },
-};
+});
 
 // export const TRANSPORTE_JEANNETTE = {
 //   id: "seccion_transporte_layer",
@@ -552,7 +511,7 @@ export const sectionsInfo = {
     color: "sage",
     icon: GiInjustice,
     component: SegregacionCard,
-    controls: null,
+    controls: SegregacionControls,
   },
   delincuencia: {
     title: "¿Qué causa inseguridad?",

@@ -36,7 +36,7 @@ export function CustomMap({ layers, viewState, setViewState }) {
         viewState={viewState}
         layers={filteredLayers}
         onViewStateChange={({ viewState }) => setViewState(viewState)}
-        controller={DECK_GL_CONTROLLER}
+        controller={DECK_GL_CONTROLLER} 
       >
         <Map
           width="100%"

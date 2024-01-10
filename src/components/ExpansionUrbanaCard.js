@@ -57,49 +57,8 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
     }
   }, [isCurrentSection, setLayers]);
 
-  const handleMouseMove = (event) => {
-    // Coordenadas del mouse con respecto al viewport
-    const { clientX, clientY } = event;
-  
-    if (tooltipInfo.isVisible) {
-      setTooltipInfo({
-        ...tooltipInfo,
-        x: clientX,
-        y: clientY,
-      });
-    }
-  };
-
-  const handleMouseOut = () => {
-    setTooltipInfo({ isVisible: false, x: 0, y: 0, text: '' });
-  };
-
-  const renderTooltip = () => {
-    if (tooltipInfo.isVisible) {
-      const style = {
-        position: 'absolute',
-        zIndex: 1,
-        pointerEvents: 'none',
-        left: `${tooltipInfo.x}px`,
-        top: `${tooltipInfo.y}px`,
-        backgroundColor: 'white',
-        padding: '10px',
-        border: '1px solid black',
-        borderRadius: '3px',
-        whiteSpace: 'nowrap',
-      };
-
-      return (
-        <div style={style}>
-          {tooltipInfo.text}
-        </div>
-      );
-    }
-    return null;
-  };
-
   return (
-    <div onMouseMove={handleMouseMove} onMouseOut={handleMouseOut}>
+    <>
       <ResponseTitle color={color}>
         Hacia las periferias, lejos unos de otros.
       </ResponseTitle>
@@ -122,8 +81,6 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
         La migración de subcentros a la periferia, conocido como expansión
         urbana, nos aleja de servicios y empleo.
       </ContextTitle>
-  
-      {renderTooltip()}
       
       <Chart
         data={chartData}
@@ -132,7 +89,7 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
         columnKey="nom_mun"
         formatter={(d) => `${d.toLocaleString("en-US")} pob`}
       />
-    </div>
+    </>
   );
 }
 
