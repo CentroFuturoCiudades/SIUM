@@ -20,14 +20,14 @@ export const SegregacionControls = () => {
   const [legendItems, setLegendItems] = useState([]);
 
   useEffect(() => {
-    fetch(
+     fetch(
       "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income2.geojson"
     )
       .then((response) => response.json())
       .then((data) => {
         const values = data.features.map(
           (feat) => feat.properties["income_pc"]
-        );
+          );
         setLegendItems(
           separateLegendItems(values, 4, "red", "blue", (x) =>
             x.toLocaleString("en-US", {
@@ -49,7 +49,7 @@ export const SegregacionControls = () => {
 export function SegregacionCard({ color, isCurrentSection }) {
   const { setLayers, setOutline } = useCardContext();  
   const [chartData, setChartData] = useState([]);
-  const [chartDataId, setChartDataId] = useState('income_pc');
+  const [activeButton, setActiveButton] = useState('income_pc');
   const [originalData, setOriginalData] = useState(null);
 
   useEffect(() => {
@@ -70,37 +70,34 @@ export function SegregacionCard({ color, isCurrentSection }) {
       setOriginalData(null);
       setLayers([]);
     }
-  }, [isCurrentSection]);
-
-  useEffect(() => {
-    if (isCurrentSection && originalData) {
-      setLayers([
-        {
-          type: GeoJsonLayer,
-          props: {
-            id: "seccion_segregacion_layer",
-            data: originalData,
-            dataTransform: (d) => cleanedGeoData(d.features, "income_pc"),
-            getFillColor: (d) =>
-              colorInterpolate(d.properties.normalized, "red", "blue", 1),
-            getLineColor: (d) =>
-              colorInterpolate(d.properties.normalized, "red", "blue", 0.5),
-            getLineWidth: 20,
-          },
-        },
-      ]);
-    }
-  }, [originalData]);
+  }, [isCurrentSection, activeButton]);
 
   // Manejar clic en el boton para cambiar la información en base al id del botón
   function handleDataChange(event) {
-
     // Obtener el id del botón presionado
     const buttonId = event.target.id;
-    // setChartDataId(buttonId);
+    setActiveButton(buttonId);
+  }  
 
-    console.log(buttonId);
+  useEffect(() => {
+    if (isCurrentSection && originalData) {
+    setLayers([
+      {
+        type: GeoJsonLayer,
+        props: {
+          id: "seccion_segregacion_layer",
+          data: originalData,
+          dataTransform: (d) => cleanedGeoData(d.features, activeButton),
+          getFillColor: (d) =>
+            colorInterpolate(d.properties.normalized, "red", "blue", 1),
+          getLineColor: (d) =>
+            colorInterpolate(d.properties.normalized, "red", "blue", 0.5),
+          getLineWidth: 20,
+        },
+      },
+    ]);
   }
+  }, [originalData]);
 
   return (
     <>
@@ -131,7 +128,7 @@ export function SegregacionCard({ color, isCurrentSection }) {
           variant="outline"
           onClick={handleDataChange}
           style={{
-            backgroundColor: chartDataId === 'income_pc' ? 'gainsboro' : 'white',
+            backgroundColor: activeButton === 'income_pc' ? 'gainsboro' : 'white',
           }}
         >
           Ingreso
@@ -140,7 +137,7 @@ export function SegregacionCard({ color, isCurrentSection }) {
           id="local_centralization_q_1_k_100"
           onClick={handleDataChange}
           style={{
-            backgroundColor: chartDataId === 'local_centralization_q_1_k_100' ? 'gainsboro' : 'white',
+            backgroundColor: activeButton === 'local_centralization_q_1_k_100' ? 'gainsboro' : 'white',
           }}
         >
           Segregación-
@@ -149,7 +146,7 @@ export function SegregacionCard({ color, isCurrentSection }) {
           id="local_centralization_q_5_k_100"
           onClick={handleDataChange}
           style={{
-            backgroundColor: chartDataId === 'local_centralization_q_5_k_100' ? 'gainsboro' : 'white',
+            backgroundColor: activeButton === 'local_centralization_q_5_k_100' ? 'gainsboro' : 'white',
           }}
         >
           Segregación+

@@ -10,7 +10,8 @@ import { Chart } from "./Chart";
 import { Button, ButtonGroup } from '@chakra-ui/react'
 import { Legend } from "./Legend";
 import { GeoJsonLayer } from "deck.gl";
-import { SliderHTML, TimeComponentClean } from "./TimeComponent.js";
+import { TimeComponentClean } from "./TimeComponent.js";
+import { active } from "d3-transition";
 
 export const DelincuenciaControls = () => {
   const [legendItems, setLegendItems] = useState([]);
@@ -39,7 +40,7 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
   const [chartData, setChartData] = useState([]);
   const [generalChartData, setGeneralChartData] = useState([]);
   const [originalData, setOriginalData] = useState(null); 
-  const [activeButton, setActiveButton] = useState('')
+  const [activeButton, setActiveButton] = useState('num_crimen')
   const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(2017, 2020, 1, 3000, false);
 
   //los datos que se leen para los charts
@@ -49,7 +50,10 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
         "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen_municipality.json"
       )
         .then((response) => response.json())
-        .then((data) => setChartData(data));
+        .then((data) => {
+          setChartData(data);
+          setGeneralChartData(data);
+        });
       fetch(
         "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson"
       )
@@ -61,30 +65,13 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
       setOriginalData(null);
       setLayers([]);
     }
-  }, [isCurrentSection]);
+  }, [isCurrentSection, activeButton]);
 
     // Manejar clic en el boton para cambiar la información en base al id del botón
     function handleDataChange(event) {
-      
       // Obtener el id del botón presionado
       const buttonId = event.target.id;
       setActiveButton(buttonId);
-      // console.log(activeButton);
-  
-      if(buttonId == 'General'){
-        // setOriginalData(generalLayer);
-        setChartData(generalChartData);
-      } else {
-        // let actualLayerData = {...generalLayer};
-        let actualChartData = {...generalChartData};
-  
-        // Filtrar en base al id del botón presionado
-        // actualLayerData.features = generalLayer.features.filter((feature) => feature.properties.Transporte == buttonId);
-        actualChartData = generalChartData.filter((dato) => dato["TIPO_INCIDENCIA"] == buttonId);
-  
-        // setOriginalData(actualLayerData);
-        setChartData(actualChartData)
-      }
     }
 
   useEffect(() => {
@@ -95,7 +82,7 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
           props: {
             id: "seccion_delincuencia_layer",
             data: originalData,
-            dataTransform: (d) => cleanedGeoData(d.features, "num_crimen"),
+            dataTransform: (d) => cleanedGeoData(d.features, activeButton),
             getFillColor: (d) =>
               colorInterpolate(d.properties.normalized, "blue", "red", 1),
             getLineColor: (d) =>
@@ -135,7 +122,7 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
         vigilancia colectiva.
       </ContextTitle>
         <Button
-          id="General"
+          id="num_crimen"
           size="sm"
           variant="outline"
           onClick={handleDataChange}
@@ -147,39 +134,39 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
         </Button>
       <ButtonGroup size="sm" isAttached variant="outline">
         <Button
-          id="VIOLENCIA FAMILIAR"
+          id="violencia_familiar"
           size="sm"
           variant="outline"
           onClick={handleDataChange}
           style={{
-            backgroundColor: activeButton === 'VIOLENCIA FAMILIAR' ? 'gainsboro' : 'white',
+            backgroundColor: activeButton === 'violencia_familiar' ? 'gainsboro' : 'white',
           }}
         >
           Violencia Familiar
         </Button>
         <Button
-          id="ROBO A TRANSEUNTE"
+          id="robo_transeunte"
           onClick={handleDataChange}
           style={{
-            backgroundColor: activeButton === 'ROBO A TRANSEUNTE' ? 'gainsboro' : 'white',
+            backgroundColor: activeButton === 'robo_transeunte' ? 'gainsboro' : 'white',
           }}
         >
           Robo a Transeúnte
         </Button>
         <Button
-          id="ROBO A NEGOCIO"
+          id="robo_negocio"
           onClick={handleDataChange}
           style={{
-            backgroundColor: activeButton === 'ROBO A NEGOCIO' ? 'gainsboro' : 'white',
+            backgroundColor: activeButton === 'robo_negocio' ? 'gainsboro' : 'white',
           }}
         >
           Robo a Negocio
         </Button>
         <Button
-          id="ROBO A CASA HABITACION"
+          id="robo_casa"
           onClick={handleDataChange}
           style={{
-            backgroundColor: activeButton === 'ROBO A CASA HABITACION' ? 'gainsboro' : 'white',
+            backgroundColor: activeButton === 'robo_casa' ? 'gainsboro' : 'white',
           }}
         >
           Robo a Casa Habitación
@@ -189,7 +176,7 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
         title="Acumulado Robos a transeúntes por 10 mil personas (2017-2020)"
         data={chartData}
         setOutline={setOutline}
-        column="num_crimen"
+        column={activeButton}
         columnKey="NOMGEO"
         formatter={(d) => `${Math.round(d).toLocaleString("en-US")}`}
       />
