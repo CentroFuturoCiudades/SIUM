@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ResponseTitle, ContextTitle } from "./Card";
 import { COSTOS_LAYER } from "../utils/constants";
-import { useCardContext } from "../views/Body";
+import { useCardContext } from "../views/Problematica";
 
 export function CostosCard({ color, isCurrentSection }) {
 

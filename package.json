@@ -8,6 +8,8 @@
     "@chakra-ui/react": "^2.8.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@react-spring/parallax": "^9.7.3",
+    "@react-spring/web": "^9.7.3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -27,7 +29,9 @@
     "react-router-dom": "^6.21.0",
     "react-scripts": "5.0.1",
     "react-scroll": "^1.9.0",
+    "react-spring": "^9.7.3",
     "recharts": "^2.8.0",
+    "scrollreveal": "^4.0.9",
     "web-vitals": "^2.1.4",
     "worker-loader": "^3.0.8"
   },

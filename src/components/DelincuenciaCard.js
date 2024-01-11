@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ResponseTitle, ContextTitle } from "./Card";
-import { useCardContext } from "../views/Body";
+import { useCardContext } from "../views/Problematica";
 import {
   separateLegendItems,
   cleanedGeoData,

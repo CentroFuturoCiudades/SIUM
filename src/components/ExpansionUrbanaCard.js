@@ -7,7 +7,7 @@ import {
   ContextTitle,
   ExpansionSpan,
 } from "./Card";
-import { useCardContext } from "../views/Body";
+import { useCardContext } from "../views/Problematica";
 import { separateLegendItems, cleanedGeoData } from "../utils/constants";
 import "../index.css";
 import { Chart } from "./Chart";
