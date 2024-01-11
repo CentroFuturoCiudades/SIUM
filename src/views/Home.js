@@ -1,60 +1,57 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Parallax, ParallaxLayer } from "@react-spring/parallax";
-import backgroundImage1 from "../images/primera.jpeg";
-import backgroundImage2 from "../images/segunda.jpeg";
-import backgroundImage3 from "../images/tercera.jpeg";
-import backgroundImage4 from "../images/cuarta.jpeg";
-import backgroundImage5 from "../images/quinta.jpeg";
-import backgroundImage6 from "../images/sexta.jpeg";
-import backgroundImage7 from "../images/septima.jpeg";
+import React, { useEffect, useRef, useState } from "react";
+import { Text } from "@chakra-ui/react";
+import Cards from "./Cards";
 
 const Home = () => {
+  const containerRef = useRef(null);
+  const imageRef = useRef(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const year = currentImageIndex * 5 + 1990;
+  const numberOfImages = 7;
 
   useEffect(() => {
     const handleScroll = () => {
-      const newIndex = Math.floor(window.scrollY / window.innerHeight);
-      setCurrentImageIndex(newIndex);
+      const normalized =
+        (window.document.body.scrollTop - containerRef.current.offsetTop) /
+        (containerRef.current.scrollHeight - containerRef.current.offsetTop);
+      const currentImageIndex = Math.min(
+        Math.max(Math.floor(normalized * numberOfImages), 0),
+        numberOfImages - 1
+      );
+      setCurrentImageIndex(currentImageIndex);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.document.body.addEventListener("scroll", handleScroll);
+
+    return () =>
+      window.document.body.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const alignCenter = { display: "flex", alignItems: "center" };
-
-  const imageContainerStyle = {
-    height: "50vh",
-    width: "40vw",
-    borderRadius: "20px",
-    overflow: "hidden",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    position: "absolute",
-    left: "10vw", // Posiciona el contenedor a la izquierda
+  const adjustStickyPosition = () => {
+    if (imageRef.current) {
+      const elementHeight = imageRef.current.offsetHeight;
+      const windowHeight = window.innerHeight;
+      const topPosition = (windowHeight - elementHeight) / 2;
+      imageRef.current.style.top = `${topPosition}px`;
+    }
   };
 
-  const imageStyle = {
-    width: "100%",
-    height: "auto",
-  };
+  useEffect(() => {
+    window.addEventListener("resize", adjustStickyPosition);
+    adjustStickyPosition();
 
-  const textStyle = {
-    fontSize: "2rem",
-    color: "#333",
-    margin: "20px 0",
-    width: "30vw",
-    textAlign: "right",
-  };
+    return () => {
+      window.removeEventListener("resize", adjustStickyPosition);
+    };
+  }, []);
 
   const containerStyle = {
     height: "100vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "left",
-    backgroundColor: "#fff", // Ajusta el color de fondo
+    borderRadius: "0px 0px 0px 50px",
+    background: "#f7f2e4", // Ajusta el color de fondo
     flexDirection: "column", // Para colocar los textos uno debajo del otro
     marginLeft: "7rem", // Margen izquierdo para separar del borde
   };
@@ -65,80 +62,97 @@ const Home = () => {
     textAlign: "left", // Alinea el texto a la izquierda
     marginLeft: "1rem", // Elimina el margen predeterminado
   };
-  const textStyle1 = {
+  const subTitleStyle = {
     fontSize: "8vh", // Ajusta el tamaño del texto según tus preferencias
-    color: "#808080", // Ajusta el color del texto
+    lineHeight: "1.2",
     textAlign: "left", // Alinea el texto a la izquierda
     marginLeft: "2rem", // Elimina el margen predeterminado
   };
-
-  const arrowStyle = {
-    fontSize: "4vh",
-    color: "#808080",
-    textAlign: "left",
-    marginLeft: "3rem",
-    cursor: "pointer", // Agregamos un cursor apuntador para indicar que es clickable
+  const imageStyle = {
+    borderRadius: "50px 0px 0px 50px",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    paddingTop: "calc(60vw * 3 / 4)",
+    width: "70vw",
+    position: "sticky",
+    overflow: "hidden",
+    right: "0",
+    float: "right",
+    zIndex: -1,
+    boxShadow: "5px 10px 10px 0px rgba(0,0,0,0.3)",
   };
+  const yearStyle = {
+    margin: "auto",
+    position: "relative",
+    top: "-30px",
+    textAlign: "center",
+  };
+  const textStyle = {
+    width: "calc(30% - 60px)",
+    margin: "40px",
+    textAlign: "justify",
+  };
+
   return (
-    <Parallax pages={8}>
+    <>
       <div style={containerStyle}>
         <h1 style={titleStyle}>Ciudad finita</h1>
-        <h1 style={textStyle1}>Expansión urbana en la</h1>
-        <h1 style={textStyle1}>zona metropolitana de</h1>
-        <Link to="/introduccion">
-          <div style={arrowStyle}>
-            &#9654; {/* Carácter Unicode para la flecha derecha */}
-          </div>
-        </Link>
+        <Text style={subTitleStyle} color="gray" m="0">
+          Expansión urbana en la
+        </Text>
+        <Text style={subTitleStyle} color="gray" m="0">
+          Zona Metropolitana de
+        </Text>
+        <Text style={subTitleStyle} color="orange.500" m="0">
+          <b>Monterrey</b>
+        </Text>
       </div>
-
-      <div style={{ backgroundColor: "white" }}>
-        {/* Imagenes y Textos */}
-        {[
-          backgroundImage1,
-          backgroundImage2,
-          backgroundImage3,
-          backgroundImage4,
-          backgroundImage5,
-          backgroundImage6,
-          backgroundImage7,
-        ].map((image, index) => (
-          <React.Fragment
-            key={index}
-            offset={index}
-            speed={0.5}
-            style={{
-              ...alignCenter,
-              justifyContent: "flex-start",
-              opacity: 1 - index * 0.1, // Ajusta la opacidad
-            }}
+      <div>
+        <div
+          ref={imageRef}
+          style={{
+            backgroundImage: `url('https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/images/expansion_${year}.jpeg')`,
+            ...imageStyle,
+          }}
+        >
+          <Text
+            style={yearStyle}
+            fontFamily={"Poppins"}
+            fontSize="5xl"
+            color="white"
           >
-            <ParallaxLayer
-              sticky={{ start: 1, end: 7 }}
-              style={{ ...alignCenter, justifyContent: "flex-start" }}
-            >
-              <div style={imageContainerStyle}>
-                <img
-                  src={backgroundImage1}
-                  alt={`Descripción de la imagen ${index + 1}`}
-                  style={imageStyle}
-                />
-              </div>
-            </ParallaxLayer>
-
-            <ParallaxLayer
-              offset={index + 0.5}
-              speed={0.5}
-              style={{ ...alignCenter, justifyContent: "flex-end" }}
-            >
-              <p style={textStyle}>
-                Texto relacionado con la imagen {index + 1}
-              </p>
-            </ParallaxLayer>
-          </React.Fragment>
-        ))}
+            <b>{year}</b>
+          </Text>
+        </div>
+        <div ref={containerRef}>
+          <Text color="gray.600" fontSize="2xl" style={textStyle}>
+            En las últimas tres décadas, la mancha urbana de Monterrey ha
+            experimentado un crecimiento exponencial, triplicándose en tamaño.
+            Este desarrollo, si bien evidencia el dinamismo de la ciudad,
+            también conlleva riesgos ambientales, económicos y sociales. Los
+            recursos urbanos y ambientales, que son esenciales para el bienestar
+            de la comunidad, son finitos y deben manejarse con responsabilidad.
+          </Text>
+          <Text color="gray.600" fontSize="2xl" style={textStyle}>
+            <b>La 'mancha urbana'</b> se refiere a la expansión continua de la
+            ciudad en términos de construcción y desarrollo. En este contexto,
+            es crucial destacar que esta expansión no planificada y
+            descontrolada requiere una reconsideración urgente.
+          </Text>
+          <Text color="gray.600" fontSize="2xl" style={textStyle}>
+            <b>La finitud de los recursos</b> urbanos, ambientales y la
+            expansión aparentemente 'infinita' de la ciudad, nos hace
+            plantearnos diversas preguntas fundamentales sobre la sostenibilidad
+            y la gestión responsable de nuestro entorno. Enfrentar estos
+            desafíos requiere un enfoque reflexivo y acciones concertadas para
+            garantizar un futuro sostenible para la comunidad y el entorno en la
+            Zona Metropolitana de Monterrey.
+          </Text>
+        </div>
       </div>
-    </Parallax>
+      <Cards />
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCardContext } from "../views/Body";
+import { useCardContext } from "../views/Problematica";
 import {
   SubcentersSpan,
   PeripherySpan,

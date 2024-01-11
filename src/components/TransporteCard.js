@@ -16,7 +16,7 @@ import {
   SliderThumb,
   SliderTrack,
 } from "@chakra-ui/react";
-import { useCardContext } from "../views/Body.js";
+import { useCardContext } from "../views/Problematica.js";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import {
   MASIVE_TRANSPORT_LAYER,

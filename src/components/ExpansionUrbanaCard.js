@@ -7,7 +7,7 @@ import {
   ContextTitle,
   ExpansionSpan,
 } from "./Card";
-import { useCardContext } from "../views/Body";
+import { useCardContext } from "../views/Problematica";
 import { EXPANSION_LAYER } from "../utils/constants";
 
 export function ExpansionUrbanaCard({ color, isCurrentSection }) {
