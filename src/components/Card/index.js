@@ -65,7 +65,7 @@ export const ResponseTitle = ({ children, color }) => (
     <Heading
       className="response"
       color={`${color}.600`}
-      fontSize={{ md: "0.9rem", lg: "1.1rem", sm: "0.8rem" }}
+      fontSize={{ md: "0.9rem", lg: "1rem", sm: "0.8rem" }}
     >
       {children}
     </Heading>
@@ -77,7 +77,7 @@ export const ContextTitle = ({ children, color }) => (
     <Text
       className="context"
       color={`${color}.600`}
-      fontSize={{ md: "0.9rem", lg: "1.1rem", sm: "0.8rem" }}
+      fontSize={{ md: "0.8rem", lg: "0.9rem", sm: "0.7rem" }}
     >
       {children}
     </Text>
@@ -87,7 +87,9 @@ export const ContextTitle = ({ children, color }) => (
 export const Card = ({ id, children, color }) => (
   <section className="cardSection" id={id}>
     <Box className="card" borderColor={`${color}.500`}>
-      {children}
+      <div style={{ position: "relative", height: "100%", width: "100%" }}>
+        {children}
+      </div>
     </Box>
   </section>
 );

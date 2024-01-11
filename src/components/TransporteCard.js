@@ -8,7 +8,7 @@ import {
 } from "recharts";
 import { CenterSpan, PeripherySpan, ResponseTitle, ContextTitle } from "./Card";
 import { useState, useEffect } from "react";
-import { useCardContext } from "../views/Body.js";
+import { useCardContext } from "../views/Problematica.js";
 import {
   MASIVE_TRANSPORT_LAYER,
   PRIMARY_ROUTES_LAYER,
@@ -40,11 +40,6 @@ export const CustomBarChart = ({ data }) => (
 );
 
 const marks = [
-  { value: 0, label: "0:00" },
-  { value: 60, label: "1:00" },
-  { value: 120, label: "2:00" },
-  { value: 180, label: "3:00" },
-  { value: 240, label: "4:00" },
   { value: 300, label: "5:00" },
   { value: 360, label: "6:00" },
   { value: 420, label: "7:00" },
@@ -63,8 +58,6 @@ const marks = [
   { value: 1200, label: "20:00" },
   { value: 1260, label: "21:00" },
   { value: 1320, label: "22:00" },
-  { value: 1380, label: "23:00" },
-  { value: 1440, label: "24:00" },
 ];
 
 export const TransporteControls = ({
@@ -76,15 +69,14 @@ export const TransporteControls = ({
   return (
     <SliderHTML
       time={time}
-      min={0}
-      max={1440}
+      min={300}
+      max={1320}
       step={3}
-      //title={"Precio de Venta"}
+      defaultValue={1020}
       togglePlay={togglePlay}
       isPlaying={isPlaying}
       handleSliderChange={handleSliderChange}
       marks={marks}
-      //legendItems={legendItems}
     />
   );
 };
@@ -119,39 +111,39 @@ const transformDataForTrips = (data) => {
 
 export function TransporteCard({ color, isCurrentSection }) {
   const { setLayers, setControlsProps, setOutline } = useCardContext();
-  const [originalData, setOriginalData] = useState([]); 
+  const [originalData, setOriginalData] = useState([]);
   const [chartData, setChartData] = useState([]);
-  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(0, 1440, 2, true);
-
+  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } =
+    TimeComponentClean(300, 1320, 2, 0.05, false, 1020);
 
   useEffect(() => {
     if (isCurrentSection) {
-      fetch("SIUM/data/transporte_municipality.json")
+      fetch(
+        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte_municipality.json"
+      )
         .then((response) => response.json())
         .then((data) => {
-          const newData = data.filter((x) => x["Transporte"] === "TPUB" && x["Motivo"] === "Regreso A Casa");
+          const newData = data.filter(
+            (x) =>
+              x["Transporte"] === "TPUB" && x["Motivo"] === "Regreso A Casa"
+          );
           setChartData(newData);
         });
-    } else {
-      setChartData([]);
-    }
-  }, [isCurrentSection]);
-
-  useEffect(() => {
-    if (isCurrentSection) {
-      fetch("SIUM/data/TRANSPORTEJEANNETTE.geojson")
+      fetch(
+        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/TRANSPORTEJEANNETTE.geojson"
+      )
         .then((response) => response.json())
         .then((data) => setOriginalData(data))
         .catch((error) => console.error("Error cargando el GeoJSON:", error));
     } else {
+      setChartData([]);
       setOriginalData(null);
+      setLayers([]);
     }
   }, [isCurrentSection]);
 
   useEffect(() => {
-
     if (isCurrentSection && originalData) {
-
       setControlsProps({ time, togglePlay, isPlaying, handleSliderChange });
 
       const tripsLayer = {
@@ -172,47 +164,52 @@ export function TransporteCard({ color, isCurrentSection }) {
 
       setLayers([MASIVE_TRANSPORT_LAYER, PRIMARY_ROUTES_LAYER, tripsLayer]);
     }
-  }, [
-    isCurrentSection,
-    originalData,
-    setLayers,
-    setControlsProps,
-    isPlaying,
-    time,
-    animationTime,
-  ]);
+  }, [originalData, time, isPlaying, animationTime]);
 
   return (
     <>
-      <ResponseTitle color={color}>Mayormente en automovil.</ResponseTitle>
+      <ResponseTitle color={color}>
+        Demasiados de nosotros en auto
+      </ResponseTitle>
       <p>
-        El <b>45%</b> de los viajes son hechos al trabajo y el <b>47%</b> de los
-        viajes son hechos en automóvil, donde más de la mitad viajan solos.
+        <b>El 45% de los desplazamientos</b> en Monterrey corresponde a viajes
+        al trabajo, siendo casi la mitad de ellos realizados en automóvil, con
+        la particularidad de que la mitad se efectúan con solo una persona en el
+        vehículo. Los habitantes de la Zona Metropolitana{" "}
+        <b>
+          invierten en promedio 50 minutos por viaje redondo en automóvil,
+          equivalente a doce días al año.
+        </b>{" "}
+        Aunque el transporte público juega un papel fundamental, requiere
+        mejoras, ya que las personas pasan en promedio 70 minutos al día
+        utilizando este medio, y un tercio de ellas enfrenta jornadas de hasta 3
+        horas diarias de viaje.
       </p>
       <p>
-        El <b>21%</b> se mueve en transporte público y 19% a pie. 1 de cada 3
-        personas pasan 3 horas al día en ir y venir de su viaje principal en
-        transporte público. En promedio se espera 21 minutos a que llegue el
-        transporte público.
+        <b>Cerca del 40% de los traslados provienen de la periferia</b>, como
+        Apodaca, Escobedo, García y Juárez, mientras que el 26% se dirige a
+        Monterrey. Sorprendentemente, solo el 21% de la población utiliza
+        transporte público y 19% a pie. En este contexto, es esencial expandir
+        el acceso al transporte público y mejorar la infraestructura para
+        ciclistas y peatones, con un <b>Sistema Integrado de Transporte</b>,
+        para contrarrestar el impacto negativo ambiental y en la salud pública
+        generado por el elevado número de viajes en automóvil particular.
       </p>
-      <p>
-        Alrededor del <b>40%</b> de los traslados se hacen desde la{" "}
-        <PeripherySpan setOutline={setOutline} /> como Apodaca, Escobedo, García
-        y Juárez, y el <b>26%</b> se traslada al{" "}
-        <CenterSpan setOutline={setOutline} />. En promedio se invierten{" "}
-        <b>68 minutos</b> por viaje redondo, el equivalente a doce días por año.
-      </p>
-      <br />
       <ContextTitle color={color}>
-        La expansión urbana aumenta la dependencia del automovil, contribuyendo
-        a que el tráfico aumente.
+        Los SITP's ofrecen como beneficios una ciudad conectada y ordenada,
+        servicios de mayor calidad, un sistema único de información y atención,
+        menor tiempo de viaje, mayor seguridad personal y vial, tarifas de
+        acuerdo al tipo de viaje y condición social, mayor accesibilidad al
+        transporte público y conectividad con todas las zonas de la ciudad y
+        grupos poblacionales." Comisión Ambiental de la Megalópolis
       </ContextTitle>
       <Chart
+        title="Tiempo de traslado regreso a casa"
         data={chartData}
         setOutline={setOutline}
         column="TiempoTraslado"
         columnKey="MunDest"
-        formatter={(d) => `${d.toLocaleString("en-US")} min`}
+        formatter={(d) => `${Math.round(d).toLocaleString("en-US")} min`}
         reducer={_.meanBy}
       />
     </>

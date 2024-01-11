@@ -7,27 +7,43 @@ import { HiMiniBuildingOffice } from "react-icons/hi2";
 import { GiInjustice, GiRobber } from "react-icons/gi";
 import { FaPeopleArrows } from "react-icons/fa";
 
-import { ExpansionUrbanaCard, ExpansionUrbanaControls } from "../components/ExpansionUrbanaCard";
+import {
+  ExpansionUrbanaCard,
+  ExpansionUrbanaControls,
+} from "../components/ExpansionUrbanaCard";
 import {
   TransporteCard,
   TransporteControls,
 } from "../components/TransporteCard";
 import { EmpleoCard, EmpleoControls } from "../components/EmpleoCard";
 import { ViviendaCard, ViviendaControls } from "../components/ViviendaCard";
-import { SegregacionCard, SegregacionControls } from "../components/SegregacionCard";
-import { DelincuenciaCard, DelincuenciaControls } from "../components/DelincuenciaCard";
+import {
+  SegregacionCard,
+  SegregacionControls,
+} from "../components/SegregacionCard";
+import {
+  DelincuenciaCard,
+  DelincuenciaControls,
+} from "../components/DelincuenciaCard";
 import { CostosCard } from "../components/CostosCard";
 
-
-export function colorInterpolate(normalizedValue, startColor, endColor, opacity = 1) {
+export function colorInterpolate(
+  normalizedValue,
+  startColor,
+  endColor,
+  opacity = 1
+) {
   const interpolator = interpolateRgb(startColor, endColor);
   const resultColor = rgb(interpolator(normalizedValue));
+  const minOpacity = 0.8;
 
   return [
     resultColor.r,
     resultColor.g,
     resultColor.b,
-    normalizedValue * opacity * 255,
+    normalizedValue > 0
+      ? Math.max(opacity * normalizedValue, minOpacity) * 255
+      : 0,
   ];
 }
 
@@ -59,40 +75,42 @@ export const cleanedGeoData = (data, column, reversed = false) => {
 };
 
 //lo que filtra los datos en base al tiempo para (vivienda, expansion y delincuencia)
-export const filterDataAll = (data, selectedYear, column, reversed=false, nomcol)=>
-{
-    if (!data || !data.features || !Array.isArray(data.features)) {
-      return [];
-    }
+export const filterDataAll = (
+  data,
+  selectedYear,
+  column,
+  reversed = false,
+  nomcol
+) => {
+  if (!data || !data.features || !Array.isArray(data.features)) {
+    return [];
+  }
 
-    const toNormalize = addNormalized(
-      data.features.map((x) => x.properties),
-      column
-    );
-    
-    const filteredData = data.features
-      .filter((feature) => feature[column] !== 0 && parseInt(feature.properties[nomcol]) === selectedYear)
-      .map((feature) => {
-        const coordinates = feature.geometry.coordinates[0]; // Obtener las coordenadas del primer anillo del polígono
-        return {
-          ...feature,
-          properties: {
-            ...feature.properties,
-            normalized: reversed
-              ? 1 - toNormalize(feature.properties)
-              : toNormalize(feature.properties),
-          },
-          geometry: {
-            type: "Polygon",
-            coordinates: [coordinates], // Conservar solo el primer anillo
-          },
-        };
-      });
-  
-    return filteredData
-  };
+  const toNormalize = addNormalized(
+    data.features.map((x) => x.properties),
+    column
+  );
 
+  const filteredData = data.features
+    .filter(
+      (feature) =>
+        feature[column] !== 0 &&
+        parseInt(feature.properties[nomcol]) === selectedYear
+    )
+    .map((feature) => {
+      return {
+        ...feature,
+        properties: {
+          ...feature.properties,
+          normalized: reversed
+            ? 1 - toNormalize(feature.properties)
+            : toNormalize(feature.properties),
+        },
+      };
+    });
 
+  return filteredData;
+};
 
 export const PERIPHERIES = [
   "Juárez",
@@ -224,77 +242,6 @@ export const SECCION_CRECIMIENTO_LAYER_1990 = {
   },
 };
 
-export const EXPANSION_LAYER = {
-  type: GeoJsonLayer,
-  props: {
-    id: "seccion_crecimiento_layer",
-    data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob-1990-2020.geojson",
-    dataTransform: (d) => cleanedGeoData(d.features, "2020"),
-    getFillColor: (d) =>
-      colorInterpolate(d.properties.normalized, "blue", "red", 1.5),
-    getLineColor: (d) =>
-      colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
-    getLineWidth: 30,
-  },
-};
-
-export const EMPLEO_LAYER = {
-  type: GeoJsonLayer,
-  props: {
-    id: "empleo_layer",
-    data: "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2010_Municipios_Geo2.json",
-    dataTransform: (d) => cleanedGeoData(d.features, "Empleos"),
-    getFillColor: (d) =>
-      colorInterpolate(d.properties.normalized, "yellow", "red", 2),
-    getLineColor: (d) =>
-      colorInterpolate(d.properties.normalized, "yellow", "red", 0.5),
-    getLineWidth: 10,
-  },
-};
-
-export const VIVIENDA_LAYER = {
-  type: GeoJsonLayer,
-  props: {
-    id: "seccion_vivienda_layer",
-    data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda-hex.geojson",
-    dataTransform: (d) => cleanedGeoData(d.features, "IM_PRECIO_VENTA", true),
-    getFillColor: (d) =>
-      colorInterpolate(d.properties.normalized, "blue", "red", 1),
-    getLineColor: (d) =>
-      colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
-    getLineWidth: 10,
-  },
-};
-
-export const SEGREGACION_LAYER = {
-  type: GeoJsonLayer,
-  props: {
-    id: "seccion_segregacion_layer",
-    data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income.geojson",
-    dataTransform: (d) =>
-      cleanedGeoData(d.features, "local_centralization_q_1_k_100"),
-    getFillColor: (d) =>
-      colorInterpolate(d.properties.normalized, "blue", "red", 1),
-    getLineColor: (d) =>
-      colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
-    getLineWidth: 20,
-  },
-};
-
-export const DELINCUENCIA_LAYER = {
-  type: GeoJsonLayer,
-  props: {
-    id: "seccion_delincuencia_layer",
-    data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson",
-    dataTransform: (d) => cleanedGeoData(d.features, "num_crimen"),
-    getFillColor: (d) =>
-      colorInterpolate(d.properties.normalized, "blue", "red", 1),
-    getLineColor: (d) =>
-      colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
-    getLineWidth: 10,
-  },
-};
-
 export const COSTOS_LAYER = {
   type: GeoJsonLayer,
   props: {
@@ -310,24 +257,39 @@ export const COSTOS_LAYER = {
   },
 };
 
-
-export function separateLegendItems(data, quartiles, colorStart, colorEnd, filtering = null) {
-  const filteringFn = filtering || ((d) => d.toLocaleString('en-US', { maximumFractionDigits: 0 }));
+export function separateLegendItems(
+  data,
+  quartiles,
+  colorStart,
+  colorEnd,
+  filtering = null
+) {
+  const filteringFn =
+    filtering ||
+    ((d) => d.toLocaleString("en-US", { maximumFractionDigits: 0 }));
   const minVal = Math.min(...data);
   const maxVal = Math.max(...data);
   // Genera puntos de quiebre basados en el rango de valores normalizados
-  const breakpoints = Array.from({ length: quartiles + 1 }, (_, i) => minVal + i * (maxVal - minVal) / quartiles);
+  const breakpoints = Array.from(
+    { length: quartiles + 1 },
+    (_, i) => minVal + (i * (maxVal - minVal)) / quartiles
+  );
   const newLegendItems = breakpoints.slice(0, -1).map((breakpoint, index) => {
     const nextBreakpoint = breakpoints[index + 1];
     // El punto medio se utiliza para calcular el color de la leyenda
     const midpoint = (breakpoint + nextBreakpoint) / 2;
     // Normaliza el punto medio para la interpolación de colores
     const normalizedMidpoint = (midpoint - minVal) / (maxVal - minVal);
-    const interpolatedColor = colorInterpolate(normalizedMidpoint, colorStart, colorEnd, 1);
+    const interpolatedColor = colorInterpolate(
+      normalizedMidpoint,
+      colorStart,
+      colorEnd,
+      1
+    );
     return {
-      color: `rgba(${interpolatedColor.join(',')})`, // Convierte el color a cadena para CSS
+      color: `rgba(${interpolatedColor.join(",")})`, // Convierte el color a cadena para CSS
       item1: filteringFn(breakpoint),
-      item2: filteringFn(breakpoint),
+      item2: filteringFn(nextBreakpoint),
     };
   });
   return newLegendItems;
@@ -335,8 +297,8 @@ export function separateLegendItems(data, quartiles, colorStart, colorEnd, filte
 
 export const sectionsInfo = {
   "expansion-urbana": {
-    title: "¿Hacia dónde crecemos?",
-    answer: "Hacia las periferias, lejos unos de otros.",
+    title: "¿Hacia dónde nos expandimos?",
+    answer: "Hacia las Periferias, lejos unos de otros",
     color: "brown",
     icon: FaPeopleArrows,
     component: ExpansionUrbanaCard,
@@ -344,7 +306,7 @@ export const sectionsInfo = {
   },
   empleo: {
     title: "¿En dónde trabajamos?",
-    answer: "En el centro.",
+    answer: "Principalmente en el centro, aunque hay nuevas centralidades",
     color: "brown2",
     icon: HiMiniBuildingOffice,
     component: EmpleoCard,
@@ -352,7 +314,7 @@ export const sectionsInfo = {
   },
   transporte: {
     title: "¿Cómo nos movemos?",
-    answer: "Mayormente en automovil.",
+    answer: "Demasiados de nosotros en auto",
     color: "orange",
     icon: MdDirectionsCar,
     component: TransporteCard,
@@ -360,31 +322,32 @@ export const sectionsInfo = {
   },
   vivienda: {
     title: "¿Por qué nos expandimos?",
-    answer: "La vivienda es más asequible en las periferias.",
+    answer: "La vivienda es más asequible en las periferias",
     color: "yellow",
     icon: MdHome,
     component: ViviendaCard,
     controls: ViviendaControls,
   },
   segregacion: {
-    title: "¿Qué nos segrega?",
-    answer: "Aisla a personas con menos recursos de zonas con mayor inversión.",
+    title: "¿Por qué la expansión segrega?",
+    answer: "Porque expulsa a los más vulnerables a la periferia",
     color: "sage",
     icon: GiInjustice,
     component: SegregacionCard,
     controls: SegregacionControls,
   },
   delincuencia: {
-    title: "¿Qué causa inseguridad?",
-    answer: "Porque la segregación aumenta la delincuencia.",
+    title: "¿Por qué la expansión aumenta la inseguridad?",
+    answer:
+      "Porque al estar alejados, no nos podemos cuidar los unos a los otros",
     color: "green",
     icon: GiRobber,
     component: DelincuenciaCard,
     controls: DelincuenciaControls,
   },
   costos: {
-    title: "¿Cuánto cuesta expandirnos?",
-    answer: "Porque hay que llevar servicios públicos cada vez más lejos.",
+    title: "¿Por qué la expansión nos cuenta tanto dinero?",
+    answer: "Hay que llevar servicios públicos más lejos",
     color: "teal",
     icon: MdOutlineAttachMoney,
     component: CostosCard,

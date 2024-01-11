@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { ResponseTitle, ContextTitle } from "./Card";
 import { COSTOS_LAYER } from "../utils/constants";
-import { useCardContext } from "../views/Body";
+import { useCardContext } from "../views/Problematica";
 
 export function CostosCard({ color, isCurrentSection }) {
   const { setLayers } = useCardContext();
@@ -14,7 +14,7 @@ export function CostosCard({ color, isCurrentSection }) {
   return (
     <>
       <ResponseTitle color={color}>
-        Porque hay que llevar servicios públicos cada vez más lejos.
+        Hay que llevar servicios públicos más lejos
       </ResponseTitle>
       <p>
         Incidencias delictivas como el robos en calles o a viviendas, así como
