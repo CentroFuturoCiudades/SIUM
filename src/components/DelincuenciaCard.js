@@ -38,7 +38,6 @@ export const DelincuenciaControls = () => {
 export function DelincuenciaCard({ color, isCurrentSection }) {
   const { setLayers, setOutline } = useCardContext();
   const [chartData, setChartData] = useState([]);
-  const [generalChartData, setGeneralChartData] = useState([]);
   const [originalData, setOriginalData] = useState(null); 
   const [activeButton, setActiveButton] = useState('num_crimen')
   const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(2017, 2020, 1, 3000, false);
@@ -50,10 +49,7 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
         "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen_municipality.json"
       )
         .then((response) => response.json())
-        .then((data) => {
-          setChartData(data);
-          setGeneralChartData(data);
-        });
+        .then((data) => setChartData(data));
       fetch(
         "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson"
       )
@@ -127,10 +123,10 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
           variant="outline"
           onClick={handleDataChange}
           style={{
-            backgroundColor: activeButton === 'General' ? 'gainsboro' : 'white',
+            backgroundColor: activeButton === 'num_crimen' ? 'gainsboro' : 'white',
           }}
         >
-          General
+          Número de Crímenes
         </Button>
       <ButtonGroup size="sm" isAttached variant="outline">
         <Button

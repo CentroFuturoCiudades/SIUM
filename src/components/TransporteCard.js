@@ -135,7 +135,6 @@ export function TransporteCard({ color, isCurrentSection }) {
       )
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);//
           setOriginalData(data);
           setGeneralLayer(data);
 
@@ -150,30 +149,32 @@ export function TransporteCard({ color, isCurrentSection }) {
 
   // Manejar clic en el boton para cambiar la información en base al id del botón
   function handleDataChange(event) {
-
-    // Obtener el id del botón presionado
-    const buttonId = event.target.id;
-    setActiveButton(buttonId);
-
-    if(buttonId == 'General'){
-      setOriginalData(generalLayer);
-      setChartData(generalChartData);
-    } else {
-      let actualLayerData = {...generalLayer};
-      let actualChartData = {...generalChartData};
-
-      // Filtrar en base al id del botón presionado
-      if (buttonId == "transporteActivo"){
-        actualLayerData.features = generalLayer.features.filter((feature) => feature.properties.Transporte == "Bicicleta" || feature.properties.Transporte == "Caminando");
-        actualChartData = generalChartData.filter((feature) => feature["Transporte"] == "Bicicleta" || feature["Transporte"] == "Caminando");
+    if(originalData){
+      // Obtener el id del botón presionado
+      const buttonId = event.target.id;
+      setActiveButton(buttonId);
+  
+      if(buttonId == 'General'){
+        setOriginalData(generalLayer);
+        setChartData(generalChartData);
       } else {
-        actualLayerData.features = generalLayer.features.filter((feature) => feature.properties.Transporte == buttonId);
-        actualChartData = generalChartData.filter((feature) => feature["Transporte"] == buttonId);
+        let actualLayerData = {...generalLayer};
+        let actualChartData = {...generalChartData};
+  
+        // Filtrar en base al id del botón presionado
+        if (buttonId == "transporteActivo"){
+          actualLayerData.features = generalLayer.features.filter((feature) => feature.properties.Transporte == "Bicicleta" || feature.properties.Transporte == "Caminando");
+          actualChartData = generalChartData.filter((feature) => feature["Transporte"] == "Bicicleta" || feature["Transporte"] == "Caminando");
+        } else {
+          actualLayerData.features = generalLayer.features.filter((feature) => feature.properties.Transporte == buttonId);
+          actualChartData = generalChartData.filter((feature) => feature["Transporte"] == buttonId);
+        }
+  
+        setOriginalData(actualLayerData);
+        setChartData(actualChartData)
       }
-
-      setOriginalData(actualLayerData);
-      setChartData(actualChartData)
     }
+
   }
 
   useEffect(() => {
