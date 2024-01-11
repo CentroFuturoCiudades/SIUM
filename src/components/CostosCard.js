@@ -5,7 +5,6 @@ import { useCardContext } from "../views/Body";
 
 export function CostosCard({ color, isCurrentSection }) {
 
-
   const [brushingRadius, setBrushingRadius] = useState(5000);
 
   const handleRadioChange = (event) => {

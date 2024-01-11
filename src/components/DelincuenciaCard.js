@@ -7,6 +7,8 @@ import _ from "lodash";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import { SliderHTML, TimeComponentClean} from "./TimeComponent";
 import { colorInterpolate } from "../utils/constants";
+import { Button, ButtonGroup } from '@chakra-ui/react'
+
 
 const marks = [
   { value: 2017, label: "2017" },
@@ -62,9 +64,10 @@ export const DelincuenciaControls = ({time,
 export function DelincuenciaCard({ color, isCurrentSection }) {
   const { setLayers, setOutline, setControlsProps } = useCardContext();
   const [chartData, setChartData] = useState([]);
+  const [generalChartData, setGeneralChartData] = useState([]);
   const [originalData, setOriginalData] = useState([]); 
+  const [activeButton, setActiveButton] = useState('')
   const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(2017, 2020, 1, 3000, false);
-
 
   //los datos que se leen para los charts
   useEffect(() => {
@@ -72,10 +75,12 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
       fetch("SIUM/data/crimen_municipality.json")
         .then((response) => response.json())
         .then((data) => {
-          const newData = data.filter(
-            (x) => x.year === 2020 && x.TIPO_INCIDENCIA === "VIOLENCIA FAMILIAR"
-          );
-          setChartData(newData);
+          // const newData = data.filter(
+          //   (x) => x.year === 2020 && x.TIPO_INCIDENCIA === "VIOLENCIA FAMILIAR"
+          // );
+          setChartData(data);
+          setGeneralChartData(data);
+          console.log(data[0].TIPO_INCIDENCIA);
         });
     } else {
       setChartData([]);
@@ -95,6 +100,29 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
     }
   }, [isCurrentSection]);
 
+    // Manejar clic en el boton para cambiar la información en base al id del botón
+    function handleDataChange(event) {
+      
+      // Obtener el id del botón presionado
+      const buttonId = event.target.id;
+      setActiveButton(buttonId);
+      // console.log(activeButton);
+  
+      if(buttonId == 'General'){
+        // setOriginalData(generalLayer);
+        setChartData(generalChartData);
+      } else {
+        // let actualLayerData = {...generalLayer};
+        let actualChartData = {...generalChartData};
+  
+        // Filtrar en base al id del botón presionado
+        // actualLayerData.features = generalLayer.features.filter((feature) => feature.properties.Transporte == buttonId);
+        actualChartData = generalChartData.filter((dato) => dato["TIPO_INCIDENCIA"] == buttonId);
+  
+        // setOriginalData(actualLayerData);
+        setChartData(actualChartData)
+      }
+    }
 
   useEffect(() => {
     if (isCurrentSection && originalData) {
@@ -146,6 +174,57 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
         La malas condiciones de vida en zonas marginadas contribuyen a la falta
         de oportunidades y a la delincuencia.
       </ContextTitle>
+        <Button
+          id="General"
+          size="sm"
+          variant="outline"
+          onClick={handleDataChange}
+          style={{
+            backgroundColor: activeButton === 'General' ? 'gainsboro' : 'white',
+          }}
+        >
+          General
+        </Button>
+      <ButtonGroup size="sm" isAttached variant="outline">
+        <Button
+          id="VIOLENCIA FAMILIAR"
+          size="sm"
+          variant="outline"
+          onClick={handleDataChange}
+          style={{
+            backgroundColor: activeButton === 'VIOLENCIA FAMILIAR' ? 'gainsboro' : 'white',
+          }}
+        >
+          Violencia Familiar
+        </Button>
+        <Button
+          id="ROBO A TRANSEUNTE"
+          onClick={handleDataChange}
+          style={{
+            backgroundColor: activeButton === 'ROBO A TRANSEUNTE' ? 'gainsboro' : 'white',
+          }}
+        >
+          Robo a Transeúnte
+        </Button>
+        <Button
+          id="ROBO A NEGOCIO"
+          onClick={handleDataChange}
+          style={{
+            backgroundColor: activeButton === 'ROBO A NEGOCIO' ? 'gainsboro' : 'white',
+          }}
+        >
+          Robo a Negocio
+        </Button>
+        <Button
+          id="ROBO A CASA HABITACION"
+          onClick={handleDataChange}
+          style={{
+            backgroundColor: activeButton === 'ROBO A CASA HABITACION' ? 'gainsboro' : 'white',
+          }}
+        >
+          Robo a Casa Habitación
+        </Button>
+      </ButtonGroup>
       <Chart
         data={chartData}
         setOutline={setOutline}

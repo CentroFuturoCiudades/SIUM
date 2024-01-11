@@ -16,7 +16,6 @@ import {
 import { TripsLayer } from "@deck.gl/geo-layers";
 import { Chart } from "./Chart.js";
 import _ from "lodash";
-import { Tabs, TabList, Tab } from '@chakra-ui/react'
 import { Button, ButtonGroup } from '@chakra-ui/react'
 
 
@@ -127,8 +126,8 @@ export function TransporteCard({ color, isCurrentSection }) {
   const [generalLayer, setGeneralLayer] = useState([]);
   const [chartData, setChartData] = useState([]);
   const [generalChartData, setGeneralChartData] = useState([]);
+  const [activeButton, setActiveButton] = useState('General');
   const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(0, 1440, 2, true);
-
 
   // Cargar la información utilizada para la gráfica
   useEffect(() => {
@@ -149,9 +148,10 @@ export function TransporteCard({ color, isCurrentSection }) {
   function handleDataChange(event) {
 
     // Obtener el id del botón presionado
-    const idBoton = event.target.id;
+    const buttonId = event.target.id;
+    setActiveButton(buttonId);
 
-    if(idBoton == 'General'){
+    if(buttonId == 'General'){
       setOriginalData(generalLayer);
       setChartData(generalChartData);
     } else {
@@ -159,8 +159,13 @@ export function TransporteCard({ color, isCurrentSection }) {
       let actualChartData = {...generalChartData};
 
       // Filtrar en base al id del botón presionado
-      actualLayerData.features = generalLayer.features.filter((feature) => feature.properties.Transporte == idBoton);
-      actualChartData = generalChartData.filter((feature) => feature["Transporte"] == idBoton);
+      if (buttonId == "transporteActivo"){
+        actualLayerData.features = generalLayer.features.filter((feature) => feature.properties.Transporte == "Bicicleta" || feature.properties.Transporte == "Caminando");
+        actualChartData = generalChartData.filter((feature) => feature["Transporte"] == "Bicicleta" || feature["Transporte"] == "Caminando");
+      } else {
+        actualLayerData.features = generalLayer.features.filter((feature) => feature.properties.Transporte == buttonId);
+        actualChartData = generalChartData.filter((feature) => feature["Transporte"] == buttonId);
+      }
 
       setOriginalData(actualLayerData);
       setChartData(actualChartData)
@@ -183,8 +188,6 @@ export function TransporteCard({ color, isCurrentSection }) {
       setOriginalData(null);
     }
   }, [isCurrentSection]);
-
-
 
   useEffect(() => {
 
@@ -240,59 +243,48 @@ export function TransporteCard({ color, isCurrentSection }) {
         <CenterSpan setOutline={setOutline} />. En promedio se invierten{" "}
         <b>68 minutos</b> por viaje redondo, el equivalente a doce días por año.
       </p>
-
-        <Button 
-          id='General'
-          size='sm'
-          variant='outline'
+      <ButtonGroup size="sm" isAttached variant="outline">
+        <Button
+          id="General"
+          size="sm"
+          variant="outline"
           onClick={handleDataChange}
-          _focus={{
-            boxShadow:
-              '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)',
+          style={{
+            backgroundColor: activeButton === 'General' ? 'gainsboro' : 'white',
           }}
-        >General</Button>
+        >
+          General
+        </Button>
 
-      <ButtonGroup 
-      size='sm' 
-      isAttached 
-      variant='outline'>
-
-        <Button 
+        <Button
           id="Autómovil"
           onClick={handleDataChange}
-          _focus={{
-            boxShadow:
-              '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)',
+          style={{
+            backgroundColor: activeButton === 'Autómovil' ? 'gainsboro' : 'white',
           }}
-        >Auto</Button>
+        >
+          Auto
+        </Button>
 
         <Button
-          id='TPUB'
+          id="TPUB"
           onClick={handleDataChange}
-          _focus={{
-            boxShadow:
-            '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)',
+          style={{
+            backgroundColor: activeButton === 'TPUB' ? 'gainsboro' : 'white',
           }}
-          >Transporte público</Button>
+        >
+          Transporte público
+        </Button>
 
         <Button
-          id='Bicicleta'
+          id="transporteActivo"
           onClick={handleDataChange}
-          _focus={{
-            boxShadow:
-            '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)',
+          style={{
+            backgroundColor: activeButton === 'transporteActivo' ? 'gainsboro' : 'white',
           }}
-          >Ciclista</Button>
-
-        <Button
-        id='Caminando'
-          onClick={handleDataChange}
-          _focus={{
-            boxShadow:  
-              '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)',
-          }}
-        >Peatón</Button>
-
+        >
+          Transporte Activo
+        </Button>
       </ButtonGroup>
 
       <br />

@@ -11,7 +11,6 @@ import { useCardContext } from "../views/Body";
 import { separateLegendItems, filterDataAll } from "../utils/constants";
 import "../index.css";
 import { Chart } from "./Chart";
-import { Tabs, TabList, Tab } from '@chakra-ui/react'
 import { GeoJsonLayer } from "@deck.gl/layers";
 import { SliderHTML, TimeComponentClean } from "./TimeComponent";
 import { colorInterpolate } from "../utils/constants";
@@ -60,14 +59,6 @@ export const ExpansionUrbanaControls = ({time,
       marks={marks}
       legendItems={legendItems}
     />
-    <div style={{ position: "absolute", top: 10, left: "40%" }}>
-    <Tabs variant='soft-rounded' colorScheme='green'>
-      <TabList>
-        <Tab onClick={() => {}}>POB Joven</Tab>
-        <Tab onClick={() => {}}>POB +65</Tab>
-      </TabList>
-    </Tabs>
-    </div>
   </>
   );
 };
@@ -156,12 +147,6 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
         La migración de subcentros a la periferia, conocido como expansión
         urbana, nos aleja de servicios y empleo.
       </ContextTitle>
-      <Tabs variant='soft-rounded' colorScheme='green'>
-        <TabList>
-          <Tab onClick={() => {}}>POB Joven</Tab>
-          <Tab onClick={() => {}}>POB +65</Tab>
-        </TabList>
-      </Tabs>
       <Chart
         data={chartData}
         setOutline={setOutline}
