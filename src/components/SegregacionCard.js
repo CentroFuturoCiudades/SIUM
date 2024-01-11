@@ -13,20 +13,21 @@ import {
 } from "../utils/constants";
 import { Chart } from "./Chart";
 import { Legend } from "./Legend";
+import { Button, ButtonGroup } from '@chakra-ui/react'
 import { GeoJsonLayer } from "deck.gl";
 
 export const SegregacionControls = () => {
   const [legendItems, setLegendItems] = useState([]);
 
   useEffect(() => {
-    fetch(
+     fetch(
       "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income2.geojson"
     )
       .then((response) => response.json())
       .then((data) => {
         const values = data.features.map(
           (feat) => feat.properties["income_pc"]
-        );
+          );
         setLegendItems(
           separateLegendItems(values, 4, "red", "blue", (x) =>
             x.toLocaleString("en-US", {
@@ -46,8 +47,9 @@ export const SegregacionControls = () => {
 };
 
 export function SegregacionCard({ color, isCurrentSection }) {
-  const { setLayers, setOutline } = useCardContext();
+  const { setLayers, setOutline } = useCardContext();  
   const [chartData, setChartData] = useState([]);
+  const [activeButton, setActiveButton] = useState('income_pc');
   const [originalData, setOriginalData] = useState(null);
 
   useEffect(() => {
@@ -68,25 +70,33 @@ export function SegregacionCard({ color, isCurrentSection }) {
       setOriginalData(null);
       setLayers([]);
     }
-  }, [isCurrentSection]);
+  }, [isCurrentSection, activeButton]);
+
+  // Manejar clic en el boton para cambiar la información en base al id del botón
+  function handleDataChange(event) {
+    // Obtener el id del botón presionado
+    const buttonId = event.target.id;
+    setActiveButton(buttonId);
+  }  
+
   useEffect(() => {
     if (isCurrentSection && originalData) {
-      setLayers([
-        {
-          type: GeoJsonLayer,
-          props: {
-            id: "seccion_segregacion_layer",
-            data: originalData,
-            dataTransform: (d) => cleanedGeoData(d.features, "income_pc"),
-            getFillColor: (d) =>
-              colorInterpolate(d.properties.normalized, "red", "blue", 1),
-            getLineColor: (d) =>
-              colorInterpolate(d.properties.normalized, "red", "blue", 0.5),
-            getLineWidth: 20,
-          },
+    setLayers([
+      {
+        type: GeoJsonLayer,
+        props: {
+          id: "seccion_segregacion_layer",
+          data: originalData,
+          dataTransform: (d) => cleanedGeoData(d.features, activeButton),
+          getFillColor: (d) =>
+            colorInterpolate(d.properties.normalized, "red", "blue", 1),
+          getLineColor: (d) =>
+            colorInterpolate(d.properties.normalized, "red", "blue", 0.5),
+          getLineWidth: 20,
         },
-      ]);
-    }
+      },
+    ]);
+  }
   }, [originalData]);
 
   return (
@@ -111,6 +121,39 @@ export function SegregacionCard({ color, isCurrentSection }) {
         Similarmente, se deben de generar políticas de vivienda asequible menos
         desconectadas de las zonas funcionales de la ciudad.
       </p>
+      <ButtonGroup size="sm" isAttached variant="outline">
+        <Button
+          id="income_pc"
+          size="sm"
+          variant="outline"
+          onClick={handleDataChange}
+          style={{
+            backgroundColor: activeButton === 'income_pc' ? 'gainsboro' : 'white',
+          }}
+        >
+          Ingreso
+        </Button>
+        <Button
+          id="local_centralization_q_1_k_100"
+          onClick={handleDataChange}
+          style={{
+            backgroundColor: activeButton === 'local_centralization_q_1_k_100' ? 'gainsboro' : 'white',
+          }}
+        >
+          Segregación-
+        </Button>
+        <Button
+          id="local_centralization_q_5_k_100"
+          onClick={handleDataChange}
+          style={{
+            backgroundColor: activeButton === 'local_centralization_q_5_k_100' ? 'gainsboro' : 'white',
+          }}
+        >
+          Segregación+
+        </Button>
+      </ButtonGroup>
+      <br />
+      <br />
       <ContextTitle color={color}>
         La segregación aleja y separa, tanto de nosotros mismos, como de áreas
         urbanas imprescindibles para el desarrollo humano pleno.

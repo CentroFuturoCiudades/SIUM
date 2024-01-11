@@ -1,15 +1,40 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ResponseTitle, ContextTitle } from "./Card";
 import { COSTOS_LAYER } from "../utils/constants";
 import { useCardContext } from "../views/Problematica";
 
 export function CostosCard({ color, isCurrentSection }) {
+
+  const [brushingRadius, setBrushingRadius] = useState(5000);
+
+  const handleRadioChange = (event) => {
+    switch (event.target.value) {
+      case 'transporte_privado':
+        setBrushingRadius(5000);
+        break;
+      case 'transporte_publico':
+        setBrushingRadius(2000);
+        break;
+      case 'caminando':
+        setBrushingRadius(500);
+        break;
+      default:
+        setBrushingRadius(5000);
+        break;
+    }
+  };
+
   const { setLayers } = useCardContext();
+
   useEffect(() => {
     if (isCurrentSection) {
+      COSTOS_LAYER.props.brushingRadius = brushingRadius; // Update brushing radius in the layer
       setLayers([COSTOS_LAYER]);
     }
-  }, [isCurrentSection, setLayers]);
+  }, [isCurrentSection, setLayers, brushingRadius]);
+
+
+
 
   return (
     <>
@@ -31,6 +56,37 @@ export function CostosCard({ color, isCurrentSection }) {
         La malas condiciones de vida en zonas marginadas contribuyen a la falta
         de oportunidades y a la delincuencia.
       </ContextTitle>
+
+      <form>
+        <input
+          type="radio"
+          id="transporte_privado"
+          name="distancias"
+          value="transporte_privado"
+          onChange={handleRadioChange}
+        />
+        <label htmlFor="transporte_privado"> Transporte privado </label><br />
+
+        <input
+          type="radio"
+          id="transporte_publico"
+          name="distancias"
+          value="transporte_publico"
+          onChange={handleRadioChange}
+        />
+        <label htmlFor="transporte_publico"> Transporte público </label><br />
+
+        <input
+          type="radio"
+          id="caminando"
+          name="distancias"
+          value="caminando"
+          onChange={handleRadioChange}
+        />
+        <label htmlFor="caminando"> Caminando </label>
+      </form>
+
+
     </>
   );
 }

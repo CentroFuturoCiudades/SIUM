@@ -26,6 +26,7 @@ import {
   DelincuenciaControls,
 } from "../components/DelincuenciaCard";
 import { CostosCard } from "../components/CostosCard";
+import {BrushingExtension} from '@deck.gl/extensions';
 
 export function colorInterpolate(
   normalizedValue,
@@ -254,6 +255,9 @@ export const COSTOS_LAYER = {
     getLineColor: (d) =>
       colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
     getLineWidth: 30,
+    brushingEnabled: true,
+    brushingRadius: 5000,
+    extensions: [new BrushingExtension()]
   },
 };
 

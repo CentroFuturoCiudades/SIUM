@@ -7,8 +7,11 @@ import {
   colorInterpolate,
 } from "../utils/constants";
 import { Chart } from "./Chart";
+import { Button, ButtonGroup } from '@chakra-ui/react'
 import { Legend } from "./Legend";
 import { GeoJsonLayer } from "deck.gl";
+import { TimeComponentClean } from "./TimeComponent.js";
+import { active } from "d3-transition";
 
 export const DelincuenciaControls = () => {
   const [legendItems, setLegendItems] = useState([]);
@@ -35,7 +38,9 @@ export const DelincuenciaControls = () => {
 export function DelincuenciaCard({ color, isCurrentSection }) {
   const { setLayers, setOutline } = useCardContext();
   const [chartData, setChartData] = useState([]);
-  const [originalData, setOriginalData] = useState(null);
+  const [originalData, setOriginalData] = useState(null); 
+  const [activeButton, setActiveButton] = useState('num_crimen')
+  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(2017, 2020, 1, 3000, false);
 
   //los datos que se leen para los charts
   useEffect(() => {
@@ -56,7 +61,14 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
       setOriginalData(null);
       setLayers([]);
     }
-  }, [isCurrentSection]);
+  }, [isCurrentSection, activeButton]);
+
+    // Manejar clic en el boton para cambiar la información en base al id del botón
+    function handleDataChange(event) {
+      // Obtener el id del botón presionado
+      const buttonId = event.target.id;
+      setActiveButton(buttonId);
+    }
 
   useEffect(() => {
     if (isCurrentSection && originalData) {
@@ -66,7 +78,7 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
           props: {
             id: "seccion_delincuencia_layer",
             data: originalData,
-            dataTransform: (d) => cleanedGeoData(d.features, "num_crimen"),
+            dataTransform: (d) => cleanedGeoData(d.features, activeButton),
             getFillColor: (d) =>
               colorInterpolate(d.properties.normalized, "blue", "red", 1),
             getLineColor: (d) =>
@@ -105,11 +117,62 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
         transporte colectivo, incrementa los flujos peatonales e incentiva la
         vigilancia colectiva.
       </ContextTitle>
+        <Button
+          id="num_crimen"
+          size="sm"
+          variant="outline"
+          onClick={handleDataChange}
+          style={{
+            backgroundColor: activeButton === 'num_crimen' ? 'gainsboro' : 'white',
+          }}
+        >
+          Número de Crímenes
+        </Button>
+      <ButtonGroup size="sm" isAttached variant="outline">
+        <Button
+          id="violencia_familiar"
+          size="sm"
+          variant="outline"
+          onClick={handleDataChange}
+          style={{
+            backgroundColor: activeButton === 'violencia_familiar' ? 'gainsboro' : 'white',
+          }}
+        >
+          Violencia Familiar
+        </Button>
+        <Button
+          id="robo_transeunte"
+          onClick={handleDataChange}
+          style={{
+            backgroundColor: activeButton === 'robo_transeunte' ? 'gainsboro' : 'white',
+          }}
+        >
+          Robo a Transeúnte
+        </Button>
+        <Button
+          id="robo_negocio"
+          onClick={handleDataChange}
+          style={{
+            backgroundColor: activeButton === 'robo_negocio' ? 'gainsboro' : 'white',
+          }}
+        >
+          Robo a Negocio
+        </Button>
+        <Button
+          id="robo_casa"
+          onClick={handleDataChange}
+          style={{
+            backgroundColor: activeButton === 'robo_casa' ? 'gainsboro' : 'white',
+          }}
+        >
+          Robo a Casa Habitación
+        </Button>
+      </ButtonGroup>
       <Chart
         title="Acumulado Robos a transeúntes por 10 mil personas (2017-2020)"
         data={chartData}
         setOutline={setOutline}
-        column="num_crimen"
+        column={activeButton}
         columnKey="NOMGEO"
         formatter={(d) => `${Math.round(d).toLocaleString("en-US")}`}
       />

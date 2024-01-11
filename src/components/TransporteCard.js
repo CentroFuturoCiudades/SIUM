@@ -16,6 +16,7 @@ import {
 import { TripsLayer } from "@deck.gl/geo-layers";
 import { Chart } from "./Chart.js";
 import _ from "lodash";
+import { Button, ButtonGroup } from '@chakra-ui/react'
 import { SliderHTML, TimeComponentClean } from "./TimeComponent.js";
 
 export const CustomBarChart = ({ data }) => (
@@ -112,7 +113,10 @@ const transformDataForTrips = (data) => {
 export function TransporteCard({ color, isCurrentSection }) {
   const { setLayers, setControlsProps, setOutline } = useCardContext();
   const [originalData, setOriginalData] = useState([]);
+  const [generalLayer, setGeneralLayer] = useState([]);
   const [chartData, setChartData] = useState([]);
+  const [generalChartData, setGeneralChartData] = useState([]);
+  const [activeButton, setActiveButton] = useState('General');
   const { time, isPlaying, animationTime, handleSliderChange, togglePlay } =
     TimeComponentClean(300, 1320, 2, 0.05, false, 1020);
 
@@ -123,17 +127,18 @@ export function TransporteCard({ color, isCurrentSection }) {
       )
         .then((response) => response.json())
         .then((data) => {
-          const newData = data.filter(
-            (x) =>
-              x["Transporte"] === "TPUB" && x["Motivo"] === "Regreso A Casa"
-          );
-          setChartData(newData);
+          setChartData(data);
+          setGeneralChartData(data);
         });
       fetch(
         "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/TRANSPORTEJEANNETTE.geojson"
       )
         .then((response) => response.json())
-        .then((data) => setOriginalData(data))
+        .then((data) => {
+          setOriginalData(data);
+          setGeneralLayer(data);
+
+        })
         .catch((error) => console.error("Error cargando el GeoJSON:", error));
     } else {
       setChartData([]);
@@ -141,6 +146,36 @@ export function TransporteCard({ color, isCurrentSection }) {
       setLayers([]);
     }
   }, [isCurrentSection]);
+
+  // Manejar clic en el boton para cambiar la información en base al id del botón
+  function handleDataChange(event) {
+    if(originalData){
+      // Obtener el id del botón presionado
+      const buttonId = event.target.id;
+      setActiveButton(buttonId);
+  
+      if(buttonId == 'General'){
+        setOriginalData(generalLayer);
+        setChartData(generalChartData);
+      } else {
+        let actualLayerData = {...generalLayer};
+        let actualChartData = {...generalChartData};
+  
+        // Filtrar en base al id del botón presionado
+        if (buttonId == "transporteActivo"){
+          actualLayerData.features = generalLayer.features.filter((feature) => feature.properties.Transporte == "Bicicleta" || feature.properties.Transporte == "Caminando");
+          actualChartData = generalChartData.filter((feature) => feature["Transporte"] == "Bicicleta" || feature["Transporte"] == "Caminando");
+        } else {
+          actualLayerData.features = generalLayer.features.filter((feature) => feature.properties.Transporte == buttonId);
+          actualChartData = generalChartData.filter((feature) => feature["Transporte"] == buttonId);
+        }
+  
+        setOriginalData(actualLayerData);
+        setChartData(actualChartData)
+      }
+    }
+
+  }
 
   useEffect(() => {
     if (isCurrentSection && originalData) {
@@ -195,6 +230,58 @@ export function TransporteCard({ color, isCurrentSection }) {
         para contrarrestar el impacto negativo ambiental y en la salud pública
         generado por el elevado número de viajes en automóvil particular.
       </p>
+      <p>
+        Alrededor del <b>40%</b> de los traslados se hacen desde la{" "}
+        <PeripherySpan setOutline={setOutline} /> como Apodaca, Escobedo, García
+        y Juárez, y el <b>26%</b> se traslada al{" "}
+        <CenterSpan setOutline={setOutline} />. En promedio se invierten{" "}
+        <b>68 minutos</b> por viaje redondo, el equivalente a doce días por año.
+      </p>
+      <ButtonGroup size="sm" isAttached variant="outline">
+        <Button
+          id="General"
+          size="sm"
+          variant="outline"
+          onClick={handleDataChange}
+          style={{
+            backgroundColor: activeButton === 'General' ? 'gainsboro' : 'white',
+          }}
+        >
+          General
+        </Button>
+
+        <Button
+          id="Autómovil"
+          onClick={handleDataChange}
+          style={{
+            backgroundColor: activeButton === 'Autómovil' ? 'gainsboro' : 'white',
+          }}
+        >
+          Auto
+        </Button>
+
+        <Button
+          id="TPUB"
+          onClick={handleDataChange}
+          style={{
+            backgroundColor: activeButton === 'TPUB' ? 'gainsboro' : 'white',
+          }}
+        >
+          Transporte público
+        </Button>
+
+        <Button
+          id="transporteActivo"
+          onClick={handleDataChange}
+          style={{
+            backgroundColor: activeButton === 'transporteActivo' ? 'gainsboro' : 'white',
+          }}
+        >
+          Transporte Activo
+        </Button>
+      </ButtonGroup>
+
+      <br />
       <ContextTitle color={color}>
         Los SITP's ofrecen como beneficios una ciudad conectada y ordenada,
         servicios de mayor calidad, un sistema único de información y atención,

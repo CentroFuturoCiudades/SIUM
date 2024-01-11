@@ -31,6 +31,7 @@ export const ExpansionUrbanaControls = ({
 }) => {
   const [legendItems, setLegendItems] = useState([]);
 
+  
   useEffect(() => {
     // Carga los datos GeoJSON y actualiza las leyendas
     fetch(
@@ -156,6 +157,7 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
         formatter={(d) => `${Math.round(d).toLocaleString("en-US")}`}
         filtering={(x) => x.year == time}
       />
+
     </>
   );
 }
