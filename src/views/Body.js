@@ -129,8 +129,9 @@ export default function Body() {
           setViewState={setViewState}
           layers={filteredLayers}
           currentSection={currentSection}
+          color={sectionsInfo[currentSection].color}
         />
-        {CurrentControls && <CurrentControls {...controlsProps} />}
+        {CurrentControls && filteredLayers.length > 0 && <CurrentControls {...controlsProps} />}
       </Box>
     </div>
   );

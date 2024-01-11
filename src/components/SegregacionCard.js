@@ -6,18 +6,22 @@ import {
   ContextTitle,
   SegregacionSpan,
 } from "./Card";
-import { SEGREGACION_LAYER, separateLegendItems } from "../utils/constants";
+import {
+  cleanedGeoData,
+  colorInterpolate,
+  separateLegendItems,
+} from "../utils/constants";
 import { Chart } from "./Chart";
 import { Legend } from "./Legend";
 import { Button, ButtonGroup } from '@chakra-ui/react'
-
+import { GeoJsonLayer } from "deck.gl";
 
 export const SegregacionControls = () => {
   const [legendItems, setLegendItems] = useState([]);
 
   useEffect(() => {
     fetch(
-      "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income.geojson"
+      "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income2.geojson"
     )
       .then((response) => response.json())
       .then((data) => {
@@ -25,7 +29,7 @@ export const SegregacionControls = () => {
           (feat) => feat.properties["income_pc"]
         );
         setLegendItems(
-          separateLegendItems(values, 4, "blue", "red", (x) =>
+          separateLegendItems(values, 4, "red", "blue", (x) =>
             x.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
@@ -39,48 +43,54 @@ export const SegregacionControls = () => {
       );
   }, []);
 
-  return (
-    <>  
-      <Legend title="Ingreso" legendItems={legendItems} />;
-    </>
-  ) 
+  return <Legend title="Ingreso mensual per capita en 2020" legendItems={legendItems} />;
 };
 
 export function SegregacionCard({ color, isCurrentSection }) {
   const { setLayers, setOutline } = useCardContext();  
   const [chartData, setChartData] = useState([]);
   const [chartDataId, setChartDataId] = useState('income_pc');
-
-  useEffect(() => {
-    if (isCurrentSection) {
-      fetch("SIUM/data/income_municipality.json")
-        .then((response) => response.json())
-        .then((data) => {
-          // Hacer que se muestre la informacion en base a income_pc
-          setChartData(data);
-          // console.log(data);
-        });
-    } else {
-      setChartData([]);
-    }
-  }, [isCurrentSection]);
+  const [originalData, setOriginalData] = useState(null);
 
   useEffect(() => {
     if (isCurrentSection) {
       fetch(
-        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income.geojson"
+        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income_municipality.json"
       )
         .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-        })
-        .catch((error) =>
-          console.error("Error fetching the empleo data: ", error)
-        );
-      // console.log(SEGREGACION_LAYER)
-      setLayers([SEGREGACION_LAYER]);
+        .then((data) => setChartData(data));
+      fetch(
+        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income2.geojson"
+      )
+        .then((response) => response.json())
+        .then((data) => setOriginalData(data))
+        .catch((error) => console.error("Error cargando el GeoJSON:", error));
+    } else {
+      setChartData([]);
+      setOriginalData(null);
+      setLayers([]);
     }
-  }, [isCurrentSection, setLayers]);
+  }, [isCurrentSection]);
+
+  useEffect(() => {
+    if (isCurrentSection && originalData) {
+      setLayers([
+        {
+          type: GeoJsonLayer,
+          props: {
+            id: "seccion_segregacion_layer",
+            data: originalData,
+            dataTransform: (d) => cleanedGeoData(d.features, "income_pc"),
+            getFillColor: (d) =>
+              colorInterpolate(d.properties.normalized, "red", "blue", 1),
+            getLineColor: (d) =>
+              colorInterpolate(d.properties.normalized, "red", "blue", 0.5),
+            getLineWidth: 20,
+          },
+        },
+      ]);
+    }
+  }, [originalData]);
 
   // Manejar clic en el boton para cambiar la información en base al id del botón
   function handleDataChange(event) {
@@ -95,22 +105,24 @@ export function SegregacionCard({ color, isCurrentSection }) {
   return (
     <>
       <ResponseTitle color={color}>
-        Aisla a personas con menos recursos de zonas con mayor inversión.
+        Porque expulsa a los más vulnerables a la periferia
       </ResponseTitle>
       <p>
-        La expansión urbana causa segregación económica, es decir la separación
-        entre barrios pobres y barrios afluentes.
+        Al expandirnos en estos niveles es innevitable que ciertos grupos
+        poblacionales queden alejados de las áreas con mejores oportunidades y
+        acceso a servicios.
       </p>
       <p>
-        La segregación tiene efectos negativos en la calidad de vida de la
-        gente, como la 🏥falta de servicios, falta de 👷mantenimiento en
-        infraestructura, 🚌altos costos y tiempo de traslados, 🥂falta de
-        capital social y más.
+        De igual forma, la expansión provoca que zonas con mayores ingresos
+        queden rodeadas de zonas de menor ingreso, ya que los costos del suelo
+        son más bajos, como sucede en Céntrika y Loma Larga, y en Estanzuela
+        Fomerrey y los límites de la colonia Independencia con Loma Larga.
       </p>
       <p>
-        Las zonas con mayor <SegregacionSpan setOutline={setOutline} /> se
-        tienden concentrar en las <PeripherySpan setOutline={setOutline} /> como
-        Juarez, Garcia, Pesquería y Cadereyta.
+        Integrar las zonas marginadas e informales por medio de transporte
+        colectivo, disminuirá la segregación económica que la expansión provoca.
+        Similarmente, se deben de generar políticas de vivienda asequible menos
+        desconectadas de las zonas funcionales de la ciudad.
       </p>
       <ButtonGroup size="sm" isAttached variant="outline">
         <Button
@@ -146,15 +158,16 @@ export function SegregacionCard({ color, isCurrentSection }) {
       <br />
       <br />
       <ContextTitle color={color}>
-        La segregación crea zonas marginadas que presentan desafíos en servicios
-        públicos y crimen.
+        La segregación aleja y separa, tanto de nosotros mismos, como de áreas
+        urbanas imprescindibles para el desarrollo humano pleno.
       </ContextTitle>
       <Chart
+        title="Ingreso mensual per capita en 2020"
         data={chartData}
         setOutline={setOutline}
-        column={chartDataId}
-        columnKey="NOM_MUN"
-        formatter={(d) => `$ ${d.toLocaleString("en-US")}`}
+        column="income_pc"
+        columnKey="nom_mun"
+        formatter={(d) => `$${Math.round(d).toLocaleString("en-US")}`}
       />
     </>
   );

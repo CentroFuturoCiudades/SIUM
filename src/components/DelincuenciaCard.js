@@ -1,29 +1,18 @@
 import { useEffect, useState } from "react";
 import { ResponseTitle, ContextTitle } from "./Card";
 import { useCardContext } from "../views/Body";
-import { separateLegendItems, filterDataAll } from "../utils/constants";
+import {
+  separateLegendItems,
+  cleanedGeoData,
+  colorInterpolate,
+} from "../utils/constants";
 import { Chart } from "./Chart";
-import _ from "lodash";
-import { GeoJsonLayer } from "@deck.gl/layers";
-import { SliderHTML, TimeComponentClean} from "./TimeComponent";
-import { colorInterpolate } from "../utils/constants";
 import { Button, ButtonGroup } from '@chakra-ui/react'
+import { Legend } from "./Legend";
+import { GeoJsonLayer } from "deck.gl";
+import { SliderHTML, TimeComponentClean } from "./TimeComponent.js";
 
-
-const marks = [
-  { value: 2017, label: "2017" },
-  { value: 2018, label: "2018" },
-  { value: 2019, label: "2019" },
-  { value: 2020, label: "2020" },
-];
-
-
-
-export const DelincuenciaControls = ({time,
-  togglePlay,
-  isPlaying,
-  handleSliderChange,
-}) => {
+export const DelincuenciaControls = () => {
   const [legendItems, setLegendItems] = useState([]);
 
   useEffect(() => {
@@ -35,68 +24,42 @@ export const DelincuenciaControls = ({time,
         const values = data.features.map(
           (feat) => feat.properties["num_crimen"]
         );
-        setLegendItems(
-          separateLegendItems(values, 4, "blue", "red")
-        );
+        setLegendItems(separateLegendItems(values, 4, "blue", "red"));
       })
       .catch((error) =>
         console.error("Error fetching the delincuencia data: ", error)
       );
   }, []);
 
-    return (
-      <SliderHTML
-        time={time}
-        min={2017}
-        max={2020}
-        step={1}
-        title={"Crimenes"}
-        togglePlay={togglePlay}
-        isPlaying={isPlaying}
-        handleSliderChange={handleSliderChange}
-        marks={marks}
-        legendItems={legendItems}
-      />
-    );
+  return <Legend title={"Incidencia delictiva 2017-2020"} legendItems={legendItems} />;
 };
 
-
 export function DelincuenciaCard({ color, isCurrentSection }) {
-  const { setLayers, setOutline, setControlsProps } = useCardContext();
+  const { setLayers, setOutline } = useCardContext();
   const [chartData, setChartData] = useState([]);
   const [generalChartData, setGeneralChartData] = useState([]);
-  const [originalData, setOriginalData] = useState([]); 
+  const [originalData, setOriginalData] = useState(null); 
   const [activeButton, setActiveButton] = useState('')
   const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(2017, 2020, 1, 3000, false);
 
   //los datos que se leen para los charts
   useEffect(() => {
     if (isCurrentSection) {
-      fetch("SIUM/data/crimen_municipality.json")
+      fetch(
+        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen_municipality.json"
+      )
         .then((response) => response.json())
-        .then((data) => {
-          // const newData = data.filter(
-          //   (x) => x.year === 2020 && x.TIPO_INCIDENCIA === "VIOLENCIA FAMILIAR"
-          // );
-          setChartData(data);
-          setGeneralChartData(data);
-          console.log(data[0].TIPO_INCIDENCIA);
-        });
-    } else {
-      setChartData([]);
-    }
-  }, [isCurrentSection]);
-
-
-  useEffect(() => {
-    if (isCurrentSection) {
-      console.log("Se llamaron a los datos de crimen")
-      fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson")
+        .then((data) => setChartData(data));
+      fetch(
+        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson"
+      )
         .then((response) => response.json())
         .then((data) => setOriginalData(data))
         .catch((error) => console.error("Error cargando el GeoJSON:", error));
     } else {
+      setChartData([]);
       setOriginalData(null);
+      setLayers([]);
     }
   }, [isCurrentSection]);
 
@@ -126,53 +89,50 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
 
   useEffect(() => {
     if (isCurrentSection && originalData) {
-
-      setControlsProps({ time, togglePlay, isPlaying, handleSliderChange });
-
-      const crimenLayer = {
-        type: GeoJsonLayer,
-        props: {
-          id: "seccion_crimen_layer",
-          data: filterDataAll(originalData, time, "num_crimen", false, "year"),
-          getFillColor: (d) =>
-            colorInterpolate(d.properties.normalized, "blue", "red", 1),
-          getLineColor: (d) =>
-            colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
-          getLineWidth: 10,
+      setLayers([
+        {
+          type: GeoJsonLayer,
+          props: {
+            id: "seccion_delincuencia_layer",
+            data: originalData,
+            dataTransform: (d) => cleanedGeoData(d.features, "num_crimen"),
+            getFillColor: (d) =>
+              colorInterpolate(d.properties.normalized, "blue", "red", 1),
+            getLineColor: (d) =>
+              colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
+            getLineWidth: 10,
+          },
         },
-      };
-
-      setLayers([crimenLayer]);
+      ]);
     }
-  }, [
-    isCurrentSection,
-    originalData,
-    setLayers,
-    setControlsProps,
-    isPlaying,
-    time,
-    animationTime,
-  ]);
+  }, [originalData]);
 
   return (
     <>
       <ResponseTitle color={color}>
-        Porque la segregación aumenta la delincuencia.
+        Porque al estar alejados, no nos podemos cuidar los unos a los otros
       </ResponseTitle>
       <p>
-        Incidencias delictivas como el robos en calles o a viviendas, así como
-        violencia familiar se concentran en regiones segregadas.
+        Entre más aumenta la mancha urbana, más aumenta la inseguridad: cuando
+        la mancha urbana aumenta un kilómetro, el robo a casa habitación
+        incrementa en un 0.04%.
       </p>
       <p>
-        Estar alejado de actividades económicas como el comercio al por mayor
-        aumentan la incidencia delictiva, mientras que estar cercano a centros
-        con comercio al por menor la disminuyen.
+        De forma similar, las incidencias delictivas como robos en calles o a
+        viviendas, así como violencia familiar se concentran en regiones
+        segregadas. Estar alejado de actividades económicas como el comercio al
+        por mayor aumentan la incidencia delictiva, mientras que estar cercano a
+        centros con comercio al por menor, la disminuyen.
       </p>
-      <br />
-      <br />
+      <p>
+        Las ciudades compactas y multifuncionales incentivan una vida pública
+        activa, lo que podría disminuir los indices delictivos en la Zona
+        Metropolitana de Monterrey.
+      </p>
       <ContextTitle color={color}>
-        La malas condiciones de vida en zonas marginadas contribuyen a la falta
-        de oportunidades y a la delincuencia.
+        Una mayor densificación, una diversificación de usos de suelo y
+        transporte colectivo, incrementa los flujos peatonales e incentiva la
+        vigilancia colectiva.
       </ContextTitle>
         <Button
           id="General"
@@ -226,11 +186,12 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
         </Button>
       </ButtonGroup>
       <Chart
+        title="Acumulado Robos a transeúntes por 10 mil personas (2017-2020)"
         data={chartData}
         setOutline={setOutline}
         column="num_crimen"
         columnKey="NOMGEO"
-        formatter={(d) => `${d.toLocaleString("en-US")} crimen`}
+        formatter={(d) => `${Math.round(d).toLocaleString("en-US")}`}
       />
     </>
   );

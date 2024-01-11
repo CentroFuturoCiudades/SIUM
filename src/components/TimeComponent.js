@@ -16,18 +16,16 @@ export function SliderHTML({time,
   min,
   max,
   step,
-  title = "Default Title",
+  defaultValue,
   togglePlay,
   isPlaying,
   handleSliderChange,
   marks,
-  legendItems = [],
 })
 {
   return (
     <>
     <div>
-    <Legend title={title} legendItems={legendItems} />
     </div>
       <div
         style={{
@@ -55,7 +53,7 @@ export function SliderHTML({time,
           <Slider
             aria-label="slider-ex-1"
             id="slider"
-            defaultValue={min}
+            defaultValue={defaultValue || min}
             min={min}
             step={step}
             max={max}
@@ -64,14 +62,14 @@ export function SliderHTML({time,
             mr="4"
             ml="3"
           >
-            {marks.map(({ value, label }) => (
+            {marks.map(({ value, label }, i) => (
               <SliderMark
                 key={value}
                 value={value}
-                textAlign="center"
                 mt="5"
-                ml="-3"
+                ml={`-${label.length * 3.5}px`}
                 fontSize="xs"
+                style={{ textWrap: 'nowrap' }}
               >
                 {label}
               </SliderMark>
@@ -130,8 +128,8 @@ export function SliderHTML({time,
       return { time, isPlaying, animationTime, handleSliderChange, togglePlay };
 }*/
 
-export function TimeComponentClean(startTime, endTime, step, frameInterval=0, animationType) {
-  const [time, setTime] = useState(startTime);
+export function TimeComponentClean(startTime, endTime, step, frameInterval=0, animationType, initialTime=undefined) {
+  const [time, setTime] = useState(initialTime || startTime);
   const [isPlaying, setIsPlaying] = useState(false);
   const [animationTime, setAnimationTime] = useState(startTime);
 
@@ -140,7 +138,7 @@ export function TimeComponentClean(startTime, endTime, step, frameInterval=0, an
     let animationTimeout;
   
     const animateFluid = () => {  //para animar fluido con requestAnimationFrame
-      setTime((prevTime) => Math.round((prevTime + step) % ((endTime - startTime)) + startTime));
+      setTime((prevTime) => Math.round((prevTime + 0.01) % ((endTime - startTime)) + startTime));
       setAnimationTime(time);
       animationFrame = requestAnimationFrame(animateFluid);
     };

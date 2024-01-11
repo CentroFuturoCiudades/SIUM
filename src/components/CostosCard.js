@@ -39,7 +39,7 @@ export function CostosCard({ color, isCurrentSection }) {
   return (
     <>
       <ResponseTitle color={color}>
-        Porque hay que llevar servicios públicos cada vez más lejos.
+        Hay que llevar servicios públicos más lejos
       </ResponseTitle>
       <p>
         Incidencias delictivas como el robos en calles o a viviendas, así como

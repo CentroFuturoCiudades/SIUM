@@ -11,7 +11,6 @@ body {
   height: 100vh;
   scroll-snap-type: y mandatory;
   overflow-y: auto;
-  overflow-x: hidden;
 }
 
 p {
@@ -44,12 +43,12 @@ p {
   justify-content: flex-start;
   align-items: flex-start;
   position: absolute;
-  top: 50%;
-  right: 10px;
+  bottom: 0;
+  left: 20px;
   transform: translateY(-50%);
   background: rgba(255, 255, 255, 0.9); 
-  padding: 5px 10px;
-  box-shadow: 0 2px 8px rgba(50, 50, 50, 0.3); 
+  padding: 5px 15px;
+  /* box-shadow: 0 2px 8px rgba(50, 50, 50, 0.3);  */
   z-index: 10;
 }
 
@@ -57,7 +56,8 @@ p {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 5px 0;
+  margin: 1px 0;
+  width: 100%;
 }
 
 .legend-color {
@@ -66,8 +66,26 @@ p {
   margin-right: 5px;
 }
 
+.legend-numbers {
+  display: flex;
+  flex-grow: 1;
+}
+
 .legend-label {
+  flex: 1;
+  text-align: right;
   font-size: 0.75rem;
-  text-align: left;
-  color: #333; /* Color de texto oscuro para mejor legibilidad */
+  color: #333;
+  font-family: 'Arial', Courier, monospace;
+  line-height: 26px;
+}
+
+.legend-label:last-child {
+  text-align: right;
+}
+
+.legend-dash {
+  margin: 0 10px;
+  flex-shrink: 0;
+  font-family: 'Arial', Courier, monospace;
 }
