@@ -8,7 +8,7 @@ import {
 } from "recharts";
 import { CenterSpan, PeripherySpan, ResponseTitle, ContextTitle } from "./Card";
 import { useState, useEffect } from "react";
-import { useCardContext } from "../views/Body.js";
+import { useCardContext } from "../views/Problematica.js";
 import {
   MASIVE_TRANSPORT_LAYER,
   PRIMARY_ROUTES_LAYER,

@@ -66,7 +66,7 @@ export const CardsContainer = ({
   );
 };
 
-export default function Body() {
+const Problematica = () => {
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const [currentSection, setCurrentSection] = useState("expansion-urbana");
   const [layers, setLayers] = useState([]);
@@ -74,7 +74,7 @@ export default function Body() {
   const [controlsProps, setControlsProps] = useState(null);
   const currentInfo = sectionsInfo[currentSection];
   const CurrentControls = sectionsInfo[currentSection].controls;
-  let filteredLayers =  outline ? [...layers, outline] : [...layers];
+  let filteredLayers = outline ? [...layers, outline] : [...layers];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -135,4 +135,6 @@ export default function Body() {
       </Box>
     </div>
   );
-}
+};
+
+export default Problematica;

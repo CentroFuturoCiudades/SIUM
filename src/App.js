@@ -1,18 +1,14 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Body from "./views/Body";
-import Title from "./views/Title";
-import Cards from "./views/Cards";
-import BodyText from "./views/BodyText";
+import Problematica from "./views/Problematica";
+import Home from "./views/Home";
 
 function App() {
   return (
     <BrowserRouter basename={"/SIUM"}>
       <Routes>
-        <Route path="/" exact element={<Title />} />
-        <Route path="/introduccion" element={<BodyText />} />
-        <Route path="/cards" element={<Cards />} />
-        <Route path="/problematica" element={<Body />} />
+        <Route path="/" exact element={<Home />} />
+        <Route path="/problematica" element={<Problematica />} />
       </Routes>
     </BrowserRouter>
   );
