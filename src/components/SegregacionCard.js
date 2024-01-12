@@ -6,15 +6,15 @@ import {
   ContextTitle,
   SegregacionSpan,
 } from "./Card";
-import { SEGREGACION_LAYER, separateLegendItems } from "../utils/constants";
+import { separateLegendItems } from "../utils/constants";
 import { Chart } from "./Chart";
 import { Legend } from "./Legend";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import { colorInterpolate } from "../utils/constants";
 import { cleanedGeoData } from "../utils/constants";
-import { hover } from "@testing-library/user-event/dist/hover";
+import Tooltip from "./Tooltip";
 
-export const SegregacionControls = ({hoverInfo}) => {
+export const SegregacionControls = ({ hoverInfo }) => {
   const [legendItems, setLegendItems] = useState([]);
 
   useEffect(() => {
@@ -42,18 +42,35 @@ export const SegregacionControls = ({hoverInfo}) => {
       );
   }, []);
 
-  console.log(hoverInfo)
-  
   return (
     <>
       <Legend title="Ingreso" legendItems={legendItems} />
       {hoverInfo && hoverInfo.object && (
-        <div className="tooltip-container" style={{ position: 'absolute', zIndex: 1, pointerEvents: 'none', left: hoverInfo.x, top: hoverInfo.y }}>
-          <span className="tooltip-label">Valor de la propiedad income_pc: ${Math.round(hoverInfo.object.properties['income_pc'] * 100) / 100}</span>
-          <span className="tooltip-label">Valor de la propiedad cvegeo: ${(hoverInfo.object.properties['cvegeo']) / 100}</span>
-          <span className="tooltip-label">Valor de la propiedad q_5: ${(hoverInfo.object.properties['local_centralization_q_5_k_100'])}</span>
-          <span className="tooltip-label">Valor de la propiedad q_1: ${(hoverInfo.object.properties['local_centralization_q_1_k_100'])}</span>
-        </div>
+        <Tooltip hoverInfo={hoverInfo}>
+          <span className="tooltip-label">
+            <b>AGEB:</b> {hoverInfo.object.properties["cvegeo"]}
+          </span>
+          <span className="tooltip-label">
+            <b>Ingreso mensual per capita:</b> $
+            {Math.round(
+              hoverInfo.object.properties["income_pc"]
+            ).toLocaleString("en-US")}
+          </span>
+          <span className="tooltip-label">
+            <b>Quinto quintil segregación:</b>{" "}
+            {Math.round(
+              hoverInfo.object.properties["local_centralization_q_5_k_100"] *
+                100
+            ) / 100}
+          </span>
+          <span className="tooltip-label">
+            <b>Primer quintil segregación:</b>{" "}
+            {Math.round(
+              hoverInfo.object.properties["local_centralization_q_1_k_100"] *
+                100
+            ) / 100}
+          </span>
+        </Tooltip>
       )}
     </>
   );
@@ -63,7 +80,6 @@ export function SegregacionCard({ color, isCurrentSection }) {
   const { setLayers, setOutline, setControlsProps } = useCardContext();
   const [chartData, setChartData] = useState([]);
   const [hoverInfo, setHoverInfo] = useState();
-  console.log(hoverInfo)
 
   useEffect(() => {
     if (isCurrentSection) {
@@ -74,32 +90,35 @@ export function SegregacionCard({ color, isCurrentSection }) {
       setChartData([]);
     }
   }, [isCurrentSection]);
-  
+
   useEffect(() => {
     if (isCurrentSection) {
-      setLayers([{
-        type: GeoJsonLayer,
-        props: {
-          id: "seccion_segregacion_layer",
-          data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income.geojson",
-          dataTransform: (d) =>
-            cleanedGeoData(d.features, "local_centralization_q_1_k_100"),
-          getFillColor: (d) =>
-            colorInterpolate(d.properties.normalized, "blue", "red", 1),
-          getLineColor: (d) =>
-            colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
-          getLineWidth: 20,
-          onHover: info => setHoverInfo(info),
-           pickable: true,
-           getPosition: d => d.position
+      setLayers([
+        {
+          type: GeoJsonLayer,
+          props: {
+            id: "seccion_segregacion_layer",
+            data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income.geojson",
+            dataTransform: (d) =>
+              cleanedGeoData(d.features, "local_centralization_q_1_k_100"),
+            getFillColor: (d) =>
+              colorInterpolate(d.properties.normalized, "blue", "red", 1),
+            getLineColor: (d) =>
+              colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
+            getLineWidth: 20,
+            onHover: (info) => setHoverInfo(info),
+            pickable: true,
+            autoHighlight: true,
+            getPosition: (d) => d.position,
+          },
         },
-      }]);
+      ]);
     }
   }, [isCurrentSection, setLayers]);
 
   useEffect(() => {
-    setControlsProps({hoverInfo});
-  }, [hoverInfo]); 
+    setControlsProps({ hoverInfo });
+  }, [hoverInfo]);
 
   return (
     <>

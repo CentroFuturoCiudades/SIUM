@@ -47,9 +47,9 @@ p {
   top: 50%;
   right: 10px;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.9); 
+  background: rgba(255, 255, 255, 0.9);
   padding: 5px 10px;
-  box-shadow: 0 2px 8px rgba(50, 50, 50, 0.3); 
+  box-shadow: 0 2px 8px rgba(50, 50, 50, 0.3);
   z-index: 10;
 }
 
@@ -85,12 +85,12 @@ p {
 }
 
 .tooltip-content {
-  font-Size: "0.8rem"
+  font-size: "0.8rem";
 }
 
 .tooltip-label {
   font-size: 0.75rem;
-  text-align: left; 
+  text-align: left;
   color: #333;
 }
 
@@ -99,14 +99,22 @@ p {
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.9); 
+  position: relative;
+  background: rgba(255, 255, 255, 0.95);
   padding: 5px 10px;
-  box-shadow: 0 2px 8px rgba(50, 50, 50, 0.3); 
-  z-index: 10;
-  width: 340px;
   box-shadow: 0 2px 8px rgba(50, 50, 50, 0.3);
+  z-index: 10;
+  width: 300px;
+  border-radius: 5px;
+}
+
+.tooltip-container::after {
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  margin-left: -10px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0.9) transparent transparent transparent;
 }
