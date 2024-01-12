@@ -46,7 +46,7 @@ p {
   bottom: 0;
   left: 20px;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.9); 
+  background: rgba(255, 255, 255, 0.9);
   padding: 5px 15px;
   /* box-shadow: 0 2px 8px rgba(50, 50, 50, 0.3);  */
   z-index: 10;
@@ -76,7 +76,7 @@ p {
   text-align: right;
   font-size: 0.75rem;
   color: #333;
-  font-family: 'Arial', Courier, monospace;
+  font-family: "Arial", Courier, monospace;
   line-height: 26px;
 }
 
@@ -87,5 +87,51 @@ p {
 .legend-dash {
   margin: 0 10px;
   flex-shrink: 0;
-  font-family: 'Arial', Courier, monospace;
+  font-family: "Arial", Courier, monospace;
+}
+/* Estilos nuevos para tooltip inicial */
+
+.tooltip {
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  pointer-events: none; /* Esto asegurará que el tooltip no interfiera con otros eventos del ratón */
+}
+
+.tooltip-content {
+  font-size: "0.8rem";
+}
+
+.tooltip-label {
+  font-size: 0.75rem;
+  text-align: left;
+  color: #333;
+}
+
+.tooltip-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: relative;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 5px 10px;
+  box-shadow: 0 2px 8px rgba(50, 50, 50, 0.3);
+  z-index: 10;
+  width: 300px;
+  border-radius: 5px;
+}
+
+.tooltip-container::after {
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  margin-left: -10px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0.9) transparent transparent transparent;
 }

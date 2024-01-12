@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import { useCardContext } from "../views/Problematica";
-import {
-  PeripherySpan,
-  ResponseTitle,
-  ContextTitle,
-  SegregacionSpan,
-} from "./Card";
+import { ResponseTitle, ContextTitle } from "./Card";
 import {
   cleanedGeoData,
   colorInterpolate,
@@ -13,21 +8,22 @@ import {
 } from "../utils/constants";
 import { Chart } from "./Chart";
 import { Legend } from "./Legend";
-import { Button, ButtonGroup } from '@chakra-ui/react'
+import { Button, ButtonGroup } from "@chakra-ui/react";
 import { GeoJsonLayer } from "deck.gl";
+import Tooltip from "./Tooltip";
 
-export const SegregacionControls = () => {
+export const SegregacionControls = ({ hoverInfo }) => {
   const [legendItems, setLegendItems] = useState([]);
 
   useEffect(() => {
-     fetch(
+    fetch(
       "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income2.geojson"
     )
       .then((response) => response.json())
       .then((data) => {
         const values = data.features.map(
           (feat) => feat.properties["income_pc"]
-          );
+        );
         setLegendItems(
           separateLegendItems(values, 4, "red", "blue", (x) =>
             x.toLocaleString("en-US", {
@@ -43,13 +39,48 @@ export const SegregacionControls = () => {
       );
   }, []);
 
-  return <Legend title="Ingreso mensual per capita en 2020" legendItems={legendItems} />;
+  return (
+    <>
+      <Legend
+        title="Ingreso mensual per capita en 2020"
+        legendItems={legendItems}
+      />
+      {hoverInfo && hoverInfo.object && (
+        <Tooltip hoverInfo={hoverInfo}>
+          <span className="tooltip-label">
+            <b>AGEB:</b> {hoverInfo.object.properties["cvegeo"]}
+          </span>
+          <span className="tooltip-label">
+            <b>Ingreso mensual per capita:</b> $
+            {Math.round(
+              hoverInfo.object.properties["income_pc"]
+            ).toLocaleString("en-US")}
+          </span>
+          <span className="tooltip-label">
+            <b>Quinto quintil segregación:</b>{" "}
+            {Math.round(
+              hoverInfo.object.properties["local_centralization_q_5_k_100"] *
+                100
+            ) / 100}
+          </span>
+          <span className="tooltip-label">
+            <b>Primer quintil segregación:</b>{" "}
+            {Math.round(
+              hoverInfo.object.properties["local_centralization_q_1_k_100"] *
+                100
+            ) / 100}
+          </span>
+        </Tooltip>
+      )}
+    </>
+  );
 };
 
 export function SegregacionCard({ color, isCurrentSection }) {
-  const { setLayers, setOutline } = useCardContext();  
+  const { setLayers, setOutline, setControlsProps } = useCardContext();
   const [chartData, setChartData] = useState([]);
-  const [activeButton, setActiveButton] = useState('income_pc');
+  const [hoverInfo, setHoverInfo] = useState();
+  const [activeButton, setActiveButton] = useState("income_pc");
   const [originalData, setOriginalData] = useState(null);
 
   useEffect(() => {
@@ -77,27 +108,35 @@ export function SegregacionCard({ color, isCurrentSection }) {
     // Obtener el id del botón presionado
     const buttonId = event.target.id;
     setActiveButton(buttonId);
-  }  
+  }
 
   useEffect(() => {
     if (isCurrentSection && originalData) {
-    setLayers([
-      {
-        type: GeoJsonLayer,
-        props: {
-          id: "seccion_segregacion_layer",
-          data: originalData,
-          dataTransform: (d) => cleanedGeoData(d.features, activeButton),
-          getFillColor: (d) =>
-            colorInterpolate(d.properties.normalized, "red", "blue", 1),
-          getLineColor: (d) =>
-            colorInterpolate(d.properties.normalized, "red", "blue", 0.5),
-          getLineWidth: 20,
+      setLayers([
+        {
+          type: GeoJsonLayer,
+          props: {
+            id: "seccion_segregacion_layer",
+            data: originalData,
+            dataTransform: (d) => cleanedGeoData(d.features, activeButton),
+            getFillColor: (d) =>
+              colorInterpolate(d.properties.normalized, "red", "blue", 1),
+            getLineColor: (d) =>
+              colorInterpolate(d.properties.normalized, "red", "blue", 0.5),
+            getLineWidth: 20,
+            onHover: (info) => setHoverInfo(info),
+            pickable: true,
+            autoHighlight: true,
+            getPosition: (d) => d.position,
+          },
         },
-      },
-    ]);
-  }
+      ]);
+    }
   }, [originalData]);
+
+  useEffect(() => {
+    setControlsProps({ hoverInfo });
+  }, [hoverInfo]);
 
   return (
     <>
@@ -128,7 +167,8 @@ export function SegregacionCard({ color, isCurrentSection }) {
           variant="outline"
           onClick={handleDataChange}
           style={{
-            backgroundColor: activeButton === 'income_pc' ? 'gainsboro' : 'white',
+            backgroundColor:
+              activeButton === "income_pc" ? "gainsboro" : "white",
           }}
         >
           Ingreso
@@ -137,7 +177,10 @@ export function SegregacionCard({ color, isCurrentSection }) {
           id="local_centralization_q_1_k_100"
           onClick={handleDataChange}
           style={{
-            backgroundColor: activeButton === 'local_centralization_q_1_k_100' ? 'gainsboro' : 'white',
+            backgroundColor:
+              activeButton === "local_centralization_q_1_k_100"
+                ? "gainsboro"
+                : "white",
           }}
         >
           Segregación-
@@ -146,7 +189,10 @@ export function SegregacionCard({ color, isCurrentSection }) {
           id="local_centralization_q_5_k_100"
           onClick={handleDataChange}
           style={{
-            backgroundColor: activeButton === 'local_centralization_q_5_k_100' ? 'gainsboro' : 'white',
+            backgroundColor:
+              activeButton === "local_centralization_q_5_k_100"
+                ? "gainsboro"
+                : "white",
           }}
         >
           Segregación+

@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  SubcentersSpan,
-  PeripherySpan,
-  CenterSpan,
-  ResponseTitle,
-  ContextTitle,
-  ExpansionSpan,
-} from "./Card";
+import { PeripherySpan, ResponseTitle, ContextTitle } from "./Card";
 import { useCardContext } from "../views/Problematica";
 import { separateLegendItems, cleanedGeoData } from "../utils/constants";
 import "../index.css";
@@ -15,7 +8,6 @@ import { GeoJsonLayer } from "@deck.gl/layers";
 import { SliderHTML, TimeComponentClean } from "./TimeComponent";
 import { colorInterpolate } from "../utils/constants";
 import { Legend } from "./Legend";
-import { Text } from "@chakra-ui/react";
 
 const marks = [
   { value: 1990, label: "1990-2020" },
@@ -31,7 +23,6 @@ export const ExpansionUrbanaControls = ({
 }) => {
   const [legendItems, setLegendItems] = useState([]);
 
-  
   useEffect(() => {
     // Carga los datos GeoJSON y actualiza las leyendas
     fetch(
@@ -148,6 +139,7 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
         habitacionales asequibles, fomentará la permanencia de una demografía
         diversa en centros y subcentros urbanos
       </ContextTitle>
+
       <Chart
         title={`Cambio poblacional de ${time} a 2020`}
         data={chartData}
@@ -157,7 +149,6 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
         formatter={(d) => `${Math.round(d).toLocaleString("en-US")}`}
         filtering={(x) => x.year == time}
       />
-
     </>
   );
 }

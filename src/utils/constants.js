@@ -1,10 +1,10 @@
 import { rgb } from "d3-color";
 import { interpolateRgb } from "d3-interpolate";
 import { GeoJsonLayer } from "@deck.gl/layers";
-
+ 
 import { MdHome, MdDirectionsCar, MdOutlineAttachMoney } from "react-icons/md";
 import { HiMiniBuildingOffice } from "react-icons/hi2";
-import { GiInjustice, GiRobber } from "react-icons/gi";
+import { GiHoleLadder, GiInjustice, GiRobber } from "react-icons/gi";
 import { FaPeopleArrows } from "react-icons/fa";
 
 import {
@@ -38,7 +38,7 @@ export function colorInterpolate(
   const resultColor = rgb(interpolator(normalizedValue));
   const minOpacity = 0.8;
 
-  return [
+  return [ 
     resultColor.r,
     resultColor.g,
     resultColor.b,
@@ -347,7 +347,7 @@ export const sectionsInfo = {
     color: "green",
     icon: GiRobber,
     component: DelincuenciaCard,
-    controls: DelincuenciaControls,
+    controls: null,
   },
   costos: {
     title: "¿Por qué la expansión nos cuenta tanto dinero?",

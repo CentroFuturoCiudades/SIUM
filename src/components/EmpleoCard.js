@@ -121,6 +121,7 @@ export function EmpleoCard({ color, isCurrentSection }) {
         Incrementar la atracción de personas a centros y subcentros urbanos para
         una mejor accesibilidad a empleos.
       </ContextTitle>
+
       <Chart
         title="Número de empleos en 2020"
         data={chartData}

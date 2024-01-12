@@ -3,8 +3,8 @@ import { Box, Flex, Heading, Tooltip } from "@chakra-ui/react";
 
 export const Legend = ({ title, legendItems }) => {
   if (legendItems.length === 0) {
-    return null;
-  }
+    return null; 
+  } 
   return (
     <Box
       borderRadius="md"
