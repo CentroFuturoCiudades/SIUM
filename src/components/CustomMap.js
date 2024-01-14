@@ -19,6 +19,18 @@ export const INITIAL_STATE = {
   bearing: 0,
 };
 
+//nueva para infancias
+export const SPECIAL_INFANCIAS_STATE = {
+  //latitude: 25.675,
+  latitude: 25.65534,
+  //longitude: -100.286419,
+  longitude: -100.30427,
+  zoom: 13.2,
+  transitionDuration: 800,
+  pitch: 0,
+  bearing: 0,
+};
+
 export function CustomMap({ layers, viewState, setViewState }) {
   const filteredLayers = layers ? layers.map((x) => new x.type(x.props)) : [];
   const zoomIn = () => {

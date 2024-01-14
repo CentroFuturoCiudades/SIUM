@@ -4,7 +4,7 @@ import { GeoJsonLayer } from "@deck.gl/layers";
 
 import { MdHome, MdDirectionsCar, MdOutlineAttachMoney } from "react-icons/md";
 import { HiMiniBuildingOffice } from "react-icons/hi2";
-import { GiInjustice, GiRobber } from "react-icons/gi";
+import { GiAges, GiInjustice, GiKidSlide, GiRobber } from "react-icons/gi";
 import { FaPeopleArrows } from "react-icons/fa";
 
 import { ExpansionUrbanaCard, ExpansionUrbanaControls } from "../components/ExpansionUrbanaCard";
@@ -17,10 +17,14 @@ import { ViviendaCard, ViviendaControls } from "../components/ViviendaCard";
 import { SegregacionCard, SegregacionControls } from "../components/SegregacionCard";
 import { DelincuenciaCard, DelincuenciaControls } from "../components/DelincuenciaCard";
 import { CostosCard } from "../components/CostosCard";
+import { InfanciasCard } from "../components/InfanciasCard";
+
+import comerciopic from "../components/comercio-icon.png";
+import defaultpic from "../components/default-icon.png";
 
 
 export function colorInterpolate(normalizedValue, startColor, endColor, opacity = 1) {
-  const interpolator = interpolateRgb(startColor, endColor);
+  const interpolator = interpolateRgb(startColor, endColor); //checar lo de interpolateRgb
   const resultColor = rgb(interpolator(normalizedValue));
 
   return [
@@ -58,6 +62,7 @@ export const cleanedGeoData = (data, column, reversed = false) => {
     });
 };
 
+
 //lo que filtra los datos en base al tiempo para (vivienda, expansion y delincuencia)
 export const filterDataAll = (data, selectedYear, column, reversed=false, nomcol)=>
 {
@@ -92,7 +97,117 @@ export const filterDataAll = (data, selectedYear, column, reversed=false, nomcol
     return filteredData
   };
 
+//lo que filtra los datos en base al tiempo para (vivienda, expansion y delincuencia)
+export const filterDataPob05 = (data, column, reversed=false)=>
+{
+    if (!data || !data.features || !Array.isArray(data.features)) {
+      return [];
+    }
 
+    const toNormalize = addNormalized(
+      data.features.map((x) => x.properties),
+      column
+    );
+    
+    const filteredData = data.features
+      //.filter((feature) => feature[column] !== 0 && feature.properties.ratio_pob05 != 0.0)
+      .filter((feature) => feature[column] !== 0 )
+      .map((feature) => {
+        const coordinates = feature.geometry.coordinates[0]; // Obtener las coordenadas del primer anillo del polígono
+        return {
+          ...feature,
+          properties: {
+            ...feature.properties,
+            normalized: reversed
+              ? 1 - toNormalize(feature.properties)
+              : toNormalize(feature.properties),
+          },
+          geometry: {
+            type: "Polygon",
+            coordinates: [coordinates], // Conservar solo el primer anillo
+          },
+        };
+      });
+  
+    return filteredData
+  };
+
+  export const filterDataPoints = (data, column, reversed=false)=>
+{
+    if (!data || !data.features || !Array.isArray(data.features)) {
+      return [];
+    }
+
+      const filteredData = data.features.map((feature) => {
+        if (feature.geometry.type === "Point") {
+          let color;
+          if(feature.properties.sector == "salud")
+          {
+            color = [12, 25, 187, 255]; // Azul
+          }
+          else if(feature.properties.sector == "comercio al por menor")
+          {
+            color = [203, 50, 52, 255]; // Rojo
+          }
+          else if(feature.properties.sector == "guarderia")
+          {
+            color =[255, 128, 0, 255];
+          }
+          else if(feature.properties.sector == "preescolar")
+          {
+            color = [0, 145, 63, 255];
+          }
+          //return (feature);
+          const coloredPoint = {
+            ...feature,
+            properties: {
+              ...feature.properties,
+              color: color,
+            },
+          };
+    
+          return coloredPoint;
+        }
+        
+      });
+  
+    return filteredData
+  };
+
+  export const filterIcons = (data) =>
+  {
+    if (!data || !data.features || !Array.isArray(data.features)) {
+      return [];
+    }
+
+    const filteredData = data.features.map((feature) => {
+      if (feature.geometry.type === "Point") {
+        let iconPath;
+        if (feature.properties.sector === "comercio al por menor") {
+          //iconPath = "../components/comercio-icon.png";
+          iconPath = comerciopic;
+
+        } 
+        else
+        {
+          //iconPath = "../components/default-icon.png";
+          iconPath = defaultpic;
+        }
+  
+        const coloredPoint = {
+          ...feature,
+          properties: {
+            ...feature.properties,
+            iconPath: iconPath,
+          },
+        };
+  
+        return coloredPoint;
+      }
+    });
+  
+    return filteredData;
+  };
 
 export const PERIPHERIES = [
   "Juárez",
@@ -310,6 +425,29 @@ export const COSTOS_LAYER = {
   },
 };
 
+export const INFANCIAS2_LAYER = { //?? fix it
+  type: GeoJsonLayer,
+  props: {
+    id: "seccion_infancias2_layer",
+    data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/pob_infancia.geojson",
+    dataTransform: (d) =>
+      cleanedGeoData(d.features.properties, "ratio_pob05"),
+    getFillColor: (d) =>
+      colorInterpolate(d.properties.normalized, "blue", "red", 1),
+    getLineColor: (d) =>
+      colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
+    getLineWidth: 10,
+  },
+};
+
+/*export const SERVICIOS_LAYER = {
+  type: GeoJsonLayer,
+  props: {
+    id: "seccion_servicios_layer",
+    data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/denue_infancia.geojson",
+    dataTransform: (d) => cleanedGeoData(d.features, "")
+  }
+}*/
 
 export function separateLegendItems(data, quartiles, colorStart, colorEnd, filtering = null) {
   const filteringFn = filtering || ((d) => d.toLocaleString('en-US', { maximumFractionDigits: 0 }));
@@ -390,4 +528,12 @@ export const sectionsInfo = {
     component: CostosCard,
     controls: null,
   },
+  infancias: {
+    title: "Infancias",
+    answer: "Infancias answer",
+    color: "purple",
+    icon: GiAges,
+    component: InfanciasCard,
+    controls: null,
+  }
 };

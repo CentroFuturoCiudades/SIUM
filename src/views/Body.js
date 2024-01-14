@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 
 import { Sidebar } from "../components/Sidebar";
 import { Header } from "../components/Header";
-import { CustomMap, INITIAL_STATE } from "../components/CustomMap";
+import { CustomMap, INITIAL_STATE, SPECIAL_INFANCIAS_STATE } from "../components/CustomMap";
 import "../index.css";
 import { Card } from "../components/Card";
 import { sectionsInfo } from "../utils/constants";
@@ -94,8 +94,12 @@ export default function Body() {
   }, []);
 
   useEffect(() => {
-    if (currentSection) {
+    if (currentSection != "infancias") {
       setViewState(INITIAL_STATE);
+    }
+    else 
+    {
+      setViewState(SPECIAL_INFANCIAS_STATE);
     }
   }, [currentSection]);
 
