@@ -1,7 +1,9 @@
+import * as d3 from "d3";
 import { rgb } from "d3-color";
 import { interpolateRgb } from "d3-interpolate";
+import { scaleQuantile } from "d3-scale";
 import { GeoJsonLayer } from "@deck.gl/layers";
- 
+
 import { MdHome, MdDirectionsCar, MdOutlineAttachMoney } from "react-icons/md";
 import { HiMiniBuildingOffice } from "react-icons/hi2";
 import { GiHoleLadder, GiInjustice, GiRobber } from "react-icons/gi";
@@ -25,28 +27,31 @@ import {
   DelincuenciaCard,
   DelincuenciaControls,
 } from "../components/DelincuenciaCard";
-import { CostosCard } from "../components/CostosCard";
-import {BrushingExtension} from '@deck.gl/extensions';
+import { CostosCard, CostosControls } from "../components/CostosCard";
+import { BrushingExtension } from "@deck.gl/extensions";
+import { useEffect, useState } from "react";
 
-export function colorInterpolate(
-  normalizedValue,
-  startColor,
-  endColor,
-  opacity = 1
-) {
-  const interpolator = interpolateRgb(startColor, endColor);
-  const resultColor = rgb(interpolator(normalizedValue));
-  const minOpacity = 0.8;
+export function colorInterpolate(value, thresholds, colors, opacity = 1) {
 
-  return [ 
-    resultColor.r,
-    resultColor.g,
-    resultColor.b,
-    normalizedValue > 0
-      ? Math.max(opacity * normalizedValue, minOpacity) * 255
-      : 0,
+  // Create a scale using the thresholds and colors
+  const scale = d3
+    .scaleLinear()
+    .domain(thresholds)
+    .range(colors)
+    .interpolate(d3.interpolateRgb);
+
+  const thresholdColor = rgb(scale(value));
+  thresholdColor.opacity = opacity;
+
+  return [
+    thresholdColor.r,
+    thresholdColor.g,
+    thresholdColor.b,
+    thresholdColor.opacity * 255,
   ];
 }
+
+export const MAP_COLORS = ["rgb(255, 0, 0)", "rgb(255, 50, 50)", "rgb(255, 150, 150)", "rgb(255, 200, 200)", "rgb(250, 200, 250)", "rgb(150, 150, 255)", "rgb(50, 50, 255)", "rgb(0, 0, 255)"] 
 
 export const addNormalized = (data, column) => {
   const min = Math.min(...data.map((x) => x[column]));
@@ -257,47 +262,44 @@ export const COSTOS_LAYER = {
     getLineWidth: 30,
     brushingEnabled: true,
     brushingRadius: 5000,
-    extensions: [new BrushingExtension()]
+    extensions: [new BrushingExtension()],
   },
 };
 
 export function separateLegendItems(
   data,
-  quartiles,
-  colorStart,
-  colorEnd,
+  thresholds,
+  colors,
   filtering = null
 ) {
   const filteringFn =
     filtering ||
     ((d) => d.toLocaleString("en-US", { maximumFractionDigits: 0 }));
-  const minVal = Math.min(...data);
-  const maxVal = Math.max(...data);
-  // Genera puntos de quiebre basados en el rango de valores normalizados
-  const breakpoints = Array.from(
-    { length: quartiles + 1 },
-    (_, i) => minVal + (i * (maxVal - minVal)) / quartiles
-  );
-  const newLegendItems = breakpoints.slice(0, -1).map((breakpoint, index) => {
-    const nextBreakpoint = breakpoints[index + 1];
-    // El punto medio se utiliza para calcular el color de la leyenda
-    const midpoint = (breakpoint + nextBreakpoint) / 2;
-    // Normaliza el punto medio para la interpolación de colores
-    const normalizedMidpoint = (midpoint - minVal) / (maxVal - minVal);
-    const interpolatedColor = colorInterpolate(
-      normalizedMidpoint,
-      colorStart,
-      colorEnd,
-      1
-    );
+
+  // Generate legend items
+  const newLegendItems = thresholds.slice(0, -1).map((threshold, index) => {
+    const nextThreshold = thresholds[index + 1];
+    const midpoint = (threshold + nextThreshold) / 2;
+    const interpolatedColor = colorInterpolate(midpoint, thresholds, colors, 1);
     return {
-      color: `rgba(${interpolatedColor.join(",")})`, // Convierte el color a cadena para CSS
-      item1: filteringFn(breakpoint),
-      item2: filteringFn(nextBreakpoint),
+      color: `rgba(${interpolatedColor.join(",")})`,
+      item1: filteringFn(threshold),
+      item2: filteringFn(nextThreshold),
     };
   });
   return newLegendItems;
 }
+
+export const useFetch = (url, initialData = undefined) => {
+  const [data, setData] = useState(initialData);
+  useEffect(() => {
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => setData(data))
+      .catch((err) => console.log(err));
+  }, [url]);
+  return { data };
+};
 
 export const sectionsInfo = {
   "expansion-urbana": {
@@ -347,7 +349,7 @@ export const sectionsInfo = {
     color: "green",
     icon: GiRobber,
     component: DelincuenciaCard,
-    controls: null,
+    controls: DelincuenciaControls,
   },
   costos: {
     title: "¿Por qué la expansión nos cuenta tanto dinero?",
@@ -355,6 +357,6 @@ export const sectionsInfo = {
     color: "teal",
     icon: MdOutlineAttachMoney,
     component: CostosCard,
-    controls: null,
+    controls: CostosControls,
   },
 };

@@ -1,88 +1,76 @@
 import { useEffect, useState } from "react";
 import { useCardContext } from "../views/Problematica";
+import { ResponseTitle, ContextTitle } from "./Card";
 import {
-  SubcentersSpan,
-  PeripherySpan,
-  CenterSpan,
-  ResponseTitle,
-  ContextTitle,
-  ExpansionSpan,
-} from "./Card";
-import {
+  MAP_COLORS,
   cleanedGeoData,
   colorInterpolate,
   separateLegendItems,
+  useFetch,
 } from "../utils/constants";
 import { Legend } from "./Legend";
 import { Chart } from "./Chart";
 import { GeoJsonLayer } from "deck.gl";
+import { CustomMap, INITIAL_STATE } from "./CustomMap";
+import Loading from "./Loading";
+
+const EMPLEO_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2020_Municipios_Geo.json";
+const EMPLEO_CHART_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/empleo_municipality.json";
 
 export const EmpleoControls = () => {
+  const { color } = useCardContext();
+  const [viewState, setViewState] = useState(INITIAL_STATE);
+  const { data } = useFetch(EMPLEO_URL);
   const [legendItems, setLegendItems] = useState([]);
 
   useEffect(() => {
-    fetch(
-      "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2020_Municipios_Geo.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const valuesEmpleos = data.features.map(
-          (feat) => feat.properties["Empleos"]
-        );
-        setLegendItems(separateLegendItems(valuesEmpleos, 4, "yellow", "red"));
-      })
-      .catch((error) =>
-        console.error("Error fetching the empleo data: ", error)
-      );
-  }, []);
+    if (!data) return;
+    const valuesEmpleos = data.features.map(
+      (feat) => feat.properties["Empleos"]
+    );
+    setLegendItems(
+      separateLegendItems(
+        valuesEmpleos,
+        [0, 50, 200, 400, 800, 1000, 2000, 8400],
+        MAP_COLORS
+      )
+    );
+  }, [data]);
 
-  return <Legend title="Número de Empleos en 2020" legendItems={legendItems} />;
+  if (!data) return <Loading color={color} />;
+
+  return (
+    <>
+      <CustomMap viewState={viewState} setViewState={setViewState}>
+        <GeoJsonLayer
+          id="empleo_layer"
+          data={cleanedGeoData(data.features, "Empleos")}
+          getFillColor={(d) =>
+            colorInterpolate(
+              d.properties["Empleos"],
+              [0, 50, 200, 400, 800, 1000, 2000, 8400],
+              MAP_COLORS,
+              0.7
+            )
+          }
+          getLineColor={[118, 124, 130]}
+          getLineWidth={5}
+        />
+      </CustomMap>
+      <Legend
+        title="Número de Empleos en 2020"
+        legendItems={legendItems}
+        color={color}
+      />
+    </>
+  );
 };
 
-export function EmpleoCard({ color, isCurrentSection }) {
-  const { setLayers, setOutline } = useCardContext();
-  const [chartData, setChartData] = useState([]);
-  const [originalData, setOriginalData] = useState(null);
-
-  useEffect(() => {
-    if (isCurrentSection) {
-      fetch(
-        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/empleo_municipality.json"
-      )
-        .then((response) => response.json())
-        .then((data) => setChartData(data));
-      fetch(
-        "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2020_Municipios_Geo.json"
-      )
-        .then((response) => response.json())
-        .then((data) => setOriginalData(data))
-        .catch((error) => console.error("Error cargando el GeoJSON:", error));
-    } else {
-      setChartData([]);
-      setOriginalData(null);
-      setLayers([]);
-    }
-  }, [isCurrentSection]);
-
-  useEffect(() => {
-    if (isCurrentSection && originalData) {
-      setLayers([
-        {
-          type: GeoJsonLayer,
-          props: {
-            id: "empleo_layer",
-            data: originalData,
-            dataTransform: (d) => cleanedGeoData(d.features, "Empleos"),
-            getFillColor: (d) =>
-              colorInterpolate(d.properties.normalized, "yellow", "red", 1.5),
-            getLineColor: (d) =>
-              colorInterpolate(d.properties.normalized, "yellow", "red", 0.5),
-            getLineWidth: 10,
-          },
-        },
-      ]);
-    }
-  }, [originalData]);
+export function EmpleoCard() {
+  const { color, setOutline } = useCardContext();
+  const { data: chartData } = useFetch(EMPLEO_CHART_URL, []);
 
   return (
     <>
@@ -125,7 +113,7 @@ export function EmpleoCard({ color, isCurrentSection }) {
       <Chart
         title="Número de empleos en 2020"
         data={chartData}
-        setOutline={setOutline}
+        domain={[0, 530000]}
         column="per_ocu"
         columnKey="nom_mun"
         formatter={(d) => `${Math.round(d).toLocaleString("en-US")}`}

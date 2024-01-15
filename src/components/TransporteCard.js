@@ -1,44 +1,15 @@
-import {
-  Bar,
-  BarChart,
-  LabelList,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-} from "recharts";
 import { CenterSpan, PeripherySpan, ResponseTitle, ContextTitle } from "./Card";
 import { useState, useEffect } from "react";
 import { useCardContext } from "../views/Problematica.js";
-import {
-  MASIVE_TRANSPORT_LAYER,
-  PRIMARY_ROUTES_LAYER,
-} from "../utils/constants.js";
+import { useFetch } from "../utils/constants.js";
 import { TripsLayer } from "@deck.gl/geo-layers";
 import { Chart } from "./Chart.js";
 import _ from "lodash";
-import { Button, ButtonGroup } from '@chakra-ui/react'
 import { SliderHTML, TimeComponentClean } from "./TimeComponent.js";
-
-export const CustomBarChart = ({ data }) => (
-  <ResponsiveContainer width="100%" height={150}>
-    <BarChart layout="vertical" data={data}>
-      <XAxis
-        tickFormatter={(d) => `${d} min`}
-        type="number"
-        dataKey="time"
-        style={{ fontSize: "0.8rem" }}
-      />
-      <YAxis type="category" dataKey="municipality" hide />
-      <Bar background dataKey="time" fill="orange" barSize={30}>
-        <LabelList
-          dataKey="municipality"
-          position="insideRight"
-          style={{ fill: "white" }}
-        />
-      </Bar>
-    </BarChart>
-  </ResponsiveContainer>
-);
+import { CustomMap, INITIAL_STATE } from "./CustomMap.js";
+import Loading from "./Loading.js";
+import { GeoJsonLayer } from "deck.gl";
+import ButtonControls from "./ButtonControls.js";
 
 const marks = [
   { value: 300, label: "5:00" },
@@ -61,27 +32,6 @@ const marks = [
   { value: 1320, label: "22:00" },
 ];
 
-export const TransporteControls = ({
-  time,
-  togglePlay,
-  isPlaying,
-  handleSliderChange,
-}) => {
-  return (
-    <SliderHTML
-      time={time}
-      min={300}
-      max={1320}
-      step={3}
-      defaultValue={1020}
-      togglePlay={togglePlay}
-      isPlaying={isPlaying}
-      handleSliderChange={handleSliderChange}
-      marks={marks}
-    />
-  );
-};
-
 function convertirHoraATimestamp(horaString) {
   const [hora, minutos] = horaString.split(":");
   const timestamp = parseInt(hora) * 60 + parseInt(minutos); // Convierte la hora a minutos
@@ -89,12 +39,12 @@ function convertirHoraATimestamp(horaString) {
 }
 
 const transformDataForTrips = (data) => {
-  if (!data || !data.features) {
+  if (!data) {
     return [];
   }
 
   //lo que hace esto ahorita es que me da todos los trips desde el inicio
-  const tripsData = data.features.map((feature) => {
+  const tripsData = data.map((feature) => {
     //para cada feature del gepjson (osea para cada viaje)
     const coordinates = feature.geometry.coordinates; //guarda las coordinates
     const startTimestamp = convertirHoraATimestamp(feature.properties.HoraOri); //agarra el timestamp de inicio
@@ -110,96 +60,114 @@ const transformDataForTrips = (data) => {
   return tripsData;
 };
 
-export function TransporteCard({ color, isCurrentSection }) {
-  const { setLayers, setControlsProps, setOutline } = useCardContext();
-  const [originalData, setOriginalData] = useState([]);
-  const [generalLayer, setGeneralLayer] = useState([]);
-  const [chartData, setChartData] = useState([]);
-  const [generalChartData, setGeneralChartData] = useState([]);
-  const [activeButton, setActiveButton] = useState('General');
-  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } =
-    TimeComponentClean(300, 1320, 2, 0.05, false, 1020);
+const filtering = (x, activeButton) =>
+  activeButton === "General" ||
+  x === activeButton ||
+  ((x === "Bicicleta" || x === "Caminando") &&
+    activeButton === "transporteActivo");
+
+const TRANSPORTE_CHART_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte_municipality.json";
+const TRANSPORTE_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/TRANSPORTEJEANNETTE.geojson";
+const TRANSPORTE_MASIVO_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte-masivo.geojson";
+const VIAS_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vias-primarias.geojson";
+
+export const TransporteControls = () => {
+  const { color, setSharedProps } = useCardContext();
+  const [viewState, setViewState] = useState(INITIAL_STATE);
+  const { data } = useFetch(TRANSPORTE_URL);
+  const [activeButton, setActiveButton] = useState("General");
+  const { time, isPlaying, handleSliderChange, togglePlay } =
+    TimeComponentClean(300, 1320, 0.005, 0.1, true, 1020);
 
   useEffect(() => {
-    if (isCurrentSection) {
-      fetch(
-        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte_municipality.json"
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          setChartData(data);
-          setGeneralChartData(data);
-        });
-      fetch(
-        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/TRANSPORTEJEANNETTE.geojson"
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          setOriginalData(data);
-          setGeneralLayer(data);
+    setSharedProps({ activeButton });
+  }, [activeButton]);
 
-        })
-        .catch((error) => console.error("Error cargando el GeoJSON:", error));
-    } else {
-      setChartData([]);
-      setOriginalData(null);
-      setLayers([]);
-    }
-  }, [isCurrentSection]);
+  if (!data) return <Loading color={color} />;
 
-  // Manejar clic en el boton para cambiar la información en base al id del botón
-  function handleDataChange(event) {
-    if(originalData){
-      // Obtener el id del botón presionado
-      const buttonId = event.target.id;
-      setActiveButton(buttonId);
-  
-      if(buttonId == 'General'){
-        setOriginalData(generalLayer);
-        setChartData(generalChartData);
-      } else {
-        let actualLayerData = {...generalLayer};
-        let actualChartData = {...generalChartData};
-  
-        // Filtrar en base al id del botón presionado
-        if (buttonId == "transporteActivo"){
-          actualLayerData.features = generalLayer.features.filter((feature) => feature.properties.Transporte == "Bicicleta" || feature.properties.Transporte == "Caminando");
-          actualChartData = generalChartData.filter((feature) => feature["Transporte"] == "Bicicleta" || feature["Transporte"] == "Caminando");
-        } else {
-          actualLayerData.features = generalLayer.features.filter((feature) => feature.properties.Transporte == buttonId);
-          actualChartData = generalChartData.filter((feature) => feature["Transporte"] == buttonId);
-        }
-  
-        setOriginalData(actualLayerData);
-        setChartData(actualChartData)
-      }
-    }
+  return (
+    <>
+      <CustomMap viewState={viewState} setViewState={setViewState}>
+        <GeoJsonLayer
+          id="masive-transport-layer"
+          data={TRANSPORTE_MASIVO_URL}
+          stroked={true}
+          filled={true}
+          lineWidthScale={10}
+          lineWidthMinPixels={2}
+          getLineWidth={10}
+          getLineColor={(feature) => {
+            const nombrePropiedad = feature.properties.NOMBRE;
+            const colorMapping = {
+              // Change color based on type of transport
+              ECOVIA: [0, 200, 0, 255], // Rojo
+              "Linea 1 - Metro": [0, 200, 0, 255],
+              "Linea 2 - Metro": [0, 200, 0, 255],
+              "Linea 3 - Metro": [0, 200, 0, 255],
+              Transmetro: [0, 200, 0, 255],
+            };
+            return colorMapping[nombrePropiedad] || [64, 224, 208, 128];
+          }}
+        />
+        <GeoJsonLayer
+          id="primary_routes"
+          data={VIAS_URL}
+          getLineColor={[180, 180, 180, 255]}
+          getLineWidth={50}
+        />
+        <TripsLayer
+          id="transporte_layer"
+          data={transformDataForTrips(
+            data.features.filter((d) =>
+              filtering(d.properties.Transporte, activeButton)
+            )
+          )}
+          getPath={(d) => d.waypoints.map((point) => point.coordinates)}
+          getTimestamps={(d) => d.waypoints.map((point) => point.timestamp)}
+          getColor={[255, 0, 0, 255]}
+          opacity={0.5}
+          widthMinPixels={3}
+          rounded={true}
+          trailLength={10}
+          currentTime={time}
+        />
+      </CustomMap>
+      <ButtonControls
+        color={color}
+        activeButton={activeButton}
+        setActiveButton={setActiveButton}
+        mapping={[
+          { id: "General", name: "General" },
+          { id: "Autómovil", name: "Auto" },
+          { id: "TPUB", name: "Transporte público" },
+          { id: "transporteActivo", name: "Transporte Activo" },
+        ]}
+      />
+      <SliderHTML
+        time={time}
+        min={300}
+        max={1320}
+        step={3}
+        defaultValue={1020}
+        togglePlay={togglePlay}
+        isPlaying={isPlaying}
+        handleSliderChange={handleSliderChange}
+        marks={marks}
+      />
+    </>
+  );
+};
 
-  }
-
-  useEffect(() => {
-    if (isCurrentSection && originalData) {
-      setControlsProps({ time, togglePlay, isPlaying, handleSliderChange });
-
-      const tripsLayer = {
-        type: TripsLayer,
-        props: {
-          id: "trips",
-          data: transformDataForTrips(originalData),
-          getPath: (d) => d.waypoints.map((point) => point.coordinates),
-          getTimestamps: (d) => d.waypoints.map((point) => point.timestamp),
-          getColor: [255, 0, 0, 255],
-          opacity: 0.5,
-          widthMinPixels: 3,
-          rounded: true,
-          trailLength: 10,
-          currentTime: time,
-        },
-      };
-
-      setLayers([MASIVE_TRANSPORT_LAYER, PRIMARY_ROUTES_LAYER, tripsLayer]);
-    }
-  }, [originalData, time, isPlaying, animationTime]);
+export function TransporteCard() {
+  const { color, setOutline, sharedProps } = useCardContext();
+  const { data: chartData } = useFetch(TRANSPORTE_CHART_URL, []);
+  const filteredChartData = chartData.filter(
+    (x) => x["Motivo"] === "Regreso A Casa"
+  );
 
   return (
     <>
@@ -237,49 +205,6 @@ export function TransporteCard({ color, isCurrentSection }) {
         <CenterSpan setOutline={setOutline} />. En promedio se invierten{" "}
         <b>68 minutos</b> por viaje redondo, el equivalente a doce días por año.
       </p>
-      <ButtonGroup size="sm" isAttached variant="outline">
-        <Button
-          id="General"
-          size="sm"
-          variant="outline"
-          onClick={handleDataChange}
-          style={{
-            backgroundColor: activeButton === 'General' ? 'gainsboro' : 'white',
-          }}
-        >
-          General
-        </Button>
-
-        <Button
-          id="Autómovil"
-          onClick={handleDataChange}
-          style={{
-            backgroundColor: activeButton === 'Autómovil' ? 'gainsboro' : 'white',
-          }}
-        >
-          Auto
-        </Button>
-
-        <Button
-          id="TPUB"
-          onClick={handleDataChange}
-          style={{
-            backgroundColor: activeButton === 'TPUB' ? 'gainsboro' : 'white',
-          }}
-        >
-          Transporte público
-        </Button>
-
-        <Button
-          id="transporteActivo"
-          onClick={handleDataChange}
-          style={{
-            backgroundColor: activeButton === 'transporteActivo' ? 'gainsboro' : 'white',
-          }}
-        >
-          Transporte Activo
-        </Button>
-      </ButtonGroup>
 
       <br />
       <ContextTitle color={color}>
@@ -291,13 +216,14 @@ export function TransporteCard({ color, isCurrentSection }) {
         grupos poblacionales." Comisión Ambiental de la Megalópolis
       </ContextTitle>
       <Chart
-        title="Tiempo de traslado regreso a casa"
-        data={chartData}
-        setOutline={setOutline}
+        title={`Tiempo de traslado regreso a casa en ${sharedProps.activeButton}`}
+        data={filteredChartData}
         column="TiempoTraslado"
         columnKey="MunDest"
+        domain={[10, 100]}
         formatter={(d) => `${Math.round(d).toLocaleString("en-US")} min`}
         reducer={_.meanBy}
+        filtering={(x) => filtering(x.Transporte, sharedProps.activeButton)}
       />
     </>
   );

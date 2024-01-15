@@ -1,15 +1,13 @@
 import DeckGL from "@deck.gl/react";
-import {
-  ButtonGroup,
-  IconButton,
-  Skeleton,
-  Spinner,
-} from "@chakra-ui/react";
+import { ButtonGroup, IconButton } from "@chakra-ui/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { Map } from "react-map-gl";
 import mapboxgl from "mapbox-gl";
+import { GeoJsonLayer } from "deck.gl";
+import { useCardContext } from "../views/Problematica";
 
-mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
+mapboxgl.workerClass =
+  require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
 export const DECK_GL_CONTROLLER = {
   scrollZoom: false,
@@ -27,8 +25,8 @@ export const INITIAL_STATE = {
   bearing: 0,
 };
 
-export function CustomMap({ layers, viewState, setViewState, color }) {
-  const filteredLayers = layers ? layers.map((x) => new x.type(x.props)) : [];
+export function CustomMap({ viewState, setViewState, children }) {
+  const { outline } = useCardContext();
   const zoomIn = () => {
     setViewState((v) => ({ ...v, zoom: v.zoom + 1, transitionDuration: 100 }));
   };
@@ -39,51 +37,35 @@ export function CustomMap({ layers, viewState, setViewState, color }) {
 
   return (
     <>
-      <Skeleton
-        height="100vh"
-        isLoaded={filteredLayers.length > 0}
-        startColor="white"
-        endColor={`${color}.100`}
+      <DeckGL
+        style={{ position: "relative" }}
+        viewState={viewState}
+        onViewStateChange={({ viewState }) => setViewState(viewState)}
+        controller={DECK_GL_CONTROLLER}
       >
-        <DeckGL
-          style={{ position: "relative" }}
-          viewState={viewState}
-          layers={filteredLayers}
-          onViewStateChange={({ viewState }) => setViewState(viewState)}
-          controller={DECK_GL_CONTROLLER}
-        >
-          <Map
-            width="100%"
-            height="100%"
-            mapStyle="mapbox://styles/mapbox/light-v11"
-            mapboxAccessToken="pk.eyJ1IjoidXJpZWxzYTk2IiwiYSI6ImNsbnV2MzBkZDBlajYya211bWk2eTNuc2MifQ.ZnhFC3SyhckuIQBLO59HxA"
+        <Map
+          width="100%"
+          height="100%"
+          mapStyle="mapbox://styles/mapbox/light-v11"
+          mapboxAccessToken="pk.eyJ1IjoidXJpZWxzYTk2IiwiYSI6ImNsbnV2MzBkZDBlajYya211bWk2eTNuc2MifQ.ZnhFC3SyhckuIQBLO59HxA"
+        />
+        {children}
+        {outline ? <GeoJsonLayer {...outline.props} /> : null}
+      </DeckGL>
+      <div style={{ position: "absolute", top: 10, right: 10, zIndex: 10 }}>
+        <ButtonGroup isAttached size="sm" colorScheme="blackAlpha">
+          <IconButton
+            aria-label="Zoom In"
+            onClick={zoomIn}
+            icon={<AddIcon />}
           />
-        </DeckGL>
-        <div style={{ position: "absolute", top: 10, right: 10 }}>
-          <ButtonGroup isAttached size="sm" colorScheme="blackAlpha">
-            <IconButton
-              aria-label="Zoom In"
-              onClick={zoomIn}
-              icon={<AddIcon />}
-            />
-            <IconButton
-              aria-label="Zoom Out"
-              onClick={zoomOut}
-              icon={<MinusIcon />}
-            />
-          </ButtonGroup>
-        </div>
-      </Skeleton>
-      {filteredLayers.length === 0 ? (
-        <div style={{ position: "absolute", top: "50%", right: "50%" }}>
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            size="xl"
-            color={`${color}.500`}
+          <IconButton
+            aria-label="Zoom Out"
+            onClick={zoomOut}
+            icon={<MinusIcon />}
           />
-        </div>
-      ) : null}
+        </ButtonGroup>
+      </div>
     </>
   );
 }

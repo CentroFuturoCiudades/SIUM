@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import { useCardContext } from "../views/Problematica";
+import { ResponseTitle, ContextTitle } from "./Card";
 import {
-  SubcentersSpan,
-  PeripherySpan,
-  ResponseTitle,
-  ContextTitle,
-} from "./Card";
-import { separateLegendItems, filterDataAll } from "../utils/constants";
+  separateLegendItems,
+  filterDataAll,
+  useFetch,
+  MAP_COLORS,
+} from "../utils/constants";
 import { Chart } from "./Chart";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import { SliderHTML, TimeComponentClean } from "./TimeComponent";
 import { colorInterpolate } from "../utils/constants";
 import { Legend } from "./Legend";
+import { CustomMap, INITIAL_STATE } from "./CustomMap";
+import Loading from "./Loading";
 
 const marks = [
   { value: 2000, label: "2000" },
@@ -21,42 +23,68 @@ const marks = [
   { value: 2020, label: "2020" },
 ];
 
-export const ViviendaControls = ({
-  time,
-  togglePlay,
-  isPlaying,
-  handleSliderChange,
-}) => {
+const VIVIENDA_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda-hex.geojson";
+const VIVIENDA_CHART_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda_municipality.json";
+
+export const ViviendaControls = () => {
+  const { color, setSharedProps } = useCardContext();
+  const [viewState, setViewState] = useState(INITIAL_STATE);
+  const { data } = useFetch(VIVIENDA_URL);
   const [legendItems, setLegendItems] = useState([]);
+  const { time, isPlaying, handleSliderChange, togglePlay } =
+    TimeComponentClean(2000, 2020, 5, 2000, false, 2020);
 
   useEffect(() => {
-    // Carga los datos GeoJSON y actualiza las leyendas
-    fetch(
-      "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda-hex.geojson"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const valuesPrecio = data.features.map(
-          (feat) => feat.properties["IM_PRECIO_VENTA"]
-        );
-        setLegendItems(
-          separateLegendItems(valuesPrecio, 4, "red", "blue", (x) =>
-            x.toLocaleString("en-US", {
-              style: "currency",
-              currency: "USD",
-              maximumFractionDigits: 0,
-            })
-          )
-        );
-      })
-      .catch((error) =>
-        console.error("Error fetching the geojson data: ", error)
-      );
-  }, []);
+    if (!data) return;
+    const valuesPrecio = data.features.map(
+      (feat) => feat.properties["IM_PRECIO_VENTA"]
+    );
+    setLegendItems(
+      separateLegendItems(
+        valuesPrecio,
+        [200000, 300000, 400000, 500000, 700000, 800000, 900000, 1025000],
+        MAP_COLORS,
+        (x) =>
+          x.toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+            maximumFractionDigits: 0,
+          })
+      )
+    );
+  }, [data]);
+
+  useEffect(() => {
+    setSharedProps({ time });
+  }, [time]);
+
+  if (!data) return <Loading color={color} />;
 
   return (
     <>
-      <Legend title={"Precio de Venta 2000-2020"} legendItems={legendItems} />
+      <CustomMap viewState={viewState} setViewState={setViewState}>
+        <GeoJsonLayer
+          id="vivienda_layer"
+          data={filterDataAll(data, time, "IM_PRECIO_VENTA", true, "year_end")}
+          getFillColor={(d) =>
+            colorInterpolate(
+              d.properties["IM_PRECIO_VENTA"],
+              [200000, 300000, 400000, 500000, 700000, 800000, 900000, 1025000],
+              MAP_COLORS,
+              0.8
+            )
+          }
+          getLineColor={[118, 124, 130]}
+          getLineWidth={5}
+        />
+      </CustomMap>
+      <Legend
+        title={"Precio de Venta 2000-2020"}
+        legendItems={legendItems}
+        color={color}
+      />
       <SliderHTML
         time={time}
         min={2000}
@@ -72,60 +100,9 @@ export const ViviendaControls = ({
   );
 };
 
-export function ViviendaCard({ color, isCurrentSection }) {
-  const { setLayers, setOutline, setControlsProps } = useCardContext();
-  const [chartData, setChartData] = useState([]);
-  const [originalData, setOriginalData] = useState([]); //datos filtrados
-  const { time, isPlaying, handleSliderChange, togglePlay } =
-    TimeComponentClean(2000, 2020, 5, 2000, false, 2020);
-
-  useEffect(() => {
-    //esto lee para las bar charts
-    if (isCurrentSection) {
-      fetch(
-        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda_municipality.json"
-      )
-        .then((response) => response.json())
-        .then((data) => setChartData(data));
-      fetch(
-        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda-hex.geojson"
-      )
-        .then((response) => response.json())
-        .then((data) => setOriginalData(data))
-        .catch((error) => console.error("Error cargando el GeoJSON:", error));
-    } else {
-      setChartData([]);
-      setOriginalData(null);
-      setLayers([]);
-    }
-  }, [isCurrentSection]);
-
-  useEffect(() => {
-    if (isCurrentSection && originalData) {
-      setControlsProps({ time, togglePlay, isPlaying, handleSliderChange });
-
-      const viviendaLayer = {
-        type: GeoJsonLayer,
-        props: {
-          id: "seccion_vivienda_layer",
-          data: filterDataAll(
-            originalData,
-            time,
-            "IM_PRECIO_VENTA",
-            true,
-            "year_end"
-          ),
-          getFillColor: (d) =>
-            colorInterpolate(d.properties.normalized, "blue", "red", 1),
-          getLineColor: (d) =>
-            colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
-          getLineWidth: 10,
-        },
-      };
-
-      setLayers([viviendaLayer]);
-    }
-  }, [originalData, time, isPlaying]);
+export function ViviendaCard() {
+  const { color, setOutline, sharedProps } = useCardContext();
+  const { data: chartData } = useFetch(VIVIENDA_CHART_URL, []);
 
   return (
     <>
@@ -150,13 +127,14 @@ export function ViviendaCard({ color, isCurrentSection }) {
         costos se elevan, aumentando la desigualdad.
       </ContextTitle>
       <Chart
-        title={`Número de Creditos acumulados en ${time}`}
+        title={`Número de Creditos acumulados en ${sharedProps.time}`}
         data={chartData}
         setOutline={setOutline}
+        domain={[0, 42000]}
         column="creditos"
         columnKey="NOMGEO"
         formatter={(d) => `${Math.round(d).toLocaleString("en-US")}`}
-        filtering={(x) => x.year_end === time}
+        filtering={(x) => x.year_end === sharedProps.time}
       />
     </>
   );

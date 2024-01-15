@@ -9,9 +9,11 @@ import {
   YAxis,
 } from "recharts";
 import { GeoJsonLayer } from "deck.gl";
-import { memo, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import _ from "lodash";
 import { Heading } from "@chakra-ui/react";
+import { useFetch } from "../utils/constants";
+import { useCardContext } from "../views/Problematica";
 
 const mappingNames = {
   "San Pedro Garza García": "San Pedro",
@@ -39,12 +41,18 @@ const CustomBarLabel = memo((props) => {
 
   return (
     <text
+      key={`label-${index}`}
       x={fitsInside ? insideX : outsideX}
       y={y + height / 2}
       fill="black"
       textAnchor={fitsInside ? "end" : "start"}
       dominantBaseline="middle"
-      style={{ fontSize: "0.6rem", cursor: "pointer", zIndex: 1 }}
+      style={{
+        fontSize: "0.6rem",
+        cursor: "pointer",
+        zIndex: 1,
+        pointerEvents: "none",
+      }}
     >
       {text}
     </text>
@@ -54,18 +62,23 @@ const excludedMunicipalities = ["Abasolo", "Hidalgo", "El Carmen"];
 
 export const Chart = ({
   data,
-  setOutline,
   title,
   column,
   columnKey,
   formatter,
   reducer,
   filtering,
+  domain = undefined,
 }) => {
+  const { setOutline } = useCardContext();
+  const { data: municipalityData } = useFetch(
+    "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/div-municipal.geojson"
+  );
   let filteredData = useMemo(
     () =>
       _(data)
-        .filter((x) => excludedMunicipalities.indexOf(x[columnKey]) === -1 && (!filtering || filtering(x)))
+        .filter((x) => excludedMunicipalities.indexOf(x[columnKey]) === -1)
+        .filter((x) => !filtering || filtering(x))
         .groupBy(columnKey)
         .map((objs, key) => ({
           [columnKey]: key,
@@ -75,45 +88,30 @@ export const Chart = ({
         .sort((a, b) => b[column] - a[column]),
     [data, columnKey, column, reducer, filtering]
   );
-  let domain = useMemo(() => {
-    const tempData = data.map((x) => x[column]);
-    return data.length > 0
-      ? [Math.min(...tempData) * 0.99, Math.max(...tempData) * 1.01]
-      : undefined;
-  }, [data, column]);
   const [activeMunicipality, setActiveMunicipality] = useState(null);
-  const [mouseLeave, setMouseLeave] = useState(true);
-  const handleMouseMove = (state) => {
-    if (state && (state.activeLabel === activeMunicipality || mouseLeave)) {
+  const handleMouseMove = useCallback(
+    (activeLabel) => {
       setOutline({
         type: GeoJsonLayer,
         props: {
           id: "municipality-layer",
-          data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/div-municipal.geojson",
-          dataTransform: (d) =>
-            d.features.filter((x) => x.properties.NOMGEO === state.activeLabel),
-          getFillColor: [255, 174, 0, 10],
-          getLineColor: [255, 174, 0, 200],
+          data: municipalityData.features.filter(
+            (x) => x.properties.NOMGEO === activeLabel
+          ),
+          getFillColor: [255, 174, 0, 80],
+          getLineColor: [255, 174, 0, 250],
           getLineWidth: 120,
         },
       });
-      setActiveMunicipality(state.activeLabel);
-      setMouseLeave(false);
-    } else {
-      setOutline(null);
-      setActiveMunicipality(null);
-      setMouseLeave(true);
-    }
-  };
+      setActiveMunicipality(activeLabel);
+    },
+    [data]
+  );
+
   return (
     <div style={{ position: "absolute", bottom: "0", width: "100%" }}>
       <ResponsiveContainer width="100%" height={220}>
-        <BarChart
-          layout="vertical"
-          data={filteredData}
-          onMouseMove={handleMouseMove}
-          barCategoryGap={0}
-        >
+        <BarChart layout="vertical" data={filteredData} barCategoryGap={0}>
           <XAxis
             tickFormatter={formatter}
             type="number"
@@ -123,7 +121,12 @@ export const Chart = ({
             tickCount={15}
           />
           <YAxis type="category" dataKey={columnKey} hide />
-          <Bar background dataKey={column} style={{ cursor: "pointer" }}>
+          <Bar
+            isAnimationActive={false}
+            background
+            dataKey={column}
+            style={{ cursor: "pointer", pointerEvents: "none" }}
+          >
             <LabelList
               content={
                 <CustomBarLabel columnKey={columnKey} data={filteredData} />
@@ -131,11 +134,14 @@ export const Chart = ({
             />
             {filteredData.map((item, index) => (
               <Cell
-                key={`cell-${index}`}
+                key={`cell-${item[columnKey]}`}
+                onMouseEnter={() => handleMouseMove(item[columnKey])}
+                onMouseLeave={() => {
+                  setOutline(null);
+                  setActiveMunicipality(null);
+                }}
                 fill={
-                  activeMunicipality && activeMunicipality === item[columnKey]
-                    ? "#FFAE00"
-                    : "#ffcb54"
+                  activeMunicipality === item[columnKey] ? "#FFAE00" : "#ffcb54"
                 }
                 style={{ cursor: "pointer", transition: "fill 0.05s ease" }}
               />

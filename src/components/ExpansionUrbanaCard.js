@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { PeripherySpan, ResponseTitle, ContextTitle } from "./Card";
 import { useCardContext } from "../views/Problematica";
-import { separateLegendItems, cleanedGeoData } from "../utils/constants";
+import {
+  separateLegendItems,
+  cleanedGeoData,
+  useFetch,
+  MAP_COLORS,
+} from "../utils/constants";
 import "../index.css";
 import { Chart } from "./Chart";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import { SliderHTML, TimeComponentClean } from "./TimeComponent";
 import { colorInterpolate } from "../utils/constants";
 import { Legend } from "./Legend";
+import { CustomMap, INITIAL_STATE } from "../components/CustomMap";
+import Loading from "./Loading";
 
 const marks = [
   { value: 1990, label: "1990-2020" },
@@ -15,38 +22,66 @@ const marks = [
   { value: 2010, label: "2010-2020" },
 ];
 
-export const ExpansionUrbanaControls = ({
-  time,
-  togglePlay,
-  isPlaying,
-  handleSliderChange,
-}) => {
+const EXPANSION_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob.geojson";
+const EXPANSION_CHART_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/expansion_municipality.json";
+
+export const ExpansionUrbanaControls = () => {
+  const { color, setSharedProps } = useCardContext();
+  const [viewState, setViewState] = useState(INITIAL_STATE);
+  const { data } = useFetch(EXPANSION_URL);
   const [legendItems, setLegendItems] = useState([]);
+  const { time, isPlaying, handleSliderChange, togglePlay } =
+    TimeComponentClean(1990, 2010, 10, 2000, false);
 
   useEffect(() => {
-    // Carga los datos GeoJSON y actualiza las leyendas
-    fetch(
-      "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob.geojson"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const values = data.features
-          .map((x) => [
-            x.properties["1990"],
-            x.properties["2000"],
-            x.properties["2010"],
-          ])
-          .flat();
-        setLegendItems(separateLegendItems(values, 4, "red", "blue"));
-      })
-      .catch((error) =>
-        console.error("Error fetching the geojson data: ", error)
-      );
-  }, []);
+    if (!data) return;
+    const values = data.features
+      .map((x) => [
+        x.properties["1990"],
+        x.properties["2000"],
+        x.properties["2010"],
+      ])
+      .flat();
+    setLegendItems(
+      separateLegendItems(
+        values,
+        [-5100, -2000, -1000, 0, 2000, 4000, 6000, 11100],
+        MAP_COLORS
+      )
+    );
+  }, [data]);
+
+  useEffect(() => {
+    setSharedProps({ time });
+  }, [time]);
+
+  if (!data) return <Loading color={color} />;
 
   return (
     <>
-      <Legend title={"Cambio Poblacional"} legendItems={legendItems} />
+      <CustomMap viewState={viewState} setViewState={setViewState}>
+        <GeoJsonLayer
+          id="expansion_layer"
+          data={cleanedGeoData(data.features, time)}
+          getFillColor={(d) =>
+            colorInterpolate(
+              d.properties[time],
+              [-5100, -2000, -1000, 0, 1000, 3000, 5000, 11100],
+              MAP_COLORS,
+              0.8
+            )
+          }
+          getLineColor={[118, 124, 130]}
+          getLineWidth={5}
+        />
+      </CustomMap>
+      <Legend
+        title={"Cambio Poblacional"}
+        legendItems={legendItems}
+        color={color}
+      />
       <SliderHTML
         time={time}
         min={1990}
@@ -62,52 +97,9 @@ export const ExpansionUrbanaControls = ({
   );
 };
 
-export function ExpansionUrbanaCard({ color, isCurrentSection }) {
-  const { setLayers, setOutline, setControlsProps } = useCardContext();
-  const [chartData, setChartData] = useState([]);
-  const [originalData, setOriginalData] = useState(null);
-  const { time, isPlaying, handleSliderChange, togglePlay } =
-    TimeComponentClean(1990, 2010, 10, 2000, false);
-
-  useEffect(() => {
-    if (isCurrentSection) {
-      fetch(
-        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/expansion_municipality.json"
-      )
-        .then((response) => response.json())
-        .then((data) => setChartData(data));
-      console.log("Se llamaron a los datos de expansion");
-      fetch(
-        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob.geojson"
-      )
-        .then((response) => response.json())
-        .then((data) => setOriginalData(data))
-        .catch((error) => console.error("Error cargando el GeoJSON:", error));
-    } else {
-      setChartData([]);
-      setOriginalData(null);
-      setLayers([]);
-    }
-  }, [isCurrentSection]);
-
-  useEffect(() => {
-    if (isCurrentSection && originalData) {
-      setControlsProps({ time, togglePlay, isPlaying, handleSliderChange });
-      const expansionLayer = {
-        type: GeoJsonLayer,
-        props: {
-          id: "seccion_expansion_layer",
-          data: cleanedGeoData(originalData.features, time),
-          getFillColor: (d) =>
-            colorInterpolate(d.properties.normalized, "red", "blue", 1),
-          getLineColor: (d) =>
-            colorInterpolate(d.properties.normalized, "red", "blue", 0.5),
-          getLineWidth: 10,
-        },
-      };
-      setLayers([expansionLayer]);
-    }
-  }, [originalData, time, isPlaying]);
+export function ExpansionUrbanaCard() {
+  const { color, setOutline, sharedProps } = useCardContext();
+  const { data: chartData } = useFetch(EXPANSION_CHART_URL, []);
 
   return (
     <>
@@ -141,13 +133,14 @@ export function ExpansionUrbanaCard({ color, isCurrentSection }) {
       </ContextTitle>
 
       <Chart
-        title={`Cambio poblacional de ${time} a 2020`}
+        title={`Cambio poblacional de ${sharedProps.time} a 2020`}
         data={chartData}
-        setOutline={setOutline}
         column="population_change"
         columnKey="nom_mun"
+        domain={[-85000, 540000]}
         formatter={(d) => `${Math.round(d).toLocaleString("en-US")}`}
-        filtering={(x) => x.year == time}
+        reducer={_.meanBy}
+        filtering={(x) => x.year == sharedProps.time}
       />
     </>
   );

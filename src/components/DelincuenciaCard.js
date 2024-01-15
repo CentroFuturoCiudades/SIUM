@@ -1,94 +1,126 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ResponseTitle, ContextTitle } from "./Card";
 import { useCardContext } from "../views/Problematica";
 import {
   separateLegendItems,
   cleanedGeoData,
   colorInterpolate,
+  useFetch,
+  MAP_COLORS,
 } from "../utils/constants";
 import { Chart } from "./Chart";
-import { Button, ButtonGroup } from '@chakra-ui/react'
 import { Legend } from "./Legend";
 import { GeoJsonLayer } from "deck.gl";
-import { TimeComponentClean } from "./TimeComponent.js";
-import { active } from "d3-transition";
+import { CustomMap, INITIAL_STATE } from "./CustomMap.js";
+import Loading from "./Loading.js";
+import ButtonControls from "./ButtonControls.js";
 
-export const DelincuenciaControls = () => {
-  const [legendItems, setLegendItems] = useState([]);
-
-  useEffect(() => {
-    fetch(
-      "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const values = data.features.map(
-          (feat) => feat.properties["num_crimen"]
-        );
-        setLegendItems(separateLegendItems(values, 4, "blue", "red"));
-      })
-      .catch((error) =>
-        console.error("Error fetching the delincuencia data: ", error)
-      );
-  }, []);
-
-  return <Legend title={"Incidencia delictiva 2017-2020"} legendItems={legendItems} />;
+const legendMapping = {
+  num_crimen: {
+    title: "Incidencia delictiva 2017-2020",
+    quantiles: [0, 20, 50, 100, 150, 200, 300, 400, 520],
+  },
+  violencia_familiar: {
+    title: "Casos Violencia Familiar 2017-2020",
+    quantiles: [0, 20, 50, 100, 150, 200, 250, 300, 425],
+  },
+  robo_transeunte: {
+    title: "Robos a Transeúnte 2017-2020",
+    quantiles: [0, 5, 10, 20, 30, 50, 70, 165],
+  },
+  robo_negocio: {
+    title: "Robos a Negocio 2017-2020",
+    quantiles: [0, 5, 10, 20, 30, 40, 60, 80, 145],
+  },
+  robo_casa: {
+    title: "Robos a Casa Habitación 2017-2020",
+    quantiles: [0, 5, 10, 20, 30, 40, 60, 80, 150],
+  },
 };
 
-export function DelincuenciaCard({ color, isCurrentSection }) {
-  const { setLayers, setOutline } = useCardContext();
-  const [chartData, setChartData] = useState([]);
-  const [originalData, setOriginalData] = useState(null); 
-  const [activeButton, setActiveButton] = useState('num_crimen')
-  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(2017, 2020, 1, 3000, false);
+const DELINCUENCIA_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson";
+const DELINCUENCIA_CHART_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen_municipality.json";
 
-  //los datos que se leen para los charts
-  useEffect(() => {
-    if (isCurrentSection) {
-      fetch(
-        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen_municipality.json"
-      )
-        .then((response) => response.json())
-        .then((data) => setChartData(data));
-      fetch(
-        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson"
-      )
-        .then((response) => response.json())
-        .then((data) => setOriginalData(data))
-        .catch((error) => console.error("Error cargando el GeoJSON:", error));
-    } else {
-      setChartData([]);
-      setOriginalData(null);
-      setLayers([]);
-    }
-  }, [isCurrentSection, activeButton]);
-
-    // Manejar clic en el boton para cambiar la información en base al id del botón
-    function handleDataChange(event) {
-      // Obtener el id del botón presionado
-      const buttonId = event.target.id;
-      setActiveButton(buttonId);
-    }
+export const DelincuenciaControls = () => {
+  const { color, setSharedProps } = useCardContext();
+  const [viewState, setViewState] = useState(INITIAL_STATE);
+  const { data } = useFetch(DELINCUENCIA_URL);
+  const [legendItems, setLegendItems] = useState([]);
+  const [activeButton, setActiveButton] = useState("num_crimen");
 
   useEffect(() => {
-    if (isCurrentSection && originalData) {
-      setLayers([
-        {
-          type: GeoJsonLayer,
-          props: {
-            id: "seccion_delincuencia_layer",
-            data: originalData,
-            dataTransform: (d) => cleanedGeoData(d.features, activeButton),
-            getFillColor: (d) =>
-              colorInterpolate(d.properties.normalized, "blue", "red", 1),
-            getLineColor: (d) =>
-              colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
-            getLineWidth: 10,
+    if (!data) return;
+    const values = data.features.map((feat) => feat.properties[activeButton]);
+    setLegendItems(
+      separateLegendItems(
+        values,
+        legendMapping[activeButton].quantiles,
+        MAP_COLORS
+      )
+    );
+  }, [data, activeButton]);
+
+  useEffect(() => {
+    setSharedProps({ activeButton });
+  }, [activeButton]);
+
+  if (!data) return <Loading color={color} />;
+
+  return (
+    <>
+      <CustomMap viewState={viewState} setViewState={setViewState}>
+        <GeoJsonLayer
+          id="delincuencia_layer"
+          data={cleanedGeoData(data.features, activeButton)}
+          getFillColor={(d) =>
+            colorInterpolate(
+              d.properties[activeButton],
+              legendMapping[activeButton].quantiles,
+              MAP_COLORS,
+              0.8
+            )
+          }
+          getLineColor={[118, 124, 130]}
+          getLineWidth={5}
+        />
+      </CustomMap>
+      <ButtonControls
+        color={color}
+        activeButton={activeButton}
+        setActiveButton={setActiveButton}
+        mapping={[
+          { id: "num_crimen", name: "Delitos" },
+          {
+            id: "violencia_familiar",
+            name: "Violencia Familiar",
           },
-        },
-      ]);
-    }
-  }, [originalData]);
+          {
+            id: "robo_transeunte",
+            name: "Robo a Transeúnte",
+          },
+          {
+            id: "robo_negocio",
+            name: "Robo a Negocio",
+          },
+          {
+            id: "robo_casa",
+            name: "Robo a Casa Habitación",
+          },
+        ]}
+      />
+      <Legend
+        title={legendMapping[activeButton].title}
+        legendItems={legendItems}
+      />
+    </>
+  );
+};
+
+export function DelincuenciaCard() {
+  const { color, setOutline, sharedProps } = useCardContext();
+  const { data: chartData } = useFetch(DELINCUENCIA_CHART_URL, []);
 
   return (
     <>
@@ -117,62 +149,12 @@ export function DelincuenciaCard({ color, isCurrentSection }) {
         transporte colectivo, incrementa los flujos peatonales e incentiva la
         vigilancia colectiva.
       </ContextTitle>
-        <Button
-          id="num_crimen"
-          size="sm"
-          variant="outline"
-          onClick={handleDataChange}
-          style={{
-            backgroundColor: activeButton === 'num_crimen' ? 'gainsboro' : 'white',
-          }}
-        >
-          Número de Crímenes
-        </Button>
-      <ButtonGroup size="sm" isAttached variant="outline">
-        <Button
-          id="violencia_familiar"
-          size="sm"
-          variant="outline"
-          onClick={handleDataChange}
-          style={{
-            backgroundColor: activeButton === 'violencia_familiar' ? 'gainsboro' : 'white',
-          }}
-        >
-          Violencia Familiar
-        </Button>
-        <Button
-          id="robo_transeunte"
-          onClick={handleDataChange}
-          style={{
-            backgroundColor: activeButton === 'robo_transeunte' ? 'gainsboro' : 'white',
-          }}
-        >
-          Robo a Transeúnte
-        </Button>
-        <Button
-          id="robo_negocio"
-          onClick={handleDataChange}
-          style={{
-            backgroundColor: activeButton === 'robo_negocio' ? 'gainsboro' : 'white',
-          }}
-        >
-          Robo a Negocio
-        </Button>
-        <Button
-          id="robo_casa"
-          onClick={handleDataChange}
-          style={{
-            backgroundColor: activeButton === 'robo_casa' ? 'gainsboro' : 'white',
-          }}
-        >
-          Robo a Casa Habitación
-        </Button>
-      </ButtonGroup>
       <Chart
         title="Acumulado Robos a transeúntes por 10 mil personas (2017-2020)"
         data={chartData}
+        domain={[0, 10500]}
         setOutline={setOutline}
-        column={activeButton}
+        column={sharedProps.activeButton}
         columnKey="NOMGEO"
         formatter={(d) => `${Math.round(d).toLocaleString("en-US")}`}
       />

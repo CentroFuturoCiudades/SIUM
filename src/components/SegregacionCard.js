@@ -2,48 +2,112 @@ import { useEffect, useState } from "react";
 import { useCardContext } from "../views/Problematica";
 import { ResponseTitle, ContextTitle } from "./Card";
 import {
+  MAP_COLORS,
   cleanedGeoData,
   colorInterpolate,
   separateLegendItems,
+  useFetch,
 } from "../utils/constants";
 import { Chart } from "./Chart";
 import { Legend } from "./Legend";
-import { Button, ButtonGroup } from "@chakra-ui/react";
 import { GeoJsonLayer } from "deck.gl";
 import Tooltip from "./Tooltip";
+import { CustomMap, INITIAL_STATE } from "./CustomMap";
+import Loading from "./Loading";
+import ButtonControls from "./ButtonControls";
 
-export const SegregacionControls = ({ hoverInfo }) => {
+const legendMapping = {
+  income_pc: {
+    title: "Ingreso mensual per capita en 2020",
+    formatter: (d) =>
+      d.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0,
+      }),
+    quantiles: [4000, 7000, 10000, 13000, 18000, 25000, 35000, 50000, 74000],
+  },
+  local_centralization_q_1_k_100: {
+    title: "Quinto quintil segregación",
+    formatter: (d) => `${Math.round(d * 100)}%`,
+    quantiles: [-0.18, -0.12, -0.08, -0.04, 0, 0.02, 0.04, 0.06, 0.08],
+  },
+  local_centralization_q_5_k_100: {
+    title: "Primer quintil segregación",
+    formatter: (d) => `${Math.round(d * 100)}%`,
+    quantiles: [-0.18, -0.12, -0.08, -0.04, 0, 0.02, 0.04, 0.06, 0.08],
+  },
+};
+const SEGREGATION_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income2.geojson";
+const SEGREGACION_CHART_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income_municipality.json";
+
+export const SegregacionControls = () => {
+  const { color } = useCardContext();
+  const [viewState, setViewState] = useState(INITIAL_STATE);
+  const { data } = useFetch(SEGREGATION_URL);
   const [legendItems, setLegendItems] = useState([]);
+  const [hoverInfo, setHoverInfo] = useState();
+  const [activeButton, setActiveButton] = useState("income_pc");
 
   useEffect(() => {
-    fetch(
-      "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income2.geojson"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const values = data.features.map(
-          (feat) => feat.properties["income_pc"]
-        );
-        setLegendItems(
-          separateLegendItems(values, 4, "red", "blue", (x) =>
-            x.toLocaleString("en-US", {
-              style: "currency",
-              currency: "USD",
-              maximumFractionDigits: 0,
-            })
-          )
-        );
-      })
-      .catch((error) =>
-        console.error("Error fetching the empleo data: ", error)
-      );
-  }, []);
+    if (!data) return;
+    const values = data.features.map((feat) => feat.properties[activeButton]);
+    setLegendItems(
+      separateLegendItems(
+        values,
+        legendMapping[activeButton].quantiles,
+        MAP_COLORS,
+        (x) => legendMapping[activeButton].formatter(x)
+      )
+    );
+  }, [data, activeButton]);
+
+  if (!data) return <Loading color={color} />;
 
   return (
     <>
+      <CustomMap viewState={viewState} setViewState={setViewState}>
+        <GeoJsonLayer
+          id="segregacion_layer"
+          data={cleanedGeoData(data.features, activeButton)}
+          getFillColor={(d) =>
+            colorInterpolate(
+              d.properties[activeButton],
+              legendMapping[activeButton].quantiles,
+              MAP_COLORS,
+              0.8
+            )
+          }
+          getLineColor={[118, 124, 130]}
+          getLineWidth={8}
+          onHover={(info) => setHoverInfo(info)}
+          pickable={true}
+          autoHighlight={true}
+          getPosition={(d) => d.position}
+        />
+      </CustomMap>
+      <ButtonControls
+        color={color}
+        activeButton={activeButton}
+        setActiveButton={setActiveButton}
+        mapping={[
+          { id: "income_pc", name: "Ingreso" },
+          {
+            id: "local_centralization_q_1_k_100",
+            name: "Segregación Menor Ingreso",
+          },
+          {
+            id: "local_centralization_q_5_k_100",
+            name: "Segregación Mayor Ingreso",
+          },
+        ]}
+      />
       <Legend
-        title="Ingreso mensual per capita en 2020"
+        title={legendMapping[activeButton].title}
         legendItems={legendItems}
+        color={color}
       />
       {hoverInfo && hoverInfo.object && (
         <Tooltip hoverInfo={hoverInfo}>
@@ -76,67 +140,9 @@ export const SegregacionControls = ({ hoverInfo }) => {
   );
 };
 
-export function SegregacionCard({ color, isCurrentSection }) {
-  const { setLayers, setOutline, setControlsProps } = useCardContext();
-  const [chartData, setChartData] = useState([]);
-  const [hoverInfo, setHoverInfo] = useState();
-  const [activeButton, setActiveButton] = useState("income_pc");
-  const [originalData, setOriginalData] = useState(null);
-
-  useEffect(() => {
-    if (isCurrentSection) {
-      fetch(
-        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income_municipality.json"
-      )
-        .then((response) => response.json())
-        .then((data) => setChartData(data));
-      fetch(
-        "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income2.geojson"
-      )
-        .then((response) => response.json())
-        .then((data) => setOriginalData(data))
-        .catch((error) => console.error("Error cargando el GeoJSON:", error));
-    } else {
-      setChartData([]);
-      setOriginalData(null);
-      setLayers([]);
-    }
-  }, [isCurrentSection, activeButton]);
-
-  // Manejar clic en el boton para cambiar la información en base al id del botón
-  function handleDataChange(event) {
-    // Obtener el id del botón presionado
-    const buttonId = event.target.id;
-    setActiveButton(buttonId);
-  }
-
-  useEffect(() => {
-    if (isCurrentSection && originalData) {
-      setLayers([
-        {
-          type: GeoJsonLayer,
-          props: {
-            id: "seccion_segregacion_layer",
-            data: originalData,
-            dataTransform: (d) => cleanedGeoData(d.features, activeButton),
-            getFillColor: (d) =>
-              colorInterpolate(d.properties.normalized, "red", "blue", 1),
-            getLineColor: (d) =>
-              colorInterpolate(d.properties.normalized, "red", "blue", 0.5),
-            getLineWidth: 20,
-            onHover: (info) => setHoverInfo(info),
-            pickable: true,
-            autoHighlight: true,
-            getPosition: (d) => d.position,
-          },
-        },
-      ]);
-    }
-  }, [originalData]);
-
-  useEffect(() => {
-    setControlsProps({ hoverInfo });
-  }, [hoverInfo]);
+export function SegregacionCard() {
+  const { color, setOutline } = useCardContext();
+  const { data: chartData } = useFetch(SEGREGACION_CHART_URL, []);
 
   return (
     <>
@@ -160,44 +166,6 @@ export function SegregacionCard({ color, isCurrentSection }) {
         Similarmente, se deben de generar políticas de vivienda asequible menos
         desconectadas de las zonas funcionales de la ciudad.
       </p>
-      <ButtonGroup size="sm" isAttached variant="outline">
-        <Button
-          id="income_pc"
-          size="sm"
-          variant="outline"
-          onClick={handleDataChange}
-          style={{
-            backgroundColor:
-              activeButton === "income_pc" ? "gainsboro" : "white",
-          }}
-        >
-          Ingreso
-        </Button>
-        <Button
-          id="local_centralization_q_1_k_100"
-          onClick={handleDataChange}
-          style={{
-            backgroundColor:
-              activeButton === "local_centralization_q_1_k_100"
-                ? "gainsboro"
-                : "white",
-          }}
-        >
-          Segregación-
-        </Button>
-        <Button
-          id="local_centralization_q_5_k_100"
-          onClick={handleDataChange}
-          style={{
-            backgroundColor:
-              activeButton === "local_centralization_q_5_k_100"
-                ? "gainsboro"
-                : "white",
-          }}
-        >
-          Segregación+
-        </Button>
-      </ButtonGroup>
       <br />
       <br />
       <ContextTitle color={color}>
@@ -207,7 +175,7 @@ export function SegregacionCard({ color, isCurrentSection }) {
       <Chart
         title="Ingreso mensual per capita en 2020"
         data={chartData}
-        setOutline={setOutline}
+        domain={[5000, 35000]}
         column="income_pc"
         columnKey="nom_mun"
         formatter={(d) => `$${Math.round(d).toLocaleString("en-US")}`}

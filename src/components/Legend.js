@@ -1,15 +1,15 @@
 import { InfoIcon } from "@chakra-ui/icons";
 import { Box, Flex, Heading, Tooltip } from "@chakra-ui/react";
 
-export const Legend = ({ title, legendItems }) => {
+export const Legend = ({ title, legendItems, color }) => {
   if (legendItems.length === 0) {
     return null; 
   } 
   return (
     <Box
       borderRadius="md"
-      borderColor="gray.300"
-      borderWidth="0.1rem"
+      borderColor={`${color}.200`}
+      borderWidth="0.08rem"
       className="legend-container"
       width="210px"
     >
@@ -24,8 +24,6 @@ export const Legend = ({ title, legendItems }) => {
           <div
             className="legend-color"
             style={{ backgroundColor: item.color }}
-            alignItems="center"
-            justifyContent="space-between"
           />
           <div className="legend-numbers">
             <span className="legend-label">{item.item1}</span>
