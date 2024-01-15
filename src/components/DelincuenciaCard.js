@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { ResponseTitle, ContextTitle } from "./Card";
 import { useCardContext } from "../views/Problematica";
 import {
@@ -6,7 +6,6 @@ import {
   cleanedGeoData,
   colorInterpolate,
   useFetch,
-  MAP_COLORS,
 } from "../utils/constants";
 import { Chart } from "./Chart";
 import { Legend } from "./Legend";
@@ -42,6 +41,16 @@ const DELINCUENCIA_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson";
 const DELINCUENCIA_CHART_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen_municipality.json";
+const DELINCUENCIA_COLORS = [
+  "rgb(255, 0, 0)",
+  "rgb(255, 50, 50)",
+  "rgb(255, 150, 150)",
+  "rgb(255, 200, 200)",
+  "rgb(250, 200, 250)",
+  "rgb(150, 150, 255)",
+  "rgb(50, 50, 255)",
+  "rgb(0, 0, 255)",
+];
 
 export const DelincuenciaControls = () => {
   const { color, setSharedProps } = useCardContext();
@@ -57,7 +66,7 @@ export const DelincuenciaControls = () => {
       separateLegendItems(
         values,
         legendMapping[activeButton].quantiles,
-        MAP_COLORS
+        DELINCUENCIA_COLORS
       )
     );
   }, [data, activeButton]);
@@ -78,7 +87,7 @@ export const DelincuenciaControls = () => {
             colorInterpolate(
               d.properties[activeButton],
               legendMapping[activeButton].quantiles,
-              MAP_COLORS,
+              DELINCUENCIA_COLORS,
               0.8
             )
           }

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useCardContext } from "../views/Problematica";
 import { ResponseTitle, ContextTitle } from "./Card";
 import {
-  MAP_COLORS,
   cleanedGeoData,
   colorInterpolate,
   separateLegendItems,
@@ -18,6 +17,16 @@ const EMPLEO_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2020_Municipios_Geo.json";
 const EMPLEO_CHART_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/empleo_municipality.json";
+const EMPLEO_COLORS = [
+  "rgb(255, 0, 0)",
+  "rgb(255, 50, 50)",
+  "rgb(255, 150, 150)",
+  "rgb(255, 200, 200)",
+  "rgb(250, 200, 250)",
+  "rgb(150, 150, 255)",
+  "rgb(50, 50, 255)",
+  "rgb(0, 0, 255)",
+];
 
 export const EmpleoControls = () => {
   const { color } = useCardContext();
@@ -34,7 +43,7 @@ export const EmpleoControls = () => {
       separateLegendItems(
         valuesEmpleos,
         [0, 50, 200, 400, 800, 1000, 2000, 8400],
-        MAP_COLORS
+        EMPLEO_COLORS,
       )
     );
   }, [data]);
@@ -51,7 +60,7 @@ export const EmpleoControls = () => {
             colorInterpolate(
               d.properties["Empleos"],
               [0, 50, 200, 400, 800, 1000, 2000, 8400],
-              MAP_COLORS,
+              EMPLEO_COLORS,
               0.7
             )
           }

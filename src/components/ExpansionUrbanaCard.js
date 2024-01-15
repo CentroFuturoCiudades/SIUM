@@ -5,7 +5,6 @@ import {
   separateLegendItems,
   cleanedGeoData,
   useFetch,
-  MAP_COLORS,
 } from "../utils/constants";
 import "../index.css";
 import { Chart } from "./Chart";
@@ -16,16 +15,26 @@ import { Legend } from "./Legend";
 import { CustomMap, INITIAL_STATE } from "../components/CustomMap";
 import Loading from "./Loading";
 
+const EXPANSION_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob.geojson";
+const EXPANSION_CHART_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/expansion_municipality.json";
+const EXPANSION_COLORS = [
+  "rgb(255, 0, 0)",
+  "rgb(255, 50, 50)",
+  "rgb(255, 150, 150)",
+  "rgb(255, 200, 200)",
+  "rgb(250, 200, 250)",
+  "rgb(150, 150, 255)",
+  "rgb(50, 50, 255)",
+  "rgb(0, 0, 255)",
+];
+
 const marks = [
   { value: 1990, label: "1990-2020" },
   { value: 2000, label: "2000-2020" },
   { value: 2010, label: "2010-2020" },
 ];
-
-const EXPANSION_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob.geojson";
-const EXPANSION_CHART_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/expansion_municipality.json";
 
 export const ExpansionUrbanaControls = () => {
   const { color, setSharedProps } = useCardContext();
@@ -48,7 +57,7 @@ export const ExpansionUrbanaControls = () => {
       separateLegendItems(
         values,
         [-5100, -2000, -1000, 0, 2000, 4000, 6000, 11100],
-        MAP_COLORS
+        EXPANSION_COLORS
       )
     );
   }, [data]);
@@ -69,7 +78,7 @@ export const ExpansionUrbanaControls = () => {
             colorInterpolate(
               d.properties[time],
               [-5100, -2000, -1000, 0, 1000, 3000, 5000, 11100],
-              MAP_COLORS,
+              EXPANSION_COLORS,
               0.8
             )
           }

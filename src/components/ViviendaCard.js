@@ -5,7 +5,6 @@ import {
   separateLegendItems,
   filterDataAll,
   useFetch,
-  MAP_COLORS,
 } from "../utils/constants";
 import { Chart } from "./Chart";
 import { GeoJsonLayer } from "@deck.gl/layers";
@@ -27,6 +26,16 @@ const VIVIENDA_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda-hex.geojson";
 const VIVIENDA_CHART_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda_municipality.json";
+const VIVIENDA_COLORS = [
+  "rgb(255, 0, 0)",
+  "rgb(255, 50, 50)",
+  "rgb(255, 150, 150)",
+  "rgb(255, 200, 200)",
+  "rgb(250, 200, 250)",
+  "rgb(150, 150, 255)",
+  "rgb(50, 50, 255)",
+  "rgb(0, 0, 255)",
+];
 
 export const ViviendaControls = () => {
   const { color, setSharedProps } = useCardContext();
@@ -45,7 +54,7 @@ export const ViviendaControls = () => {
       separateLegendItems(
         valuesPrecio,
         [200000, 300000, 400000, 500000, 700000, 800000, 900000, 1025000],
-        MAP_COLORS,
+        VIVIENDA_COLORS,
         (x) =>
           x.toLocaleString("en-US", {
             style: "currency",
@@ -72,7 +81,7 @@ export const ViviendaControls = () => {
             colorInterpolate(
               d.properties["IM_PRECIO_VENTA"],
               [200000, 300000, 400000, 500000, 700000, 800000, 900000, 1025000],
-              MAP_COLORS,
+              VIVIENDA_COLORS,
               0.8
             )
           }

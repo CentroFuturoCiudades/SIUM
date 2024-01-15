@@ -11,6 +11,15 @@ import Loading from "./Loading.js";
 import { GeoJsonLayer } from "deck.gl";
 import ButtonControls from "./ButtonControls.js";
 
+const TRANSPORTE_CHART_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte_municipality.json";
+const TRANSPORTE_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/TRANSPORTEJEANNETTE.geojson";
+const TRANSPORTE_MASIVO_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte-masivo.geojson";
+const VIAS_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vias-primarias.geojson";
+
 const marks = [
   { value: 300, label: "5:00" },
   { value: 360, label: "6:00" },
@@ -65,15 +74,6 @@ const filtering = (x, activeButton) =>
   x === activeButton ||
   ((x === "Bicicleta" || x === "Caminando") &&
     activeButton === "transporteActivo");
-
-const TRANSPORTE_CHART_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte_municipality.json";
-const TRANSPORTE_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/TRANSPORTEJEANNETTE.geojson";
-const TRANSPORTE_MASIVO_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte-masivo.geojson";
-const VIAS_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vias-primarias.geojson";
 
 export const TransporteControls = () => {
   const { color, setSharedProps } = useCardContext();

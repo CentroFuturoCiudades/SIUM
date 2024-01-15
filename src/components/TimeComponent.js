@@ -19,7 +19,7 @@ export function SliderHTML({
   defaultValue,
   togglePlay,
   isPlaying,
-  setTime,
+  handleSliderChange,
   marks,
 }) {
   return (
@@ -56,7 +56,7 @@ export function SliderHTML({
             step={step}
             max={max}
             value={time}
-            onChange={(value) => setTime(value)}
+            onChange={(value) => handleSliderChange(value)}
             mr="4"
             ml="3"
           >
@@ -140,9 +140,13 @@ export function TimeComponentClean(
     };
   }, [isPlaying, startTime, endTime, step, frameInterval, animationType]);
 
+  const handleSliderChange = (newTime) => {
+    setTime(newTime);
+  };
+
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
   };
 
-  return { time, isPlaying, setTime, togglePlay };
+  return { time, isPlaying, handleSliderChange, togglePlay };
 }

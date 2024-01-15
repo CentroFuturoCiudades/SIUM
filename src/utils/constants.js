@@ -32,7 +32,6 @@ import { BrushingExtension } from "@deck.gl/extensions";
 import { useEffect, useState } from "react";
 
 export function colorInterpolate(value, thresholds, colors, opacity = 1) {
-
   // Create a scale using the thresholds and colors
   const scale = d3
     .scaleLinear()
@@ -50,8 +49,6 @@ export function colorInterpolate(value, thresholds, colors, opacity = 1) {
     thresholdColor.opacity * 255,
   ];
 }
-
-export const MAP_COLORS = ["rgb(255, 0, 0)", "rgb(255, 50, 50)", "rgb(255, 150, 150)", "rgb(255, 200, 200)", "rgb(250, 200, 250)", "rgb(150, 150, 255)", "rgb(50, 50, 255)", "rgb(0, 0, 255)"] 
 
 export const addNormalized = (data, column) => {
   const min = Math.min(...data.map((x) => x[column]));

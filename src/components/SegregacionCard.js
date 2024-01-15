@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useCardContext } from "../views/Problematica";
 import { ResponseTitle, ContextTitle } from "./Card";
 import {
-  MAP_COLORS,
   cleanedGeoData,
   colorInterpolate,
   separateLegendItems,
@@ -42,6 +41,16 @@ const SEGREGATION_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income2.geojson";
 const SEGREGACION_CHART_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income_municipality.json";
+const SEGREGACION_COLORS = [
+  "rgb(255, 0, 0)",
+  "rgb(255, 50, 50)",
+  "rgb(255, 150, 150)",
+  "rgb(255, 200, 200)",
+  "rgb(250, 200, 250)",
+  "rgb(150, 150, 255)",
+  "rgb(50, 50, 255)",
+  "rgb(0, 0, 255)",
+];
 
 export const SegregacionControls = () => {
   const { color } = useCardContext();
@@ -58,7 +67,7 @@ export const SegregacionControls = () => {
       separateLegendItems(
         values,
         legendMapping[activeButton].quantiles,
-        MAP_COLORS,
+        SEGREGACION_COLORS,
         (x) => legendMapping[activeButton].formatter(x)
       )
     );
@@ -76,7 +85,7 @@ export const SegregacionControls = () => {
             colorInterpolate(
               d.properties[activeButton],
               legendMapping[activeButton].quantiles,
-              MAP_COLORS,
+              SEGREGACION_COLORS,
               0.8
             )
           }
