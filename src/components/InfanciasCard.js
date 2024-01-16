@@ -13,32 +13,34 @@ import { GeoJsonLayer } from "@deck.gl/layers";
 import { SliderHTML, TimeComponentClean } from "./TimeComponent";
 import { colorInterpolate } from "../utils/constants";
 import { IconLayer } from "deck.gl";
+import {IconClusterLayer} from "./icon-cluster-layer";
+import Supercluster from 'supercluster';
 
-const ICON_MAPPING = {
-  marker: {x: 0, y: 0, width: 128, height: 128, mask: true}
-};
 
 export function InfanciasCard({ color, isCurrentSection }) {
     const { setLayers, setOutline, setControlsProps} = useCardContext();
     const [chartData, setChartData] = useState([]);
-    const [originalData, setOriginalData] = useState([]); //datos filtrados
-    const [originalData2, setOriginalData2] = useState([]); //datos filtrados
+    const [originalData, setOriginalData] = useState([]); //datos filtrados manzanas
+    const [originalData2, setOriginalData2] = useState([]); //datos filtrados puntos
+
+    const [supercluster, setSupercluster] = useState(null);
+    const [clusters, setClusters] = useState([]);
 
     const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(1990, 2020, 5, 3000, false);
-  
-  
-    /*useEffect(() => { //esto lee para las bar charts
-      if (isCurrentSection) {
-        fetch("SIUM/data/vivienda_municipality.json")
-          .then((response) => response.json())
-          .then((data) => {
-            const newData = data.filter((x) => x.year === 2019);
-            setChartData(newData);
-          });
-      } else {
-        setChartData([]);
-      }
-    }, [isCurrentSection]);*/
+    //const superclusterInstance = new Supercluster(); // Crea una nueva instancia de Supercluster
+    const superclusterInstance = new Supercluster({
+      log: true,
+      radius: 50, // Tamaño del clúster
+      maxZoom: 16, // Nivel máximo de zoom para la formación de clústeres
+      nodeSize: 16, // Ajusta este valor
+    });
+    const index = new Supercluster({
+      log: true,
+      radius: 20,
+      extent: 256,
+      maxZoom: 20,
+      //nodeSize: 1
+    });
   
     //lee el geojson de poblacion de 0-5 años y guarda los datos en setOriginalData
     useEffect(() => {
@@ -57,13 +59,8 @@ export function InfanciasCard({ color, isCurrentSection }) {
       }
     }, [isCurrentSection]);
 
-  /*   useEffect(() => {
-    if (isCurrentSection) {
-      setLayers([INFANCIAS2_LAYER]);
-    }
-  }, [isCurrentSection, setLayers]);*/
-    
-  
+
+
     useEffect(() => {
       if (isCurrentSection && originalData) {
   
@@ -94,33 +91,75 @@ export function InfanciasCard({ color, isCurrentSection }) {
             //getLineColor: [0, 0, 255, 255],
             getLineColor: (d) => d.properties.color || [0, 0, 0, 0],
             //getLineWidth: 50,
-            getPointRadius: 20
+            getPointRadius: 10
           }
         };
+        
+        index.load(
+          originalData2.features.map(d => ({
+            geometry: { coordinates: d.geometry.coordinates }, // Asegúrate de que las coordenadas estén en el formato correcto
+            properties: d.properties
+          }))
+        );
+        console.log("index dsp de cargar originalData2", index)
+        //console.log("Puntos cargados:", superclusterInstance.points.features.length);
+       
 
-        /*const serviciosIconLayer = {
-          type: IconLayer,
-          props: {
-            id: 'icon-layer',
-            data: filterIcons(originalData2),
-            //iconAtlas: "",
-            //iconMapping: ICON_MAPPING,
-            //getIcon: d => 'marker',
+        //if (supercluster) {
+          //console.log("superclusterInstance points:", superclusterInstance.points);
 
-            //sizeScale: 15,
-            getPosition: d => d.geometry.coordinates,
-            getIcon: (d) => ({
-              url: d.properties.iconPath,
-              width: 1000, // ajusta según el tamaño real de tus iconos
-              height: 1000,
-              anchorY: 1000, // ajusta según la ubicación del punto que deseas señalar
-            }),
-          }
-        }*/
+          const calculateBounds = (latitude, longitude, zoom, width, height) => {
+            const metersPerPixel = 40075016.686 / 2 ** zoom / 256; // Circunferencia de la Tierra en metros dividida por el número de píxeles en el mapa
+            const centerPixelX = width / 2;
+            const centerPixelY = height / 2;
+            
+            const minX = longitude - (centerPixelX * metersPerPixel);
+            const minY = latitude + (centerPixelY * metersPerPixel);
+            const maxX = longitude + (centerPixelX * metersPerPixel);
+            const maxY = latitude - (centerPixelY * metersPerPixel);
+            
+            return [minX, minY, maxX, maxY];
+          };
+          
+         // const bounds = calculateBounds(25.675, -100.286419, 9.6, window.innerWidth, window.innerHeight);
+          
+          const bounds = [-100.30427, -25.65534, 100.30427, 25.65534]; // Coordenadas de la vista actual
 
+          const bounds2 = [-180, -90, 180, 90]; // Ejemplo de límites mundiales
 
-        setLayers([infanciaLayer, serviciosLayer]);
-        //setLayers([serviciosIconLayer]);
+          const zoom = 9.6; // Nivel de zoom bajo
+          const zoom2 = 16; // Nivel de zoom bajo
+          
+          //console.log("supercluster now is", supercluster);
+          const newClusters = index.getClusters(bounds2, zoom2);
+          setClusters(newClusters);
+          setTimeout(function() {
+            //Test to get the clusters
+            //const clusters = index.getClusters(bounds, zoom);
+            console.log("clusters dsp de segundos", newClusters);
+            //console.log(markerCluster.getTotalClusters());
+          },10000);
+
+        
+        const createClusterLayer2 = (clusters) => {
+          const validClusters = clusters.filter(cluster => cluster.geometry && cluster.geometry.type === 'Point');
+        
+          return {
+            type: GeoJsonLayer,
+            props: {
+              id: 'cluster-layer',
+              data: validClusters,
+              pickable: true,
+              // Ajusta el estilo según tus preferencias
+              getFillColor: [0, 255, 0, 255],
+              getLineColor: [0, 0, 0, 0],
+              getRadius: 20,
+              pointRadiusMinPixels: 2
+            }
+          };
+        };
+        
+        setLayers([infanciaLayer, serviciosLayer, createClusterLayer2(clusters)]);      
       }
     }, [
       isCurrentSection,
