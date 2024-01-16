@@ -1,4 +1,4 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect, useRef } from "react";
 import {
   Box,
   IconButton,
@@ -10,25 +10,21 @@ import {
 } from "@chakra-ui/react";
 import { MdPause, MdPlayArrow } from "react-icons/md";
 import _ from "lodash";
-import { Legend } from "./Legend";
 
-export function SliderHTML({time,
+export function SliderHTML({
+  time,
   min,
   max,
   step,
-  title = "Default Title",
+  defaultValue,
   togglePlay,
   isPlaying,
   handleSliderChange,
   marks,
-  legendItems = [],
-})
-{
+}) {
   return (
     <>
-    <div>
-    <Legend title={title} legendItems={legendItems} />
-    </div>
+      <div></div>
       <div
         style={{
           position: "absolute",
@@ -55,7 +51,7 @@ export function SliderHTML({time,
           <Slider
             aria-label="slider-ex-1"
             id="slider"
-            defaultValue={min}
+            defaultValue={defaultValue || min}
             min={min}
             step={step}
             max={max}
@@ -64,14 +60,14 @@ export function SliderHTML({time,
             mr="4"
             ml="3"
           >
-            {marks.map(({ value, label }) => (
+            {marks.map(({ value, label }, i) => (
               <SliderMark
                 key={value}
                 value={value}
-                textAlign="center"
                 mt="5"
-                ml="-3"
+                ml={`-${label.length * 3.5}px`}
                 fontSize="xs"
+                style={{ textWrap: "nowrap" }}
               >
                 {label}
               </SliderMark>
@@ -87,100 +83,70 @@ export function SliderHTML({time,
   );
 }
 
-//dejo la funcion de TimeComponent comentada por cualquier cosa que se ofrezca o por si hay conflicto con otros cambios
-//pero ya se maneja con la de TimeComponentClean
-/*export function TimeComponent (startTime, endTime, step)
-{
-    const [time, setTime] = useState(startTime);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [animationTime, setAnimationTime] = useState(startTime);
-
-    useEffect(() => {
-        let animationFrame;
-        const animate = () => {
-          setTime((prevTime) => Math.round((prevTime + step) % ((endTime - startTime)) + startTime));
-          setAnimationTime(time); // Actualizar animationTime con el valor actualizado de time
-
-          console.log("Time con round", time);
-          animationFrame = requestAnimationFrame(animate);
-
-        };
-
-        if (isPlaying) {
-        animate();
-        } else {
-        cancelAnimationFrame(animationFrame);
-        }
-
-        return () => cancelAnimationFrame(animationFrame);
-      }, [isPlaying, startTime, endTime, step]);
-    
-      const handleSliderChange = (newTime) => {
-        console.log("New Time del nuevo componente:", newTime); //checar que valor tiene el slider
-        setTime(newTime);
-        setAnimationTime(newTime);
-      };
-    
-      const togglePlay = () => {
-        console.log("New Time del Componente:", time); //checar que valor tiene el slider
-        setIsPlaying(!isPlaying);
-        setAnimationTime(time);
-      };
-
-      return { time, isPlaying, animationTime, handleSliderChange, togglePlay };
-}*/
-
-export function TimeComponentClean(startTime, endTime, step, frameInterval=0, animationType) {
-  const [time, setTime] = useState(startTime);
+export function TimeComponentClean(
+  startTime,
+  endTime,
+  step,
+  frameInterval = 0,
+  animationType,
+  initialTime = undefined
+) {
+  const [time, setTime] = useState(initialTime || startTime);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [animationTime, setAnimationTime] = useState(startTime);
+  const lastFrameTime = useRef(performance.now());
 
   useEffect(() => {
     let animationFrame;
-    let animationTimeout;
-  
-    const animateFluid = () => {  //para animar fluido con requestAnimationFrame
-      setTime((prevTime) => Math.round((prevTime + step) % ((endTime - startTime)) + startTime));
-      setAnimationTime(time);
+
+    const animateFluid = (now) => {
+      const deltaTime = now - lastFrameTime.current;
+      const stepTime = (step * deltaTime) / frameInterval;
+      setTime((prevTime) => {
+        const nextTime = prevTime + stepTime;
+        return nextTime > endTime
+          ? startTime
+          : nextTime < startTime
+          ? endTime
+          : nextTime;
+      });
+      lastFrameTime.current = now;
       animationFrame = requestAnimationFrame(animateFluid);
     };
-  
-    const animateWithFrames = () => { //para animar cada cierto tiempo con frames con setTimeout
+
+    const animateWithFrames = () => {
       setTime((prevTime) => {
         const nextTime = prevTime + step;
         return nextTime > endTime ? startTime : nextTime;
       });
-      setAnimationTime(time);
-      animationTimeout = setTimeout(() => {
+      animationFrame = setTimeout(() => {
         requestAnimationFrame(animateWithFrames);
       }, frameInterval);
     };
-  
+
     if (isPlaying) {
-      animationType ? animateFluid() : animateWithFrames(); //checa cual
+      if (animationType) {
+        animationFrame = requestAnimationFrame(animateFluid);
+      } else {
+        animateWithFrames();
+      }
     } else {
       cancelAnimationFrame(animationFrame);
-      clearTimeout(animationTimeout);
+      clearTimeout(animationFrame);
     }
-  
+
     return () => {
       cancelAnimationFrame(animationFrame);
-      clearTimeout(animationTimeout);
+      clearTimeout(animationFrame);
     };
   }, [isPlaying, startTime, endTime, step, frameInterval, animationType]);
-  
-  
 
   const handleSliderChange = (newTime) => {
-    console.log("New Time del nuevo componente:", newTime);
     setTime(newTime);
-    setAnimationTime(newTime);
   };
 
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
-    setAnimationTime(time);
   };
 
-  return { time, isPlaying, animationTime, handleSliderChange, togglePlay };
+  return { time, isPlaying, handleSliderChange, togglePlay };
 }

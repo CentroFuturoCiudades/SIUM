@@ -1,156 +1,155 @@
 import React, { useEffect, useState } from "react";
+import { PeripherySpan, ResponseTitle, ContextTitle } from "./Card";
+import { useCardContext } from "../views/Problematica";
 import {
-  SubcentersSpan,
-  PeripherySpan,
-  CenterSpan,
-  ResponseTitle,
-  ContextTitle,
-  ExpansionSpan,
-} from "./Card";
-import { useCardContext } from "../views/Body";
-import { separateLegendItems, filterDataAll } from "../utils/constants";
+  separateLegendItems,
+  cleanedGeoData,
+  useFetch,
+} from "../utils/constants";
 import "../index.css";
 import { Chart } from "./Chart";
-import _ from "lodash";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import { SliderHTML, TimeComponentClean } from "./TimeComponent";
 import { colorInterpolate } from "../utils/constants";
+import { Legend } from "./Legend";
+import { CustomMap, INITIAL_STATE } from "../components/CustomMap";
+import Loading from "./Loading";
 
-const marks = [
-  { value: 1990, label: "1990" },
-  { value: 2000, label: "2000" },
-  { value: 2010, label: "2010" },
-  { value: 2020, label: "2020" },
+const EXPANSION_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob.geojson";
+const EXPANSION_CHART_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/expansion_municipality.json";
+const EXPANSION_COLORS = [
+  "rgb(255, 0, 0)",
+  "rgb(255, 50, 50)",
+  "rgb(255, 150, 150)",
+  "rgb(255, 200, 200)",
+  "rgb(250, 200, 250)",
+  "rgb(150, 150, 255)",
+  "rgb(50, 50, 255)",
+  "rgb(0, 0, 255)",
 ];
 
-export const ExpansionUrbanaControls = ({time,
-  togglePlay,
-  isPlaying,
-  handleSliderChange,
-}) => {
+const marks = [
+  { value: 1990, label: "1990-2020" },
+  { value: 2000, label: "2000-2020" },
+  { value: 2010, label: "2010-2020" },
+];
+
+export const ExpansionUrbanaControls = () => {
+  const { color, setSharedProps } = useCardContext();
+  const [viewState, setViewState] = useState(INITIAL_STATE);
+  const { data } = useFetch(EXPANSION_URL);
   const [legendItems, setLegendItems] = useState([]);
+  const { time, isPlaying, handleSliderChange, togglePlay } =
+    TimeComponentClean(1990, 2010, 10, 2000, false);
 
   useEffect(() => {
-    // Carga los datos GeoJSON y actualiza las leyendas
-    fetch(
-      "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob-1990-2020.geojson"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const values = data.features.map((feat) => feat.properties["2020"]);
-        setLegendItems(separateLegendItems(values, 4, "blue", "red"));
-      })
-      .catch((error) =>
-        console.error("Error fetching the geojson data: ", error)
-      );
-  }, []);
+    if (!data) return;
+    const values = data.features
+      .map((x) => [
+        x.properties["1990"],
+        x.properties["2000"],
+        x.properties["2010"],
+      ])
+      .flat();
+    setLegendItems(
+      separateLegendItems(
+        values,
+        [-5100, -2000, -1000, 0, 2000, 4000, 6000, 11100],
+        EXPANSION_COLORS
+      )
+    );
+  }, [data]);
+
+  useEffect(() => {
+    setSharedProps({ time });
+  }, [time]);
+
+  if (!data) return <Loading color={color} />;
 
   return (
-    <SliderHTML
-      time={time}
-      min={1990}
-      max={2020}
-      step={10}
-      title={"Cambio Poblacional"}
-      togglePlay={togglePlay}
-      isPlaying={isPlaying}
-      handleSliderChange={handleSliderChange}
-      marks={marks}
-      legendItems={legendItems}
-    />
+    <>
+      <CustomMap viewState={viewState} setViewState={setViewState}>
+        <GeoJsonLayer
+          id="expansion_layer"
+          data={cleanedGeoData(data.features, time)}
+          getFillColor={(d) =>
+            colorInterpolate(
+              d.properties[time],
+              [-5100, -2000, -1000, 0, 1000, 3000, 5000, 11100],
+              EXPANSION_COLORS,
+              0.8
+            )
+          }
+          getLineColor={[118, 124, 130]}
+          getLineWidth={5}
+        />
+      </CustomMap>
+      <Legend
+        title={"Cambio Poblacional"}
+        legendItems={legendItems}
+        color={color}
+      />
+      <SliderHTML
+        time={time}
+        min={1990}
+        max={2010}
+        step={10}
+        defaultValue={1990}
+        togglePlay={togglePlay}
+        isPlaying={isPlaying}
+        handleSliderChange={handleSliderChange}
+        marks={marks}
+      />
+    </>
   );
 };
 
-export function ExpansionUrbanaCard({ color, isCurrentSection }) {
-  const { setLayers, setOutline, setControlsProps } = useCardContext();
-  const [chartData, setChartData] = useState([]);
-  const [originalData, setOriginalData] = useState([]);
-  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(1990, 2020, 10, 3000, false);
-
-
-  useEffect(() => {
-    if (isCurrentSection) {
-      fetch("SIUM/data/expansion_municipality.json")
-        .then((response) => response.json())
-        .then((data) => setChartData(data));
-    } else {
-      setChartData([]);
-    }
-  }, [isCurrentSection]);
-
-  useEffect(() => {
-    if (isCurrentSection) {
-      console.log("Se llamaron a los datos de expansion")
-      fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/expansion.geojson")
-        .then((response) => response.json())
-        .then((data) => setOriginalData(data))
-        .catch((error) => console.error("Error cargando el GeoJSON:", error));
-    } else {
-      setOriginalData(null);
-    }
-  }, [isCurrentSection]);
-
-
-  useEffect(() => {
-    if (isCurrentSection && originalData) {
-
-      setControlsProps({ time, togglePlay, isPlaying, handleSliderChange });
-
-      const expansionLayer = {
-        type: GeoJsonLayer,
-        props: {
-          id: "seccion_expansion_layer",
-          data: filterDataAll(originalData, time, "population_change", true, "year"),
-          getFillColor: (d) =>
-            colorInterpolate(d.properties.normalized, "blue", "red", 1),
-          getLineColor: (d) =>
-            colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
-          getLineWidth: 10,
-        },
-      };
-      setLayers([expansionLayer]);
-    }
-  }, [
-    isCurrentSection,
-    originalData,
-    setLayers,
-    setControlsProps,
-    isPlaying,
-    time,
-    animationTime,
-  ]);
+export function ExpansionUrbanaCard() {
+  const { color, setOutline, sharedProps } = useCardContext();
+  const { data: chartData } = useFetch(EXPANSION_CHART_URL, []);
 
   return (
     <>
       <ResponseTitle color={color}>
-        Hacia las periferias, lejos unos de otros.
+        Hacia las Periferias, lejos unos de otros
       </ResponseTitle>
       <p>
-        En <ExpansionSpan setOutline={setOutline} /> los <b>adultos mayores</b>{" "}
-        vivían en el <CenterSpan setOutline={setOutline} /> de Monterrey,
-        mientras que las <b>familias jóvenes</b> vivían en{" "}
-        <SubcentersSpan setOutline={setOutline} /> como Guadalupe, San Pedro,
-        San Nicolás y Cumbres.
+        <b>En 1990</b>, las familias jóvenes, con edades comprendidas entre 19 y
+        65 años, residían principalmente en las zonas centrales de la zona
+        metropolitana, en Monterrey, Guadalupe, San Pedro y San Nicolás.
       </p>
       <p>
-        En contraste, <b>actualmente</b> los <b>adultos mayores</b> viven en los{" "}
-        <SubcentersSpan setOutline={setOutline} />, mientras que las{" "}
-        <b>familias jóvenes</b> viven en la{" "}
-        <PeripherySpan setOutline={setOutline} />, como Juárez, García, Apodaca,
-        Santa Catarina y Suaza.
+        <b>En 2020</b>, se observa un cambio: las familias jóvenes han migrado
+        hacia la <PeripherySpan setOutline={setOutline} />, estableciéndose en
+        lugares como Juárez, García, Apodaca, Santa Catarina y General Zuazua.
+        Los adultos mayores permanecen en la zona central.
       </p>
-      <br />
-      <br />
+      <p>
+        En los últimos años, ha habido un cambio significativo en la
+        distribución de la población en Monterrey, reflejando dinámicas
+        demográficas notables. Se plantea la necesidad de una adaptación
+        cuidadosa de las políticas públicas y servicios urbanos a las nuevas
+        dinámicas. Una de las causas principales de la migración de los hogares
+        jóvenes a la periferia urbana es la falta de una oferta de vivienda
+        adecuada a su nivel de ingreso y estilo de vida en la zona central.
+      </p>
       <ContextTitle color={color}>
-        La migración de subcentros a la periferia, conocido como expansión
-        urbana, nos aleja de servicios y empleo.
+        Promover programas de densificación y optar por soluciones
+        habitacionales asequibles, fomentará la permanencia de una demografía
+        diversa en centros y subcentros urbanos
       </ContextTitle>
+
       <Chart
+        title={`Cambio poblacional de ${sharedProps.time} a 2020`}
         data={chartData}
-        setOutline={setOutline}
-        column="2020"
+        column="population_change"
         columnKey="nom_mun"
-        formatter={(d) => `${d.toLocaleString("en-US")} pob`}
+        domain={[-85000, 540000]}
+        formatter={(d) => `${Math.round(d).toLocaleString("en-US")}`}
+        reducer={_.meanBy}
+        filtering={(x) => x.year == sharedProps.time}
       />
     </>
   );

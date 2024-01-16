@@ -1,50 +1,26 @@
-import {
-  Bar,
-  BarChart,
-  LabelList,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-} from "recharts";
 import { CenterSpan, PeripherySpan, ResponseTitle, ContextTitle } from "./Card";
 import { useState, useEffect } from "react";
-import { useCardContext } from "../views/Body.js";
-import {
-  MASIVE_TRANSPORT_LAYER,
-  PRIMARY_ROUTES_LAYER,
-} from "../utils/constants.js";
+import { useCardContext } from "../views/Problematica.js";
+import { useFetch } from "../utils/constants.js";
 import { TripsLayer } from "@deck.gl/geo-layers";
 import { Chart } from "./Chart.js";
 import _ from "lodash";
 import { SliderHTML, TimeComponentClean } from "./TimeComponent.js";
+import { CustomMap, INITIAL_STATE } from "./CustomMap.js";
+import Loading from "./Loading.js";
+import { GeoJsonLayer } from "deck.gl";
+import ButtonControls from "./ButtonControls.js";
 
-export const CustomBarChart = ({ data }) => (
-  <ResponsiveContainer width="100%" height={150}>
-    <BarChart layout="vertical" data={data}>
-      <XAxis
-        tickFormatter={(d) => `${d} min`}
-        type="number"
-        dataKey="time"
-        style={{ fontSize: "0.8rem" }}
-      />
-      <YAxis type="category" dataKey="municipality" hide />
-      <Bar background dataKey="time" fill="orange" barSize={30}>
-        <LabelList
-          dataKey="municipality"
-          position="insideRight"
-          style={{ fill: "white" }}
-        />
-      </Bar>
-    </BarChart>
-  </ResponsiveContainer>
-);
+const TRANSPORTE_CHART_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte_municipality.json";
+const TRANSPORTE_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/TRANSPORTEJEANNETTE.geojson";
+const TRANSPORTE_MASIVO_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte-masivo.geojson";
+const VIAS_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vias-primarias.geojson";
 
 const marks = [
-  { value: 0, label: "0:00" },
-  { value: 60, label: "1:00" },
-  { value: 120, label: "2:00" },
-  { value: 180, label: "3:00" },
-  { value: 240, label: "4:00" },
   { value: 300, label: "5:00" },
   { value: 360, label: "6:00" },
   { value: 420, label: "7:00" },
@@ -63,31 +39,7 @@ const marks = [
   { value: 1200, label: "20:00" },
   { value: 1260, label: "21:00" },
   { value: 1320, label: "22:00" },
-  { value: 1380, label: "23:00" },
-  { value: 1440, label: "24:00" },
 ];
-
-export const TransporteControls = ({
-  time,
-  togglePlay,
-  isPlaying,
-  handleSliderChange,
-}) => {
-  return (
-    <SliderHTML
-      time={time}
-      min={0}
-      max={1440}
-      step={3}
-      //title={"Precio de Venta"}
-      togglePlay={togglePlay}
-      isPlaying={isPlaying}
-      handleSliderChange={handleSliderChange}
-      marks={marks}
-      //legendItems={legendItems}
-    />
-  );
-};
 
 function convertirHoraATimestamp(horaString) {
   const [hora, minutos] = horaString.split(":");
@@ -96,12 +48,12 @@ function convertirHoraATimestamp(horaString) {
 }
 
 const transformDataForTrips = (data) => {
-  if (!data || !data.features) {
+  if (!data) {
     return [];
   }
 
   //lo que hace esto ahorita es que me da todos los trips desde el inicio
-  const tripsData = data.features.map((feature) => {
+  const tripsData = data.map((feature) => {
     //para cada feature del gepjson (osea para cada viaje)
     const coordinates = feature.geometry.coordinates; //guarda las coordinates
     const startTimestamp = convertirHoraATimestamp(feature.properties.HoraOri); //agarra el timestamp de inicio
@@ -117,83 +69,134 @@ const transformDataForTrips = (data) => {
   return tripsData;
 };
 
-export function TransporteCard({ color, isCurrentSection }) {
-  const { setLayers, setControlsProps, setOutline } = useCardContext();
-  const [originalData, setOriginalData] = useState([]); 
-  const [chartData, setChartData] = useState([]);
-  const { time, isPlaying, animationTime, handleSliderChange, togglePlay } = TimeComponentClean(0, 1440, 2, true);
+const filtering = (x, activeButton) =>
+  activeButton === "General" ||
+  x === activeButton ||
+  ((x === "Bicicleta" || x === "Caminando") &&
+    activeButton === "transporteActivo");
 
-
-  useEffect(() => {
-    if (isCurrentSection) {
-      fetch("SIUM/data/transporte_municipality.json")
-        .then((response) => response.json())
-        .then((data) => {
-          const newData = data.filter((x) => x["Transporte"] === "TPUB" && x["Motivo"] === "Regreso A Casa");
-          setChartData(newData);
-        });
-    } else {
-      setChartData([]);
-    }
-  }, [isCurrentSection]);
+export const TransporteControls = () => {
+  const { color, setSharedProps } = useCardContext();
+  const [viewState, setViewState] = useState(INITIAL_STATE);
+  const { data } = useFetch(TRANSPORTE_URL);
+  const [activeButton, setActiveButton] = useState("General");
+  const { time, isPlaying, handleSliderChange, togglePlay } =
+    TimeComponentClean(300, 1320, 0.005, 0.1, true, 1020);
 
   useEffect(() => {
-    if (isCurrentSection) {
-      fetch("SIUM/data/TRANSPORTEJEANNETTE.geojson")
-        .then((response) => response.json())
-        .then((data) => setOriginalData(data))
-        .catch((error) => console.error("Error cargando el GeoJSON:", error));
-    } else {
-      setOriginalData(null);
-    }
-  }, [isCurrentSection]);
+    setSharedProps({ activeButton });
+  }, [activeButton]);
 
-  useEffect(() => {
-
-    if (isCurrentSection && originalData) {
-
-      setControlsProps({ time, togglePlay, isPlaying, handleSliderChange });
-
-      const tripsLayer = {
-        type: TripsLayer,
-        props: {
-          id: "trips",
-          data: transformDataForTrips(originalData),
-          getPath: (d) => d.waypoints.map((point) => point.coordinates),
-          getTimestamps: (d) => d.waypoints.map((point) => point.timestamp),
-          getColor: [255, 0, 0, 255],
-          opacity: 0.5,
-          widthMinPixels: 3,
-          rounded: true,
-          trailLength: 10,
-          currentTime: time,
-        },
-      };
-
-      setLayers([MASIVE_TRANSPORT_LAYER, PRIMARY_ROUTES_LAYER, tripsLayer]);
-    }
-  }, [
-    isCurrentSection,
-    originalData,
-    setLayers,
-    setControlsProps,
-    isPlaying,
-    time,
-    animationTime,
-  ]);
+  if (!data) return <Loading color={color} />;
 
   return (
     <>
-      <ResponseTitle color={color}>Mayormente en automovil.</ResponseTitle>
+      <CustomMap viewState={viewState} setViewState={setViewState}>
+        <GeoJsonLayer
+          id="masive-transport-layer"
+          data={TRANSPORTE_MASIVO_URL}
+          stroked={true}
+          filled={true}
+          lineWidthScale={10}
+          lineWidthMinPixels={2}
+          getLineWidth={10}
+          getLineColor={(feature) => {
+            const nombrePropiedad = feature.properties.NOMBRE;
+            const colorMapping = {
+              // Change color based on type of transport
+              ECOVIA: [0, 200, 0, 255], // Rojo
+              "Linea 1 - Metro": [0, 200, 0, 255],
+              "Linea 2 - Metro": [0, 200, 0, 255],
+              "Linea 3 - Metro": [0, 200, 0, 255],
+              Transmetro: [0, 200, 0, 255],
+            };
+            return colorMapping[nombrePropiedad] || [64, 224, 208, 128];
+          }}
+        />
+        <GeoJsonLayer
+          id="primary_routes"
+          data={VIAS_URL}
+          getLineColor={[180, 180, 180, 255]}
+          getLineWidth={50}
+        />
+        <TripsLayer
+          id="transporte_layer"
+          data={transformDataForTrips(
+            data.features.filter((d) =>
+              filtering(d.properties.Transporte, activeButton)
+            )
+          )}
+          getPath={(d) => d.waypoints.map((point) => point.coordinates)}
+          getTimestamps={(d) => d.waypoints.map((point) => point.timestamp)}
+          getColor={[255, 0, 0, 255]}
+          opacity={0.5}
+          widthMinPixels={3}
+          rounded={true}
+          trailLength={10}
+          currentTime={time}
+        />
+      </CustomMap>
+      <ButtonControls
+        color={color}
+        activeButton={activeButton}
+        setActiveButton={setActiveButton}
+        mapping={[
+          { id: "General", name: "General" },
+          { id: "Autómovil", name: "Auto" },
+          { id: "TPUB", name: "Transporte público" },
+          { id: "transporteActivo", name: "Transporte Activo" },
+        ]}
+      />
+      <SliderHTML
+        time={time}
+        min={300}
+        max={1320}
+        step={3}
+        defaultValue={1020}
+        togglePlay={togglePlay}
+        isPlaying={isPlaying}
+        handleSliderChange={handleSliderChange}
+        marks={marks}
+      />
+    </>
+  );
+};
+
+export function TransporteCard() {
+  const { color, setOutline, sharedProps } = useCardContext();
+  const { data: chartData } = useFetch(TRANSPORTE_CHART_URL, []);
+  const filteredChartData = chartData.filter(
+    (x) => x["Motivo"] === "Regreso A Casa"
+  );
+
+  return (
+    <>
+      <ResponseTitle color={color}>
+        Demasiados de nosotros en auto
+      </ResponseTitle>
       <p>
-        El <b>45%</b> de los viajes son hechos al trabajo y el <b>47%</b> de los
-        viajes son hechos en automóvil, donde más de la mitad viajan solos.
+        <b>El 45% de los desplazamientos</b> en Monterrey corresponde a viajes
+        al trabajo, siendo casi la mitad de ellos realizados en automóvil, con
+        la particularidad de que la mitad se efectúan con solo una persona en el
+        vehículo. Los habitantes de la Zona Metropolitana{" "}
+        <b>
+          invierten en promedio 50 minutos por viaje redondo en automóvil,
+          equivalente a doce días al año.
+        </b>{" "}
+        Aunque el transporte público juega un papel fundamental, requiere
+        mejoras, ya que las personas pasan en promedio 70 minutos al día
+        utilizando este medio, y un tercio de ellas enfrenta jornadas de hasta 3
+        horas diarias de viaje.
       </p>
       <p>
-        El <b>21%</b> se mueve en transporte público y 19% a pie. 1 de cada 3
-        personas pasan 3 horas al día en ir y venir de su viaje principal en
-        transporte público. En promedio se espera 21 minutos a que llegue el
-        transporte público.
+        <b>Cerca del 40% de los traslados provienen de la periferia</b>, como
+        Apodaca, Escobedo, García y Juárez, mientras que el 26% se dirige a
+        Monterrey. Sorprendentemente, solo el 21% de la población utiliza
+        transporte público y 19% a pie. En este contexto, es esencial expandir
+        el acceso al transporte público y mejorar la infraestructura para
+        ciclistas y peatones, con un <b>Sistema Integrado de Transporte</b>,
+        para contrarrestar el impacto negativo ambiental y en la salud pública
+        generado por el elevado número de viajes en automóvil particular.
       </p>
       <p>
         Alrededor del <b>40%</b> de los traslados se hacen desde la{" "}
@@ -202,18 +205,25 @@ export function TransporteCard({ color, isCurrentSection }) {
         <CenterSpan setOutline={setOutline} />. En promedio se invierten{" "}
         <b>68 minutos</b> por viaje redondo, el equivalente a doce días por año.
       </p>
+
       <br />
       <ContextTitle color={color}>
-        La expansión urbana aumenta la dependencia del automovil, contribuyendo
-        a que el tráfico aumente.
+        Los SITP's ofrecen como beneficios una ciudad conectada y ordenada,
+        servicios de mayor calidad, un sistema único de información y atención,
+        menor tiempo de viaje, mayor seguridad personal y vial, tarifas de
+        acuerdo al tipo de viaje y condición social, mayor accesibilidad al
+        transporte público y conectividad con todas las zonas de la ciudad y
+        grupos poblacionales." Comisión Ambiental de la Megalópolis
       </ContextTitle>
       <Chart
-        data={chartData}
-        setOutline={setOutline}
+        title={`Tiempo de traslado regreso a casa en ${sharedProps.activeButton}`}
+        data={filteredChartData}
         column="TiempoTraslado"
         columnKey="MunDest"
-        formatter={(d) => `${d.toLocaleString("en-US")} min`}
+        domain={[10, 100]}
+        formatter={(d) => `${Math.round(d).toLocaleString("en-US")} min`}
         reducer={_.meanBy}
+        filtering={(x) => filtering(x.Transporte, sharedProps.activeButton)}
       />
     </>
   );

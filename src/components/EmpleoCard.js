@@ -1,85 +1,131 @@
 import { useEffect, useState } from "react";
-import { useCardContext } from "../views/Body";
+import { useCardContext } from "../views/Problematica";
+import { ResponseTitle, ContextTitle } from "./Card";
 import {
-  SubcentersSpan,
-  PeripherySpan,
-  CenterSpan,
-  ResponseTitle,
-  ContextTitle,
-  ExpansionSpan,
-} from "./Card";
-import { EMPLEO_LAYER, separateLegendItems } from "../utils/constants";
+  cleanedGeoData,
+  colorInterpolate,
+  separateLegendItems,
+  useFetch,
+} from "../utils/constants";
 import { Legend } from "./Legend";
 import { Chart } from "./Chart";
+import { GeoJsonLayer } from "deck.gl";
+import { CustomMap, INITIAL_STATE } from "./CustomMap";
+import Loading from "./Loading";
+
+const EMPLEO_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2020_Municipios_Geo.json";
+const EMPLEO_CHART_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/empleo_municipality.json";
+const EMPLEO_COLORS = [
+  "rgb(255, 0, 0)",
+  "rgb(255, 50, 50)",
+  "rgb(255, 150, 150)",
+  "rgb(255, 200, 200)",
+  "rgb(250, 200, 250)",
+  "rgb(150, 150, 255)",
+  "rgb(50, 50, 255)",
+  "rgb(0, 0, 255)",
+];
 
 export const EmpleoControls = () => {
+  const { color } = useCardContext();
+  const [viewState, setViewState] = useState(INITIAL_STATE);
+  const { data } = useFetch(EMPLEO_URL);
   const [legendItems, setLegendItems] = useState([]);
 
   useEffect(() => {
-    fetch(
-      "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2010_Municipios_Geo2.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const valuesEmpleos = data.features.map(
-          (feat) => feat.properties["Empleos"]
-        );
-        setLegendItems(separateLegendItems(valuesEmpleos, 4, "yellow", "red"));
-      })
-      .catch((error) =>
-        console.error("Error fetching the empleo data: ", error)
-      );
-  }, []);
+    if (!data) return;
+    const valuesEmpleos = data.features.map(
+      (feat) => feat.properties["Empleos"]
+    );
+    setLegendItems(
+      separateLegendItems(
+        valuesEmpleos,
+        [0, 50, 200, 400, 800, 1000, 2000, 8400],
+        EMPLEO_COLORS,
+      )
+    );
+  }, [data]);
 
-  return <Legend title="Número de Trabajadores" legendItems={legendItems} />;
-};
-
-export function EmpleoCard({ color, isCurrentSection }) {
-  const { setLayers, setOutline } = useCardContext();
-  const [chartData, setChartData] = useState([]);
-
-  useEffect(() => {
-    if (isCurrentSection) {
-      fetch("SIUM/data/empleo_municipality.json")
-        .then((response) => response.json())
-        .then((data) => setChartData(data));
-    } else {
-      setChartData([]);
-    }
-  }, [isCurrentSection]);
-  useEffect(() => {
-    if (isCurrentSection) {
-      setLayers([EMPLEO_LAYER]);
-    }
-  }, [isCurrentSection, setLayers]);
+  if (!data) return <Loading color={color} />;
 
   return (
     <>
-      <ResponseTitle color={color}>En el centro.</ResponseTitle>
+      <CustomMap viewState={viewState} setViewState={setViewState}>
+        <GeoJsonLayer
+          id="empleo_layer"
+          data={cleanedGeoData(data.features, "Empleos")}
+          getFillColor={(d) =>
+            colorInterpolate(
+              d.properties["Empleos"],
+              [0, 50, 200, 400, 800, 1000, 2000, 8400],
+              EMPLEO_COLORS,
+              0.7
+            )
+          }
+          getLineColor={[118, 124, 130]}
+          getLineWidth={5}
+        />
+      </CustomMap>
+      <Legend
+        title="Número de Empleos en 2020"
+        legendItems={legendItems}
+        color={color}
+      />
+    </>
+  );
+};
+
+export function EmpleoCard() {
+  const { color, setOutline } = useCardContext();
+  const { data: chartData } = useFetch(EMPLEO_CHART_URL, []);
+
+  return (
+    <>
+      <ResponseTitle color={color}>
+        Principalmente en el centro, aunque hay nuevas centralidades.
+      </ResponseTitle>
       <p>
-        El <b>X%</b> de los empleos se concentra en el{" "}
-        <CenterSpan setOutline={setOutline} />. Debido a que las familias han
-        migrado hacia la <PeripherySpan setOutline={setOutline} />, se ha
-        perdido población en los <SubcentersSpan setOutline={setOutline} /> y
-        los translados hacia el trabajo han aumentado.
+        La migración de las familias jóvenes hacia la periferia provoca una
+        disminución de la población en centros y subcentros urbanos, generando
+        un aumento en los desplazamientos hacia los lugares de empleo.
       </p>
       <p>
-        De <ExpansionSpan setOutline={setOutline} /> a 2010 la <b>población</b>{" "}
-        de la Zona Metropolitana de Monterrey aumentó <b>2 veces</b>, pero la{" "}
-        <b>expansión urbana</b> creció <b>2.8 veces</b>.
+        Aunque{" "}
+        <b>
+          la mayoría de los empleos continúan concentrándose en el centro, a
+          unos diez kilómetros alrededor de la Macroplaza
+        </b>
+        , también han surgido nuevas centralidades. En 2010, el 53% de los
+        empleos se concentraba en esta zona, cifra que disminuyó al 47% para el
+        año 2020. Destaca que los{" "}
+        <b>
+          ritmos de crecimiento de los centros de empleo son menores en
+          comparación con la migración residencial hacia la periferia urbana.
+        </b>
       </p>
-      <br />
-      <br />
+      <p>
+        Durante el periodo de 1990 a 2020, la población de la Zona Metropolitana
+        de Monterrey se duplicó, mientras que la expansión de la mancha urbana
+        creció a un ritmo de 2.8 veces,{" "}
+        <b>
+          incrementando el tiempo de traslado a diferentes servicios y
+          equipamientos.
+        </b>
+      </p>
       <ContextTitle color={color}>
-        La gente migran a la periferia, lejos de oportunidades laborales y con
-        menor cobertura de transporte público.
+        Incrementar la atracción de personas a centros y subcentros urbanos para
+        una mejor accesibilidad a empleos.
       </ContextTitle>
+
       <Chart
+        title="Número de empleos en 2020"
         data={chartData}
-        setOutline={setOutline}
+        domain={[0, 530000]}
         column="per_ocu"
         columnKey="nom_mun"
-        formatter={(d) => `${d.toLocaleString("en-US")} empleos`}
+        formatter={(d) => `${Math.round(d).toLocaleString("en-US")}`}
       />
     </>
   );
