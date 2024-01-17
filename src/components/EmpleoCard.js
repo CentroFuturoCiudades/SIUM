@@ -12,6 +12,7 @@ import { Chart } from "./Chart";
 import { GeoJsonLayer } from "deck.gl";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import Loading from "./Loading";
+import Tooltip from "./Tooltip";
 
 const EMPLEO_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2020_Municipios_Geo.json";
@@ -32,6 +33,7 @@ export const EmpleoControls = () => {
   const { color } = useCardContext();
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const { data } = useFetch(EMPLEO_URL);
+  const [hoverInfo, setHoverInfo] = useState();
   const [legendItems, setLegendItems] = useState([]);
 
   useEffect(() => {
@@ -66,6 +68,10 @@ export const EmpleoControls = () => {
           }
           getLineColor={[118, 124, 130]}
           getLineWidth={5}
+          onHover={(info) => setHoverInfo(info)}
+          pickable={true}
+          autoHighlight={true}
+          getPosition={(d) => d.position}
         />
       </CustomMap>
       <Legend
@@ -73,6 +79,13 @@ export const EmpleoControls = () => {
         legendItems={legendItems}
         color={color}
       />
+      {hoverInfo && hoverInfo.object && (
+        <Tooltip hoverInfo={hoverInfo}>
+          <span className="tooltip-label">
+            <b>empleos:</b> {hoverInfo.object.properties["Empleos"]}
+          </span>
+        </Tooltip>
+      )}
     </>
   );
 };

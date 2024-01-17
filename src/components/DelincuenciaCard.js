@@ -13,6 +13,7 @@ import { GeoJsonLayer } from "deck.gl";
 import { CustomMap, INITIAL_STATE } from "./CustomMap.js";
 import Loading from "./Loading.js";
 import ButtonControls from "./ButtonControls.js";
+import Tooltip from "./Tooltip";
 
 const legendMapping = {
   num_crimen: {
@@ -57,6 +58,7 @@ export const DelincuenciaControls = () => {
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const { data } = useFetch(DELINCUENCIA_URL);
   const [legendItems, setLegendItems] = useState([]);
+  const [hoverInfo, setHoverInfo] = useState();
   const [activeButton, setActiveButton] = useState("num_crimen");
 
   useEffect(() => {
@@ -93,6 +95,10 @@ export const DelincuenciaControls = () => {
           }
           getLineColor={[118, 124, 130]}
           getLineWidth={5}
+          onHover={(info) => setHoverInfo(info)}
+          pickable={true}
+          autoHighlight={true}
+          getPosition={(d) => d.position}
         />
       </CustomMap>
       <ButtonControls
@@ -123,6 +129,22 @@ export const DelincuenciaControls = () => {
         title={legendMapping[activeButton].title}
         legendItems={legendItems}
       />
+      {hoverInfo && hoverInfo.object && (
+        <Tooltip hoverInfo={hoverInfo}>
+          <span className="tooltip-label">
+            <b>num_crimen:</b> {hoverInfo.object.properties["num_crimen"]}
+          </span>
+          <span className="tooltip-label">
+            <b>robo_transeunte:</b> {hoverInfo.object.properties["robo_transeunte"]}
+          </span>
+          <span className="tooltip-label">
+            <b>robo_casa:</b> {hoverInfo.object.properties["robo_casa"]}
+          </span>
+          <span className="tooltip-label">
+            <b>violencia_familiar:</b> {hoverInfo.object.properties["violencia_familiar"]}
+          </span>
+        </Tooltip>
+      )}
     </>
   );
 };

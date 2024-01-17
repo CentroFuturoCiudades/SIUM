@@ -14,6 +14,7 @@ import { colorInterpolate } from "../utils/constants";
 import { Legend } from "./Legend";
 import { CustomMap, INITIAL_STATE } from "../components/CustomMap";
 import Loading from "./Loading";
+import Tooltip from "./Tooltip";
 
 const EXPANSION_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob.geojson";
@@ -41,6 +42,7 @@ export const ExpansionUrbanaControls = () => {
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const { data } = useFetch(EXPANSION_URL);
   const [legendItems, setLegendItems] = useState([]);
+  const [hoverInfo, setHoverInfo] = useState();
   const { time, isPlaying, handleSliderChange, togglePlay } =
     TimeComponentClean(1990, 2010, 10, 2000, false);
 
@@ -84,6 +86,10 @@ export const ExpansionUrbanaControls = () => {
           }
           getLineColor={[118, 124, 130]}
           getLineWidth={5}
+          onHover={(info) => setHoverInfo(info)}
+          pickable={true}
+          autoHighlight={true}
+          getPosition={(d) => d.position}
         />
       </CustomMap>
       <Legend
@@ -102,6 +108,19 @@ export const ExpansionUrbanaControls = () => {
         handleSliderChange={handleSliderChange}
         marks={marks}
       />
+      {hoverInfo && hoverInfo.object && (
+        <Tooltip hoverInfo={hoverInfo}>
+          <span className="tooltip-label">
+            <b>1990:</b> {hoverInfo.object.properties["1990"]}
+          </span>
+          <span className="tooltip-label">
+            <b>2000:</b> {hoverInfo.object.properties["2000"]}
+          </span>
+          <span className="tooltip-label">
+            <b>2010:</b> {hoverInfo.object.properties["2010"]}
+          </span>
+        </Tooltip>
+      )}
     </>
   );
 };
