@@ -28,6 +28,7 @@ import {
   DelincuenciaControls,
 } from "../components/DelincuenciaCard";
 import { CostosCard, CostosControls } from "../components/CostosCard";
+import { Infancia2Card, Infancia2Controls } from "../components/Infancia2Card";
 import { BrushingExtension } from "@deck.gl/extensions";
 import { useEffect, useState } from "react";
 
@@ -356,5 +357,13 @@ export const sectionsInfo = {
     icon: MdOutlineAttachMoney,
     component: CostosCard,
     controls: CostosControls,
+  },
+  infancias: {
+    title: "Infancias",
+    answer: "Infancias answer",
+    color: "blue",
+    icon: MdOutlineAttachMoney,
+    component: Infancia2Card,
+    controls: Infancia2Controls,
   },
 };
