@@ -48,12 +48,12 @@ export const ViviendaControls = () => {
   useEffect(() => {
     if (!data) return;
     const valuesPrecio = data.features.map(
-      (feat) => feat.properties["IM_PRECIO_VENTA"]
+      (feat) => feat.properties["PRECIO_AJUSTADO"]
     );
     setLegendItems(
       separateLegendItems(
         valuesPrecio,
-        [200000, 300000, 400000, 500000, 700000, 800000, 900000, 1025000],
+        [160000, 400000, 500000, 600000, 800000, 1000000, 1200000, 1800000],
         VIVIENDA_COLORS,
         (x) =>
           x.toLocaleString("en-US", {
@@ -76,11 +76,11 @@ export const ViviendaControls = () => {
       <CustomMap viewState={viewState} setViewState={setViewState}>
         <GeoJsonLayer
           id="vivienda_layer"
-          data={filterDataAll(data, time, "IM_PRECIO_VENTA", true, "year_end")}
+          data={filterDataAll(data, time, "PRECIO_AJUSTADO", true, "year_end")}
           getFillColor={(d) =>
             colorInterpolate(
-              d.properties["IM_PRECIO_VENTA"],
-              [200000, 300000, 400000, 500000, 700000, 800000, 900000, 1025000],
+              d.properties["PRECIO_AJUSTADO"],
+              [160000, 400000, 500000, 600000, 800000, 1000000, 1200000, 1800000],
               VIVIENDA_COLORS,
               0.8
             )
