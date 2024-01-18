@@ -114,16 +114,29 @@ export const ViviendaControls = () => {
       {hoverInfo && hoverInfo.object && (
         <Tooltip hoverInfo={hoverInfo}>
           <span className="tooltip-label">
-            <b>year_end:</b> {hoverInfo.object.properties["year_end"]}
+            <b>Año en venta:</b> {hoverInfo.object.properties["year_end"]}
           </span>
           <span className="tooltip-label">
-            <b>IM_PRECIO_VENTA:</b> {hoverInfo.object.properties["IM_PRECIO_VENTA"]}
+            <b>Precio de venta:</b>{" "}
+            {hoverInfo.object.properties["IM_PRECIO_VENTA"].toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+              maximumFractionDigits: 0,
+            })}{" "}
+            <>
+              $
+            </>
           </span>
           <span className="tooltip-label">
-            <b>VAP:</b> {hoverInfo.object.properties["VAP"]}
-          </span>
-          <span className="tooltip-label">
-            <b>PRECIO_AJUSTADO:</b> {hoverInfo.object.properties["PRECIO_AJUSTADO"]}
+            <b>Precio ajustado a la inflación:</b>{" "}
+            {hoverInfo.object.properties["PRECIO_AJUSTADO"].toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+              maximumFractionDigits: 0,
+            })}{" "}
+            <>
+              $
+            </>
           </span>
         </Tooltip>
       )}

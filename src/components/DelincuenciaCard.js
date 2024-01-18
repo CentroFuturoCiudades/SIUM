@@ -132,16 +132,16 @@ export const DelincuenciaControls = () => {
       {hoverInfo && hoverInfo.object && (
         <Tooltip hoverInfo={hoverInfo}>
           <span className="tooltip-label">
-            <b>num_crimen:</b> {hoverInfo.object.properties["num_crimen"]}
+            <b>Número de delitos:</b> {hoverInfo.object.properties["num_crimen"]}
           </span>
           <span className="tooltip-label">
-            <b>robo_transeunte:</b> {hoverInfo.object.properties["robo_transeunte"]}
+            <b>Número de robos a transeúntes:</b> {hoverInfo.object.properties["robo_transeunte"]}
           </span>
           <span className="tooltip-label">
-            <b>robo_casa:</b> {hoverInfo.object.properties["robo_casa"]}
+            <b>Número de robos a casa habitación:</b> {hoverInfo.object.properties["robo_casa"]}
           </span>
           <span className="tooltip-label">
-            <b>violencia_familiar:</b> {hoverInfo.object.properties["violencia_familiar"]}
+            <b>Casos de violencia familiar:</b> {hoverInfo.object.properties["violencia_familiar"]}
           </span>
         </Tooltip>
       )}

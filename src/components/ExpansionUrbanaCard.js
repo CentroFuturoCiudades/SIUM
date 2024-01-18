@@ -111,13 +111,25 @@ export const ExpansionUrbanaControls = () => {
       {hoverInfo && hoverInfo.object && (
         <Tooltip hoverInfo={hoverInfo}>
           <span className="tooltip-label">
-            <b>1990:</b> {hoverInfo.object.properties["1990"]}
+            <b>Cambio poblacional de 1990 a 2000:</b>{" "}
+            {hoverInfo.object.properties["1990"].toLocaleString("en-US")}{" "}
+            <>
+              personas
+            </>
           </span>
           <span className="tooltip-label">
-            <b>2000:</b> {hoverInfo.object.properties["2000"]}
+            <b>Cambio poblacional del 2000 a 2010:</b>{" "}
+            {hoverInfo.object.properties["2000"].toLocaleString("en-US")}{" "}
+            <>
+              personas
+            </>
           </span>
           <span className="tooltip-label">
-            <b>2010:</b> {hoverInfo.object.properties["2010"]}
+            <b>Cambio poblacional del 2010 a 2020:</b>{" "}
+            {hoverInfo.object.properties["2010"].toLocaleString("en-US")}{" "}
+            <>
+              personas
+            </>
           </span>
         </Tooltip>
       )}

@@ -82,7 +82,8 @@ export const EmpleoControls = () => {
       {hoverInfo && hoverInfo.object && (
         <Tooltip hoverInfo={hoverInfo}>
           <span className="tooltip-label">
-            <b>empleos:</b> {hoverInfo.object.properties["Empleos"]}
+            <b>Número de empleos en 2020:</b>{" "}
+            {hoverInfo.object.properties["Empleos"].toLocaleString("en-US")}
           </span>
         </Tooltip>
       )}
