@@ -5,6 +5,7 @@ import { Map } from "react-map-gl";
 import mapboxgl from "mapbox-gl";
 import { GeoJsonLayer } from "deck.gl";
 import { useCardContext } from "../views/Problematica";
+import { useState } from "react";
 
 mapboxgl.workerClass =
   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
@@ -37,7 +38,9 @@ export const SPECIAL_INFANCIAS_STATE = {
   bearing: 0,
 };
 
-export function CustomMap({ viewState, setViewState, children }) {
+export function CustomMap({ viewState, setViewState, infanciasHover, children }) {
+  const [hoveredCoords, setHoveredCoords] = useState(null);
+
   const { outline } = useCardContext();
   const zoomIn = () => {
     setViewState((v) => ({ ...v, zoom: v.zoom + 1, transitionDuration: 100 }));
@@ -47,6 +50,16 @@ export function CustomMap({ viewState, setViewState, children }) {
     setViewState((v) => ({ ...v, zoom: v.zoom - 1, transitionDuration: 100 }));
   };
 
+  const handleHover = (info) => {
+    //console.log(info)
+    console.log("coordenadas", info.coordinate)
+    if(info.coordinate)
+    {
+      const [long, lat] = [info.coordinate[0], info.coordinate[1]]
+      console.log("coor", [long, lat])
+    }
+  }
+
   return (
     <>
       <DeckGL
@@ -54,6 +67,12 @@ export function CustomMap({ viewState, setViewState, children }) {
         viewState={viewState}
         onViewStateChange={({ viewState }) => setViewState(viewState)}
         controller={DECK_GL_CONTROLLER}
+        /*onHover={(info, event) => {
+          console.log(event)
+        }}*/
+        
+        //onHover={handleHover}
+        onHover={infanciasHover}
       >
         <Map
           width="100%"

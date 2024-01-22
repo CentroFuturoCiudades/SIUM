@@ -35,31 +35,31 @@ const SERVICIOS_URL =
     "rgb(255, 0, 0)",
     "rgb(0, 255, 0)",
     "rgb(0, 0, 255)",
-    "rgb(255, 200, 200)",
+    "rgb(255, 255, 0)",
   ];
 
 export const Infancia2Controls = () => {
   const { color } = useCardContext();
   //const [viewState, setViewState] = useState(INITIAL_STATE);
-  const [viewState, setViewState] = useState(SPECIAL_INFANCIAS_STATE);
-  const { data: dataa } = useFetch(POB05_URL);
-  const { data: data2 } = useFetch(SERVICIOS_URL);
-  const [brushingRadius, setBrushingRadius] = useState(1000);
+  const [viewState, setViewState] = useState(SPECIAL_INFANCIAS_STATE);  //para que empiece en el punto que dijo nelida
+  const { data: dataPob } = useFetch(POB05_URL);
+  const { data: dataServ } = useFetch(SERVICIOS_URL);
+  const [brushingRadius, setBrushingRadius] = useState(1000); //radio esta en metros
 
   const [legendItems, setLegendItems] = useState([]);
   const [legendItems2, setLegendItems2] = useState([]);
 
 
   useEffect(() => {
-    if (!dataa || !data2) return;
+    if (!dataPob || !dataServ) return;
     
-    const valuesPob05 = dataa.features.map(
+    const valuesPob05 = dataPob.features.map(
       (feat) => feat.properties["ratio_pob05"]
     );
-    const valuesServicios = data2.features.map(
+    const valuesServicios = dataServ.features.map(
         (feat) => feat.properties["sector"]
       );
-    console.log(valuesPob05)
+    //console.log(valuesPob05)
     setLegendItems(
         separateLegendItems(
           valuesPob05,
@@ -76,16 +76,51 @@ export const Infancia2Controls = () => {
         )
       );
     
-  }, [dataa, data2]);
+  }, [dataPob, dataServ]);
 
-  if (!dataa || !data2) return <Loading color={color} />;
+  const radiusInDegrees= ((brushingRadius)/40075000)*360; //formula para convertir metros a grados (con la circunferencia de la Tierra 40,075,000 mts)
+  //console.log("radius in degrees",radiusInDegrees); ////0.008983156581409857 (si brushingRadius=1000)
+
+
+  //se llama cada vez que se mueve el circulo
+  const handleInfanciasHover = (info) => {
+    if(info.coordinate)
+    {
+      //coordenadas del centro del circulo 
+      const [longCenter, latCenter] = [info.coordinate[0], info.coordinate[1]]
+      console.log("coor", [longCenter, latCenter])
+
+      ///CALCULAR SERVICIOS DENTRO DEL CIRCULO CON DISTANCIA EUCLIDEANA
+      function EuclideanDistance (x1, y1, x2, y2)   //distancia euclidiana normal (0.14 ej) x1 y1 es del centro x2 y2 de otro puntp
+      {
+        const deltaX = x2 - x1; 
+        const deltaY = y2 - y1; 
+        return Math.sqrt(deltaX * deltaX + deltaY * deltaY); 
+      }
+
+      const enclosedDataServices = dataServ.features.filter((feature) => {
+        //por cada feature se sacan sus coordenadas de [longitud, latitud]
+        const coordinates = feature.geometry.coordinates;
+        const [featureLong, featureLat] = coordinates;
+
+        const distance = EuclideanDistance(longCenter, latCenter, featureLong, featureLat);   //distancia euclidiana en grados
+
+        return distance <= radiusInDegrees;
+        
+      })
+      console.log("Datos dentro del rango para servicios con DIST EUC:", enclosedDataServices);
+    }
+  }
+  
+
+  if (!dataPob || !dataServ) return <Loading color={color} />;  
 
   return (
     <>
-      <CustomMap viewState={viewState} setViewState={setViewState}>
+      <CustomMap viewState={viewState} setViewState={setViewState} infanciasHover={handleInfanciasHover}>
         <GeoJsonLayer
           id="infancias2_layer"
-          data={cleanedGeoData(dataa.features, "ratio_pob05")}
+          data={cleanedGeoData(dataPob.features, "ratio_pob05")}
           getFillColor={(d) =>
             d.properties["ratio_pob05"] === 0.0
               ? [0,0,0,0]  // Si ratio_pob05 es 0.0, establece el color como transparente
@@ -106,7 +141,7 @@ export const Infancia2Controls = () => {
         
         <GeoJsonLayer
           id="servicios2_layer"
-          data={cleanedGeoData(data2.features, "codigo_act")}
+          data={cleanedGeoData(dataServ.features, "codigo_act")}
           /*getFillColor={(d) =>
             [255, 0 ,0,255]
           }*/
@@ -120,7 +155,7 @@ export const Infancia2Controls = () => {
             )
           }
           //getLineColor={[255, 0, 0]}
-          getLineWidth={50}
+          getLineWidth={30}
           brushingEnabled={true}
           brushingRadius={brushingRadius}
           extensions={[new BrushingExtension()]}
@@ -132,12 +167,6 @@ export const Infancia2Controls = () => {
         legendItems={legendItems2}
         color={"color"}
       />
-      {/*<Legend
-        title="Número de Empleos en 2020"
-        legendItems={legendItems}
-        color={color}
-        />*/}
-      
     </>
   );
 }
