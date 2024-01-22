@@ -98,7 +98,7 @@ p {
   border-radius: 5px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
   z-index: 1000;
-  pointer-events: none; /* Esto asegurará que el tooltip no interfiera con otros eventos del ratón */
+  pointer-events: none; 
 }
 
 .tooltip-content {

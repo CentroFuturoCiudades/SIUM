@@ -9,7 +9,7 @@ import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import { GeoJsonLayer } from "deck.gl";
 import { BrushingExtension } from "@deck.gl/extensions";
 import Loading from "./Loading";
-import Tooltip from "./Tooltip";
+import Tooltip2 from "./Tooltip2";
 
 const COSTOS_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson";
@@ -105,7 +105,7 @@ export const CostosControls = () => {
         <label htmlFor="caminando"> Caminando </label>
       </form>
       {hoverInfo && hoverInfo.object && (
-        <Tooltip hoverInfo={hoverInfo}>
+        <Tooltip2 hoverInfo={hoverInfo}>
           <span className="tooltip-label">
             <b>num_crimen:</b> {hoverInfo.object.properties["num_crimen"]}
           </span>
@@ -118,7 +118,7 @@ export const CostosControls = () => {
           <span className="tooltip-label">
             <b>violencia_familiar:</b> {hoverInfo.object.properties["violencia_familiar"]}
           </span>
-        </Tooltip>
+        </Tooltip2>
       )}
     </>
   );
