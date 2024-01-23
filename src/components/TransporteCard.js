@@ -1,7 +1,7 @@
-import { CenterSpan, PeripherySpan, ResponseTitle, ContextTitle } from "./Card";
+import { ResponseTitle, ContextTitle } from "./Card";
 import { useState, useEffect } from "react";
 import { useCardContext } from "../views/Problematica.js";
-import { useFetch } from "../utils/constants.js";
+import { TRANSPORTE_CHART_URL, TRANSPORTE_MASIVO_URL, TRANSPORTE_URL, VIAS_URL, useFetch } from "../utils/constants.js";
 import { TripsLayer } from "@deck.gl/geo-layers";
 import { Chart } from "./Chart.js";
 import _ from "lodash";
@@ -10,15 +10,6 @@ import { CustomMap, INITIAL_STATE } from "./CustomMap.js";
 import Loading from "./Loading.js";
 import { GeoJsonLayer } from "deck.gl";
 import ButtonControls from "./ButtonControls.js";
-
-const TRANSPORTE_CHART_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte_municipality.json";
-const TRANSPORTE_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/TRANSPORTEJEANNETTE.geojson";
-const TRANSPORTE_MASIVO_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte-masivo.geojson";
-const VIAS_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vias-primarias.geojson";
 
 const marks = [
   { value: 300, label: "5:00" },
@@ -175,40 +166,28 @@ export function TransporteCard() {
         Demasiados de nosotros en auto
       </ResponseTitle>
       <p>
-        <b>El 45% de los desplazamientos</b> en Monterrey corresponde a viajes
-        al trabajo, siendo casi la mitad de ellos realizados en automóvil, con
-        la particularidad de que la mitad se efectúan con solo una persona en el
-        vehículo. Los habitantes de la Zona Metropolitana{" "}
-        <b>
-          invierten en promedio 50 minutos por viaje redondo en automóvil,
-          equivalente a doce días al año.
-        </b>{" "}
-        Aunque el transporte público juega un papel fundamental, requiere
-        mejoras, ya que las personas pasan en promedio 70 minutos al día
-        utilizando este medio, y un tercio de ellas enfrenta jornadas de hasta 3
-        horas diarias de viaje.
+        <b>El 45% de los desplazamientos</b> en Monterrey son viajes al trabajo
+        y casi la mitad de ellos realizados en automóvil, con la particularidad
+        de que la mitad se efectúan con una sola persona en el vehículo. Los
+        habitantes de la Zona Metropolitana invierten en promedio 50 minutos por
+        viaje redondo en automóvil, equivalente a doce días al año. El
+        transporte público requiere mejorarse, ya que las personas pasan en
+        promedio 70 minutos al día en este medio, y un tercio de ellas
+        experimentan viajes de 3 horas diarias.
       </p>
       <p>
-        <b>Cerca del 40% de los traslados provienen de la periferia</b>, como
-        Apodaca, Escobedo, García y Juárez, mientras que el 26% se dirige a
-        Monterrey. Sorprendentemente, solo el 21% de la población utiliza
-        transporte público y 19% a pie. En este contexto, es esencial expandir
-        el acceso al transporte público y mejorar la infraestructura para
-        ciclistas y peatones, con un <b>Sistema Integrado de Transporte</b>,
-        para contrarrestar el impacto negativo ambiental y en la salud pública
-        generado por el elevado número de viajes en automóvil particular.
-      </p>
-      <p>
-        Alrededor del <b>40%</b> de los traslados se hacen desde la{" "}
-        <PeripherySpan setOutline={setOutline} /> como Apodaca, Escobedo, García
-        y Juárez, y el <b>26%</b> se traslada al{" "}
-        <CenterSpan setOutline={setOutline} />. En promedio se invierten{" "}
-        <b>68 minutos</b> por viaje redondo, el equivalente a doce días por año.
+        <b>El 40% de los traslados provienen de la periferia</b>, como Apodaca,
+        Escobedo, García y Juárez, mientras que el 26% se dirige a Monterrey.
+        Solo el 21% de la población utiliza transporte público y un 19% se
+        traslada caminando. Es esencial expandir el acceso al transporte público
+        y mejorar la infraestructura para ciclistas y peatones, con un{" "}
+        <b>Sistema Integrado de Transporte</b>, para contrarrestar el impacto
+        ambiental negativo y en la salud pública generado por el elevado número
+        de viajes en automóvil.
       </p>
 
-      <br />
       <ContextTitle color={color}>
-        Los SITP's ofrecen como beneficios una ciudad conectada y ordenada,
+        "Los SITP's ofrecen como beneficios una ciudad conectada y ordenada,
         servicios de mayor calidad, un sistema único de información y atención,
         menor tiempo de viaje, mayor seguridad personal y vial, tarifas de
         acuerdo al tipo de viaje y condición social, mayor accesibilidad al

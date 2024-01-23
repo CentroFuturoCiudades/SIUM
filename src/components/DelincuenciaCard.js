@@ -6,6 +6,8 @@ import {
   cleanedGeoData,
   colorInterpolate,
   useFetch,
+  DELINCUENCIA_URL,
+  DELINCUENCIA_CHART_URL,
 } from "../utils/constants";
 import { Chart } from "./Chart";
 import { Legend } from "./Legend";
@@ -37,10 +39,6 @@ const legendMapping = {
   },
 };
 
-const DELINCUENCIA_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson";
-const DELINCUENCIA_CHART_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen_municipality.json";
 const DELINCUENCIA_COLORS = [
   "rgb(255, 0, 0)",
   "rgb(255, 50, 50)",
@@ -142,11 +140,10 @@ export function DelincuenciaCard() {
         incrementa en un 0.04%.
       </p>
       <p>
-        De forma similar, las incidencias delictivas como robos en calles o a
-        viviendas, así como violencia familiar se concentran en regiones
-        segregadas. Estar alejado de actividades económicas como el comercio al
-        por mayor aumentan la incidencia delictiva, mientras que estar cercano a
-        centros con comercio al por menor, la disminuyen.
+        Las incidencias delictivas como robos en calles o a viviendas, así como
+        violencia familiar se concentran en regiones segregadas. Estar alejado
+        de actividades económicas aumenta la incidencia delictiva. Estar cercano
+        a centros con comercio al por menor, la disminuyen.
       </p>
       <p>
         Las ciudades compactas y multifuncionales incentivan una vida pública
@@ -154,9 +151,8 @@ export function DelincuenciaCard() {
         Metropolitana de Monterrey.
       </p>
       <ContextTitle color={color}>
-        Una mayor densificación, una diversificación de usos de suelo y
-        transporte colectivo, incrementa los flujos peatonales e incentiva la
-        vigilancia colectiva.
+        Densificar, diversificar usos de suelo y transporte colectivo,
+        incrementar los flujos peatonales e incentivar la vigilancia colectiva
       </ContextTitle>
       <Chart
         title="Acumulado Robos a transeúntes por 10 mil personas (2017-2020)"

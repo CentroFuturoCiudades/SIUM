@@ -5,6 +5,8 @@ import {
   separateLegendItems,
   cleanedGeoData,
   useFetch,
+  EXPANSION_URL,
+  EXPANSION_CHART_URL,
 } from "../utils/constants";
 import "../index.css";
 import { Chart } from "./Chart";
@@ -15,10 +17,6 @@ import { Legend } from "./Legend";
 import { CustomMap, INITIAL_STATE } from "../components/CustomMap";
 import Loading from "./Loading";
 
-const EXPANSION_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob.geojson";
-const EXPANSION_CHART_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/expansion_municipality.json";
 const EXPANSION_COLORS = [
   "rgb(255, 0, 0)",
   "rgb(255, 50, 50)",
@@ -29,6 +27,7 @@ const EXPANSION_COLORS = [
   "rgb(50, 50, 255)",
   "rgb(0, 0, 255)",
 ];
+const EXPANSION_QUANTILES = [-5100, -2000, -1000, 0, 2000, 4000, 6000, 11100];
 
 const marks = [
   { value: 1990, label: "1990-2020" },
@@ -54,11 +53,7 @@ export const ExpansionUrbanaControls = () => {
       ])
       .flat();
     setLegendItems(
-      separateLegendItems(
-        values,
-        [-5100, -2000, -1000, 0, 2000, 4000, 6000, 11100],
-        EXPANSION_COLORS
-      )
+      separateLegendItems(values, EXPANSION_QUANTILES, EXPANSION_COLORS)
     );
   }, [data]);
 
@@ -77,7 +72,7 @@ export const ExpansionUrbanaControls = () => {
           getFillColor={(d) =>
             colorInterpolate(
               d.properties[time],
-              [-5100, -2000, -1000, 0, 1000, 3000, 5000, 11100],
+              EXPANSION_QUANTILES,
               EXPANSION_COLORS,
               0.8
             )
@@ -116,29 +111,28 @@ export function ExpansionUrbanaCard() {
         Hacia las Periferias, lejos unos de otros
       </ResponseTitle>
       <p>
-        <b>En 1990</b>, las familias jóvenes, con edades comprendidas entre 19 y
-        65 años, residían principalmente en las zonas centrales de la zona
-        metropolitana, en Monterrey, Guadalupe, San Pedro y San Nicolás.
+        <b>En 1990</b>, las familias jóvenes, con edades entre 19 y 65 años,
+        residían principalmente en las zonas centrales de la zona metropolitana,
+        Monterrey, Guadalupe, San Pedro y San Nicolás.
       </p>
       <p>
-        <b>En 2020</b>, se observa un cambio: las familias jóvenes han migrado
-        hacia la <PeripherySpan setOutline={setOutline} />, estableciéndose en
-        lugares como Juárez, García, Apodaca, Santa Catarina y General Zuazua.
-        Los adultos mayores permanecen en la zona central.
+        <b>En 2020</b>, en contraste, las familias jóvenes han migrado hacia la
+        periferia, estableciéndose en lugares como Juárez, García, Apodaca,
+        Santa Catarina y General Zuazua. Los adultos mayores permanecen en la
+        zona central.
       </p>
       <p>
         En los últimos años, ha habido un cambio significativo en la
-        distribución de la población en Monterrey, reflejando dinámicas
-        demográficas notables. Se plantea la necesidad de una adaptación
-        cuidadosa de las políticas públicas y servicios urbanos a las nuevas
-        dinámicas. Una de las causas principales de la migración de los hogares
-        jóvenes a la periferia urbana es la falta de una oferta de vivienda
-        adecuada a su nivel de ingreso y estilo de vida en la zona central.
+        distribución de la población. Existe la necesidad de una adaptación de
+        las políticas públicas y servicios urbanos a las nuevas dinámicas. Una
+        de las causas principales de la migración de los hogares jóvenes a la
+        periferia urbana es la falta de una oferta de vivienda adecuada a su
+        nivel de ingreso y estilo de vida en la zona central.
       </p>
       <ContextTitle color={color}>
-        Promover programas de densificación y optar por soluciones
-        habitacionales asequibles, fomentará la permanencia de una demografía
-        diversa en centros y subcentros urbanos
+        Promover la densificación y optar por soluciones habitacionales
+        asequibles, fomentará la permanencia de una demografía diversa en las
+        centralidades
       </ContextTitle>
 
       <Chart

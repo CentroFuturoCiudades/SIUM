@@ -1,17 +1,11 @@
 import { useState } from "react";
 import { ResponseTitle, ContextTitle } from "./Card";
-import {
-  cleanedGeoData,
-  colorInterpolate,
-  useFetch,
-} from "../utils/constants";
+import { COSTOS_URL, cleanedGeoData, colorInterpolate, useFetch } from "../utils/constants";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import { GeoJsonLayer } from "deck.gl";
 import { BrushingExtension } from "@deck.gl/extensions";
 import Loading from "./Loading";
 
-const COSTOS_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson";
 const COSTOS_COLORS = [
   "rgb(255, 0, 0)",
   "rgb(255, 50, 50)",

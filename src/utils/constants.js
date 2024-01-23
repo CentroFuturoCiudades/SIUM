@@ -115,6 +115,24 @@ export const filterDataAll = (
   return filteredData;
 };
 
+export const DATA_URL = "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos";
+export const EXPANSION_URL = `${DATA_URL}/agebs-pob.geojson`;
+export const EXPANSION_CHART_URL = `${DATA_URL}/expansion_municipality.json`;
+export const EMPLEO_URL = `${DATA_URL}/denue_2020.geojson`;
+export const EMPLEO_CHART_URL = `${DATA_URL}/empleo_municipality.json`;
+export const TRANSPORTE_CHART_URL = `${DATA_URL}/transporte_municipality.json`;
+export const TRANSPORTE_URL = `${DATA_URL}/TRANSPORTEJEANNETTE.geojson`;
+export const TRANSPORTE_MASIVO_URL = `${DATA_URL}/transporte-masivo.geojson`;
+export const VIAS_URL = `${DATA_URL}/vias-primarias.geojson`;
+export const VIVIENDA_URL = `${DATA_URL}/vivienda-hex.geojson`;
+export const VIVIENDA_CHART_URL = `${DATA_URL}/vivienda_municipality.json`;
+export const SEGREGATION_URL = `${DATA_URL}/income2.geojson`;
+export const SEGREGACION_CHART_URL = `${DATA_URL}/income_municipality.json`;
+export const DELINCUENCIA_URL = `${DATA_URL}/crimen-hex.geojson`;
+export const DELINCUENCIA_CHART_URL = `${DATA_URL}/crimen_municipality.json`;
+export const COSTOS_URL = `${DATA_URL}/crimen-hex.geojson`;
+
+
 export const PERIPHERIES = [
   "Juárez",
   "García",

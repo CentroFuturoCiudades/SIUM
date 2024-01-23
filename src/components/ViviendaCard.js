@@ -5,6 +5,8 @@ import {
   separateLegendItems,
   filterDataAll,
   useFetch,
+  VIVIENDA_URL,
+  VIVIENDA_CHART_URL,
 } from "../utils/constants";
 import { Chart } from "./Chart";
 import { GeoJsonLayer } from "@deck.gl/layers";
@@ -22,10 +24,6 @@ const marks = [
   { value: 2020, label: "2020" },
 ];
 
-const VIVIENDA_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda-hex.geojson";
-const VIVIENDA_CHART_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda_municipality.json";
 const VIVIENDA_COLORS = [
   "rgb(255, 0, 0)",
   "rgb(255, 50, 50)",
@@ -35,6 +33,9 @@ const VIVIENDA_COLORS = [
   "rgb(150, 150, 255)",
   "rgb(50, 50, 255)",
   "rgb(0, 0, 255)",
+];
+const VIVIENDA_QUANTILES = [
+  160000, 400000, 500000, 600000, 800000, 1000000, 1200000, 1800000,
 ];
 
 export const ViviendaControls = () => {
@@ -53,7 +54,7 @@ export const ViviendaControls = () => {
     setLegendItems(
       separateLegendItems(
         valuesPrecio,
-        [160000, 400000, 500000, 600000, 800000, 1000000, 1200000, 1800000],
+        VIVIENDA_QUANTILES,
         VIVIENDA_COLORS,
         (x) =>
           x.toLocaleString("en-US", {
@@ -80,7 +81,7 @@ export const ViviendaControls = () => {
           getFillColor={(d) =>
             colorInterpolate(
               d.properties["PRECIO_AJUSTADO"],
-              [160000, 400000, 500000, 600000, 800000, 1000000, 1200000, 1800000],
+              VIVIENDA_QUANTILES,
               VIVIENDA_COLORS,
               0.8
             )
@@ -119,21 +120,20 @@ export function ViviendaCard() {
         La vivienda es más asequible en las periferias
       </ResponseTitle>
       <p>
-        La zona central de Monterrey se ha ido transformando en una zona
-        comercial sin residentes: los hogares migran y los comercios se quedan.
-        El centro es la zona mejor conectada de la ciudad porque, durante
-        décadas, la mejor infrastructura de transporte y vialidades se construyó
-        para conectar la zona del empleo, el centro, con el resto de las zonas
+        La zona central de Monterrey se ha transformado en una zona comercial,
+        sin residentes: los hogares migran y los comercios se quedan. El centro
+        es la zona mejor conectada de la ciudad porque, durante décadas, la
+        mejor infrastructura de transporte y vialidades se construyó para
+        conectar el empleo, en el centro, con el resto de las zonas
         residenciales. El centro es la zona mejor conectada y accesible de la
         ciudad y eso le otorga un gran valor comercial, y por tanto, un alto
         valor a su suelo. El alto valor del suelo hace inviable la producción de
-        vivienda asequible en la zona central de la ciudad; la vivienda
-        económica se construye en las periferias urbanas y hacia allá migran los
-        hogares en busca de un espacio para poder habitar.
+        vivienda asequible en la zona central; la vivienda económica se
+        construye en las periferias urbanas.
       </p>
       <ContextTitle color={color}>
-        Aunque los costos de la vivienda son menores en las periferias, otros
-        costos se elevan, aumentando la desigualdad.
+        Aunque los costos de la vivienda sean menores en las periferias, otros
+        costos se elevan, aumentando desigualdad.
       </ContextTitle>
       <Chart
         title={`Número de Creditos acumulados en ${sharedProps.time}`}
