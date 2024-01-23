@@ -28,7 +28,7 @@ import {
   DelincuenciaControls,
 } from "../components/DelincuenciaCard";
 import { CostosCard, CostosControls } from "../components/CostosCard";
-import { Infancia2Card, Infancia2Controls } from "../components/Infancia2Card";
+import { InfanciasCard, InfanciasControls } from "../components/InfanciasCard";
 import { BrushingExtension } from "@deck.gl/extensions";
 import { useEffect, useState } from "react";
 
@@ -289,6 +289,54 @@ export function separateLegendItems(
   return newLegendItems;
 }
 
+export function countServicesLegend(data, colors) {
+  const sectorCounts = {};
+  const sectorColors = {};
+
+  if (data) {
+    console.log("entro")
+    data.forEach((feature) => {
+      const sector = feature.properties.sector;
+
+      switch (sector) {
+        case "comercio al por menor":
+          sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
+          sectorColors[sector] = colors[0];
+          break;
+        case "salud":
+          sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
+          sectorColors[sector] = colors[1];
+          break;
+        case "preescolar":
+          sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
+          sectorColors[sector] = colors[2];
+          break;
+        case "guarderia":
+          sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
+          sectorColors[sector] = colors[3];
+          break;
+        default:
+          sectorCounts["other"] = (sectorCounts["other"] || 0) + 1;
+          sectorColors[sector] = colors["gray"];
+      }
+    });
+
+    console.log("servicios en el area", sectorCounts);
+    //return sectorCounts;
+  }
+  
+  
+  const legend = Object.entries(sectorCounts).map(([sector, count]) => ({
+    sector,
+    count,
+    color: sectorColors[sector], // Si no hay un color definido, usar gris
+  }));
+  
+  console.log(legend)
+  return legend;
+}
+
+
 export const useFetch = (url, initialData = undefined) => {
   const [data, setData] = useState(initialData);
   useEffect(() => {
@@ -363,7 +411,7 @@ export const sectionsInfo = {
     answer: "Infancias answer",
     color: "blue",
     icon: MdOutlineAttachMoney,
-    component: Infancia2Card,
-    controls: Infancia2Controls,
+    component: InfanciasCard,
+    controls: InfanciasControls,
   },
 };
