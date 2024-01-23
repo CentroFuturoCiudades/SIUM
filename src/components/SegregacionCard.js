@@ -15,6 +15,58 @@ import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import Loading from "./Loading";
 import ButtonControls from "./ButtonControls";
 
+function interpolateColor(color1, color2, factor) {
+  if (arguments.length < 3) { 
+      factor = 0.5; 
+  }
+  var result = color1.slice();
+  for (var i = 0; i < 3; i++) {
+      result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
+  }
+  return result;
+};
+
+function hexToRgb(hex) {
+  var r = parseInt(hex.slice(1, 3), 16),
+      g = parseInt(hex.slice(3, 5), 16),
+      b = parseInt(hex.slice(5, 7), 16);
+  return [r, g, b];
+}
+
+function rgbToHex(rgb) {
+  return "#" + rgb.map((x) => {
+      const hex = x.toString(16);
+      return hex.length === 1 ? "0" + hex : hex;
+  }).join('');
+}
+
+function lightenColor(color, factor) {
+  var lightened = color.map(function (c) {
+      return Math.min(255, Math.round(c + 255 * factor));
+  });
+  return lightened;
+}
+
+function generateGradientColors(startColor, endColor, steps) {
+  var gradientColors = [];
+  var startLight = lightenColor(hexToRgb(startColor), 0.5); // Adjust factor as needed
+  var endLight = lightenColor(hexToRgb(endColor), 0.5);   // Adjust factor as needed
+  var halfSteps = Math.floor(steps / 2);
+
+  for (var i = 0; i < halfSteps; i++) {
+      gradientColors.push(rgbToHex(interpolateColor(hexToRgb(startColor), startLight, i / (halfSteps - 1))));
+  }
+
+  for (var i = 0; i < halfSteps; i++) {
+      gradientColors.push(rgbToHex(interpolateColor(endLight, hexToRgb(endColor), i / (halfSteps - 1))));
+  }
+
+  return gradientColors;
+}
+
+const startColor = "#68736d";
+const endColor = "#1A57FF";
+
 const legendMapping = {
   income_pc: {
     title: "Ingreso mensual per capita en 2020",
@@ -41,16 +93,7 @@ const SEGREGATION_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income2.geojson";
 const SEGREGACION_CHART_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income_municipality.json";
-const SEGREGACION_COLORS = [
-  "rgb(255, 0, 0)",
-  "rgb(255, 50, 50)",
-  "rgb(255, 150, 150)",
-  "rgb(255, 200, 200)",
-  "rgb(250, 200, 250)",
-  "rgb(150, 150, 255)",
-  "rgb(50, 50, 255)",
-  "rgb(0, 0, 255)",
-];
+const SEGREGACION_COLORS = generateGradientColors(startColor, endColor, 8);
 
 export const SegregacionControls = () => {
   const { color } = useCardContext();
