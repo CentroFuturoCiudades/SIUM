@@ -303,11 +303,11 @@ export function countServicesLegend(data, colors) {
           sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
           sectorColors[sector] = colors[0];
           break;
-        case "salud":
+        case "preescolar":
           sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
           sectorColors[sector] = colors[1];
           break;
-        case "preescolar":
+        case "salud":
           sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
           sectorColors[sector] = colors[2];
           break;
@@ -327,9 +327,9 @@ export function countServicesLegend(data, colors) {
   
   
   const legend = Object.entries(sectorCounts).map(([sector, count]) => ({
-    sector,
-    count,
-    color: sectorColors[sector], // Si no hay un color definido, usar gris
+    item1: sector,
+    item2: count,
+    color: sectorColors[sector], 
   }));
   
   console.log(legend)

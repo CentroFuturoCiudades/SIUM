@@ -33,10 +33,10 @@ const SERVICIOS_URL =
   ];
 
   const SERVICIOS_COLORS = [
-    "rgb(255, 0, 0)",
-    "rgb(0, 255, 0)",
-    "rgb(0, 0, 255)",
-    "rgb(255, 255, 0)",
+    "rgb(255, 0, 0)", //rojo para comercio
+    "rgb(0, 255, 0)", //verde para preescolar
+    "rgb(0, 0, 255)", //azul para salud
+    "rgb(255, 255, 0)", //amarillo para guarderia
   ];
 
 export const InfanciasControls = () => {
