@@ -331,8 +331,17 @@ export function countServicesLegend(data, colors) {
     item2: count,
     color: sectorColors[sector], 
   }));
+}
+
+export function countServicesLegendNOREP(data, sectors, colors) {
+    
+    const legend = Object.entries(sectors).map(([sector, count]) => ({
+      item1: sector,
+      item2: count,
+      color: colors[sector], 
+    }));
   
-  console.log(legend)
+  //console.log(legend)
   return legend;
 }
 

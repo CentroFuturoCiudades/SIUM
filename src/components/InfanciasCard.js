@@ -5,6 +5,7 @@ import {
   cleanedGeoData,
   colorInterpolate,
   countServicesLegend,
+  countServicesLegendNOREP,
   separateLegendItems,
   useFetch,
 } from "../utils/constants";
@@ -51,6 +52,7 @@ export const InfanciasControls = () => {
   const [legendItems2, setLegendItems2] = useState([]);
 
    const [circleServicesLegend, setCircleServicesLegend] = useState([]);
+   const [circlePobRatioLegend, setCirclePobRatioLegend] = useState([]);
 
 
   useEffect(() => {
@@ -84,6 +86,14 @@ export const InfanciasControls = () => {
   const radiusInDegrees= ((brushingRadius)/40075000)*360; //formula para convertir metros a grados (con la circunferencia de la Tierra 40,075,000 mts)
   //console.log("radius in degrees",radiusInDegrees); ////0.008983156581409857 (si brushingRadius=1000)
 
+  ///CALCULAR SERVICIOS DENTRO DEL CIRCULO CON DISTANCIA EUCLIDEANA
+  function EuclideanDistance (x1, y1, x2, y2)   //distancia euclidiana normal (0.14 ej) x1 y1 es del centro x2 y2 de otro puntp
+  {
+    const deltaX = x2 - x1; 
+    const deltaY = y2 - y1; 
+    return Math.sqrt(deltaX * deltaX + deltaY * deltaY); 
+  }
+
 
   //se llama cada vez que se mueve el circulo
   const handleInfanciasHover = (info) => {
@@ -93,27 +103,74 @@ export const InfanciasControls = () => {
       const [longCenter, latCenter] = [info.coordinate[0], info.coordinate[1]]
       console.log("coor", [longCenter, latCenter])
 
-      ///CALCULAR SERVICIOS DENTRO DEL CIRCULO CON DISTANCIA EUCLIDEANA
-      function EuclideanDistance (x1, y1, x2, y2)   //distancia euclidiana normal (0.14 ej) x1 y1 es del centro x2 y2 de otro puntp
-      {
-        const deltaX = x2 - x1; 
-        const deltaY = y2 - y1; 
-        return Math.sqrt(deltaX * deltaX + deltaY * deltaY); 
-      }
+      //constantes para la parte de servicios
+      const sectorCounts = {};
+      const sectorColors = {};
 
+      //constantes para la parte de manzanas con pob05
+      let totalRatioPob05 = null;
+
+      //filter de servicios dentro del circulo
       const enclosedDataServices = dataServ.features.filter((feature) => {
         //por cada feature se sacan sus coordenadas de [longitud, latitud]
         const coordinates = feature.geometry.coordinates;
         const [featureLong, featureLat] = coordinates;
 
+        const sector = feature.properties.sector;
+
         const distance = EuclideanDistance(longCenter, latCenter, featureLong, featureLat);   //distancia euclidiana en grados
 
-        return distance <= radiusInDegrees;
+        //return distance <= radiusInDegrees;
+        if(distance<=radiusInDegrees)
+        {
+          switch (sector) {
+            case "comercio al por menor":
+              sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
+              sectorColors[sector] = SERVICIOS_COLORS[0];
+              break;
+            case "preescolar":
+              sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
+              sectorColors[sector] = SERVICIOS_COLORS[1];
+              break;
+            case "salud":
+              sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
+              sectorColors[sector] = SERVICIOS_COLORS[2];
+              break;
+            case "guarderia":
+              sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
+              sectorColors[sector] = SERVICIOS_COLORS[3];
+              break;
+            default:
+              sectorCounts["other"] = (sectorCounts["other"] || 0) + 1;
+              sectorColors[sector] = SERVICIOS_COLORS["gray"];
+          }
+
+          return feature;
+        }
         
       })
-      console.log("Datos dentro del rango para servicios con DIST EUC:", enclosedDataServices);
-      setCircleServicesLegend(countServicesLegend(enclosedDataServices,SERVICIOS_COLORS));
 
+      //filter de manzanas pob05 dentro del circulo
+      const enclosedDataPob05 = dataPob.features.filter((feature) => {
+        const centerBlockLong = feature.properties.longitud;
+        const centerBlockLat = feature.properties.latitud;
+
+        const distance = EuclideanDistance(longCenter, latCenter, centerBlockLong, centerBlockLat);   //distancia euclidiana en grados
+        //return distance <= radiusInDegrees && feature.properties.ratio_pob05 != 0.0;
+        if(distance <= radiusInDegrees && feature.properties.ratio_pob05 != 0.0)
+        {
+          totalRatioPob05 += feature.properties.ratio_pob05;
+          //totalRatioPob05 = (totalRatioPob05 || 0.0) + feature.properties.ratio_pob05
+          return feature;
+        }
+      })
+      //console.log("Datos dentro del rango para servicios con DIST EUC:", enclosedDataServices);
+      //console.log("sections", sectorCounts)
+      //setCircleServicesLegend(countServicesLegend(enclosedDataServices,SERVICIOS_COLORS));
+      setCircleServicesLegend(countServicesLegendNOREP(enclosedDataServices, sectorCounts, sectorColors))
+      setCirclePobRatioLegend(totalRatioPob05)
+      console.log("las manzanas con pob de 0-5 dentro del circulo son", enclosedDataPob05)
+      console.log("y el tot ratio de pob05 años en el circulo es", totalRatioPob05)
     }
   }
   
@@ -168,8 +225,8 @@ export const InfanciasControls = () => {
         
       </CustomMap>
       <Legend
-        title="Servicios"
-        //legendItems={legendItems2}
+        //title="Servicios"
+        title={circlePobRatioLegend}
         legendItems={circleServicesLegend}
         color={"color"}
       />
