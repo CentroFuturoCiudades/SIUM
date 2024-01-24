@@ -17,6 +17,7 @@ import { colorInterpolate } from "../utils/constants";
 import { Legend } from "./Legend";
 import { CustomMap, INITIAL_STATE } from "../components/CustomMap";
 import Loading from "./Loading";
+import Tooltip from "./Tooltip";
 
 const startColor = "#605631";
 const endColor = "#1A57FF";
@@ -34,6 +35,7 @@ export const ExpansionUrbanaControls = () => {
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const { data } = useFetch(EXPANSION_URL);
   const [legendItems, setLegendItems] = useState([]);
+  const [hoverInfo, setHoverInfo] = useState();
   const { time, isPlaying, handleSliderChange, togglePlay } =
     TimeComponentClean(1990, 2010, 10, 2000, false);
 
@@ -73,6 +75,10 @@ export const ExpansionUrbanaControls = () => {
           }
           getLineColor={[118, 124, 130]}
           getLineWidth={5}
+          onHover={(info) => setHoverInfo(info)}
+          pickable={true}
+          autoHighlight={true}
+          getPosition={(d) => d.position}
         />
       </CustomMap>
       <Legend
@@ -91,6 +97,31 @@ export const ExpansionUrbanaControls = () => {
         handleSliderChange={handleSliderChange}
         marks={marks}
       />
+      {hoverInfo && hoverInfo.object && (
+        <Tooltip hoverInfo={hoverInfo}>
+          <span className="tooltip-label">
+            <b>Cambio poblacional de 1990 a 2000:</b>{" "}
+            {hoverInfo.object.properties["1990"].toLocaleString("en-US")}{" "}
+            <>
+              personas
+            </>
+          </span>
+          <span className="tooltip-label">
+            <b>Cambio poblacional del 2000 a 2010:</b>{" "}
+            {hoverInfo.object.properties["2000"].toLocaleString("en-US")}{" "}
+            <>
+              personas
+            </>
+          </span>
+          <span className="tooltip-label">
+            <b>Cambio poblacional del 2010 a 2020:</b>{" "}
+            {hoverInfo.object.properties["2010"].toLocaleString("en-US")}{" "}
+            <>
+              personas
+            </>
+          </span>
+        </Tooltip>
+      )}
     </>
   );
 };

@@ -16,6 +16,7 @@ import { colorInterpolate } from "../utils/constants";
 import { Legend } from "./Legend";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import Loading from "./Loading";
+import Tooltip from "./Tooltip";
 
 const startColor = "#605631";
 const endColor = "#1A57FF";
@@ -37,6 +38,7 @@ export const ViviendaControls = () => {
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const { data } = useFetch(VIVIENDA_URL);
   const [legendItems, setLegendItems] = useState([]);
+  const [hoverInfo, setHoverInfo] = useState();
   const { time, isPlaying, handleSliderChange, togglePlay } =
     TimeComponentClean(2000, 2020, 5, 2000, false, 2020);
 
@@ -82,6 +84,10 @@ export const ViviendaControls = () => {
           }
           getLineColor={[118, 124, 130]}
           getLineWidth={5}
+          onHover={(info) => setHoverInfo(info)}
+          pickable={true}
+          autoHighlight={true}
+          getPosition={(d) => d.position}
         />
       </CustomMap>
       <Legend
@@ -100,6 +106,35 @@ export const ViviendaControls = () => {
         handleSliderChange={handleSliderChange}
         marks={marks}
       />
+      {hoverInfo && hoverInfo.object && (
+        <Tooltip hoverInfo={hoverInfo}>
+          <span className="tooltip-label">
+            <b>Año en venta:</b> {hoverInfo.object.properties["year_end"]}
+          </span>
+          <span className="tooltip-label">
+            <b>Precio de venta:</b>{" "}
+            {hoverInfo.object.properties["IM_PRECIO_VENTA"].toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+              maximumFractionDigits: 0,
+            })}{" "}
+            <>
+              $
+            </>
+          </span>
+          <span className="tooltip-label">
+            <b>Precio ajustado a la inflación:</b>{" "}
+            {hoverInfo.object.properties["PRECIO_AJUSTADO"].toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+              maximumFractionDigits: 0,
+            })}{" "}
+            <>
+              $
+            </>
+          </span>
+        </Tooltip>
+      )}
     </>
   );
 };

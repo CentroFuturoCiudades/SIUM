@@ -15,6 +15,7 @@ import { Chart } from "./Chart";
 import { GeoJsonLayer } from "deck.gl";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import Loading from "./Loading";
+import Tooltip from "./Tooltip";
 
 const startColor = "#998f5d";
 const endColor = "#1A57FF";
@@ -25,6 +26,7 @@ export const EmpleoControls = () => {
   const { color } = useCardContext();
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const { data } = useFetch(EMPLEO_URL);
+  const [hoverInfo, setHoverInfo] = useState();
   const [legendItems, setLegendItems] = useState([]);
 
   useEffect(() => {
@@ -55,6 +57,10 @@ export const EmpleoControls = () => {
           }
           getLineColor={[118, 124, 130]}
           getLineWidth={5}
+          onHover={(info) => setHoverInfo(info)}
+          pickable={true}
+          autoHighlight={true}
+          getPosition={(d) => d.position}
         />
       </CustomMap>
       <Legend
@@ -62,6 +68,14 @@ export const EmpleoControls = () => {
         legendItems={legendItems}
         color={color}
       />
+      {hoverInfo && hoverInfo.object && (
+        <Tooltip hoverInfo={hoverInfo}>
+          <span className="tooltip-label">
+            <b>Número de empleos en 2020:</b>{" "}
+            {hoverInfo.object.properties["Empleos"].toLocaleString("en-US")}
+          </span>
+        </Tooltip>
+      )}
     </>
   );
 };
