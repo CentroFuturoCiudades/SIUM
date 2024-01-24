@@ -115,7 +115,8 @@ export const filterDataAll = (
   return filteredData;
 };
 
-export const DATA_URL = "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos";
+export const DATA_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos";
 export const EXPANSION_URL = `${DATA_URL}/agebs-pob.geojson`;
 export const EXPANSION_CHART_URL = `${DATA_URL}/expansion_municipality.json`;
 export const EMPLEO_URL = `${DATA_URL}/denue_2020.geojson`;
@@ -131,7 +132,6 @@ export const SEGREGACION_CHART_URL = `${DATA_URL}/income_municipality.json`;
 export const DELINCUENCIA_URL = `${DATA_URL}/crimen-hex.geojson`;
 export const DELINCUENCIA_CHART_URL = `${DATA_URL}/crimen_municipality.json`;
 export const COSTOS_URL = `${DATA_URL}/crimen-hex.geojson`;
-
 
 export const PERIPHERIES = [
   "Juárez",
@@ -280,6 +280,68 @@ export const COSTOS_LAYER = {
     extensions: [new BrushingExtension()],
   },
 };
+
+export function interpolateColor(color1, color2, factor) {
+  if (arguments.length < 3) {
+    factor = 0.5;
+  }
+  var result = color1.slice();
+  for (var i = 0; i < 3; i++) {
+    result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
+  }
+  return result;
+}
+
+export function hexToRgb(hex) {
+  var r = parseInt(hex.slice(1, 3), 16),
+    g = parseInt(hex.slice(3, 5), 16),
+    b = parseInt(hex.slice(5, 7), 16);
+  return [r, g, b];
+}
+
+export function rgbToHex(rgb) {
+  return (
+    "#" +
+    rgb
+      .map((x) => {
+        const hex = x.toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+      })
+      .join("")
+  );
+}
+
+export function lightenColor(color, factor) {
+  var lightened = color.map(function (c) {
+    return Math.min(255, Math.round(c + 255 * factor));
+  });
+  return lightened;
+}
+
+export function generateGradientColors(startColor, endColor, steps) {
+  var gradientColors = [];
+  var startLight = lightenColor(hexToRgb(startColor), 0.5); // Adjust factor as needed
+  var endLight = lightenColor(hexToRgb(endColor), 0.5); // Adjust factor as needed
+  var halfSteps = Math.floor(steps / 2);
+
+  for (var i = 0; i < halfSteps; i++) {
+    gradientColors.push(
+      rgbToHex(
+        interpolateColor(hexToRgb(startColor), startLight, i / (halfSteps - 1))
+      )
+    );
+  }
+
+  for (var i = 0; i < halfSteps; i++) {
+    gradientColors.push(
+      rgbToHex(
+        interpolateColor(endLight, hexToRgb(endColor), i / (halfSteps - 1))
+      )
+    );
+  }
+
+  return gradientColors;
+}
 
 export function separateLegendItems(
   data,
