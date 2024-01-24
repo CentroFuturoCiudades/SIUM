@@ -50,7 +50,7 @@ const transformDataForTrips = (data) => {
     const startTimestamp = convertirHoraATimestamp(feature.properties.HoraOri); //agarra el timestamp de inicio
 
     const waypoints = coordinates.map((coord, index) => ({
-      coordinates: coord.slice(0, 3),
+      coordinates: coord.slice(0, 2),
       timestamp: startTimestamp + index * 60, // Cambiado a 60 para un intervalo de un minuto
     }));
 
