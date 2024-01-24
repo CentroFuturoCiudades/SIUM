@@ -27,7 +27,14 @@ import {
   DelincuenciaCard,
   DelincuenciaControls,
 } from "../components/DelincuenciaCard";
-import { CostosCard, CostosControls } from "../components/CostosCard";
+import { 
+  CostosCard, 
+  CostosControls 
+} from "../components/CostosCard";
+import { 
+  IslasCalorCard, 
+  IslasCalorControls 
+} from "../components/IslasCalorCard";
 import { BrushingExtension } from "@deck.gl/extensions";
 import { useEffect, useState } from "react";
 
@@ -355,5 +362,13 @@ export const sectionsInfo = {
     icon: MdOutlineAttachMoney,
     component: CostosCard,
     controls: CostosControls,
+  },
+  islasCalor: {
+    title: "¿Por qué la expansión nos cuenta tanto dinero?",
+    answer: "Hay que llevar servicios públicos más lejos",
+    color: "teal",
+    icon: MdOutlineAttachMoney,
+    component: IslasCalorCard,
+    controls: IslasCalorControls,
   },
 };
