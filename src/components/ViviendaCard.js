@@ -7,6 +7,7 @@ import {
   useFetch,
   VIVIENDA_URL,
   VIVIENDA_CHART_URL,
+  generateGradientColors,
 } from "../utils/constants";
 import { Chart } from "./Chart";
 import { GeoJsonLayer } from "@deck.gl/layers";
@@ -16,26 +17,19 @@ import { Legend } from "./Legend";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import Loading from "./Loading";
 
+const startColor = "#605631";
+const endColor = "#1A57FF";
+const VIVIENDA_QUANTILES = [
+  160000, 400000, 500000, 600000, 800000, 1000000, 1200000, 1800000,
+];
+const VIVIENDA_COLORS = generateGradientColors(startColor, endColor, 8);
+
 const marks = [
   { value: 2000, label: "2000" },
   { value: 2005, label: "2005" },
   { value: 2010, label: "2010" },
   { value: 2015, label: "2015" },
   { value: 2020, label: "2020" },
-];
-
-const VIVIENDA_COLORS = [
-  "rgb(255, 0, 0)",
-  "rgb(255, 50, 50)",
-  "rgb(255, 150, 150)",
-  "rgb(255, 200, 200)",
-  "rgb(250, 200, 250)",
-  "rgb(150, 150, 255)",
-  "rgb(50, 50, 255)",
-  "rgb(0, 0, 255)",
-];
-const VIVIENDA_QUANTILES = [
-  160000, 400000, 500000, 600000, 800000, 1000000, 1200000, 1800000,
 ];
 
 export const ViviendaControls = () => {

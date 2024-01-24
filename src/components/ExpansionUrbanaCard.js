@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { PeripherySpan, ResponseTitle, ContextTitle } from "./Card";
+import { ResponseTitle, ContextTitle } from "./Card";
 import { useCardContext } from "../views/Problematica";
 import {
   separateLegendItems,
@@ -7,6 +7,7 @@ import {
   useFetch,
   EXPANSION_URL,
   EXPANSION_CHART_URL,
+  generateGradientColors,
 } from "../utils/constants";
 import "../index.css";
 import { Chart } from "./Chart";
@@ -17,17 +18,10 @@ import { Legend } from "./Legend";
 import { CustomMap, INITIAL_STATE } from "../components/CustomMap";
 import Loading from "./Loading";
 
-const EXPANSION_COLORS = [
-  "rgb(255, 0, 0)",
-  "rgb(255, 50, 50)",
-  "rgb(255, 150, 150)",
-  "rgb(255, 200, 200)",
-  "rgb(250, 200, 250)",
-  "rgb(150, 150, 255)",
-  "rgb(50, 50, 255)",
-  "rgb(0, 0, 255)",
-];
+const startColor = "#605631";
+const endColor = "#1A57FF";
 const EXPANSION_QUANTILES = [-5100, -2000, -1000, 0, 2000, 4000, 6000, 11100];
+const EXPANSION_COLORS = generateGradientColors(startColor, endColor, 8);
 
 const marks = [
   { value: 1990, label: "1990-2020" },

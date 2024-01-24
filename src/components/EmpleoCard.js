@@ -6,6 +6,7 @@ import {
   EMPLEO_URL,
   cleanedGeoData,
   colorInterpolate,
+  generateGradientColors,
   separateLegendItems,
   useFetch,
 } from "../utils/constants";
@@ -15,17 +16,10 @@ import { GeoJsonLayer } from "deck.gl";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import Loading from "./Loading";
 
-const EMPLEO_COLORS = [
-  "rgb(255, 0, 0)",
-  "rgb(255, 50, 50)",
-  "rgb(255, 150, 150)",
-  "rgb(255, 200, 200)",
-  "rgb(250, 200, 250)",
-  "rgb(150, 150, 255)",
-  "rgb(50, 50, 255)",
-  "rgb(0, 0, 255)",
-];
+const startColor = "#998f5d";
+const endColor = "#1A57FF";
 const EMPLEO_QUANTILES = [0, 50, 200, 400, 800, 1000, 2000, 8400];
+const EMPLEO_COLORS = generateGradientColors(startColor, endColor, 7);
 
 export const EmpleoControls = () => {
   const { color } = useCardContext();

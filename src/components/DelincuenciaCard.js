@@ -8,6 +8,7 @@ import {
   useFetch,
   DELINCUENCIA_URL,
   DELINCUENCIA_CHART_URL,
+  generateGradientColors,
 } from "../utils/constants";
 import { Chart } from "./Chart";
 import { Legend } from "./Legend";
@@ -39,16 +40,10 @@ const legendMapping = {
   },
 };
 
-const DELINCUENCIA_COLORS = [
-  "rgb(255, 0, 0)",
-  "rgb(255, 50, 50)",
-  "rgb(255, 150, 150)",
-  "rgb(255, 200, 200)",
-  "rgb(250, 200, 250)",
-  "rgb(150, 150, 255)",
-  "rgb(50, 50, 255)",
-  "rgb(0, 0, 255)",
-];
+const startColor = "#605631";
+const endColor = "#1A57FF";
+const DELINCUENCIA_COLORS = generateGradientColors(startColor, endColor, 8);
+console.log(DELINCUENCIA_COLORS);
 
 export const DelincuenciaControls = () => {
   const { color, setSharedProps } = useCardContext();

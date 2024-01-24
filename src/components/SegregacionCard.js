@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { useCardContext } from "../views/Problematica";
 import { ResponseTitle, ContextTitle } from "./Card";
 import {
-  DATA_URL,
   SEGREGACION_CHART_URL,
   SEGREGATION_URL,
   cleanedGeoData,
   colorInterpolate,
+  generateGradientColors,
   separateLegendItems,
   useFetch,
 } from "../utils/constants";
@@ -17,6 +17,10 @@ import Tooltip from "./Tooltip";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import Loading from "./Loading";
 import ButtonControls from "./ButtonControls";
+
+const startColor = "#68736d";
+const endColor = "#1A57FF";
+const SEGREGACION_COLORS = generateGradientColors(startColor, endColor, 8);
 
 const legendMapping = {
   income_pc: {
@@ -40,16 +44,6 @@ const legendMapping = {
     quantiles: [-0.18, -0.12, -0.08, -0.04, 0, 0.02, 0.04, 0.06, 0.08],
   },
 };
-const SEGREGACION_COLORS = [
-  "rgb(255, 0, 0)",
-  "rgb(255, 50, 50)",
-  "rgb(255, 150, 150)",
-  "rgb(255, 200, 200)",
-  "rgb(250, 200, 250)",
-  "rgb(150, 150, 255)",
-  "rgb(50, 50, 255)",
-  "rgb(0, 0, 255)",
-];
 
 export const SegregacionControls = () => {
   const { color } = useCardContext();

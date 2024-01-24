@@ -119,7 +119,7 @@ export const TransporteControls = () => {
           )}
           getPath={(d) => d.waypoints.map((point) => point.coordinates)}
           getTimestamps={(d) => d.waypoints.map((point) => point.timestamp)}
-          getColor={[255, 0, 0, 255]}
+          getColor={[26, 87, 255]}
           opacity={0.5}
           widthMinPixels={3}
           rounded={true}
