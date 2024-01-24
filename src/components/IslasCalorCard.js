@@ -40,21 +40,6 @@ export const IslasCalorControls = () => {
   const [legendItems, setLegendItems] = useState([]);
   const { data } = useFetch(ISLAS_CALOR_URL);
 
-  // Sleccionar solo valores dentro de un rango
-  const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
-
-  // Obtener los valores de los límites del viewport
-  const enforceBounds = (viewState) => {
-    const clampedLongitude = clamp(viewState.longitude, BOUNDS.sw[0], BOUNDS.ne[0]);
-    const clampedLatitude = clamp(viewState.latitude, BOUNDS.sw[1], BOUNDS.ne[1]);
-    return { ...viewState, longitude: clampedLongitude, latitude: clampedLatitude };
-  };
-
-  // Asignar el viewport
-  const onViewportChange = (newViewState) => {
-    const boundedViewState = enforceBounds(newViewState);
-    setViewState(boundedViewState);
-  };
 
   useEffect(() => {
     console.log(data);
@@ -73,8 +58,7 @@ export const IslasCalorControls = () => {
 
   return (
     <>
-      {/* <CustomMap viewState={viewState} setViewState={setViewState} */}
-      <CustomMap viewState={viewState} setViewState={onViewportChange}
+      <CustomMap viewState={viewState} setViewState={setViewState}
       >
         <GeoJsonLayer
           id="islas_calor_layer"
