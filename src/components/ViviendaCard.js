@@ -117,10 +117,7 @@ export const ViviendaControls = () => {
               style: "currency",
               currency: "USD",
               maximumFractionDigits: 0,
-            })}{" "}
-            <>
-              $
-            </>
+            })}
           </span>
           <span className="tooltip-label">
             <b>Precio ajustado a la inflación:</b>{" "}
@@ -128,10 +125,7 @@ export const ViviendaControls = () => {
               style: "currency",
               currency: "USD",
               maximumFractionDigits: 0,
-            })}{" "}
-            <>
-              $
-            </>
+            })}
           </span>
         </Tooltip>
       )}
