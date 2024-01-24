@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, Heading, useMediaQuery } from "@chakra-ui/react";
 
-import { Sidebar } from "../components/Sidebar";
-import { Header } from "../components/Header";
+import { BarMobile, Sidebar } from "../components/Sidebar";
+import { Header, HeaderMobile } from "../components/Header";
 import "../index.css";
 import { Card } from "../components/Card";
 import { sectionsInfo } from "../utils/constants";
+import SwipeableBottomSheet from "react-swipeable-bottom-sheet";
 
 const CardContext = createContext();
 
@@ -32,7 +33,9 @@ const getSectionFromURL = () => {
   return window.location.hash?.replace("#", "") || null;
 };
 
-export const CardsContainer = ({ currentSection, currentInfo }) => {
+export const CardsContainer = () => {
+  const { currentSection } = useCardContext();
+  const currentInfo = sectionsInfo[currentSection];
   return (
     <div className="cardsContainer">
       <Header
@@ -52,12 +55,52 @@ export const CardsContainer = ({ currentSection, currentInfo }) => {
   );
 };
 
+export const CardsContainerMobile = () => {
+  const { currentSection, color } = useCardContext();
+  const [open, setOpen] = useState(true);
+  const CurrentCardContent = sectionsInfo[currentSection].component;
+  const title = sectionsInfo[currentSection].title;
+
+  useEffect(() => {
+    setOpen(true);
+  }, [currentSection]);
+
+  return (
+    <SwipeableBottomSheet
+      open={open}
+      onChange={setOpen}
+      overflowHeight={50}
+      shadowTip={false}
+      overlay={false}
+      topShadow={false}
+      style={{ zIndex: 2 }}
+      bodyStyle={{ borderRadius: "1.2rem 1.2rem 0 0" }}
+      overlayStyle={{ borderRadius: "1.2rem 1.2rem 0 0", zIndex: 2 }}
+    >
+      <HeaderMobile color={color} title={title} open={open} setOpen={setOpen} />
+      <Box
+        bg="white"
+        borderColor={`${color}.500`}
+        margin="4"
+        style={{ height: "30dvh", marginTop: "60px" }}
+      >
+        <CurrentCardContent />
+      </Box>
+    </SwipeableBottomSheet>
+  );
+};
+
 const Problematica = () => {
+  const [isDesktop] = useMediaQuery("(min-width: 800px)");
   const [currentSection, setCurrentSection] = useState("expansion-urbana");
   const [outline, setOutline] = useState();
   const [sharedProps, setSharedProps] = useState({});
   const currentInfo = sectionsInfo[currentSection];
   const CurrentControls = sectionsInfo[currentSection].controls;
+  const Bar = isDesktop ? Sidebar : BarMobile;
+  const CurrentCardContainer = isDesktop
+    ? CardsContainer
+    : CardsContainerMobile;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -87,10 +130,9 @@ const Problematica = () => {
       }
     }
   }, []);
-
   return (
-    <div style={{ display: "flex" }}>
-      <Sidebar section={currentSection} setSection={setCurrentSection} />
+    <div style={{ display: isDesktop ? "flex" : "inline-block" }}>
+      <Bar section={currentSection} setSection={setCurrentSection} />
       <CardContext.Provider
         value={{
           currentSection,
@@ -101,15 +143,12 @@ const Problematica = () => {
           setSharedProps,
         }}
       >
-        <CardsContainer
-          currentSection={currentSection}
-          currentInfo={currentInfo}
-        />
+        <CurrentCardContainer />
         <Box
-          className="mapContainer"
+          className={isDesktop ? "mapContainer" : "mapContainerMobile"}
           borderColor={`${sectionsInfo[currentSection].color}.500`}
         >
-          {CurrentControls && <CurrentControls />}
+          <CurrentControls />
         </Box>
       </CardContext.Provider>
     </div>

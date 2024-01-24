@@ -8,7 +8,7 @@ body {
   right: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   scroll-snap-type: y mandatory;
   overflow-y: auto;
 }
@@ -35,6 +35,23 @@ p {
   bottom: 0.5rem;
 }
 
+.mapContainerMobile {
+  width: 100%;
+  height: calc(100dvh - 50px - 40px);
+  transition: all 0.5s ease;
+  overflow: hidden;
+  position: absolute;
+  z-index: 0;
+}
+
+.mapbox-improve-map {
+  display: none !important;
+}
+
+.mapboxgl-control-container {
+  display: none !important;
+}
+
 /* Estilos nuevos para leyendas iniciales */
 
 .legend-container {
@@ -48,7 +65,7 @@ p {
   transform: translateY(-50%);
   background: rgba(255, 255, 255, 0.9);
   padding: 5px 15px;
-  box-shadow: 0 2px 8px rgba(50, 50, 50, 0.2); 
+  box-shadow: 0 2px 8px rgba(50, 50, 50, 0.2);
   z-index: 10;
 }
 

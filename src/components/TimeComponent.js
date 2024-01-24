@@ -23,63 +23,61 @@ export function SliderHTML({
   marks,
 }) {
   return (
-    <>
-      <div></div>
-      <div
-        style={{
-          position: "absolute",
-          bottom: 25,
-          left: 0,
-          width: "100%",
-          padding: "0 20px",
-        }}
+    <div
+      style={{
+        position: "relative",
+        bottom: "60px",
+        left: 0,
+        width: "100%",
+        height: "50px",
+        padding: "0 20px",
+      }}
+    >
+      <Box
+        bgColor="orange.100"
+        borderRadius="16px"
+        borderWidth={1}
+        borderColor="orange.200"
+        style={{ display: "flex", width: "100%" }}
       >
-        <Box
-          bgColor="orange.100"
-          borderRadius="16px"
-          borderWidth={1}
-          borderColor="orange.200"
-          style={{ display: "flex", width: "100%" }}
+        <IconButton
+          colorScheme="orange"
+          isRound={true}
+          onClick={togglePlay}
+          size="xs"
+          icon={isPlaying ? <MdPause /> : <MdPlayArrow />}
+        />
+        <Slider
+          aria-label="slider-ex-1"
+          id="slider"
+          defaultValue={defaultValue || min}
+          min={min}
+          step={step}
+          max={max}
+          value={time}
+          onChange={(value) => handleSliderChange(value)}
+          mr="4"
+          ml="3"
         >
-          <IconButton
-            colorScheme="orange"
-            isRound={true}
-            onClick={togglePlay}
-            size="xs"
-            icon={isPlaying ? <MdPause /> : <MdPlayArrow />}
-          />
-          <Slider
-            aria-label="slider-ex-1"
-            id="slider"
-            defaultValue={defaultValue || min}
-            min={min}
-            step={step}
-            max={max}
-            value={time}
-            onChange={(value) => handleSliderChange(value)}
-            mr="4"
-            ml="3"
-          >
-            {marks.map(({ value, label }, i) => (
-              <SliderMark
-                key={value}
-                value={value}
-                mt="5"
-                ml={`-${label.length * 3.5}px`}
-                fontSize="xs"
-                style={{ textWrap: "nowrap" }}
-              >
-                {label}
-              </SliderMark>
-            ))}
-            <SliderTrack bg="orange.200">
-              <SliderFilledTrack bg="orange.500" />
-            </SliderTrack>
-            <SliderThumb boxSize={3} bgColor="orange.600" />
-          </Slider>
-        </Box>
-      </div>
-    </>
+          {marks.map(({ value, label }, i) => (
+            <SliderMark
+              key={value}
+              value={value}
+              mt="5"
+              ml={`-${label.length * 3.5}px`}
+              fontSize="xs"
+              style={{ textWrap: "nowrap" }}
+            >
+              {label}
+            </SliderMark>
+          ))}
+          <SliderTrack bg="orange.200">
+            <SliderFilledTrack bg="orange.500" />
+          </SliderTrack>
+          <SliderThumb boxSize={3} bgColor="orange.600" />
+        </Slider>
+      </Box>
+    </div>
   );
 }
 
