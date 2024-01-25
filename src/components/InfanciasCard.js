@@ -9,7 +9,7 @@ import {
   separateLegendItems,
   useFetch,
 } from "../utils/constants";
-import { Legend } from "./Legend";
+import {LegendCustom} from "./LegendCustom";
 import { Chart } from "./Chart";
 import { GeoJsonLayer } from "deck.gl";
 import { CustomMap, INITIAL_STATE, SPECIAL_INFANCIAS_STATE } from "./CustomMap";
@@ -48,14 +48,12 @@ export const InfanciasControls = () => {
   const { data: dataServ } = useFetch(SERVICIOS_URL);
   const [brushingRadius, setBrushingRadius] = useState(1000); //radio esta en metros
 
-  const [legendItems, setLegendItems] = useState([]);
-  const [legendItems2, setLegendItems2] = useState([]);
 
    const [circleServicesLegend, setCircleServicesLegend] = useState([]);
    const [circlePobRatioLegend, setCirclePobRatioLegend] = useState([]);
 
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (!dataPob || !dataServ) return;
     
     const valuesPob05 = dataPob.features.map(
@@ -64,24 +62,8 @@ export const InfanciasControls = () => {
     const valuesServicios = dataServ.features.map(
         (feat) => feat.properties["sector"]
       );
-    //console.log(valuesPob05)
-    setLegendItems(
-        separateLegendItems(
-          valuesPob05,
-          [0.001, 0.01, 0.1, 0.2, 0.3, 0.4],
-          POB05_COLORS,
-        )
-      );
-      setLegendItems2(
-        separateLegendItems(
-          valuesServicios,
-          [460000, 611000, 621000, 624000],
-          //["comercio al por menor", "preescolar", "salud", "guarderia"],
-          SERVICIOS_COLORS,
-        )
-      );
     
-  }, [dataPob, dataServ]);
+  }, [dataPob, dataServ]);*/
 
   const radiusInDegrees= ((brushingRadius)/40075000)*360; //formula para convertir metros a grados (con la circunferencia de la Tierra 40,075,000 mts)
   //console.log("radius in degrees",radiusInDegrees); ////0.008983156581409857 (si brushingRadius=1000)
@@ -101,14 +83,21 @@ export const InfanciasControls = () => {
     {
       //coordenadas del centro del circulo 
       const [longCenter, latCenter] = [info.coordinate[0], info.coordinate[1]]
-      console.log("coor", [longCenter, latCenter])
+      //console.log("coor", [longCenter, latCenter])
 
       //constantes para la parte de servicios
       const sectorCounts = {};
-      const sectorColors = {};
+      const sectorColors = {
+        'comercio al por menor': SERVICIOS_COLORS[0],
+        'preescolar': SERVICIOS_COLORS[1],
+        'salud': SERVICIOS_COLORS[2],
+        'guarderia': SERVICIOS_COLORS[3]
+      };
 
       //constantes para la parte de manzanas con pob05
       let totalRatioPob05 = null;
+      let totPobAdulto = null;
+      let totPobInf = null;
 
       //filter de servicios dentro del circulo
       const enclosedDataServices = dataServ.features.filter((feature) => {
@@ -123,28 +112,7 @@ export const InfanciasControls = () => {
         //return distance <= radiusInDegrees;
         if(distance<=radiusInDegrees)
         {
-          switch (sector) {
-            case "comercio al por menor":
-              sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
-              sectorColors[sector] = SERVICIOS_COLORS[0];
-              break;
-            case "preescolar":
-              sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
-              sectorColors[sector] = SERVICIOS_COLORS[1];
-              break;
-            case "salud":
-              sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
-              sectorColors[sector] = SERVICIOS_COLORS[2];
-              break;
-            case "guarderia":
-              sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
-              sectorColors[sector] = SERVICIOS_COLORS[3];
-              break;
-            default:
-              sectorCounts["other"] = (sectorCounts["other"] || 0) + 1;
-              sectorColors[sector] = SERVICIOS_COLORS["gray"];
-          }
-
+          sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
           return feature;
         }
         
@@ -157,10 +125,13 @@ export const InfanciasControls = () => {
 
         const distance = EuclideanDistance(longCenter, latCenter, centerBlockLong, centerBlockLat);   //distancia euclidiana en grados
         //return distance <= radiusInDegrees && feature.properties.ratio_pob05 != 0.0;
-        if(distance <= radiusInDegrees && feature.properties.ratio_pob05 != 0.0)
+        //if(distance <= radiusInDegrees && feature.properties.ratio_pob05 != 0.0)
+        if(distance <= radiusInDegrees)
         {
           totalRatioPob05 += feature.properties.ratio_pob05;
-          //totalRatioPob05 = (totalRatioPob05 || 0.0) + feature.properties.ratio_pob05
+
+          totPobAdulto += feature.properties.POBTOT;
+          totPobInf += feature.properties.pob05;
           return feature;
         }
       })
@@ -168,9 +139,13 @@ export const InfanciasControls = () => {
       //console.log("sections", sectorCounts)
       //setCircleServicesLegend(countServicesLegend(enclosedDataServices,SERVICIOS_COLORS));
       setCircleServicesLegend(countServicesLegendNOREP(enclosedDataServices, sectorCounts, sectorColors))
-      setCirclePobRatioLegend(totalRatioPob05)
-      console.log("las manzanas con pob de 0-5 dentro del circulo son", enclosedDataPob05)
-      console.log("y el tot ratio de pob05 años en el circulo es", totalRatioPob05)
+
+      //setCirclePobRatioLegend(totalRatioPob05)
+      //console.log("van a ser", totPobInf, "/", totPobAdulto)
+      const promedioInf = (totPobInf/totPobAdulto)*100
+      setCirclePobRatioLegend(Math.round(promedioInf*100)/100);
+      //console.log("las manzanas con pob de 0-5 dentro del circulo son", enclosedDataPob05)
+      //console.log("y el tot ratio de pob05 años en el circulo es", totalRatioPob05)
     }
   }
   
@@ -224,11 +199,14 @@ export const InfanciasControls = () => {
         />
         
       </CustomMap>
-      <Legend
-        //title="Servicios"
-        title={circlePobRatioLegend}
-        legendItems={circleServicesLegend}
+      
+      <LegendCustom
+        title="Población 0-5 años"
+        info1={circlePobRatioLegend}
         color={"color"}
+        title2="Servicios"
+        legendItems={circleServicesLegend}
+        //extraInfo={circlePobRatioLegend}
       />
     </>
   );
