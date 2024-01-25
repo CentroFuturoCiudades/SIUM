@@ -14,11 +14,12 @@ const ButtonControls = ({ activeButton, setActiveButton, mapping, color }) => {
       <Select
         width="50%"
         variant="outline"
-        bg={`${color}.600`}
-        borderColor={`${color}.600`}
-        backgroundColor={`${color}.600`}
+        bg={`${color}.400`}
+        borderColor={`${color}.500`}
+        borderWidth="0.12rem"
+        backgroundColor={`${color}.400`}
         color="white"
-        focusBorderColor={`${color}.600`}
+        focusBorderColor={`${color}.500`}
         onChange={(e) => setActiveButton(e.target.value)}
         value={activeButton}
         margin="auto"

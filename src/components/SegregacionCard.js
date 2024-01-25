@@ -17,6 +17,8 @@ import Tooltip from "./Tooltip";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import Loading from "./Loading";
 import ButtonControls from "./ButtonControls";
+import { Slider } from "@chakra-ui/react";
+import * as d3 from "d3";
 
 const startColor = "#68736d";
 const endColor = "#1A57FF";
@@ -25,52 +27,42 @@ const SEGREGACION_COLORS = generateGradientColors(startColor, endColor, 8);
 const legendMapping = {
   income_pc: {
     title: "Ingreso mensual per capita en 2020",
-    formatter: (d) =>
-      d.toLocaleString("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 0,
-      }),
+    formatter: d3.format("$,.0f"),
     quantiles: [4000, 7000, 10000, 13000, 18000, 25000, 35000, 50000, 74000],
   },
   local_centralization_q_1_k_100: {
     title: "Quinto quintil segregación",
-    formatter: (d) => `${Math.round(d * 100)}%`,
+    formatter: d3.format(".0%"),
     quantiles: [-0.18, -0.12, -0.08, -0.04, 0, 0.02, 0.04, 0.06, 0.08],
   },
   local_centralization_q_5_k_100: {
     title: "Primer quintil segregación",
-    formatter: (d) => `${Math.round(d * 100)}%`,
+    formatter: d3.format(".0%"),
     quantiles: [-0.18, -0.12, -0.08, -0.04, 0, 0.02, 0.04, 0.06, 0.08],
   },
 };
 
 export const SegregacionControls = () => {
   const { color } = useCardContext();
-  const [viewState, setViewState] = useState(INITIAL_STATE);
   const { data } = useFetch(SEGREGATION_URL);
   const [legendItems, setLegendItems] = useState([]);
   const [hoverInfo, setHoverInfo] = useState();
   const [activeButton, setActiveButton] = useState("income_pc");
 
   useEffect(() => {
-    if (!data) return;
-    const values = data.features.map((feat) => feat.properties[activeButton]);
     setLegendItems(
       separateLegendItems(
-        values,
         legendMapping[activeButton].quantiles,
-        SEGREGACION_COLORS,
-        (x) => legendMapping[activeButton].formatter(x)
+        SEGREGACION_COLORS
       )
     );
-  }, [data, activeButton]);
+  }, [activeButton]);
 
   if (!data) return <Loading color={color} />;
 
   return (
     <>
-      <CustomMap viewState={viewState} setViewState={setViewState}>
+      <CustomMap viewState={INITIAL_STATE}>
         <GeoJsonLayer
           id="segregacion_layer"
           data={cleanedGeoData(data.features, activeButton)}
@@ -110,7 +102,10 @@ export const SegregacionControls = () => {
         title={legendMapping[activeButton].title}
         legendItems={legendItems}
         color={color}
+        formatter={legendMapping[activeButton].formatter}
       />
+      {/** ERROR: Por alguna razon el zoom no funciona bien si no tiene un slider */}
+      <Slider />
       {hoverInfo && hoverInfo.object && (
         <Tooltip hoverInfo={hoverInfo}>
           <span className="tooltip-label">

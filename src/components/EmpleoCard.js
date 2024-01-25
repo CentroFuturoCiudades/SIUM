@@ -16,6 +16,7 @@ import { GeoJsonLayer } from "deck.gl";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import Loading from "./Loading";
 import Tooltip from "./Tooltip";
+import { Slider } from "@chakra-ui/react";
 
 const startColor = "#998f5d";
 const endColor = "#1A57FF";
@@ -24,26 +25,19 @@ const EMPLEO_COLORS = generateGradientColors(startColor, endColor, 7);
 
 export const EmpleoControls = () => {
   const { color } = useCardContext();
-  const [viewState, setViewState] = useState(INITIAL_STATE);
   const { data } = useFetch(EMPLEO_URL);
   const [hoverInfo, setHoverInfo] = useState();
   const [legendItems, setLegendItems] = useState([]);
 
   useEffect(() => {
-    if (!data) return;
-    const valuesEmpleos = data.features.map(
-      (feat) => feat.properties["Empleos"]
-    );
-    setLegendItems(
-      separateLegendItems(valuesEmpleos, EMPLEO_QUANTILES, EMPLEO_COLORS)
-    );
-  }, [data]);
+    setLegendItems(separateLegendItems(EMPLEO_QUANTILES, EMPLEO_COLORS));
+  }, []);
 
   if (!data) return <Loading color={color} />;
 
   return (
     <>
-      <CustomMap viewState={viewState} setViewState={setViewState}>
+      <CustomMap viewState={INITIAL_STATE}>
         <GeoJsonLayer
           id="empleo_layer"
           data={cleanedGeoData(data.features, "Empleos")}
@@ -63,6 +57,7 @@ export const EmpleoControls = () => {
           getPosition={(d) => d.position}
         />
       </CustomMap>
+      <Slider />
       <Legend
         title="Número de Empleos en 2020"
         legendItems={legendItems}

@@ -30,6 +30,7 @@ import {
 import { CostosCard, CostosControls } from "../components/CostosCard";
 import { BrushingExtension } from "@deck.gl/extensions";
 import { useEffect, useState } from "react";
+import { useMediaQuery } from "@chakra-ui/react";
 
 export function colorInterpolate(value, thresholds, colors, opacity = 1) {
   // Create a scale using the thresholds and colors
@@ -343,16 +344,7 @@ export function generateGradientColors(startColor, endColor, steps) {
   return gradientColors;
 }
 
-export function separateLegendItems(
-  data,
-  thresholds,
-  colors,
-  filtering = null
-) {
-  const filteringFn =
-    filtering ||
-    ((d) => d.toLocaleString("en-US", { maximumFractionDigits: 0 }));
-
+export function separateLegendItems(thresholds, colors) {
   // Generate legend items
   const newLegendItems = thresholds.slice(0, -1).map((threshold, index) => {
     const nextThreshold = thresholds[index + 1];
@@ -360,8 +352,8 @@ export function separateLegendItems(
     const interpolatedColor = colorInterpolate(midpoint, thresholds, colors, 1);
     return {
       color: `rgba(${interpolatedColor.join(",")})`,
-      item1: filteringFn(threshold),
-      item2: filteringFn(nextThreshold),
+      item1: threshold,
+      item2: nextThreshold,
     };
   });
   return newLegendItems;

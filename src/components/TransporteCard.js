@@ -68,7 +68,6 @@ const filtering = (x, activeButton) =>
 
 export const TransporteControls = () => {
   const { color, setSharedProps } = useCardContext();
-  const [viewState, setViewState] = useState(INITIAL_STATE);
   const { data } = useFetch(TRANSPORTE_URL);
   const [activeButton, setActiveButton] = useState("General");
   const { time, isPlaying, handleSliderChange, togglePlay } =
@@ -82,7 +81,7 @@ export const TransporteControls = () => {
 
   return (
     <>
-      <CustomMap viewState={viewState} setViewState={setViewState}>
+      <CustomMap viewState={INITIAL_STATE}>
         <GeoJsonLayer
           id="masive-transport-layer"
           data={TRANSPORTE_MASIVO_URL}

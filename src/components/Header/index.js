@@ -6,11 +6,26 @@ import { Link } from "react-router-dom";
 export const Header = ({ section, color, title }) => (
   <Box bgColor={`${color}.500`} className="headerContainer">
     <Link to="/">
-      <img
-        className="headerImage"
-        src="https://tec-expansion-urbana-p.s3.amazonaws.com/general/Oficial.png"
-        alt="Tec de Monterrey"
-      />
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <img
+          className="headerImage"
+          src="tec.png"
+          alt="Tec de Monterrey"
+          style={{ width: "50%" }}
+        />
+        <img
+          className="headerImage"
+          src="femsa.png"
+          alt="Tec de Monterrey"
+          style={{ width: "30%" }}
+        />
+      </div>
     </Link>
     <Box className="titleContainer" bgColor={`${color}.500`}>
       <Heading

@@ -27,7 +27,6 @@ p {
   border-width: 0 0 0.15rem 0.15rem;
   border-radius: 0 0 0 2rem;
   height: calc(100vh - 0.5rem);
-  transition: all 0.5s ease;
   overflow: hidden;
   position: sticky;
   right: 0em;
@@ -38,7 +37,6 @@ p {
 .mapContainerMobile {
   width: 100%;
   height: calc(100dvh - 50px - 40px);
-  transition: all 0.5s ease;
   overflow: hidden;
   position: absolute;
   z-index: 0;
@@ -104,6 +102,13 @@ p {
 .legend-dash {
   margin: 0 10px;
   flex-shrink: 0;
+  line-height: 26px;
+  font-family: "Arial", Courier, monospace;
+}
+
+.legendLinear {
+  font-size: 0.6rem;
+  color: #333;
   font-family: "Arial", Courier, monospace;
 }
 /* Estilos nuevos para tooltip inicial */
@@ -115,7 +120,7 @@ p {
   border-radius: 5px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
   z-index: 1000;
-  pointer-events: none; 
+  pointer-events: none;
 }
 
 .tooltip-content {
