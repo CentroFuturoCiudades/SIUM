@@ -78,7 +78,6 @@ export const cleanedGeoData = (data, column, reversed = false) => {
     });
 };
 
-
 //lo que filtra los datos en base al tiempo para (vivienda, expansion y delincuencia)
 export const filterDataAll = (
   data,
@@ -294,7 +293,7 @@ export function countServicesLegend(data, colors) {
   const sectorColors = {};
 
   if (data) {
-    console.log("entro")
+    console.log("entro");
     data.forEach((feature) => {
       const sector = feature.properties.sector;
 
@@ -324,27 +323,24 @@ export function countServicesLegend(data, colors) {
     console.log("servicios en el area", sectorCounts);
     //return sectorCounts;
   }
-  
-  
+
   const legend = Object.entries(sectorCounts).map(([sector, count]) => ({
     item1: sector,
     item2: count,
-    color: sectorColors[sector], 
+    color: sectorColors[sector],
   }));
 }
 
 export function countServicesLegendNOREP(data, sectors, colors) {
-    
-    const legend = Object.entries(sectors).map(([sector, count]) => ({
-      item1: sector,
-      item2: count,
-      color: colors[sector], 
-    }));
-  
+  const legend = Object.entries(sectors).map(([sector, count]) => ({
+    item1: sector,
+    item2: count,
+    color: colors[sector],
+  }));
+
   //console.log(legend)
   return legend;
 }
-
 
 export const useFetch = (url, initialData = undefined) => {
   const [data, setData] = useState(initialData);
