@@ -4,7 +4,7 @@ import { interpolateRgb } from "d3-interpolate";
 import { scaleQuantile } from "d3-scale";
 import { GeoJsonLayer } from "@deck.gl/layers";
 
-import { MdHome, MdDirectionsCar, MdOutlineAttachMoney } from "react-icons/md";
+import { MdHome, MdDirectionsCar, MdOutlineAttachMoney, MdDeviceThermostat, PiThermometerHotBold } from "react-icons/md";
 import { HiMiniBuildingOffice } from "react-icons/hi2";
 import { GiHoleLadder, GiInjustice, GiRobber } from "react-icons/gi";
 import { FaPeopleArrows } from "react-icons/fa";
@@ -292,7 +292,30 @@ export function separateLegendItems(
     };
   });
   return newLegendItems;
-}
+};
+
+// Separar la leyenda por categorías
+export function separateLegendItemsByCategory(
+  data,
+  thresholds,
+  colors,
+  filtering = null
+) {
+  const filteringFn =
+    filtering ||
+    ((d) => d.toLocaleString("en-US", { maximumFractionDigits: 0 }));
+
+  // Generate legend items
+  const newLegendItems = thresholds.map((threshold, index) => {
+    // El treshold es el valor del dato
+    const interpolatedColor = colorInterpolate(threshold, thresholds, colors, 1);
+    return {
+      color: `rgba(${interpolatedColor.join(",")})`,
+      item: filteringFn(threshold),
+    };
+  });
+  return newLegendItems;
+};
 
 export const useFetch = (url, initialData = undefined) => {
   const [data, setData] = useState(initialData);
@@ -364,10 +387,10 @@ export const sectionsInfo = {
     controls: CostosControls,
   },
   islasCalor: {
-    title: "¿Por qué la expansión nos cuenta tanto dinero?",
-    answer: "Hay que llevar servicios públicos más lejos",
+    title: "¿Por qué sentimos tanto calor en la Zona Metropolitana de Monterrey?",
+    answer: "-----------------------",
     color: "teal",
-    icon: MdOutlineAttachMoney,
+    icon: MdDeviceThermostat,
     component: IslasCalorCard,
     controls: IslasCalorControls,
   },

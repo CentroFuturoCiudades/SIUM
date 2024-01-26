@@ -5,18 +5,19 @@ import {
   cleanedGeoData,
   colorInterpolate,
   separateLegendItems,
+  separateLegendItemsByCategory,
   useFetch,
 } from "../utils/constants";
 import { Chart } from "./Chart";
-import { Legend } from "./Legend";
+import { Legend } from "./CustomLegend";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import { GeoJsonLayer } from "deck.gl";
 import Loading from "./Loading";
 
 const ISLAS_CALOR_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/islas_calor.geojson";
-const SEGREGACION_CHART_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income_municipality.json";
+const ISLAS_CALOR_CHART_URL =
+  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/heat_island_municipality.json";
 const COSTOS_COLORS = [
   "rgb(255, 0, 0)",
   "rgb(255, 50, 50)",
@@ -27,6 +28,8 @@ const COSTOS_COLORS = [
   "rgb(50, 50, 255)",
   "rgb(0, 0, 255)",
 ];
+const ISLAS_CALOR_LEGEND_DATA = ["Muy frío", "Frío", "Ligeramente frío", "Templado", "Ligeramente cálido", "Caliente", "Muy caliente"]
+
 
 // Limites visuales del mapa
 const BOUNDS = {
@@ -42,11 +45,11 @@ export const IslasCalorControls = () => {
 
 
   useEffect(() => {
-    console.log(data);
+    console.log(data)
     if (!data) return;
     const values = data.features.map((feat) => feat.properties["Value"]);
     setLegendItems(
-      separateLegendItems(
+      separateLegendItemsByCategory(
         values,
         [7, 6, 5, 4, 3, 2, 1],
         COSTOS_COLORS,
@@ -66,6 +69,9 @@ export const IslasCalorControls = () => {
           getFillColor={(d) =>
             colorInterpolate(
               d.properties["Value"],
+              // [7.5, 6.5, 5.5, 4.5, 3.5, 2.5, 1.5, 0.5],
+              // COSTOS_COLORS,
+              // 1
               [7, 6, 5, 4, 3, 2, 1],
               COSTOS_COLORS,
               0.8
@@ -79,40 +85,41 @@ export const IslasCalorControls = () => {
         title={"Islas de calor"}
         legendItems={legendItems}
         color={color}
+        legendLabels={ISLAS_CALOR_LEGEND_DATA}
       />
     </>
   );
 };
 
 export function IslasCalorCard({ color }) {
-  const { data: chartData } = useFetch(SEGREGACION_CHART_URL, []);
+  const { data: chartData } = useFetch(ISLAS_CALOR_CHART_URL, []);
   return (
     <>
       <ResponseTitle color={color}>
-        Hay que llevar servicios públicos más lejos
+        -----------Respuesta------------
       </ResponseTitle>
       <p>
-        Incidencias delictivas como el robos en calles o a viviendas, así como
-        violencia familiar se concentran en regiones segregadas.
+      En las últimas tres décadas, la mancha urbana de Monterrey ha experimentado un crecimiento exponencial, triplicándose en tamaño. Este desarrollo, si bien evidencia el dinamismo de la ciudad, también conlleva riesgos ambientales, económicos y sociales. Los recursos urbanos y ambientales, que son esenciales para el bienestar de la comunidad, son finitos y deben manejarse con responsabilidad.
       </p>
       <p>
-        Estar alejado de actividades económicas como el comercio al por mayor
-        aumentan la incidencia delictiva, mientras que estar cercano a centros
-        con comercio al por menor la disminuyen.
+      La <b>'mancha urbana'</b> se refiere a la expansión continua de la ciudad en términos de construcción y desarrollo. En este contexto, es crucial destacar que esta expansión no planificada y descontrolada requiere una reconsideración urgente.
+      </p>
+      <p>
+      <b>La finitud de los recursos</b> urbanos, ambientales y la expansión aparentemente 'infinita' de la ciudad, nos hace plantearnos diversas preguntas fundamentales sobre la sostenibilidad y la gestión responsable de nuestro entorno. Enfrentar estos desafíos requiere un enfoque reflexivo y acciones concertadas para garantizar un futuro sostenible para la comunidad y el entorno en la Zona Metropolitana de Monterrey.
       </p>
       <br />
       <br />
       <ContextTitle color={color}>
-        La malas condiciones de vida en zonas marginadas contribuyen a la falta
-        de oportunidades y a la delincuencia.
+      El rápido crecimiento urbano, sumado a la escasez de infraestructura verde y a la falta de una planificación sostenible, agrava aún más este fenómeno.
       </ContextTitle>
       <Chart
         title="Islas de calor datos"
         data={chartData}
-        domain={[5000, 35000]}
-        column="income_pc"
-        columnKey="nom_mun"
-        formatter={(d) => `$${Math.round(d).toLocaleString("en-US")}`}
+        domain={[0, 0.25]}
+        column="muy_caliente"
+        columnKey="NOM_MUN"
+        formatter={(d) => `${d.toLocaleString("en-US")}`}
+        // formatter={(d) => `${Math.round(d).toLocaleString("en-US")}`}
       />
     </>
   );
