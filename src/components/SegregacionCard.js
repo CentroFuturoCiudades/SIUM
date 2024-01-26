@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import { useCardContext } from "../views/Problematica";
 import { ResponseTitle, ContextTitle } from "./Card";
 import {
+  SEGREGACION_CHART_URL,
+  SEGREGATION_URL,
   cleanedGeoData,
   colorInterpolate,
+  generateGradientColors,
   separateLegendItems,
   useFetch,
 } from "../utils/constants";
@@ -14,6 +17,10 @@ import Tooltip from "./Tooltip";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import Loading from "./Loading";
 import ButtonControls from "./ButtonControls";
+
+const startColor = "#68736d";
+const endColor = "#1A57FF";
+const SEGREGACION_COLORS = generateGradientColors(startColor, endColor, 8);
 
 const legendMapping = {
   income_pc: {
@@ -37,20 +44,6 @@ const legendMapping = {
     quantiles: [-0.18, -0.12, -0.08, -0.04, 0, 0.02, 0.04, 0.06, 0.08],
   },
 };
-const SEGREGATION_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income2.geojson";
-const SEGREGACION_CHART_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income_municipality.json";
-const SEGREGACION_COLORS = [
-  "rgb(255, 0, 0)",
-  "rgb(255, 50, 50)",
-  "rgb(255, 150, 150)",
-  "rgb(255, 200, 200)",
-  "rgb(250, 200, 250)",
-  "rgb(150, 150, 255)",
-  "rgb(50, 50, 255)",
-  "rgb(0, 0, 255)",
-];
 
 export const SegregacionControls = () => {
   const { color } = useCardContext();
@@ -160,14 +153,14 @@ export function SegregacionCard() {
       </ResponseTitle>
       <p>
         Al expandirnos en estos niveles es innevitable que ciertos grupos
-        poblacionales queden alejados de las áreas con mejores oportunidades y
-        acceso a servicios.
+        poblacionales queden alejados de las áreas con oportunidades y
+        servicios.
       </p>
       <p>
-        De igual forma, la expansión provoca que zonas con mayores ingresos
-        queden rodeadas de zonas de menor ingreso, ya que los costos del suelo
-        son más bajos, como sucede en Céntrika y Loma Larga, y en Estanzuela
-        Fomerrey y los límites de la colonia Independencia con Loma Larga.
+        La expansión provoca que zonas con mayores ingresos queden rodeadas de
+        zonas de menor ingreso, ya que los costos del suelo son más bajos, como
+        sucede en Céntrika y Loma Larga, y en Estanzuela Fomerrey y los límites
+        de la colonia Independencia con Loma Larga.
       </p>
       <p>
         Integrar las zonas marginadas e informales por medio de transporte
@@ -175,8 +168,6 @@ export function SegregacionCard() {
         Similarmente, se deben de generar políticas de vivienda asequible menos
         desconectadas de las zonas funcionales de la ciudad.
       </p>
-      <br />
-      <br />
       <ContextTitle color={color}>
         La segregación aleja y separa, tanto de nosotros mismos, como de áreas
         urbanas imprescindibles para el desarrollo humano pleno.

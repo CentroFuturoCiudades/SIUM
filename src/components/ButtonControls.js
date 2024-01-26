@@ -1,16 +1,8 @@
-import { Button, ButtonGroup } from "@chakra-ui/react";
+import { Select } from "@chakra-ui/react";
 
 const ButtonControls = ({ activeButton, setActiveButton, mapping, color }) => {
-  function handleDataChange(event) {
-    const buttonId = event.target.id;
-    setActiveButton(buttonId);
-  }
   return (
-    <ButtonGroup
-      size="sm"
-      isAttached
-      colorScheme={color}
-      variant="solid"
+    <div
       style={{
         position: "absolute",
         top: "10px",
@@ -19,17 +11,25 @@ const ButtonControls = ({ activeButton, setActiveButton, mapping, color }) => {
         justifyContent: "center",
       }}
     >
-      {mapping.map((button) => (
-        <Button
-          key={`button-${button.id}`}
-          id={button.id}
-          onClick={handleDataChange}
-          isActive={activeButton === button.id}
-        >
-          {button.name}
-        </Button>
-      ))}
-    </ButtonGroup>
+      <Select
+        width="50%"
+        variant="outline"
+        bg={`${color}.600`}
+        borderColor={`${color}.600`}
+        backgroundColor={`${color}.600`}
+        color="white"
+        focusBorderColor={`${color}.600`}
+        onChange={(e) => setActiveButton(e.target.value)}
+        value={activeButton}
+        margin="auto"
+      >
+        {mapping.map((button) => (
+          <option value={button.id} key={`button-${button.id}`}>
+            {button.name}
+          </option>
+        ))}
+      </Select>
+    </div>
   );
 };
 

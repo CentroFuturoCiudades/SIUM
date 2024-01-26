@@ -1,17 +1,12 @@
 import { useState } from "react";
 import { ResponseTitle, ContextTitle } from "./Card";
-import {
-  cleanedGeoData,
-  colorInterpolate,
-  useFetch,
-} from "../utils/constants";
+import { COSTOS_URL, cleanedGeoData, colorInterpolate, useFetch } from "../utils/constants";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import { GeoJsonLayer } from "deck.gl";
 import { BrushingExtension } from "@deck.gl/extensions";
 import Loading from "./Loading";
+import Tooltip2 from "./Tooltip2";
 
-const COSTOS_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson";
 const COSTOS_COLORS = [
   "rgb(255, 0, 0)",
   "rgb(255, 50, 50)",
@@ -27,6 +22,7 @@ export const CostosControls = () => {
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const { data } = useFetch(COSTOS_URL);
   const [brushingRadius, setBrushingRadius] = useState(5000);
+  const [hoverInfo, setHoverInfo] = useState();
 
   const handleRadioChange = (event) => {
     switch (event.target.value) {
@@ -63,6 +59,10 @@ export const CostosControls = () => {
           }
           getLineColor={[118, 124, 130]}
           getLineWidth={5}
+          onHover={(info) => setHoverInfo(info)}
+          pickable={true}
+          autoHighlight={true}
+          getPosition={(d) => d.position}
           brushingEnabled={true}
           brushingRadius={brushingRadius}
           extensions={[new BrushingExtension()]}
@@ -98,6 +98,22 @@ export const CostosControls = () => {
         />
         <label htmlFor="caminando"> Caminando </label>
       </form>
+      {hoverInfo && hoverInfo.object && (
+        <Tooltip2 hoverInfo={hoverInfo}>
+          <span className="tooltip-label">
+            <b>num_crimen:</b> {hoverInfo.object.properties["num_crimen"]}
+          </span>
+          <span className="tooltip-label">
+            <b>robo_transeunte:</b> {hoverInfo.object.properties["robo_transeunte"]}
+          </span>
+          <span className="tooltip-label">
+            <b>robo_casa:</b> {hoverInfo.object.properties["robo_casa"]}
+          </span>
+          <span className="tooltip-label">
+            <b>violencia_familiar:</b> {hoverInfo.object.properties["violencia_familiar"]}
+          </span>
+        </Tooltip2>
+      )}
     </>
   );
 };

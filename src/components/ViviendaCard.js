@@ -5,6 +5,9 @@ import {
   separateLegendItems,
   filterDataAll,
   useFetch,
+  VIVIENDA_URL,
+  VIVIENDA_CHART_URL,
+  generateGradientColors,
 } from "../utils/constants";
 import { Chart } from "./Chart";
 import { GeoJsonLayer } from "@deck.gl/layers";
@@ -13,6 +16,14 @@ import { colorInterpolate } from "../utils/constants";
 import { Legend } from "./Legend";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import Loading from "./Loading";
+import Tooltip from "./Tooltip";
+
+const startColor = "#605631";
+const endColor = "#1A57FF";
+const VIVIENDA_QUANTILES = [
+  160000, 400000, 500000, 600000, 800000, 1000000, 1200000, 1800000,
+];
+const VIVIENDA_COLORS = generateGradientColors(startColor, endColor, 8);
 
 const marks = [
   { value: 2000, label: "2000" },
@@ -22,38 +33,24 @@ const marks = [
   { value: 2020, label: "2020" },
 ];
 
-const VIVIENDA_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda-hex.geojson";
-const VIVIENDA_CHART_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda_municipality.json";
-const VIVIENDA_COLORS = [
-  "rgb(255, 0, 0)",
-  "rgb(255, 50, 50)",
-  "rgb(255, 150, 150)",
-  "rgb(255, 200, 200)",
-  "rgb(250, 200, 250)",
-  "rgb(150, 150, 255)",
-  "rgb(50, 50, 255)",
-  "rgb(0, 0, 255)",
-];
-
 export const ViviendaControls = () => {
   const { color, setSharedProps } = useCardContext();
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const { data } = useFetch(VIVIENDA_URL);
   const [legendItems, setLegendItems] = useState([]);
+  const [hoverInfo, setHoverInfo] = useState();
   const { time, isPlaying, handleSliderChange, togglePlay } =
     TimeComponentClean(2000, 2020, 5, 2000, false, 2020);
 
   useEffect(() => {
     if (!data) return;
     const valuesPrecio = data.features.map(
-      (feat) => feat.properties["IM_PRECIO_VENTA"]
+      (feat) => feat.properties["PRECIO_AJUSTADO"]
     );
     setLegendItems(
       separateLegendItems(
         valuesPrecio,
-        [200000, 300000, 400000, 500000, 700000, 800000, 900000, 1025000],
+        VIVIENDA_QUANTILES,
         VIVIENDA_COLORS,
         (x) =>
           x.toLocaleString("en-US", {
@@ -76,17 +73,21 @@ export const ViviendaControls = () => {
       <CustomMap viewState={viewState} setViewState={setViewState}>
         <GeoJsonLayer
           id="vivienda_layer"
-          data={filterDataAll(data, time, "IM_PRECIO_VENTA", true, "year_end")}
+          data={filterDataAll(data, time, "PRECIO_AJUSTADO", true, "year_end")}
           getFillColor={(d) =>
             colorInterpolate(
-              d.properties["IM_PRECIO_VENTA"],
-              [200000, 300000, 400000, 500000, 700000, 800000, 900000, 1025000],
+              d.properties["PRECIO_AJUSTADO"],
+              VIVIENDA_QUANTILES,
               VIVIENDA_COLORS,
               0.8
             )
           }
           getLineColor={[118, 124, 130]}
           getLineWidth={5}
+          onHover={(info) => setHoverInfo(info)}
+          pickable={true}
+          autoHighlight={true}
+          getPosition={(d) => d.position}
         />
       </CustomMap>
       <Legend
@@ -105,6 +106,29 @@ export const ViviendaControls = () => {
         handleSliderChange={handleSliderChange}
         marks={marks}
       />
+      {hoverInfo && hoverInfo.object && (
+        <Tooltip hoverInfo={hoverInfo}>
+          <span className="tooltip-label">
+            <b>Año en venta:</b> {hoverInfo.object.properties["year_end"]}
+          </span>
+          <span className="tooltip-label">
+            <b>Precio de venta:</b>{" "}
+            {hoverInfo.object.properties["IM_PRECIO_VENTA"].toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+              maximumFractionDigits: 0,
+            })}
+          </span>
+          <span className="tooltip-label">
+            <b>Precio ajustado a la inflación:</b>{" "}
+            {hoverInfo.object.properties["PRECIO_AJUSTADO"].toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+              maximumFractionDigits: 0,
+            })}
+          </span>
+        </Tooltip>
+      )}
     </>
   );
 };
@@ -119,21 +143,20 @@ export function ViviendaCard() {
         La vivienda es más asequible en las periferias
       </ResponseTitle>
       <p>
-        La zona central de Monterrey se ha ido transformando en una zona
-        comercial sin residentes: los hogares migran y los comercios se quedan.
-        El centro es la zona mejor conectada de la ciudad porque, durante
-        décadas, la mejor infrastructura de transporte y vialidades se construyó
-        para conectar la zona del empleo, el centro, con el resto de las zonas
+        La zona central de Monterrey se ha transformado en una zona comercial,
+        sin residentes: los hogares migran y los comercios se quedan. El centro
+        es la zona mejor conectada de la ciudad porque, durante décadas, la
+        mejor infrastructura de transporte y vialidades se construyó para
+        conectar el empleo, en el centro, con el resto de las zonas
         residenciales. El centro es la zona mejor conectada y accesible de la
         ciudad y eso le otorga un gran valor comercial, y por tanto, un alto
         valor a su suelo. El alto valor del suelo hace inviable la producción de
-        vivienda asequible en la zona central de la ciudad; la vivienda
-        económica se construye en las periferias urbanas y hacia allá migran los
-        hogares en busca de un espacio para poder habitar.
+        vivienda asequible en la zona central; la vivienda económica se
+        construye en las periferias urbanas.
       </p>
       <ContextTitle color={color}>
-        Aunque los costos de la vivienda son menores en las periferias, otros
-        costos se elevan, aumentando la desigualdad.
+        Aunque los costos de la vivienda sean menores en las periferias, otros
+        costos se elevan, aumentando desigualdad.
       </ContextTitle>
       <Chart
         title={`Número de Creditos acumulados en ${sharedProps.time}`}

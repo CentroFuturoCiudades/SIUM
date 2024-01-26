@@ -20,6 +20,12 @@
   width: 100%;
 }
 
+.titleContainerMobile {
+  transition: all 0.5s ease;
+  border-radius: 1.2rem 1.2rem 0 0;
+  width: 100%;
+}
+
 .title {
   transition: all 0.5s ease;
   padding: 1rem;
@@ -33,4 +39,27 @@
   line-height: 1.6rem;
   margin-bottom: 0.3rem;
   font-weight: 700;
+}
+
+.titleMobile {
+  position: absolute;
+  transition: all 0.5s ease;
+  padding: 1rem;
+  border: 0.14rem solid;
+  border-radius: 1.2rem 1.2rem 0 0;
+  font-family: Inter;
+  text-transform: uppercase;
+  font-size: 1.3rem;
+  background-color: white;
+  text-align: center;
+  line-height: 1.6rem;
+  margin-bottom: 0.3rem;
+  font-weight: 700;
+  top: 0;
+  max-height: 50px;
+  min-height: 50px;
+  height: 50px;
+  width: 100%;
+  cursor: pointer;
+  z-index: 2;
 }

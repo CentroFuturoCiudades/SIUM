@@ -43,3 +43,30 @@ export const Sidebar = ({ section, setSection }) => {
     </Box>
   );
 };
+
+export const BarMobile = ({ section, setSection }) => {
+  function goToSection(url) {
+    setSection(url);
+  }
+  return (
+    <Box className="sidebarMobile" bgColor="blackAlpha.400">
+      <div className="sidebarContainerMobile">
+        {Object.keys(sectionsInfo).map((k) => (
+          <Button
+            key={k}
+            className="sidebarItem"
+            size="md"
+            variant="solid"
+            colorScheme={sectionsInfo[k].color}
+            bgColor={`${sectionsInfo[k].color}.300`}
+            isActive={section === k}
+            onClick={() => goToSection(k)}
+            style={{ padding: "0.8rem" }}
+          >
+            <Icon as={sectionsInfo[k].icon} boxSize={5} color="white" />
+          </Button>
+        ))}
+      </div>
+    </Box>
+  );
+};

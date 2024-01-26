@@ -12,7 +12,7 @@ import { GeoJsonLayer } from "deck.gl";
 import { memo, useCallback, useMemo, useState } from "react";
 import _ from "lodash";
 import { Heading } from "@chakra-ui/react";
-import { useFetch } from "../utils/constants";
+import { DATA_URL, useFetch } from "../utils/constants";
 import { useCardContext } from "../views/Problematica";
 
 const mappingNames = {
@@ -72,7 +72,8 @@ export const Chart = ({
 }) => {
   const { setOutline } = useCardContext();
   const { data: municipalityData } = useFetch(
-    "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/div-municipal.geojson"
+    `${DATA_URL}/div-municipal.geojson`,
+    {}
   );
   let filteredData = useMemo(
     () =>
@@ -116,7 +117,7 @@ export const Chart = ({
   );
 
   return (
-    <div style={{ position: "absolute", bottom: "0", width: "100%" }}>
+    <div>
       <ResponsiveContainer width="100%" height={220}>
         <BarChart layout="vertical" data={filteredData} barCategoryGap={0}>
           <XAxis
