@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useCardContext } from "../views/Problematica";
 import { ResponseTitle, ContextTitle } from "./Card";
 import {
+  POB05_URL,
+  SERVICIOS_URL,
   cleanedGeoData,
   colorInterpolate,
   countServicesLegendNOREP,
@@ -14,12 +16,6 @@ import { CustomMap, SPECIAL_INFANCIAS_STATE } from "./CustomMap";
 import { BrushingExtension } from "@deck.gl/extensions";
 
 import Loading from "./Loading";
-
-const POB05_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/pob_infancia.geojson";
-
-const SERVICIOS_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/denue_infancia.geojson";
 
 const startColor = "#998f5d";
 const endColor = "#1A57FF";
@@ -217,36 +213,24 @@ export function InfanciasCard() {
         Principalmente en el centro, aunque hay nuevas centralidades.
       </ResponseTitle>
       <p>
-        La migración de las familias jóvenes hacia la periferia provoca una
-        disminución de la población en centros y subcentros urbanos, generando
-        un aumento en los desplazamientos hacia los lugares de empleo.
+        Las familias jóvenes con primeras infancias (0-5 años de edad) han
+        migrado hacia las periferias, en donde existe una cobertura reducida o
+        nula de servicios de proximidad: educativos, de salud y comercial. En
+        contraste, en las zonas centrales en donde hay una mayor oferta de
+        servicios, la población infantil es menor.
       </p>
       <p>
-        Aunque{" "}
-        <b>
-          la mayoría de los empleos continúan concentrándose en el centro, a
-          unos diez kilómetros alrededor de la Macroplaza
-        </b>
-        , también han surgido nuevas centralidades. En 2010, el 53% de los
-        empleos se concentraba en esta zona, cifra que disminuyó al 47% para el
-        año 2020. Destaca que los{" "}
-        <b>
-          ritmos de crecimiento de los centros de empleo son menores en
-          comparación con la migración residencial hacia la periferia urbana.
-        </b>
-      </p>
-      <p>
-        Durante el periodo de 1990 a 2020, la población de la Zona Metropolitana
-        de Monterrey se duplicó, mientras que la expansión de la mancha urbana
-        creció a un ritmo de 2.8 veces,{" "}
-        <b>
-          incrementando el tiempo de traslado a diferentes servicios y
-          equipamientos.
-        </b>
+        Si sumamos a este desequilibrio, condiciones de asentamientos
+        autoproducidos como en el polígono de la Iniciativa Campana-Altamira,
+        los rezagos de acceso a servicios son más evidentes. Por esto es clave
+        promover políticas que permitan una ciudad conectada, accesible y de
+        proximidad.
       </p>
       <ContextTitle color={color}>
-        Incrementar la atracción de personas a centros y subcentros urbanos para
-        una mejor accesibilidad a empleos.
+        De acuerdo con el Marco para el Cuidado Cariñoso y Sensible, liderado
+        por UNICEF, las necesidades de las primeras infancias se deben
+        garantizar a través de servicios de salud, nutrición óptima,
+        oportunidades para el aprendizaje, protección y seguridad.
       </ContextTitle>
     </>
   );

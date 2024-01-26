@@ -134,6 +134,8 @@ export const SEGREGACION_CHART_URL = `${DATA_URL}/income_municipality.json`;
 export const DELINCUENCIA_URL = `${DATA_URL}/crimen-hex.geojson`;
 export const DELINCUENCIA_CHART_URL = `${DATA_URL}/crimen_municipality.json`;
 export const COSTOS_URL = `${DATA_URL}/crimen-hex.geojson`;
+export const POB05_URL = `${DATA_URL}/pob_infancia.geojson`;
+export const SERVICIOS_URL = `${DATA_URL}/denue_infancia.geojson`;
 
 export const PERIPHERIES = [
   "Juárez",
@@ -484,8 +486,8 @@ export const sectionsInfo = {
     controls: CostosControls,
   },
   infancias: {
-    title: "Infancias",
-    answer: "Infancias answer",
+    title: "¿Por qué la expansión limita el desarrollo de la primera infancia?",
+    answer: "La oferta de servicios de proximidad no corresponde con las zonas donde viven las infancias tempranas.",
     color: "blue",
     icon: MdOutlineFamilyRestroom,
     component: InfanciasCard,

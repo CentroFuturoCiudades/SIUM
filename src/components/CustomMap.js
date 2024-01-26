@@ -41,7 +41,7 @@ export function CustomMap({ viewState, infanciasHover, children }) {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
   const [processedViewState, setProcessedViewState] = useState({
     ...viewState,
-    zoom: isMobile ? 8 : 9.5,
+    zoom: isMobile ? viewState.zoom * 0.9 : viewState.zoom,
   });
   const { outline } = useCardContext();
   const zoomIn = () => {
@@ -61,7 +61,7 @@ export function CustomMap({ viewState, infanciasHover, children }) {
   };
 
   useEffect(() => {
-    setProcessedViewState({ ...processedViewState, zoom: isMobile ? 8 : 9.5 });
+    setProcessedViewState({ ...processedViewState, zoom: isMobile ? viewState.zoom * 0.9 : viewState.zoom });
   }, [isMobile]);
 
   return (
