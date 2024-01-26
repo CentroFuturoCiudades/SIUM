@@ -1,20 +1,56 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Button, Flex, Heading, VStack, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Spacer, Text } from '@chakra-ui/react';
 import DeckGL from '@deck.gl/react';
 import { Map } from 'react-map-gl';
 import { GeoJsonLayer } from '@deck.gl/layers';
 import FileSaver from 'file-saver';
+import { cleanedGeoData, colorInterpolate } from "../utils/constants";
 
 const datosMapas = [
-    {name: "Periferia", description: "lorem ipsun", url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/div-municipal.geojson", column: "CVEGEO"},
-    {name: "Transporte", description: "lorem ipsun", url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte-masivo.geojson", column: "MultiLineString"},
-    {name: "Segregacion", description: "lorem ipsun", url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/pobres.geojson", column: "income_pc"},
-    {name: "Crecimiento", description: "lorem ipsun", url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob-1990-2020.geojson", column: "income_pc"},
-    {name: "Empleo", description: "lorem ipsun", url: "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2010_Municipios_Geo2.json", column: "income_pc"},
-    {name: "Vivienda", description: "lorem ipsun", url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda-hex.geojson", column: "income_pc"},
-    {name: "Segregacion", description: "lorem ipsun", url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income.geojson", column: "income_pc"},
-    {name: "Delicuencia", description: "lorem ipsun", url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson", column: "income_pc"},
-  ]
+  {
+    name: "Delincuencia",
+    description: "Mapa de delincuencia",
+    url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson",
+    column: "num_crimen",
+  },
+  {
+    name: "Empleo",
+    description: "Mapa de empleo",
+    url: "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2020_Municipios_Geo.json",
+    column: "Empleos",
+  },
+  {
+    name: "Crecimiento",
+    description: "Mapa de crecimiento",
+    url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob.geojson",
+    column: "1990", 
+  },
+  {
+    name: "Segregación",
+    description: "Mapa de ingresos",
+    url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income2.geojson",
+    column: "income_pc",
+  },
+  {
+    name: "Vivienda",
+    description: "Mapa de vivienda",
+    url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda-hex.geojson",
+    column: "IM_PRECIO_VENTA",
+  },
+  {
+    name: "Costos",
+    description: "Mapa de costos",
+    url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income.geojson",
+    column: "local_centralization_q_5_k_100",
+  },
+  {
+    name: "Transporte",
+    description: "Mapa de Transporte",
+    url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/TRANSPORTEJEANNETTE.geojson",
+    column: "Regreso A Casa",
+  },
+  
+];
 
   const INITIAL_VIEW_STATE = {
     latitude: 25.675,
@@ -25,61 +61,74 @@ const datosMapas = [
   };
 
   const DescargaDatos = () => {
-    // Estado para el mapa seleccionado
     const [selectedMap, setSelectedMap] = useState(datosMapas[0]);
-    const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
-    const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const [originalData, setOriginalData] = useState(null);
+  const [layers, setLayers] = useState([]);
 
-    const mapContainerRef = useRef();
-    const deckRef = useRef();
-    const mapRef = useRef();
+  const mapContainerRef = useRef();
+  const deckRef = useRef();
+  const mapRef = useRef();
 
-    // Función para manejar la descarga del archivo GeoJSON
-    const handleDownload = async (map) => {
-      const response = await fetch(map.url);
-      if (response.status === 200) {
-        const blob = await response.blob();
-        const downloadUrl = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = downloadUrl;
-        link.setAttribute('download', `${map.name}.geojson`);
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode.removeChild(link);
-      } else {
-        console.error('No se pudo descargar el archivo GeoJSON.');
-      }
-    };
+  useEffect(() => {
+    fetch(selectedMap.url)
+      .then((response) => response.json())
+      .then((data) => setOriginalData(data))
+      .catch((error) => console.error("Error cargando el GeoJSON:", error));
+  }, [selectedMap]);
 
-    const handleDownloadImage = useCallback(() => {
-      if (isMapLoaded && deckRef.current && mapRef.current) {
-        const mapboxCanvas = mapRef.current.getMap().getCanvas();
-        const deckCanvas = deckRef.current.deck.canvas;
-  
-        let mergeCanvas = document.createElement("canvas");
-        mergeCanvas.width = mapboxCanvas.width;
-        mergeCanvas.height = mapboxCanvas.height;
-  
-        const context = mergeCanvas.getContext("2d");
-        context.drawImage(mapboxCanvas, 0, 0);
-        context.drawImage(deckCanvas, 0, 0);
-  
-        mergeCanvas.toBlob(blob => {
-          FileSaver.saveAs(blob, `${selectedMap.name}.png`);
-        });
-      }
-    }, [isMapLoaded, selectedMap.name]);
-  
+  useEffect(() => {
+    if (originalData) {
+      setLayers([
+        new GeoJsonLayer({
+          id: `${selectedMap.name}-layer`,
+          data: originalData,
+          dataTransform: (d) => cleanedGeoData(d.features, selectedMap.column),
+          getFillColor: (d) =>
+            colorInterpolate(d.properties.normalized, "blue", "red", 1),
+          getLineColor: (d) =>
+            colorInterpolate(d.properties.normalized, "blue", "red", 0.5),
+          getLineWidth: 10,
+        }),
+      ]);
+    }
+  }, [originalData, selectedMap]);
 
-    const layer = new GeoJsonLayer({
-      id: 'geojson-layer',
-      data: selectedMap.url,
-      filled: true,
-      stroked: true,
-      lineWidthMinPixels: 2,
-      getFillColor: [160, 160, 180, 200],
-      getLineColor: [0, 0, 0, 255],
-    });
+  const handleDownload = async (map) => {
+    const response = await fetch(map.url);
+    if (response.status === 200) {
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.setAttribute('download', `${map.name}.geojson`);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    } else {
+      console.error('No se pudo descargar el archivo GeoJSON.');
+    }
+  };
+
+  const handleDownloadImage = useCallback(() => {
+    if (isMapLoaded && deckRef.current && mapRef.current) {
+      const mapboxCanvas = mapRef.current.getMap().getCanvas();
+      const deckCanvas = deckRef.current.deck.canvas;
+
+      let mergeCanvas = document.createElement("canvas");
+      mergeCanvas.width = mapboxCanvas.width;
+      mergeCanvas.height = mapboxCanvas.height;
+
+      const context = mergeCanvas.getContext("2d");
+      context.drawImage(mapboxCanvas, 0, 0);
+      context.drawImage(deckCanvas, 0, 0);
+
+      mergeCanvas.toBlob(blob => {
+        FileSaver.saveAs(blob, `${selectedMap.name}.png`);
+      });
+    }
+  }, [isMapLoaded, selectedMap.name]);
   
     return (
       <Flex h="100vh" direction={{ base: 'column', md: 'row' }}>
@@ -114,7 +163,7 @@ const datosMapas = [
         ref={deckRef}
           viewState={viewState}
           onViewStateChange={({ viewState }) => setViewState(viewState)}
-          layers={[layer]}
+          layers={[layers]}
           controller={true}
           onLoad={() => setIsMapLoaded(true)}
           id="deck-gl-canvas"
