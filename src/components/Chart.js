@@ -103,6 +103,13 @@ export const Chart = ({
           getLineColor: [255, 174, 0, 250],
           getLineWidth: 120,
         },
+        // props: {
+        //   id: "municipality-layer",
+        //   data: municipalityData.features,
+        //   getFillColor: [255, 174, 0, 0],
+        //   getLineColor: [255, 174, 0, 250],
+        //   getLineWidth: 120,
+        // },
       });
       setActiveMunicipality(activeLabel);
     },

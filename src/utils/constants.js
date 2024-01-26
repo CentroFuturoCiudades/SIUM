@@ -4,7 +4,14 @@ import { interpolateRgb } from "d3-interpolate";
 import { scaleQuantile } from "d3-scale";
 import { GeoJsonLayer } from "@deck.gl/layers";
 
-import { MdHome, MdDirectionsCar, MdOutlineAttachMoney, MdOutlineFamilyRestroom } from "react-icons/md";
+import {
+  MdHome,
+  MdDirectionsCar,
+  MdOutlineAttachMoney,
+  MdOutlineFamilyRestroom,
+  MdDeviceThermostat,
+  PiThermometerHotBold,
+} from "react-icons/md";
 import { HiMiniBuildingOffice } from "react-icons/hi2";
 import { GiHoleLadder, GiInjustice, GiRobber } from "react-icons/gi";
 import { FaPeopleArrows } from "react-icons/fa";
@@ -27,8 +34,13 @@ import {
   DelincuenciaCard,
   DelincuenciaControls,
 } from "../components/DelincuenciaCard";
+
 import { CostosCard, CostosControls } from "../components/CostosCard";
 import { InfanciasCard, InfanciasControls } from "../components/InfanciasCard";
+import {
+  IslasCalorCard,
+  IslasCalorControls,
+} from "../components/IslasCalorCard";
 import { BrushingExtension } from "@deck.gl/extensions";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "@chakra-ui/react";
@@ -362,6 +374,34 @@ export function separateLegendItems(thresholds, colors) {
   return newLegendItems;
 }
 
+// Separar la leyenda por categorías
+export function separateLegendItemsByCategory(
+  data,
+  thresholds,
+  colors,
+  filtering = null
+) {
+  const filteringFn =
+    filtering ||
+    ((d) => d.toLocaleString("en-US", { maximumFractionDigits: 0 }));
+
+  // Generate legend items
+  const newLegendItems = thresholds.map((threshold, index) => {
+    // El treshold es el valor del dato
+    const interpolatedColor = colorInterpolate(
+      threshold,
+      thresholds,
+      colors,
+      1
+    );
+    return {
+      color: `rgba(${interpolatedColor.join(",")})`,
+      item: filteringFn(threshold),
+    };
+  });
+  return newLegendItems;
+}
+
 export function countServicesLegend(data, colors) {
   const sectorCounts = {};
   const sectorColors = {};
@@ -487,10 +527,20 @@ export const sectionsInfo = {
   },
   infancias: {
     title: "¿Por qué la expansión limita el desarrollo de la primera infancia?",
-    answer: "La oferta de servicios de proximidad no corresponde con las zonas donde viven las infancias tempranas.",
+    answer:
+      "La oferta de servicios de proximidad no corresponde con las zonas donde viven las infancias tempranas.",
     color: "blue",
     icon: MdOutlineFamilyRestroom,
     component: InfanciasCard,
     controls: InfanciasControls,
+  },
+  islasCalor: {
+    title:
+      "¿Por qué sentimos tanto calor en la Zona Metropolitana de Monterrey?",
+    answer: "-----------------------",
+    color: "teal",
+    icon: MdDeviceThermostat,
+    component: IslasCalorCard,
+    controls: IslasCalorControls,
   },
 };
