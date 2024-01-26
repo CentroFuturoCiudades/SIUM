@@ -4,7 +4,7 @@ import { ResponseTitle, ContextTitle } from "./Card";
 import {
   cleanedGeoData,
   colorInterpolate,
-  separateLegendItems,
+  generateGradientColors,
   separateLegendItemsByCategory,
   useFetch,
 } from "../utils/constants";
@@ -14,11 +14,17 @@ import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import { GeoJsonLayer } from "deck.gl";
 import Loading from "./Loading";
 
+// Usar paleta de segregación
+// const startColor = "#68736d";
+// const endColor = "#1A57FF";
+// const ISLAS_CALOR_COLORS = generateGradientColors(startColor, endColor, 8);
+
 const ISLAS_CALOR_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/islas_calor.geojson";
 const ISLAS_CALOR_CHART_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/heat_island_municipality.json";
-const COSTOS_COLORS = [
+
+const ISLAS_CALOR_COLORS = [
   "rgb(255, 0, 0)",
   "rgb(255, 50, 50)",
   "rgb(255, 150, 150)",
@@ -29,13 +35,6 @@ const COSTOS_COLORS = [
   "rgb(0, 0, 255)",
 ];
 const ISLAS_CALOR_LEGEND_DATA = ["Muy frío", "Frío", "Ligeramente frío", "Templado", "Ligeramente cálido", "Caliente", "Muy caliente"]
-
-
-// Limites visuales del mapa
-const BOUNDS = {
-  ne: [-100.250481, 26.871651], // Noreste
-  sw: [-100.66336, 25.492987]  // Suroeste
-};
 
 export const IslasCalorControls = () => {
   const { color } = useCardContext();
@@ -52,7 +51,7 @@ export const IslasCalorControls = () => {
       separateLegendItemsByCategory(
         values,
         [7, 6, 5, 4, 3, 2, 1],
-        COSTOS_COLORS,
+        ISLAS_CALOR_COLORS,
       )
     );
   }, [data]);
@@ -69,11 +68,8 @@ export const IslasCalorControls = () => {
           getFillColor={(d) =>
             colorInterpolate(
               d.properties["Value"],
-              // [7.5, 6.5, 5.5, 4.5, 3.5, 2.5, 1.5, 0.5],
-              // COSTOS_COLORS,
-              // 1
               [7, 6, 5, 4, 3, 2, 1],
-              COSTOS_COLORS,
+              ISLAS_CALOR_COLORS,
               0.8
             )
           }
@@ -91,8 +87,10 @@ export const IslasCalorControls = () => {
   );
 };
 
-export function IslasCalorCard({ color }) {
+export function IslasCalorCard() {
+  const { color, setOutline } = useCardContext();
   const { data: chartData } = useFetch(ISLAS_CALOR_CHART_URL, []);
+
   return (
     <>
       <ResponseTitle color={color}>
@@ -105,7 +103,6 @@ export function IslasCalorCard({ color }) {
 
       En el centro de la Zona Metropolitana de Monterrey, la alta densidad de edificaciones junto con la falta de espacios verdes como parques, jardines, camellones y áreas arboladas, juega un papel crucial en el incremento de las temperaturas, en contraste con las zonas menos urbanizadas. Las infraestructuras urbanas, principalmente compuestas por materiales como asfalto y concreto que son impermeables y retienen el calor, contribuyen significativamente a este fenómeno. Durante el día, estos materiales acumulan calor, que luego liberan gradualmente durante la noche. Este proceso intensifica el efecto isla de calor, repercutiendo adversamente en la salud, en la calidad de vida y en el costo de vida de los residentes, especialmente durante los meses de verano.
       </p>
-      <br />
       <br />
       <ContextTitle color={color}>
       El rápido crecimiento urbano, sumado a la escasez de infraestructura verde y a la falta de una planificación sostenible, agrava aún más este fenómeno.
