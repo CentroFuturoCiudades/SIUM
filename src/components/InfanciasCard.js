@@ -210,7 +210,7 @@ export function InfanciasCard() {
   return (
     <>
       <ResponseTitle color={color}>
-        Principalmente en el centro, aunque hay nuevas centralidades.
+        La oferta de servicios de proximidad no corresponde con las zonas donde viven las infancias tempranas.
       </ResponseTitle>
       <p>
         Las familias jóvenes con primeras infancias (0-5 años de edad) han
