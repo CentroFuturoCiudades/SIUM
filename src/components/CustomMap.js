@@ -27,7 +27,17 @@ export const INITIAL_STATE = {
   maxZoom: 14,
 };
 
-export function CustomMap({ viewState, children }) {
+//nueva para infancias
+export const SPECIAL_INFANCIAS_STATE = {
+  latitude: 25.65534,
+  longitude: -100.30427,
+  zoom: 13.2,
+  transitionDuration: 800,
+  pitch: 0,
+  bearing: 0,
+};
+
+export function CustomMap({ viewState, infanciasHover, children }) {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
   const [processedViewState, setProcessedViewState] = useState({
     ...viewState,
@@ -61,6 +71,7 @@ export function CustomMap({ viewState, children }) {
         viewState={processedViewState}
         onViewStateChange={({ viewState }) => setProcessedViewState(viewState)}
         controller={DECK_GL_CONTROLLER}
+        onHover={infanciasHover}
       >
         <Map
           width="100%"
