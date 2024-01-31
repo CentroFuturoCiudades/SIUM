@@ -5,6 +5,9 @@ import { Map } from "react-map-gl";
 import mapboxgl from "mapbox-gl";
 import { GeoJsonLayer } from "deck.gl";
 import { useCardContext } from "../views/Problematica";
+import { useFetch } from "../utils/constants";
+import Loading from "./Loading";
+
 
 mapboxgl.workerClass =
   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
@@ -27,6 +30,8 @@ export const INITIAL_STATE = {
 
 export function CustomMap({ viewState, setViewState, children }) {
   const { outline } = useCardContext();
+  const { data: municipalityData } = useFetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/div-municipal.geojson");
+
   const zoomIn = () => {
     setViewState((v) => ({ ...v, zoom: v.zoom + 1, transitionDuration: 100 }));
   };
@@ -34,6 +39,8 @@ export function CustomMap({ viewState, setViewState, children }) {
   const zoomOut = () => {
     setViewState((v) => ({ ...v, zoom: v.zoom - 1, transitionDuration: 100 }));
   };
+
+  if (!municipalityData) return <Loading />;
 
   return (
     <>
@@ -50,7 +57,14 @@ export function CustomMap({ viewState, setViewState, children }) {
           mapboxAccessToken="pk.eyJ1IjoidXJpZWxzYTk2IiwiYSI6ImNsbnV2MzBkZDBlajYya211bWk2eTNuc2MifQ.ZnhFC3SyhckuIQBLO59HxA"
         />
         {children}
-        {outline ? <GeoJsonLayer {...outline.props} /> : null}
+        <GeoJsonLayer
+          id="municipality-layer"
+          data={municipalityData.features}
+          getFillColor={[128, 174, 0, 0]}
+          getLineColor={[128, 128, 128, 100]}
+          getLineWidth={120}
+          />
+        {outline ? <GeoJsonLayer {...outline.props} /> : null }
       </DeckGL>
       <div style={{ position: "absolute", top: 10, right: 10, zIndex: 10 }}>
         <ButtonGroup isAttached size="sm" colorScheme="blackAlpha">

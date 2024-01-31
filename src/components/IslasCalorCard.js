@@ -14,26 +14,16 @@ import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import { GeoJsonLayer } from "deck.gl";
 import Loading from "./Loading";
 
-// Usar paleta de segregación
-// const startColor = "#68736d";
-// const endColor = "#1A57FF";
-// const ISLAS_CALOR_COLORS = generateGradientColors(startColor, endColor, 8);
+// Paleta de segregación
+const startColor = "#68736d";
+const endColor = "#1A57FF";
+const ISLAS_CALOR_COLORS = generateGradientColors(startColor, endColor, 8);
 
 const ISLAS_CALOR_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/islas_calor.geojson";
 const ISLAS_CALOR_CHART_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/heat_island_municipality.json";
 
-const ISLAS_CALOR_COLORS = [
-  "rgb(255, 0, 0)",
-  "rgb(255, 50, 50)",
-  "rgb(255, 150, 150)",
-  "rgb(255, 200, 200)",
-  "rgb(250, 200, 250)",
-  "rgb(150, 150, 255)",
-  "rgb(50, 50, 255)",
-  "rgb(0, 0, 255)",
-];
 const ISLAS_CALOR_LEGEND_DATA = ["Muy frío", "Frío", "Ligeramente frío", "Templado", "Ligeramente cálido", "Caliente", "Muy caliente"]
 
 export const IslasCalorControls = () => {
@@ -41,11 +31,11 @@ export const IslasCalorControls = () => {
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const [legendItems, setLegendItems] = useState([]);
   const { data } = useFetch(ISLAS_CALOR_URL);
-
+  const { data: municipalityData } = useFetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/div-municipal.geojson");
 
   useEffect(() => {
-    console.log(data)
-    if (!data) return;
+    if (!data || !municipalityData) return;
+    
     const values = data.features.map((feat) => feat.properties["Value"]);
     setLegendItems(
       separateLegendItemsByCategory(
@@ -54,9 +44,9 @@ export const IslasCalorControls = () => {
         ISLAS_CALOR_COLORS,
       )
     );
-  }, [data]);
+  }, [data, municipalityData]);
 
-  if (!data) return <Loading />;
+  if (!data || !municipalityData) return <Loading />;
 
   return (
     <>
@@ -76,6 +66,13 @@ export const IslasCalorControls = () => {
           getLineColor={[118, 124, 130]}
           getLineWidth={30}
         />
+        <GeoJsonLayer
+          id="municipality-layer"
+          data={municipalityData.features}
+          getFillColor={[128, 174, 0, 0]}
+          getLineColor={[128, 128, 128, 100]}
+          getLineWidth={120}
+          />
       </CustomMap>
       <Legend
         title={"Islas de calor"}
@@ -88,8 +85,11 @@ export const IslasCalorControls = () => {
 };
 
 export function IslasCalorCard() {
-  const { color, setOutline } = useCardContext();
+
+  const { color } = useCardContext();
   const { data: chartData } = useFetch(ISLAS_CALOR_CHART_URL, []);
+
+  
 
   return (
     <>
