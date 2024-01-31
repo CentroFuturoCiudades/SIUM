@@ -31,11 +31,11 @@
 
 .sidebarContainerMobile {
   list-style: none;
+  display: flex;
   padding: 0;
   margin: 0;
 }
 
 .sidebarItem {
-  transition: background-color 0.3s ease-in !important;
   border-radius: 0px !important;
 }

@@ -19,7 +19,6 @@ const COSTOS_COLORS = [
 ];
 
 export const CostosControls = () => {
-  const [viewState, setViewState] = useState(INITIAL_STATE);
   const { data } = useFetch(COSTOS_URL);
   const [brushingRadius, setBrushingRadius] = useState(5000);
   const [hoverInfo, setHoverInfo] = useState();
@@ -45,7 +44,7 @@ export const CostosControls = () => {
 
   return (
     <>
-      <CustomMap viewState={viewState} setViewState={setViewState}>
+      <CustomMap viewState={INITIAL_STATE}>
         <GeoJsonLayer
           id="costos_layer"
           data={cleanedGeoData(data.features, "num_crimen")}

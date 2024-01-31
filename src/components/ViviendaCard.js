@@ -17,6 +17,7 @@ import { Legend } from "./Legend";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import Loading from "./Loading";
 import Tooltip from "./Tooltip";
+import * as d3 from "d3";
 
 const startColor = "#605631";
 const endColor = "#1A57FF";
@@ -35,7 +36,6 @@ const marks = [
 
 export const ViviendaControls = () => {
   const { color, setSharedProps } = useCardContext();
-  const [viewState, setViewState] = useState(INITIAL_STATE);
   const { data } = useFetch(VIVIENDA_URL);
   const [legendItems, setLegendItems] = useState([]);
   const [hoverInfo, setHoverInfo] = useState();
@@ -43,24 +43,8 @@ export const ViviendaControls = () => {
     TimeComponentClean(2000, 2020, 5, 2000, false, 2020);
 
   useEffect(() => {
-    if (!data) return;
-    const valuesPrecio = data.features.map(
-      (feat) => feat.properties["PRECIO_AJUSTADO"]
-    );
-    setLegendItems(
-      separateLegendItems(
-        valuesPrecio,
-        VIVIENDA_QUANTILES,
-        VIVIENDA_COLORS,
-        (x) =>
-          x.toLocaleString("en-US", {
-            style: "currency",
-            currency: "USD",
-            maximumFractionDigits: 0,
-          })
-      )
-    );
-  }, [data]);
+    setLegendItems(separateLegendItems(VIVIENDA_QUANTILES, VIVIENDA_COLORS));
+  }, []);
 
   useEffect(() => {
     setSharedProps({ time });
@@ -70,7 +54,7 @@ export const ViviendaControls = () => {
 
   return (
     <>
-      <CustomMap viewState={viewState} setViewState={setViewState}>
+      <CustomMap viewState={INITIAL_STATE}>
         <GeoJsonLayer
           id="vivienda_layer"
           data={filterDataAll(data, time, "PRECIO_AJUSTADO", true, "year_end")}
@@ -94,6 +78,7 @@ export const ViviendaControls = () => {
         title={"Precio de Venta 2000-2020"}
         legendItems={legendItems}
         color={color}
+        formatter={d3.format("$,.0f")}
       />
       <SliderHTML
         time={time}
@@ -113,19 +98,25 @@ export const ViviendaControls = () => {
           </span>
           <span className="tooltip-label">
             <b>Precio de venta:</b>{" "}
-            {hoverInfo.object.properties["IM_PRECIO_VENTA"].toLocaleString("en-US", {
-              style: "currency",
-              currency: "USD",
-              maximumFractionDigits: 0,
-            })}
+            {hoverInfo.object.properties["IM_PRECIO_VENTA"].toLocaleString(
+              "en-US",
+              {
+                style: "currency",
+                currency: "USD",
+                maximumFractionDigits: 0,
+              }
+            )}
           </span>
           <span className="tooltip-label">
             <b>Precio ajustado a la inflación:</b>{" "}
-            {hoverInfo.object.properties["PRECIO_AJUSTADO"].toLocaleString("en-US", {
-              style: "currency",
-              currency: "USD",
-              maximumFractionDigits: 0,
-            })}
+            {hoverInfo.object.properties["PRECIO_AJUSTADO"].toLocaleString(
+              "en-US",
+              {
+                style: "currency",
+                currency: "USD",
+                maximumFractionDigits: 0,
+              }
+            )}
           </span>
         </Tooltip>
       )}

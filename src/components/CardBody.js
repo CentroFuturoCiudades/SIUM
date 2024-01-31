@@ -1,8 +1,9 @@
-import { Card, Icon } from "@chakra-ui/react";
+import { Card, Icon, useMediaQuery } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const CardBody = ({ id, question, answer, icon, color }) => {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
@@ -42,7 +43,7 @@ const CardBody = ({ id, question, answer, icon, color }) => {
             ) : (
               <div>
                 <Icon as={icon} boxSize={10} />
-                <h1 style={{ fontFamily: "Inter", fontSize: "18px" }}>
+                <h1 style={{ fontFamily: "Inter", fontSize: isMobile ? "10px" : "18px" }}>
                   <b>{question}</b>
                 </h1>
               </div>

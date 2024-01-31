@@ -91,16 +91,14 @@ export const CardsContainerMobile = () => {
 };
 
 const Problematica = () => {
-  const [isDesktop] = useMediaQuery("(min-width: 800px)");
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
   const [currentSection, setCurrentSection] = useState("expansion-urbana");
   const [outline, setOutline] = useState();
   const [sharedProps, setSharedProps] = useState({});
   const currentInfo = sectionsInfo[currentSection];
   const CurrentControls = sectionsInfo[currentSection].controls;
-  const Bar = isDesktop ? Sidebar : BarMobile;
-  const CurrentCardContainer = isDesktop
-    ? CardsContainer
-    : CardsContainerMobile;
+  const Bar = isMobile ? BarMobile : Sidebar;
+  const CurrentCardContainer = isMobile ? CardsContainerMobile : CardsContainer;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -131,7 +129,7 @@ const Problematica = () => {
     }
   }, []);
   return (
-    <div style={{ display: isDesktop ? "flex" : "inline-block" }}>
+    <div style={{ display: isMobile ? "inline-block" : "flex" }}>
       <Bar section={currentSection} setSection={setCurrentSection} />
       <CardContext.Provider
         value={{
@@ -145,7 +143,7 @@ const Problematica = () => {
       >
         <CurrentCardContainer />
         <Box
-          className={isDesktop ? "mapContainer" : "mapContainerMobile"}
+          className={isMobile ? "mapContainerMobile" : "mapContainer"}
           borderColor={`${sectionsInfo[currentSection].color}.500`}
         >
           <CurrentControls />

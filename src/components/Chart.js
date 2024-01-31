@@ -73,11 +73,11 @@ export const Chart = ({
   const { setOutline } = useCardContext();
   const { data: municipalityData } = useFetch(
     `${DATA_URL}/div-municipal.geojson`,
-    {}
+    {features: []}
   );
   let filteredData = useMemo(
     () =>
-      _(data)
+      _(data || [])
         .filter((x) => excludedMunicipalities.indexOf(x[columnKey]) === -1)
         .filter((x) => !filtering || filtering(x))
         .groupBy(columnKey)

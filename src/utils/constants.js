@@ -4,7 +4,14 @@ import { interpolateRgb } from "d3-interpolate";
 import { scaleQuantile } from "d3-scale";
 import { GeoJsonLayer } from "@deck.gl/layers";
 
-import { MdHome, MdDirectionsCar, MdOutlineAttachMoney, MdDeviceThermostat, PiThermometerHotBold } from "react-icons/md";
+import {
+  MdHome,
+  MdDirectionsCar,
+  MdOutlineAttachMoney,
+  MdOutlineFamilyRestroom,
+  MdDeviceThermostat,
+  PiThermometerHotBold,
+} from "react-icons/md";
 import { HiMiniBuildingOffice } from "react-icons/hi2";
 import { GiHoleLadder, GiInjustice, GiRobber } from "react-icons/gi";
 import { FaPeopleArrows } from "react-icons/fa";
@@ -27,16 +34,16 @@ import {
   DelincuenciaCard,
   DelincuenciaControls,
 } from "../components/DelincuenciaCard";
-import { 
-  CostosCard, 
-  CostosControls 
-} from "../components/CostosCard";
-import { 
-  IslasCalorCard, 
-  IslasCalorControls 
+
+import { CostosCard, CostosControls } from "../components/CostosCard";
+import { InfanciasCard, InfanciasControls } from "../components/InfanciasCard";
+import {
+  IslasCalorCard,
+  IslasCalorControls,
 } from "../components/IslasCalorCard";
 import { BrushingExtension } from "@deck.gl/extensions";
 import { useEffect, useState } from "react";
+import { useMediaQuery } from "@chakra-ui/react";
 
 export function colorInterpolate(value, thresholds, colors, opacity = 1) {
   // Create a scale using the thresholds and colors
@@ -129,7 +136,7 @@ export const EXPANSION_CHART_URL = `${DATA_URL}/expansion_municipality.json`;
 export const EMPLEO_URL = `${DATA_URL}/denue_2020.geojson`;
 export const EMPLEO_CHART_URL = `${DATA_URL}/empleo_municipality.json`;
 export const TRANSPORTE_CHART_URL = `${DATA_URL}/transporte_municipality.json`;
-export const TRANSPORTE_URL = `${DATA_URL}/TRANSPORTEJEANNETTE.geojson`;
+export const TRANSPORTE_URL = `${DATA_URL}/transporte.geojson`;
 export const TRANSPORTE_MASIVO_URL = `${DATA_URL}/transporte-masivo.geojson`;
 export const VIAS_URL = `${DATA_URL}/vias-primarias.geojson`;
 export const VIVIENDA_URL = `${DATA_URL}/vivienda-hex.geojson`;
@@ -139,6 +146,8 @@ export const SEGREGACION_CHART_URL = `${DATA_URL}/income_municipality.json`;
 export const DELINCUENCIA_URL = `${DATA_URL}/crimen-hex.geojson`;
 export const DELINCUENCIA_CHART_URL = `${DATA_URL}/crimen_municipality.json`;
 export const COSTOS_URL = `${DATA_URL}/crimen-hex.geojson`;
+export const POB05_URL = `${DATA_URL}/pob_infancia.geojson`;
+export const SERVICIOS_URL = `${DATA_URL}/denue_infancia.geojson`;
 
 export const PERIPHERIES = [
   "Juárez",
@@ -288,6 +297,31 @@ export const COSTOS_LAYER = {
   },
 };
 
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height,
+  };
+}
+
+export default function useWindowDimensions() {
+  const [windowDimensions, setWindowDimensions] = useState(
+    getWindowDimensions()
+  );
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return windowDimensions;
+}
+
 export function interpolateColor(color1, color2, factor) {
   if (arguments.length < 3) {
     factor = 0.5;
@@ -350,16 +384,7 @@ export function generateGradientColors(startColor, endColor, steps) {
   return gradientColors;
 }
 
-export function separateLegendItems(
-  data,
-  thresholds,
-  colors,
-  filtering = null
-) {
-  const filteringFn =
-    filtering ||
-    ((d) => d.toLocaleString("en-US", { maximumFractionDigits: 0 }));
-
+export function separateLegendItems(thresholds, colors) {
   // Generate legend items
   const newLegendItems = thresholds.slice(0, -1).map((threshold, index) => {
     const nextThreshold = thresholds[index + 1];
@@ -367,12 +392,12 @@ export function separateLegendItems(
     const interpolatedColor = colorInterpolate(midpoint, thresholds, colors, 1);
     return {
       color: `rgba(${interpolatedColor.join(",")})`,
-      item1: filteringFn(threshold),
-      item2: filteringFn(nextThreshold),
+      item1: threshold,
+      item2: nextThreshold,
     };
   });
   return newLegendItems;
-};
+}
 
 // Separar la leyenda por categorías
 export function separateLegendItemsByCategory(
@@ -388,14 +413,73 @@ export function separateLegendItemsByCategory(
   // Generate legend items
   const newLegendItems = thresholds.map((threshold, index) => {
     // El treshold es el valor del dato
-    const interpolatedColor = colorInterpolate(threshold, thresholds, colors, 1);
+    const interpolatedColor = colorInterpolate(
+      threshold,
+      thresholds,
+      colors,
+      1
+    );
     return {
       color: `rgba(${interpolatedColor.join(",")})`,
       item: filteringFn(threshold),
     };
   });
   return newLegendItems;
-};
+}
+
+export function countServicesLegend(data, colors) {
+  const sectorCounts = {};
+  const sectorColors = {};
+
+  if (data) {
+    console.log("entro");
+    data.forEach((feature) => {
+      const sector = feature.properties.sector;
+
+      switch (sector) {
+        case "comercio al por menor":
+          sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
+          sectorColors[sector] = colors[0];
+          break;
+        case "preescolar":
+          sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
+          sectorColors[sector] = colors[1];
+          break;
+        case "salud":
+          sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
+          sectorColors[sector] = colors[2];
+          break;
+        case "guarderia":
+          sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
+          sectorColors[sector] = colors[3];
+          break;
+        default:
+          sectorCounts["other"] = (sectorCounts["other"] || 0) + 1;
+          sectorColors[sector] = colors["gray"];
+      }
+    });
+
+    console.log("servicios en el area", sectorCounts);
+    //return sectorCounts;
+  }
+
+  const legend = Object.entries(sectorCounts).map(([sector, count]) => ({
+    item1: sector,
+    item2: count,
+    color: sectorColors[sector],
+  }));
+}
+
+export function countServicesLegendNOREP(data, sectors, colors) {
+  const legend = Object.entries(sectors).map(([sector, count]) => ({
+    item1: sector,
+    item2: count,
+    color: colors[sector],
+  }));
+
+  //console.log(legend)
+  return legend;
+}
 
 export const useFetch = (url, initialData = undefined) => {
   const [data, setData] = useState(initialData);
@@ -466,8 +550,18 @@ export const sectionsInfo = {
     component: CostosCard,
     controls: CostosControls,
   },
+  infancias: {
+    title: "¿Por qué la expansión limita el desarrollo de la primera infancia?",
+    answer:
+      "La oferta de servicios de proximidad no corresponde con las zonas donde viven las infancias tempranas.",
+    color: "blue",
+    icon: MdOutlineFamilyRestroom,
+    component: InfanciasCard,
+    controls: InfanciasControls,
+  },
   islasCalor: {
-    title: "¿Por qué sentimos tanto calor en la Zona Metropolitana de Monterrey?",
+    title:
+      "¿Por qué sentimos tanto calor en la Zona Metropolitana de Monterrey?",
     answer: "-----------------------",
     color: "teal",
     icon: MdDeviceThermostat,

@@ -5,29 +5,28 @@
   margin: 0;
   width: calc(100% - 0.4rem);
   height: 4rem;
-  transition: all 0.5s ease;
+  transition: all 0.5s ease-in-out;
   z-index: 1;
 }
 
 .headerImage {
-  margin: auto;
   height: 100%;
 }
 
 .titleContainer {
-  transition: all 0.5s ease;
+  transition: all 0.5s ease-in-out;
   border-radius: 0 0 2rem 2rem;
   width: 100%;
 }
 
 .titleContainerMobile {
-  transition: all 0.5s ease;
+  transition: all 0.5s ease-in-out;
   border-radius: 1.2rem 1.2rem 0 0;
   width: 100%;
 }
 
 .title {
-  transition: all 0.5s ease;
+  transition: all 0.5s ease-in-out;
   padding: 1rem;
   border: 0.14rem solid;
   border-radius: 2rem;

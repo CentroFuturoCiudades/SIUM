@@ -40,18 +40,8 @@ export const ExpansionUrbanaControls = () => {
     TimeComponentClean(1990, 2010, 10, 2000, false);
 
   useEffect(() => {
-    if (!data) return;
-    const values = data.features
-      .map((x) => [
-        x.properties["1990"],
-        x.properties["2000"],
-        x.properties["2010"],
-      ])
-      .flat();
-    setLegendItems(
-      separateLegendItems(values, EXPANSION_QUANTILES, EXPANSION_COLORS)
-    );
-  }, [data]);
+    setLegendItems(separateLegendItems(EXPANSION_QUANTILES, EXPANSION_COLORS));
+  }, []);
 
   useEffect(() => {
     setSharedProps({ time });
@@ -61,7 +51,7 @@ export const ExpansionUrbanaControls = () => {
 
   return (
     <>
-      <CustomMap viewState={viewState} setViewState={setViewState}>
+      <CustomMap viewState={INITIAL_STATE}>
         <GeoJsonLayer
           id="expansion_layer"
           data={cleanedGeoData(data.features, time)}
@@ -82,7 +72,7 @@ export const ExpansionUrbanaControls = () => {
         />
       </CustomMap>
       <Legend
-        title={"Cambio Poblacional"}
+        title={`Cambio Poblacional de ${time} a 2020`}
         legendItems={legendItems}
         color={color}
       />
@@ -102,23 +92,17 @@ export const ExpansionUrbanaControls = () => {
           <span className="tooltip-label">
             <b>Cambio poblacional de 1990 a 2000:</b>{" "}
             {hoverInfo.object.properties["1990"].toLocaleString("en-US")}{" "}
-            <>
-              personas
-            </>
+            <>personas</>
           </span>
           <span className="tooltip-label">
             <b>Cambio poblacional del 2000 a 2010:</b>{" "}
             {hoverInfo.object.properties["2000"].toLocaleString("en-US")}{" "}
-            <>
-              personas
-            </>
+            <>personas</>
           </span>
           <span className="tooltip-label">
             <b>Cambio poblacional del 2010 a 2020:</b>{" "}
             {hoverInfo.object.properties["2010"].toLocaleString("en-US")}{" "}
-            <>
-              personas
-            </>
+            <>personas</>
           </span>
         </Tooltip>
       )}

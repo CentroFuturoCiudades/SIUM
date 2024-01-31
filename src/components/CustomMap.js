@@ -1,5 +1,5 @@
 import DeckGL from "@deck.gl/react";
-import { ButtonGroup, IconButton } from "@chakra-ui/react";
+import { ButtonGroup, IconButton, useMediaQuery } from "@chakra-ui/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { Map } from "react-map-gl";
 import mapboxgl from "mapbox-gl";
@@ -7,7 +7,7 @@ import { GeoJsonLayer } from "deck.gl";
 import { useCardContext } from "../views/Problematica";
 import { useFetch } from "../utils/constants";
 import Loading from "./Loading";
-
+import { useEffect, useState } from "react";
 
 mapboxgl.workerClass =
   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
@@ -17,38 +17,67 @@ export const DECK_GL_CONTROLLER = {
   touchZoom: true,
   keyboard: { moveSpeed: false },
   dragMode: "pan",
-  inertia: true,
 };
 export const INITIAL_STATE = {
   latitude: 25.675,
   longitude: -100.286419,
-  zoom: 9.6,
+  zoom: 9.5,
+  transitionDuration: 100,
+  pitch: 0,
+  bearing: 0,
+  minZoom: 8.5,
+  maxZoom: 14,
+};
+
+//nueva para infancias
+export const SPECIAL_INFANCIAS_STATE = {
+  latitude: 25.65534,
+  longitude: -100.30427,
+  zoom: 13.2,
   transitionDuration: 800,
   pitch: 0,
   bearing: 0,
 };
 
-export function CustomMap({ viewState, setViewState, children }) {
+export function CustomMap({ viewState, infanciasHover, children }) {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
+  const [processedViewState, setProcessedViewState] = useState({
+    ...viewState,
+    zoom: isMobile ? viewState.zoom * 0.9 : viewState.zoom,
+  });
   const { outline } = useCardContext();
   const { data: municipalityData } = useFetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/div-municipal.geojson");
 
   const zoomIn = () => {
-    setViewState((v) => ({ ...v, zoom: v.zoom + 1, transitionDuration: 100 }));
+    setProcessedViewState((v) => ({
+      ...v,
+      zoom: v.zoom + 1,
+      transitionDuration: 100,
+    }));
   };
 
   const zoomOut = () => {
-    setViewState((v) => ({ ...v, zoom: v.zoom - 1, transitionDuration: 100 }));
+    setProcessedViewState((v) => ({
+      ...v,
+      zoom: v.zoom - 1,
+      transitionDuration: 100,
+    }));
   };
 
+  useEffect(() => {
+    setProcessedViewState({ ...processedViewState, zoom: isMobile ? viewState.zoom * 0.9 : viewState.zoom });
+  }, [isMobile]);
+  
   if (!municipalityData) return <Loading />;
-
+  
   return (
     <>
       <DeckGL
         style={{ position: "relative" }}
-        viewState={viewState}
-        onViewStateChange={({ viewState }) => setViewState(viewState)}
+        viewState={processedViewState}
+        onViewStateChange={({ viewState }) => setProcessedViewState(viewState)}
         controller={DECK_GL_CONTROLLER}
+        onHover={infanciasHover}
       >
         <Map
           width="100%"
