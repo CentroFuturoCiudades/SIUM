@@ -1,13 +1,14 @@
 import React from "react";
 import CardBody from "../components/CardBody";
 import { sectionsInfo } from "../utils/constants";
-import { Heading } from "@chakra-ui/react";
+import { Heading, useMediaQuery } from "@chakra-ui/react";
 
 const Cards = () => {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
   return (
     <div
       style={{
-        height: "100vh",
+        height: isMobile ? "100%" : "100dvh",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -16,9 +17,9 @@ const Cards = () => {
     >
       <Heading
         color="gray.600"
-        fontSize="6xl"
-        mx="100px"
-        mt="100px"
+        fontSize={isMobile ? "2xl" : "6xl"}
+        mx={isMobile ? "5px" : "100px"}
+        my="25px"
         style={{ textAlign: "center" }}
       >
         Explora los problemas de la Expansión Urbana en Monterrey
@@ -27,7 +28,7 @@ const Cards = () => {
         style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
       >
         {Object.keys(sectionsInfo).map((key) => (
-          <div key={key} style={{ margin: "4%" }}>
+          <div key={key} style={{ margin: "2%" }}>
             <CardBody
               id={key}
               icon={sectionsInfo[key].icon}
