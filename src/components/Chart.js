@@ -2,7 +2,6 @@ import {
   Bar,
   BarChart,
   Cell,
-  Label,
   LabelList,
   ResponsiveContainer,
   XAxis,
@@ -95,7 +94,7 @@ export const Chart = ({
       setOutline({
         type: GeoJsonLayer,
         props: {
-          id: "municipality-layer",
+          id: "municipality-highlight-layer",
           data: municipalityData.features.filter(
             (x) => x.properties.NOMGEO === activeLabel
           ),
