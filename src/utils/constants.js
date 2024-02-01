@@ -25,7 +25,7 @@ import {
   DelincuenciaCard,
   DelincuenciaControls,
 } from "../components/DelincuenciaCard";
-import { CostosCard } from "../components/CostosCard";
+import { CostosCard, CostosControls } from "../components/CostosCard";
 
 export function colorInterpolate(
   normalizedValue,
@@ -351,6 +351,6 @@ export const sectionsInfo = {
     color: "teal",
     icon: MdOutlineAttachMoney,
     component: CostosCard,
-    controls: null,
+    controls: CostosControls,
   },
 };
