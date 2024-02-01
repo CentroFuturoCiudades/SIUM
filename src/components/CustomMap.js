@@ -3,7 +3,7 @@ import { ButtonGroup, IconButton, useMediaQuery } from "@chakra-ui/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { Map } from "react-map-gl";
 import mapboxgl from "mapbox-gl";
-import { GeoJsonLayer } from "deck.gl";
+import { GeoJsonLayer, IconLayer } from "deck.gl";
 import { useCardContext } from "../views/Problematica";
 import { useEffect, useState } from "react";
 
