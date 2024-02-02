@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useCardContext } from "../views/Problematica";
 import { ResponseTitle, ContextTitle } from "./Card";
 import {
+  PARQUES_URL,
   cleanedGeoData,
   colorInterpolate,
   generateGradientColors,
@@ -34,24 +35,32 @@ const ISLAS_CALOR_COLORS = [
   "rgb(50, 50, 255)",
   "rgb(0, 0, 255)",
 ];
-const ISLAS_CALOR_LEGEND_DATA = ["Muy frío", "Frío", "Ligeramente frío", "Templado", "Ligeramente cálido", "Caliente", "Muy caliente"]
+const ISLAS_CALOR_LEGEND_DATA = [
+  "Muy frío",
+  "Frío",
+  "Ligeramente frío",
+  "Templado",
+  "Ligeramente cálido",
+  "Caliente",
+  "Muy caliente",
+];
 
 export const IslasCalorControls = () => {
   const { color } = useCardContext();
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const [legendItems, setLegendItems] = useState([]);
   const { data } = useFetch(ISLAS_CALOR_URL);
-
+  const { data: dataParques } = useFetch(PARQUES_URL);
 
   useEffect(() => {
-    console.log(data)
+    console.log(data);
     if (!data) return;
     const values = data.features.map((feat) => feat.properties["Value"]);
     setLegendItems(
       separateLegendItemsByCategory(
         values,
         [7, 6, 5, 4, 3, 2, 1],
-        ISLAS_CALOR_COLORS,
+        ISLAS_CALOR_COLORS
       )
     );
   }, [data]);
@@ -60,8 +69,7 @@ export const IslasCalorControls = () => {
 
   return (
     <>
-      <CustomMap viewState={viewState} setViewState={setViewState}
-      >
+      <CustomMap viewState={viewState} setViewState={setViewState}>
         <GeoJsonLayer
           id="islas_calor_layer"
           data={cleanedGeoData(data.features, "Value")}
@@ -75,6 +83,15 @@ export const IslasCalorControls = () => {
           }
           getLineColor={[118, 124, 130]}
           getLineWidth={30}
+          opacity={0.5}
+        />
+        <GeoJsonLayer
+          id="parques_layer"
+          data={cleanedGeoData(dataParques.features, "area")}
+          getFillColor={[0, 255, 0, 255]}
+          getLineColor={[118, 124, 130]}
+          getLineWidth={5}
+          opacity={0.4}
         />
       </CustomMap>
       <Legend
@@ -97,15 +114,32 @@ export function IslasCalorCard() {
         -----------Respuesta------------
       </ResponseTitle>
       <p>
-      La Zona Metropolitana de Monterrey se enfrenta a un creciente fenómeno conocido como el efecto de isla de calor. Este se manifiesta cuando las áreas urbanas experimentan temperaturas significativamente más altas que sus entornos rurales, siendo una consecuencia directa de la presencia de edificios, asfalto, concreto y otras superficies urbanas que retienen el calor
+        La Zona Metropolitana de Monterrey se enfrenta a un creciente fenómeno
+        conocido como el efecto de isla de calor. Este se manifiesta cuando las
+        áreas urbanas experimentan temperaturas significativamente más altas que
+        sus entornos rurales, siendo una consecuencia directa de la presencia de
+        edificios, asfalto, concreto y otras superficies urbanas que retienen el
+        calor
       </p>
       <p>
-
-      En el centro de la Zona Metropolitana de Monterrey, la alta densidad de edificaciones junto con la falta de espacios verdes como parques, jardines, camellones y áreas arboladas, juega un papel crucial en el incremento de las temperaturas, en contraste con las zonas menos urbanizadas. Las infraestructuras urbanas, principalmente compuestas por materiales como asfalto y concreto que son impermeables y retienen el calor, contribuyen significativamente a este fenómeno. Durante el día, estos materiales acumulan calor, que luego liberan gradualmente durante la noche. Este proceso intensifica el efecto isla de calor, repercutiendo adversamente en la salud, en la calidad de vida y en el costo de vida de los residentes, especialmente durante los meses de verano.
+        En el centro de la Zona Metropolitana de Monterrey, la alta densidad de
+        edificaciones junto con la falta de espacios verdes como parques,
+        jardines, camellones y áreas arboladas, juega un papel crucial en el
+        incremento de las temperaturas, en contraste con las zonas menos
+        urbanizadas. Las infraestructuras urbanas, principalmente compuestas por
+        materiales como asfalto y concreto que son impermeables y retienen el
+        calor, contribuyen significativamente a este fenómeno. Durante el día,
+        estos materiales acumulan calor, que luego liberan gradualmente durante
+        la noche. Este proceso intensifica el efecto isla de calor,
+        repercutiendo adversamente en la salud, en la calidad de vida y en el
+        costo de vida de los residentes, especialmente durante los meses de
+        verano.
       </p>
       <br />
       <ContextTitle color={color}>
-      El rápido crecimiento urbano, sumado a la escasez de infraestructura verde y a la falta de una planificación sostenible, agrava aún más este fenómeno.
+        El rápido crecimiento urbano, sumado a la escasez de infraestructura
+        verde y a la falta de una planificación sostenible, agrava aún más este
+        fenómeno.
       </ContextTitle>
       <Chart
         title="Islas de calor datos"

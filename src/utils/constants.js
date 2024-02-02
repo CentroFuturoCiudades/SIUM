@@ -147,6 +147,7 @@ export const DELINCUENCIA_URL = `${DATA_URL}/crimen-hex.geojson`;
 export const DELINCUENCIA_CHART_URL = `${DATA_URL}/crimen_municipality.json`;
 export const COSTOS_URL = `${DATA_URL}/crimen-hex.geojson`;
 export const POB05_URL = `${DATA_URL}/pob_infancia.geojson`;
+export const PARQUES_URL = `${DATA_URL}/parques.geojson`;
 export const SERVICIOS_URL = `${DATA_URL}/denue_infancia.geojson`;
 
 export const PERIPHERIES = [
@@ -542,14 +543,6 @@ export const sectionsInfo = {
     component: DelincuenciaCard,
     controls: DelincuenciaControls,
   },
-  costos: {
-    title: "¿Por qué la expansión nos cuenta tanto dinero?",
-    answer: "Hay que llevar servicios públicos más lejos",
-    color: "teal",
-    icon: MdOutlineAttachMoney,
-    component: CostosCard,
-    controls: CostosControls,
-  },
   infancias: {
     title: "¿Por qué la expansión limita el desarrollo de la primera infancia?",
     answer:
@@ -567,5 +560,13 @@ export const sectionsInfo = {
     icon: MdDeviceThermostat,
     component: IslasCalorCard,
     controls: IslasCalorControls,
+  },
+  costos: {
+    title: "¿Por qué la expansión nos cuenta tanto dinero?",
+    answer: "Hay que llevar servicios públicos más lejos",
+    color: "teal",
+    icon: MdOutlineAttachMoney,
+    component: CostosCard,
+    controls: CostosControls,
   },
 };
