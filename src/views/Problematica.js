@@ -1,11 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Box, Heading, useMediaQuery } from "@chakra-ui/react";
 
 import { BarMobile, Sidebar } from "../components/Sidebar";
 import { Header, HeaderMobile } from "../components/Header";
 import "../index.css";
 import { Card } from "../components/Card";
-import { sectionsInfo } from "../utils/constants";
+import useWindowDimensions, { sectionsInfo } from "../utils/constants";
 import SwipeableBottomSheet from "react-swipeable-bottom-sheet";
 
 const CardContext = createContext();

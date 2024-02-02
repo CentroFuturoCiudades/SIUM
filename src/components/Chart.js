@@ -160,7 +160,7 @@ export const Chart = ({
       <Heading
         size="xs"
         color="green.700"
-        style={{ textAlign: "center", marginTop: "-15px" }}
+        style={{ textAlign: "center", marginTop: "-15px", fontSize: "min(1dvw, 1.4dvh)" }}
       >
         {title}
       </Heading>

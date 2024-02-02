@@ -11,19 +11,20 @@ export const Header = ({ section, color, title }) => (
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          height: '100%'
         }}
       >
         <img
           className="headerImage"
           src="tec.png"
           alt="Tec de Monterrey"
-          style={{ width: "50%" }}
+          style={{ maxWidth: "50%", maxHeight: '100%', height: 'auto', width: 'auto' }}
         />
         <img
           className="headerImage"
           src="femsa.png"
           alt="Tec de Monterrey"
-          style={{ width: "30%" }}
+          style={{ maxWidth: "30%", maxHeight: '100%', height: 'auto', width: 'auto' }}
         />
       </div>
     </Link>
@@ -32,16 +33,14 @@ export const Header = ({ section, color, title }) => (
         className="title"
         color={`${color}.600`}
         borderColor={`${color}.500`}
-        fontSize={{ md: "0.9rem", lg: "1.1rem", sm: "0.6rem" }}
+        style={{ fontSize: '1.2dvw' }}
       >
         <motion.div
           key={section}
-          initial={{ opacity: 0, scale: 0.8, y: -10 }}
+          initial={{ opacity: 0 }}
           animate={{
             opacity: 1,
-            scale: 1,
-            y: 0,
-            transition: { duration: 0.5 },
+            transition: { duration: 0.7 },
           }}
         >
           {title}

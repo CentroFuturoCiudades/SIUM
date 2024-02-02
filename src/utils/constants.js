@@ -298,26 +298,27 @@ export const COSTOS_LAYER = {
   },
 };
 
-function getWindowDimensions() {
-  const { innerWidth: width, innerHeight: height } = window;
+function getWindowDimensions(ref=window) {
+  const { innerWidth: width, innerHeight: height } = ref;
   return {
     width,
     height,
+    ratio: width / height,
   };
 }
 
-export default function useWindowDimensions() {
+export default function useWindowDimensions(ref=window) {
   const [windowDimensions, setWindowDimensions] = useState(
-    getWindowDimensions()
+    getWindowDimensions(ref)
   );
 
   useEffect(() => {
     function handleResize() {
-      setWindowDimensions(getWindowDimensions());
+      setWindowDimensions(getWindowDimensions(ref));
     }
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    ref.addEventListener("resize", handleResize);
+    return () => ref.removeEventListener("resize", handleResize);
   }, []);
 
   return windowDimensions;
