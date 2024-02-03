@@ -5,35 +5,62 @@ import { Link } from "react-router-dom";
 
 export const Header = ({ section, color, title }) => (
   <Box bgColor={`${color}.500`} className="headerContainer">
-    <Link to="/">
-      <div
+    <Link
+      as={"div"}
+      to="/"
+      style={{
+        display: "flex",
+        justifyContent: "space-around",
+        height: "100%",
+        width: "100%",
+      }}
+    >
+      <img
+        className="headerImage"
+        src="SIUM.png"
+        alt="SIUM"
         style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: '100%'
+          padding: "5px",
+          maxWidth: "33%",
+          maxHeight: "100%",
+          height: "auto",
+          width: "auto",
+          objectFit: "contain",
         }}
-      >
-        <img
-          className="headerImage"
-          src="tec.png"
-          alt="Tec de Monterrey"
-          style={{ maxWidth: "50%", maxHeight: '100%', height: 'auto', width: 'auto' }}
-        />
-        <img
-          className="headerImage"
-          src="femsa.png"
-          alt="Tec de Monterrey"
-          style={{ maxWidth: "30%", maxHeight: '100%', height: 'auto', width: 'auto' }}
-        />
-      </div>
+      />
+      <img
+        className="headerImage"
+        src="tec.png"
+        alt="Tec de Monterrey"
+        style={{
+          padding: "5px",
+          maxWidth: "33%",
+          maxHeight: "100%",
+          height: "auto",
+          width: "auto",
+          objectFit: "contain",
+        }}
+      />
+      <img
+        className="headerImage"
+        src="femsa.png"
+        alt="FEMSA"
+        style={{
+          padding: "5px",
+          maxWidth: "33%",
+          maxHeight: "100%",
+          height: "auto",
+          width: "auto",
+          objectFit: "contain",
+        }}
+      />
     </Link>
     <Box className="titleContainer" bgColor={`${color}.500`}>
       <Heading
         className="title"
         color={`${color}.600`}
         borderColor={`${color}.500`}
-        style={{ fontSize: '1.2dvw' }}
+        style={{ fontSize: "1.2dvw" }}
       >
         <motion.div
           key={section}

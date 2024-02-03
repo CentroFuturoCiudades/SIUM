@@ -7,6 +7,7 @@ import {
   SliderMark,
   SliderThumb,
   SliderTrack,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { MdPause, MdPlayArrow } from "react-icons/md";
 import _ from "lodash";
@@ -22,6 +23,7 @@ export function SliderHTML({
   handleSliderChange,
   marks,
 }) {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
   return (
     <div
       style={{
@@ -64,9 +66,12 @@ export function SliderHTML({
               key={value}
               value={value}
               mt="5"
-              ml={`-${label.length * 3.5}px`}
-              fontSize="xs"
-              style={{ textWrap: "nowrap" }}
+              style={{
+                textWrap: "nowrap",
+                fontSize: isMobile ? "1.6dvw" : "1dvw",
+                transform: "translateX(-50%)",
+                color: "#464646",
+              }}
             >
               {label}
             </SliderMark>

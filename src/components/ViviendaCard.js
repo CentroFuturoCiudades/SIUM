@@ -19,7 +19,7 @@ import Loading from "./Loading";
 import Tooltip from "./Tooltip";
 import * as d3 from "d3";
 
-const startColor = "#605631";
+const startColor = "#827347";
 const endColor = "#1A57FF";
 const VIVIENDA_QUANTILES = [
   160000, 400000, 500000, 600000, 800000, 1000000, 1200000, 1800000,

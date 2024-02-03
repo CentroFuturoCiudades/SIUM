@@ -11,7 +11,7 @@
 .card {
   padding: 1rem;
   border: 0.14rem solid;
-  margin-top: 4rem;
+  margin-top: calc(1.2dvw + 2.6rem);
   padding-top: 4rem;
   margin-bottom: 0.4rem;
   border-radius: 2rem;
@@ -103,18 +103,11 @@
   font-family: Inter;
   margin-bottom: 0.3rem;
   font-weight: 600;
-  font-size: min(1.2dvw, 1.6dvh) !important;
 }
 
 .context {
   font-family: Inter;
-  font-size: min(1dvw, 1.4dvh) !important;
-  /* font-size: 1dvw !important; */
   text-align: left;
-  margin-left: 1rem;
-  margin-right: 1rem;
   font-style: italic;
-  margin-top: 0.3rem;
-  margin-bottom: 0.3rem;
   font-weight: 600;
 }

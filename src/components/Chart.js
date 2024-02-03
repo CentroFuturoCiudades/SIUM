@@ -11,21 +11,32 @@ import {
 import { GeoJsonLayer } from "deck.gl";
 import { memo, useCallback, useMemo, useState } from "react";
 import _ from "lodash";
-import { Heading } from "@chakra-ui/react";
+import { Heading, useMediaQuery, useToken } from "@chakra-ui/react";
 import { DATA_URL, useFetch } from "../utils/constants";
 import { useCardContext } from "../views/Problematica";
 
-const mappingNames = {
+export const mappingNames = {
   "San Pedro Garza García": "San Pedro",
-  "San Nicolás de los Garza": "San Nicolás",
-  "Ciénega de Flores": "Ciénega",
+  "San Nicolás de los Garza": "San Nicolas",
+  "Ciénega de Flores": "Cienega",
   "General Escobedo": "Escobedo",
   "General Zuazua": "Zuazua",
   "Salinas Victoria": "Salinas",
   "Cadereyta Jiménez": "Cadereyta",
+  "Monterrey": "Monterrey",
+  "Juárez": "Juarez",
+  "Apodaca": "Apodaca",
+  "García": "Garcia",
+  "Santa Catarina": "Santa Catarina",
+  "Guadalupe": "Guadalupe",
+  "Pesquería": "Pesqueria",
+  "Santiago": "Santiago",
+  "El Carmen": "El Carmen",
+  "Hidalgo": "Hidalgo",
 };
 
 const CustomBarLabel = memo((props) => {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
   const { x, y, width, height, index, data, columnKey } = props;
   const dataObject = data[index];
   const text = mappingNames[dataObject[columnKey]] || dataObject[columnKey];
@@ -35,20 +46,20 @@ const CustomBarLabel = memo((props) => {
   context.font = "0.6rem sans-serif";
   const textWidth = context.measureText(text).width;
 
-  const fitsInside = width > textWidth + 15;
+  const fitsInside = width > textWidth + 30;
   const insideX = x + width - 5;
   const outsideX = x + width + 5;
 
   return (
     <text
       key={`label-${index}`}
-      x={fitsInside ? insideX : outsideX}
+      x={width <= 0 ? x + 5 : fitsInside ? insideX : outsideX}
       y={y + height / 2}
-      fill="black"
+      fill={fitsInside ? "white" : "grey"}
       textAnchor={fitsInside ? "end" : "start"}
       dominantBaseline="middle"
       style={{
-        fontSize: "0.6rem",
+        fontSize: isMobile ? "0.6rem" : "min(1dvw, 1.2dvh)",
         cursor: "pointer",
         zIndex: 1,
         pointerEvents: "none",
@@ -70,10 +81,13 @@ export const Chart = ({
   filtering,
   domain = undefined,
 }) => {
-  const { setOutline } = useCardContext();
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
+  const { setOutline, color } = useCardContext();
+  const [colorValue] = useToken("colors", [`${color}.400`]);
+  const [colorValueActive] = useToken("colors", [`${color}.600`]);
   const { data: municipalityData } = useFetch(
     `${DATA_URL}/div-municipal.geojson`,
-    {features: []}
+    { features: [] }
   );
   let filteredData = useMemo(
     () =>
@@ -115,23 +129,34 @@ export const Chart = ({
     },
     [data]
   );
+  const containerMobile = {
+    height: "200px",
+    bottom: "-10px",
+    width: "100%",
+  };
+  const container = {
+    height: "min(15dvw, 30dvh)",
+    bottom: "-10px",
+    position: "absolute",
+    width: "100%",
+  };
 
   return (
-    <div>
-      <ResponsiveContainer width="100%" height={220}>
+    <div style={isMobile ? containerMobile : container}>
+      <ResponsiveContainer width="100%" height="100%">
         <BarChart layout="vertical" data={filteredData} barCategoryGap={0}>
           <XAxis
             tickFormatter={formatter}
             type="number"
             dataKey={column}
-            style={{ fontSize: "0.6rem" }}
+            style={{ fontSize: isMobile ? "0.6rem" : "min(1dvw, 1.2dvh)" }}
             domain={domain}
-            tickCount={15}
+            tickCount={8}
           />
           <YAxis type="category" dataKey={columnKey} hide />
           <Bar
             isAnimationActive={false}
-            background
+            background={{ fill: "white" }}
             dataKey={column}
             style={{ cursor: "pointer", pointerEvents: "none" }}
           >
@@ -149,7 +174,9 @@ export const Chart = ({
                   setActiveMunicipality(null);
                 }}
                 fill={
-                  activeMunicipality === item[columnKey] ? "#FFAE00" : "#ffcb54"
+                  activeMunicipality === item[columnKey]
+                    ? colorValueActive
+                    : colorValue
                 }
                 style={{ cursor: "pointer", transition: "fill 0.05s ease" }}
               />
@@ -160,7 +187,11 @@ export const Chart = ({
       <Heading
         size="xs"
         color="green.700"
-        style={{ textAlign: "center", marginTop: "-15px", fontSize: "min(1dvw, 1.4dvh)" }}
+        style={{
+          textAlign: "center",
+          fontSize: isMobile ? "0.9rem" : "min(1dvw, 1.4dvh)",
+          marginTop: "-15px",
+        }}
       >
         {title}
       </Heading>
