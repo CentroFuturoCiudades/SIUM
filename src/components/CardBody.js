@@ -16,16 +16,17 @@ const CardBody = ({ id, question, answer, icon, color }) => {
           backgroundColor={color}
           color="white"
           borderRadius={20}
-          p="4"
+          p="1dvw"
           style={{
-            width: "200px",
-            height: "200px",
+            width: isMobile ? '25dvw' : '15dvw',
+            height: isMobile ? '25dvw' : '15dvw',
             display: "flex",
             justifyContent: "center",
             cursor: "pointer",
             transform: isFlipped ? "rotateY(180deg)" : "rotateY(0)",
             transformStyle: "preserve-3d",
             transition: "transform 0.7s",
+            boxShadow: "0px 0.8dvw 0.8dvw 0px rgba(100,100,100,0.3)",
           }}
         >
           <div
@@ -37,13 +38,13 @@ const CardBody = ({ id, question, answer, icon, color }) => {
           >
             {isFlipped ? (
               <div>
-                <Icon as={icon} boxSize={10} />
-                <h3>{answer}</h3>
+                <Icon as={icon} boxSize={isMobile ? '5dvw' : '3dvw'} />
+                <h3 style={{ fontFamily: "Inter", fontSize: isMobile ? '1.6dvw' : '1dvw' }}>{answer}</h3>
               </div>
             ) : (
               <div>
-                <Icon as={icon} boxSize={10} />
-                <h1 style={{ fontFamily: "Inter", fontSize: isMobile ? "10px" : "18px" }}>
+                <Icon as={icon} boxSize={isMobile ? '5dvw' : '3dvw'} />
+                <h1 style={{ fontFamily: "Inter", fontSize: isMobile ? '1.8dvw' : '1.2dvw' }}>
                   <b>{question}</b>
                 </h1>
               </div>

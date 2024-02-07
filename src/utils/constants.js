@@ -131,6 +131,8 @@ export const filterDataAll = (
 
 export const DATA_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos";
+export const MANCHA_URBANA_URL = `${DATA_URL}/mancha_urbana.geojson`;
+export const SATELLITE_IMAGES_URL = (x) => `${DATA_URL}/expansion_${x}.jpg`;
 export const MUNICIPIOS_URL = `${DATA_URL}/div-municipal.geojson`;
 export const EXPANSION_URL = `${DATA_URL}/agebs-pob.geojson`;
 export const EXPANSION_CHART_URL = `${DATA_URL}/expansion_municipality.json`;
@@ -148,8 +150,12 @@ export const DELINCUENCIA_URL = `${DATA_URL}/crimen-hex.geojson`;
 export const DELINCUENCIA_CHART_URL = `${DATA_URL}/crimen_municipality.json`;
 export const COSTOS_URL = `${DATA_URL}/crimen-hex.geojson`;
 export const POB05_URL = `${DATA_URL}/pob_infancia.geojson`;
+export const POB05_CHART_URL = `${DATA_URL}/pob_infancia_municipality.json`;
 export const PARQUES_URL = `${DATA_URL}/parques.geojson`;
 export const SERVICIOS_URL = `${DATA_URL}/denue_infancia.geojson`;
+export const ISLAS_CALOR_URL = `${DATA_URL}/islas_calor.geojson`;
+export const ISLAS_CALOR_CHART_URL = `${DATA_URL}/heat_island_municipality.json`;
+export const INDUSTRIA_URL = `${DATA_URL}/industria.geojson`;
 
 export const PERIPHERIES = [
   "Juárez",
@@ -299,8 +305,8 @@ export const COSTOS_LAYER = {
   },
 };
 
-function getWindowDimensions(ref=window) {
-  const { innerWidth: width, innerHeight: height } = ref;
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
   return {
     width,
     height,
@@ -308,18 +314,18 @@ function getWindowDimensions(ref=window) {
   };
 }
 
-export default function useWindowDimensions(ref=window) {
+export default function useWindowDimensions() {
   const [windowDimensions, setWindowDimensions] = useState(
-    getWindowDimensions(ref)
+    getWindowDimensions(window)
   );
 
   useEffect(() => {
     function handleResize() {
-      setWindowDimensions(getWindowDimensions(ref));
+      setWindowDimensions(getWindowDimensions(window));
     }
 
-    ref.addEventListener("resize", handleResize);
-    return () => ref.removeEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return windowDimensions;

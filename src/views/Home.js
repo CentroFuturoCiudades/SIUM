@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Text, useMediaQuery } from "@chakra-ui/react";
+import { IconButton, Text, Tooltip, useMediaQuery } from "@chakra-ui/react";
 import Cards from "./Cards";
 import { BitmapLayer, DeckGL, GeoJsonLayer, TileLayer } from "deck.gl";
 import useWindowDimensions, {
-  colorInterpolate,
+  MANCHA_URBANA_URL,
+  SATELLITE_IMAGES_URL,
   useFetch,
 } from "../utils/constants";
+import { Link } from "react-router-dom";
+import { MdDownload, MdPeople } from "react-icons/md";
 
 const bounding = [-120, 15, -80, 40];
 const boundingBox = {
@@ -31,28 +34,29 @@ const CONTROLLER = {
   dragMode: "pan",
 };
 
+// const IMAGE_BOUNDS = [-102.1, 25.031, -99.487, 26.435];
+const IMAGE_BOUNDS = [-102.107, 25.031, -99.483, 26.428];
+
 const minWidth = 400;
-const minMultiplier = 0.9;
+const minMultiplier = 0.88;
 const maxWidth = 1400;
 const maxMultiplier = 1;
 
 const Map = ({ year }) => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
   const { width } = useWindowDimensions();
-  const { data } = useFetch(
-    "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/mancha_urbana.geojson"
-  );
+  const { data } = useFetch(MANCHA_URBANA_URL);
   const tileLayerURL =
     "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
   const multiplier =
     minMultiplier +
     ((maxMultiplier - minMultiplier) / (maxWidth - minWidth)) *
       (width - minWidth);
-  const image = `https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/images/expansion_${year}.jpeg`;
+  const image = SATELLITE_IMAGES_URL(year || 1990);
 
   const initialViewState = {
     latitude: 25.68,
-    longitude: isMobile ? -100.3 : -100.486419,
+    longitude: isMobile ? -100.32 : -100.52,
     zoom: (year ? 9.6 : 9.2) * multiplier,
     pitch: 10,
     bearing: 0,
@@ -74,12 +78,11 @@ const Map = ({ year }) => {
   };
   const yearStyle = {
     display: "flex",
-    marginRight: "20px",
+    padding: "1dvw",
     justifyContent: "end",
     alignItems: "center",
     height: "100%",
     textAlign: "end",
-    color: "rgb(40, 140, 140)",
   };
 
   return (
@@ -116,11 +119,7 @@ const Map = ({ year }) => {
           });
         }}
       />
-      <BitmapLayer
-        id="bitmap-layer"
-        bounds={[-100.8, 25.312, -99.773, 25.961]}
-        image={image}
-      />
+      <BitmapLayer id="bitmap-layer" bounds={IMAGE_BOUNDS} image={image} />
       <GeoJsonLayer
         id="mask-layer"
         data={boundingBox}
@@ -128,7 +127,7 @@ const Map = ({ year }) => {
         stroked={false}
         filled={true}
         lineWidthMinPixels={2}
-        getFillColor={[0, 0, 0.1, 200]}
+        getFillColor={[0, 0, 0, 160]}
       />
       <GeoJsonLayer
         id="mancha-urbana-layer"
@@ -140,35 +139,51 @@ const Map = ({ year }) => {
             : []
         }
         getFillColor={(d) =>
-          +d.properties.year === 1990 ? [200, 200, 200] : [40, 140, 140]
+          +d.properties.year === 1990 ? [200, 200, 200, 60] : [26, 87, 255, 160]
         }
         stroked={true}
-        opacity={0.2}
       />
-      <Text
-        style={yearStyle}
-        fontFamily={"Poppins"}
-        fontSize={isMobile ? "2xl" : "5xl"}
-      >
-        <b>{year}</b>
-      </Text>
+      <div style={yearStyle}>
+        <div>
+          {year ? (
+            <Text
+              style={{ color: "white", lineHeight: 0.5 }}
+              fontFamily="Poppins"
+              fontSize="3.5dvw"
+            >
+              <b>1990</b>
+            </Text>
+          ) : null}
+          {year > 1990 ? (
+            <Text
+              fontFamily="Poppins"
+              fontSize="3.5dvw"
+              style={{ color: "rgb(26, 87, 255)" }}
+            >
+              <b>{year}</b>
+            </Text>
+          ) : null}
+        </div>
+      </div>
     </DeckGL>
   );
 };
 
 const Home = () => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
+  const [isInitial, setIsInitial] = useState(true);
   const containerRef = useRef(null);
   const imageRef = useRef(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const year = currentImageIndex > 0 ? currentImageIndex * 5 + 1985 : undefined;
-  const numberOfImages = 8;
+  const year = currentImageIndex * 5 + 1990;
+  const numberOfImages = 7;
 
   useEffect(() => {
     const handleScroll = () => {
       const normalized =
         (window.document.body.scrollTop - containerRef.current.offsetTop) /
         (containerRef.current.scrollHeight - containerRef.current.offsetTop);
+      setIsInitial(normalized < -0.3);
       const currentImageIndex = Math.min(
         Math.max(Math.floor(normalized * numberOfImages), 0),
         numberOfImages - 1
@@ -201,24 +216,23 @@ const Home = () => {
   }, []);
 
   const containerStyle = {
-    height: "100vh",
+    height: "100dvh",
+    width: "100dvw",
     display: "flex",
     justifyContent: "center",
     alignItems: "left",
     borderRadius: "0px 0px 0px 50px",
-    background: "#f7f2e4", // Ajusta el color de fondo
     flexDirection: "column", // Para colocar los textos uno debajo del otro
-    marginLeft: "10%", // Margen izquierdo para separar del borde
   };
 
   const titleStyle = {
-    fontSize: isMobile ? "8vh" : "20vh", // Ajusta el tamaño del texto según tus preferencias
-    color: "#515151", // Ajusta el color del texto
+    fontSize: "12dvw", // Ajusta el tamaño del texto según tus preferencias
+    color: "antiquewhite", // Ajusta el color del texto
     textAlign: "left", // Alinea el texto a la izquierda
     marginLeft: "1rem", // Elimina el margen predeterminado
   };
   const subTitleStyle = {
-    fontSize: isMobile ? "4vh" : "8vh", // Ajusta el tamaño del texto según tus preferencias
+    fontSize: "4dvw", // Ajusta el tamaño del texto según tus preferencias
     lineHeight: "1.2",
     textAlign: "left", // Alinea el texto a la izquierda
     marginLeft: "2rem", // Elimina el margen predeterminado
@@ -228,62 +242,116 @@ const Home = () => {
     margin: isMobile ? "200px 10px 0 10px" : "200px 40px 0 40px",
     paddingBottom: "100px",
     lineHeight: isMobile ? "1.5" : "1.8",
-    textAlign: "justify",
   };
 
   return (
     <>
-      <div style={containerStyle}>
-        <h1 style={titleStyle}>Ciudad finita</h1>
-        <Text style={subTitleStyle} color="gray" m="0">
-          Expansión urbana en la
-        </Text>
-        <Text style={subTitleStyle} color="gray" m="0">
-          Zona Metropolitana de
-        </Text>
-        <Text style={subTitleStyle} color="orange.500" m="0">
-          <b>Monterrey</b>
-        </Text>
-      </div>
       <div>
-        <Map year={year} />
-        <div ref={containerRef}>
-          <Text
-            color="gray.100"
-            fontSize={isMobile ? "sm" : "2xl"}
-            style={textStyle}
-          >
-            En las últimas tres décadas, la mancha urbana de Monterrey ha
-            experimentado un crecimiento exponencial, triplicándose en tamaño.
-            Este desarrollo, si bien evidencia el dinamismo de la ciudad,
-            también conlleva riesgos ambientales, económicos y sociales. Los
-            recursos urbanos y ambientales, que son esenciales para el bienestar
-            de la comunidad, son finitos y deben manejarse con responsabilidad.
-          </Text>
-          <Text
-            color="gray.100"
-            fontSize={isMobile ? "sm" : "2xl"}
-            style={textStyle}
-          >
-            <b>La 'mancha urbana'</b> se refiere a la expansión continua de la
-            ciudad en términos de construcción y desarrollo. En este contexto,
-            es crucial destacar que esta expansión no planificada y
-            descontrolada requiere una reconsideración urgente.
-          </Text>
-          <Text
-            color="gray.100"
-            fontSize={isMobile ? "sm" : "2xl"}
-            style={textStyle}
-          >
-            <b>La finitud de los recursos</b> urbanos, ambientales y la
-            expansión aparentemente 'infinita' de la ciudad, nos hace
-            plantearnos diversas preguntas fundamentales sobre la sostenibilidad
-            y la gestión responsable de nuestro entorno. Enfrentar estos
-            desafíos requiere un enfoque reflexivo y acciones concertadas para
-            garantizar un futuro sostenible para la comunidad y el entorno en la
-            Zona Metropolitana de Monterrey.
-          </Text>
+        <Map year={!isInitial ? year : undefined} />
+        <div style={{ display: "grid" }}>
+          <div style={containerStyle}>
+            <div>
+              <h1 style={titleStyle}>Ciudad Finita</h1>
+              <Text style={subTitleStyle} color="aliceblue" m="0">
+                Expansión urbana en la
+              </Text>
+              <Text style={subTitleStyle} color="aliceblue" m="0">
+                Zona Metropolitana de
+              </Text>
+              <Text style={subTitleStyle} color="orange.500" m="0">
+                <b>Monterrey</b>
+              </Text>
+            </div>
+          </div>
+          <div ref={containerRef}>
+            <Text
+              color="gray.100"
+              fontSize={isMobile ? "sm" : "1.5dvw"}
+              style={textStyle}
+            >
+              En las últimas tres décadas, la mancha urbana de Monterrey ha
+              experimentado un crecimiento exponencial, triplicándose en tamaño.
+              Este desarrollo, si bien evidencia el dinamismo de la ciudad,
+              también conlleva riesgos ambientales, económicos y sociales. Los
+              recursos urbanos y ambientales, que son esenciales para el
+              bienestar de la comunidad, son finitos y deben manejarse con
+              responsabilidad.
+            </Text>
+            <Text
+              color="gray.100"
+              fontSize={isMobile ? "sm" : "1.5dvw"}
+              style={textStyle}
+            >
+              <b>La 'mancha urbana'</b> se refiere a la expansión continua de la
+              ciudad en términos de construcción y desarrollo. En este contexto,
+              es crucial destacar que esta expansión no planificada y
+              descontrolada requiere una reconsideración urgente.
+            </Text>
+            <Text
+              color="gray.100"
+              fontSize={isMobile ? "sm" : "1.5dvw"}
+              style={textStyle}
+            >
+              <b>La finitud de los recursos</b> urbanos, ambientales y la
+              expansión aparentemente 'infinita' de la ciudad, nos hace
+              plantearnos diversas preguntas fundamentales sobre la
+              sostenibilidad y la gestión responsable de nuestro entorno.
+              Enfrentar estos desafíos requiere un enfoque reflexivo y acciones
+              concertadas para garantizar un futuro sostenible para la comunidad
+              y el entorno en la Zona Metropolitana de Monterrey.
+            </Text>
+          </div>
         </div>
+      </div>
+      <div
+        style={{
+          position: "fixed",
+          bottom: "0",
+          right: "0",
+          margin: "10px",
+          display: "grid",
+        }}
+      >
+        <Tooltip
+          label="Acerca del Equipo"
+          hasArrow
+          padding="0.5rem"
+          bg="gray.700"
+          fontSize="xs"
+          borderRadius="md"
+          placement="right"
+        >
+          <Link to="/equipo">
+            <IconButton
+              size="sm"
+              isRound={true}
+              icon={<MdPeople />}
+              variant="solid"
+              style={{ marginBottom: "5px" }}
+              colorScheme="blackAlpha"
+            />
+          </Link>
+        </Tooltip>
+        <Tooltip
+          label="Descarga de Datos"
+          hasArrow
+          padding="0.5rem"
+          bg="gray.700"
+          fontSize="xs"
+          borderRadius="md"
+          placement="right"
+        >
+          <Link to="/descargas">
+            <IconButton
+              size="sm"
+              isRound={true}
+              icon={<MdDownload />}
+              variant="solid"
+              style={{ marginBottom: "5px" }}
+              colorScheme="blackAlpha"
+            />
+          </Link>
+        </Tooltip>
       </div>
       <Cards />
     </>
