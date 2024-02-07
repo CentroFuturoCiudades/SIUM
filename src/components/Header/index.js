@@ -5,43 +5,69 @@ import { Link } from "react-router-dom";
 
 export const Header = ({ section, color, title }) => (
   <Box bgColor={`${color}.500`} className="headerContainer">
-    <Link to="/">
-      <div
+    <Link
+      as={"div"}
+      to="/"
+      style={{
+        display: "flex",
+        justifyContent: "space-around",
+        height: "100%",
+        width: "100%",
+      }}
+    >
+      <img
+        className="headerImage"
+        src="SIUM.png"
+        alt="SIUM"
         style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          padding: "5px",
+          maxWidth: "33%",
+          maxHeight: "100%",
+          height: "auto",
+          width: "auto",
+          objectFit: "contain",
         }}
-      >
-        <img
-          className="headerImage"
-          src="tec.png"
-          alt="Tec de Monterrey"
-          style={{ width: "50%" }}
-        />
-        <img
-          className="headerImage"
-          src="femsa.png"
-          alt="Tec de Monterrey"
-          style={{ width: "30%" }}
-        />
-      </div>
+      />
+      <img
+        className="headerImage"
+        src="tec.png"
+        alt="Tec de Monterrey"
+        style={{
+          padding: "5px",
+          maxWidth: "33%",
+          maxHeight: "100%",
+          height: "auto",
+          width: "auto",
+          objectFit: "contain",
+        }}
+      />
+      <img
+        className="headerImage"
+        src="femsa.png"
+        alt="FEMSA"
+        style={{
+          padding: "5px",
+          maxWidth: "33%",
+          maxHeight: "100%",
+          height: "auto",
+          width: "auto",
+          objectFit: "contain",
+        }}
+      />
     </Link>
     <Box className="titleContainer" bgColor={`${color}.500`}>
       <Heading
         className="title"
         color={`${color}.600`}
         borderColor={`${color}.500`}
-        fontSize={{ md: "0.9rem", lg: "1.1rem", sm: "0.6rem" }}
+        style={{ fontSize: "1.2dvw" }}
       >
         <motion.div
           key={section}
-          initial={{ opacity: 0, scale: 0.8, y: -10 }}
+          initial={{ opacity: 0 }}
           animate={{
             opacity: 1,
-            scale: 1,
-            y: 0,
-            transition: { duration: 0.5 },
+            transition: { duration: 0.7 },
           }}
         >
           {title}

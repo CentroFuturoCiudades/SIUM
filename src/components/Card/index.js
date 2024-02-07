@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   SUBCENTERS_LAYER,
   CENTER_LAYER,
@@ -6,7 +6,7 @@ import {
   SECCION_SEGREGACION__QUINTIL_LAYER,
   SECCION_CRECIMIENTO_LAYER_1990,
 } from "../../utils/constants";
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box, Heading, Text, useMediaQuery } from "@chakra-ui/react";
 import { AnimatedText } from "../AnimatedText";
 import "./index.css";
 
@@ -60,36 +60,45 @@ export const SubcentersSpan = ({ setOutline }) => (
   </span>
 );
 
-export const ResponseTitle = ({ children, color }) => (
-  <AnimatedText duration={0.8} x={-15}>
-    <Heading
-      className="response"
-      color={`${color}.600`}
-      fontSize={{ md: "0.9rem", lg: "1rem", sm: "0.8rem" }}
-    >
-      {children}
-    </Heading>
-  </AnimatedText>
-);
-
-export const ContextTitle = ({ children, color }) => (
-  <AnimatedText duration={0.8} y={-15}>
-    <Text
-      className="context"
-      color={`${color}.600`}
-      fontSize={{ md: "0.8rem", lg: "0.9rem", sm: "0.7rem" }}
-    >
-      {children}
-    </Text>
-  </AnimatedText>
-);
-
-export const Card = ({ id, children, color }) => (
-  <section className="cardSection" id={id}>
-    <Box className="card" borderColor={`${color}.500`}>
-      <div style={{ position: "relative", height: "100%", width: "100%" }}>
+export const ResponseTitle = ({ children, color }) => {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
+  return (
+    <AnimatedText duration={0.5} x={-5} opacity={0.5}>
+      <Heading
+        className="response"
+        color={`${color}.600`}
+        style={{ fontSize: isMobile ? "0.9rem" : "min(1.6dvw, 1.8dvh)" }}
+      >
         {children}
-      </div>
-    </Box>
-  </section>
-);
+      </Heading>
+    </AnimatedText>
+  );
+};
+
+export const ContextTitle = ({ children, color }) => {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
+  return (
+    <AnimatedText duration={0.5} y={-5} opacity={0.5}>
+      <Text
+        as={"p"}
+        className="context"
+        color={`${color}.600`}
+        style={{ fontSize: isMobile ? "0.8rem" : "min(1.4dvw, 1.6dvh)" }}
+      >
+        {children}
+      </Text>
+    </AnimatedText>
+  );
+};
+
+export const Card = ({ id, children, color }) => {
+  return (
+    <section className="cardSection" id={id}>
+      <Box className="card" borderColor={`${color}.500`}>
+        <div style={{ position: "relative", height: "100%", width: "100%" }}>
+          {children}
+        </div>
+      </Box>
+    </section>
+  );
+};

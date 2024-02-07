@@ -37,13 +37,13 @@ const legendMapping = {
     quantiles: [4000, 7000, 10000, 13000, 18000, 25000, 35000, 50000, 74000],
   },
   local_centralization_q_1_k_100: {
-    title: "Quinto quintil segregación",
-    formatter: d3.format(".0%"),
+    title: "Primer quintil segregación",
+    formatter: d3.format(".2"),
     quantiles: [-0.18, -0.12, -0.08, -0.04, 0, 0.02, 0.04, 0.06, 0.08],
   },
   local_centralization_q_5_k_100: {
-    title: "Primer quintil segregación",
-    formatter: d3.format(".0%"),
+    title: "Quinto quintil segregación",
+    formatter: d3.format(".2"),
     quantiles: [-0.18, -0.12, -0.08, -0.04, 0, 0.02, 0.04, 0.06, 0.08],
   },
 };

@@ -1,11 +1,23 @@
 import DeckGL from "@deck.gl/react";
-import { ButtonGroup, IconButton, useMediaQuery } from "@chakra-ui/react";
+import {
+  ButtonGroup,
+  IconButton,
+  useMediaQuery,
+  useToken,
+} from "@chakra-ui/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { Map } from "react-map-gl";
 import mapboxgl from "mapbox-gl";
-import { GeoJsonLayer, IconLayer } from "deck.gl";
+import { GeoJsonLayer, TextLayer } from "deck.gl";
 import { useCardContext } from "../views/Problematica";
 import { useEffect, useState } from "react";
+import {
+  DATA_URL,
+  MUNICIPIOS_URL,
+  hexToRgb,
+  useFetch,
+} from "../utils/constants";
+import { mappingNames } from "./Chart";
 
 mapboxgl.workerClass =
   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
@@ -43,7 +55,9 @@ export function CustomMap({ viewState, infanciasHover, children }) {
     ...viewState,
     zoom: isMobile ? viewState.zoom * 0.9 : viewState.zoom,
   });
-  const { outline } = useCardContext();
+  const { outline, color } = useCardContext();
+  const { data: municipalityData } = useFetch(MUNICIPIOS_URL, { features: [] });
+  const [colorValue] = useToken("colors", [`${color}.800`]);
   const zoomIn = () => {
     setProcessedViewState((v) => ({
       ...v,
@@ -61,8 +75,13 @@ export function CustomMap({ viewState, infanciasHover, children }) {
   };
 
   useEffect(() => {
-    setProcessedViewState({ ...processedViewState, zoom: isMobile ? viewState.zoom * 0.9 : viewState.zoom });
+    setProcessedViewState({
+      ...processedViewState,
+      zoom: isMobile ? viewState.zoom * 0.9 : viewState.zoom,
+    });
   }, [isMobile]);
+
+  if (!municipalityData) return <Loading />;
 
   return (
     <>
@@ -76,11 +95,35 @@ export function CustomMap({ viewState, infanciasHover, children }) {
         <Map
           width="100%"
           height="100%"
-          mapStyle="mapbox://styles/mapbox/light-v11"
-          mapboxAccessToken="pk.eyJ1IjoidXJpZWxzYTk2IiwiYSI6ImNsbnV2MzBkZDBlajYya211bWk2eTNuc2MifQ.ZnhFC3SyhckuIQBLO59HxA"
+          mapStyle="mapbox://styles/lameouchi/cls55h898029301pfb1t07mtc"
+          mapboxAccessToken="pk.eyJ1IjoibGFtZW91Y2hpIiwiYSI6ImNsa3ZqdHZtMDBjbTQzcXBpNzRyc2ljNGsifQ.287002jl7xT9SBub-dbBbQ"
         />
         {children}
-        {outline ? <GeoJsonLayer {...outline.props} /> : null}
+        <GeoJsonLayer
+          id="municipality-layer"
+          data={municipalityData.features}
+          getFillColor={[128, 174, 0, 0]}
+          getLineColor={[128, 128, 128, 80]}
+          getLineWidth={100}
+        />
+        {outline ? (
+          <GeoJsonLayer
+            {...outline.props}
+            getLineWidth={200}
+            getLineColor={[...hexToRgb(colorValue), 150]}
+            getFillColor={[160, 160, 160, 100]}
+          />
+        ) : null}
+        <TextLayer
+          id="municipios-text-layer"
+          data={municipalityData.features}
+          getPosition={(d) => [d.properties.longitude, d.properties.latitude]}
+          getText={(d) => mappingNames[d.properties.NOMGEO]}
+          // sizeUnits="meters"
+          getSize={(d) => processedViewState.zoom}
+          getColor={[0, 0, 0, 150]}
+          fontFamily="Inter, Courier, monospace"
+        />
       </DeckGL>
       <div style={{ position: "absolute", top: 10, right: 10, zIndex: 10 }}>
         <ButtonGroup isAttached size="sm" colorScheme="blackAlpha">

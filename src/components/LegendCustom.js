@@ -1,8 +1,15 @@
 import { InfoIcon } from "@chakra-ui/icons";
 import { Box, Heading, Tooltip } from "@chakra-ui/react";
 
-export const LegendCustom = ({ title, info1, color, title2, legendItems }) => {
-  if (legendItems.length === 0) {
+export const LegendCustom = ({
+  title,
+  info1,
+  color,
+  title2,
+  legendItems,
+  area,
+}) => {
+  if (!legendItems || legendItems.length === 0) {
     return null;
   }
   return (
@@ -42,10 +49,16 @@ export const LegendCustom = ({ title, info1, color, title2, legendItems }) => {
       </div>
       <div style={{ alignItems: "center" }}>
         <span className="legend-label">{info1}%</span>
-        <Heading size="xs" color="gray.700">
-          {title2}
-        </Heading>
       </div>
+      <Heading size="xs" color="gray.700">
+        Parques
+      </Heading>
+      <div style={{ alignItems: "center" }}>
+        <span className="legend-label">{area.toFixed(2)} hectareas</span>
+      </div>
+      <Heading size="xs" color="gray.700">
+        {title2}
+      </Heading>
       {legendItems.map((item, index) => (
         <div key={index} style={{ display: "flex", alignItems: "center" }}>
           <div
