@@ -22,8 +22,6 @@ import ButtonControls from "./ButtonControls";
 import { Slider } from "@chakra-ui/react";
 import * as d3 from "d3";
 import { IconLayer } from "deck.gl";
-import Supercluster from 'supercluster';
-import icon from './iconred.png'
 import { Checkbox, Heading } from "@chakra-ui/react";
 
 const startColor = "#68736d";
@@ -100,35 +98,20 @@ export const SegregacionControls = () => {
           autoHighlight={true}
           getPosition={(d) => d.position}
         />
+        
         {showAsentamientos && (
-          <IconLayer
-            id= "icon-layer2"
-            data= {filterIcons(data_asentamientos)}
-            getPosition={(d) => d.geometry.coordinates}
-            getIcon= {(d) => ({
-                url: d.properties.iconPath,
-                width: 1000, // ajusta según el tamaño real de tus iconos
-                height: 1000,
-                anchorY: 1000, // ajusta según la ubicación del punto que deseas señalar
-              })}
-            sizeScale={2}  // Todos los tamaños se duplicarán
-            getSize={(d) => 10}  // Tamaño base para todos los elementos
-          />
+        <IconLayer
+          id="asentamientos_layer"
+          data={data_asentamientos.features}
+          iconAtlas="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png"
+          iconMapping="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.json"
+          getIcon={d => 'marker'}
+          getPosition={d => d.geometry.coordinates}
+          sizeUnits={'meters'}
+          sizeScale={2000}
+          sizeMinPixels={6}
+        /> 
         )}
-        {/*<IconLayer
-          //intento 2
-          id= "icon-layer2"
-          data= {filterIcons(data_asentamientos)}
-          getPosition={(d) => d.geometry.coordinates}
-          getIcon= {(d) => ({
-              url: d.properties.iconPath,
-              width: 1000, // ajusta según el tamaño real de tus iconos
-              height: 1000,
-              anchorY: 1000, // ajusta según la ubicación del punto que deseas señalar
-            })}
-          sizeScale={2}  // Todos los tamaños se duplicarán
-          getSize={(d) => 10}  // Tamaño base para todos los elementos
-          />  */}
       </CustomMap>
       <ButtonControls
         color={color}

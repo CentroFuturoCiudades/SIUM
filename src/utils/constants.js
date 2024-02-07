@@ -44,8 +44,6 @@ import {
 import { BrushingExtension } from "@deck.gl/extensions";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "@chakra-ui/react";
-//import iconpic from "../components/iconred.png";
-import iconpic from "./icon.png";
 
 export function colorInterpolate(value, thresholds, colors, opacity = 1) {
   // Create a scale using the thresholds and colors
@@ -131,32 +129,6 @@ export const filterDataAll = (
   return filteredData;
 };
 
-export const filterIcons = (data) =>
-{
-  if (!data || !data.features || !Array.isArray(data.features)) {
-    return [];
-  }
-
-  const filteredData = data.features.map((feature) => {
-    let iconPath;
-    if (feature.geometry.type === "Point") {
-      
-        iconPath = iconpic;
-
-      const coloredPoint = {
-        ...feature,
-        properties: {
-          ...feature.properties,
-          iconPath: iconPath,
-        },
-      };
-
-      return coloredPoint;
-    }
-  });
-
-  return filteredData;
-};
 
 export const DATA_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos";
