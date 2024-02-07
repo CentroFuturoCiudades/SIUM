@@ -5,7 +5,7 @@ import { BarMobile, Sidebar } from "../components/Sidebar";
 import { Header, HeaderMobile } from "../components/Header";
 import "../index.css";
 import { Card } from "../components/Card";
-import useWindowDimensions, { sectionsInfo } from "../utils/constants";
+import { sectionsInfo } from "../utils/constants";
 import SwipeableBottomSheet from "react-swipeable-bottom-sheet";
 
 const CardContext = createContext();

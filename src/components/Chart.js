@@ -92,7 +92,7 @@ export const Chart = ({
   let filteredData = useMemo(
     () =>
       _(data || [])
-        .filter((x) => excludedMunicipalities.indexOf(x[columnKey]) === -1)
+        .filter((x) => mappingNames[x[columnKey]])
         .filter((x) => !filtering || filtering(x))
         .groupBy(columnKey)
         .map((objs, key) => ({
