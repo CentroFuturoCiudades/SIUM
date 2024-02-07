@@ -24,7 +24,7 @@ import * as d3 from "d3";
 import { IconLayer } from "deck.gl";
 import Supercluster from 'supercluster';
 import icon from './iconred.png'
-import { Checkbox } from "@chakra-ui/react";
+import { Checkbox, Heading } from "@chakra-ui/react";
 
 const startColor = "#68736d";
 const endColor = "#1A57FF";
@@ -55,7 +55,7 @@ export const SegregacionControls = () => {
   const [legendItems, setLegendItems] = useState([]);
   const [hoverInfo, setHoverInfo] = useState();
   const [activeButton, setActiveButton] = useState("income_pc");
-  const [showAsentamientos, setShowAsentamientos] = useState(false);
+  const [showAsentamientos, setShowAsentamientos] = useState(true);
 
   useEffect(() => {
     setLegendItems(
@@ -82,7 +82,6 @@ export const SegregacionControls = () => {
     <>
       
       <CustomMap viewState={INITIAL_STATE}>
-        <Checkbox onChange={handleCheckboxChange} isChecked={showAsentamientos}/>
         <GeoJsonLayer
           id="segregacion_layer"
           data={cleanedGeoData(data.features, activeButton)}
@@ -153,6 +152,16 @@ export const SegregacionControls = () => {
         color={color}
         formatter={legendMapping[activeButton].formatter}
       />
+      <Checkbox 
+        onChange={handleCheckboxChange} 
+        isChecked={showAsentamientos}
+        className="checkbox"
+        width="210px"
+      >
+        <Heading size="xs" color="gray.700">
+          Asentamientos Informales
+        </Heading>
+      </Checkbox>
       {/** ERROR: Por alguna razon el zoom no funciona bien si no tiene un slider */}
       <Slider />
       {hoverInfo && hoverInfo.object && (
