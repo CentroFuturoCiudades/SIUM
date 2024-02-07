@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import useWindowDimensions, {
+import {
   SUBCENTERS_LAYER,
   CENTER_LAYER,
   PERIPHERY_LAYER,
@@ -80,7 +80,7 @@ export const ContextTitle = ({ children, color }) => {
   return (
     <AnimatedText duration={0.5} y={-5} opacity={0.5}>
       <Text
-        as={'p'}
+        as={"p"}
         className="context"
         color={`${color}.600`}
         style={{ fontSize: isMobile ? "0.8rem" : "min(1.4dvw, 1.6dvh)" }}

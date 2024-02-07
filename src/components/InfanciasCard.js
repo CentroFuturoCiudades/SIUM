@@ -3,6 +3,7 @@ import { useCardContext } from "../views/Problematica";
 import { ResponseTitle, ContextTitle } from "./Card";
 import {
   PARQUES_URL,
+  POB05_CHART_URL,
   POB05_URL,
   SERVICIOS_URL,
   cleanedGeoData,
@@ -18,6 +19,7 @@ import { BrushingExtension } from "@deck.gl/extensions";
 import _ from "lodash";
 
 import Loading from "./Loading";
+import { Chart } from "./Chart";
 
 const startColor = "#998f5d";
 const endColor = "#1A57FF";
@@ -208,6 +210,7 @@ export const InfanciasControls = () => {
 
 export function InfanciasCard() {
   const { color } = useCardContext();
+  const { data: chartData } = useFetch(POB05_CHART_URL, []);
   return (
     <>
       <ResponseTitle color={color}>
@@ -234,6 +237,14 @@ export function InfanciasCard() {
         garantizar a través de servicios de salud, nutrición óptima,
         oportunidades para el aprendizaje, protección y seguridad.
       </ContextTitle>
+      <Chart
+        title="Porcentage de población entre 0 a 5 años"
+        data={chartData}
+        domain={[0.04, 0.15]}
+        column="ratio_pob05"
+        columnKey="NOM_MUN"
+        formatter={(d) => `${d.toLocaleString("en-US", { style: "percent" })}`}
+      />
     </>
   );
 }
