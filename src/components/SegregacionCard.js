@@ -4,11 +4,13 @@ import { ResponseTitle, ContextTitle } from "./Card";
 import {
   SEGREGACION_CHART_URL,
   SEGREGATION_URL,
+  ASENTAMIENTOSINF_URL,
   cleanedGeoData,
   colorInterpolate,
   generateGradientColors,
   separateLegendItems,
   useFetch,
+  filterIcons,
 } from "../utils/constants";
 import { Chart } from "./Chart";
 import { Legend } from "./Legend";
@@ -19,6 +21,10 @@ import Loading from "./Loading";
 import ButtonControls from "./ButtonControls";
 import { Slider } from "@chakra-ui/react";
 import * as d3 from "d3";
+import { IconLayer } from "deck.gl";
+import Supercluster from 'supercluster';
+import icon from './iconred.png'
+import { Checkbox, Heading } from "@chakra-ui/react";
 
 const startColor = "#68736d";
 const endColor = "#1A57FF";
@@ -45,9 +51,11 @@ const legendMapping = {
 export const SegregacionControls = () => {
   const { color } = useCardContext();
   const { data } = useFetch(SEGREGATION_URL);
+  const { data: data_asentamientos } = useFetch(ASENTAMIENTOSINF_URL);
   const [legendItems, setLegendItems] = useState([]);
   const [hoverInfo, setHoverInfo] = useState();
   const [activeButton, setActiveButton] = useState("income_pc");
+  const [showAsentamientos, setShowAsentamientos] = useState(true);
 
   useEffect(() => {
     setLegendItems(
@@ -58,10 +66,21 @@ export const SegregacionControls = () => {
     );
   }, [activeButton]);
 
-  if (!data) return <Loading color={color} />;
+  //console.log("asentamientos ifn", data_asentamientos)
+  const ICON_MAPPING = {
+    marker: {x: 0, y: 0, width: 128, height: 128, mask: true}
+  };
+
+  const handleCheckboxChange = () => {
+    setShowAsentamientos(!showAsentamientos);
+  };
+
+  if (!data || !data_asentamientos) return <Loading color={color} />;
+  //console.log("asentamientos ifn", data_asentamientos.features)
 
   return (
     <>
+      
       <CustomMap viewState={INITIAL_STATE}>
         <GeoJsonLayer
           id="segregacion_layer"
@@ -81,6 +100,35 @@ export const SegregacionControls = () => {
           autoHighlight={true}
           getPosition={(d) => d.position}
         />
+        {showAsentamientos && (
+          <IconLayer
+            id= "icon-layer2"
+            data= {filterIcons(data_asentamientos)}
+            getPosition={(d) => d.geometry.coordinates}
+            getIcon= {(d) => ({
+                url: d.properties.iconPath,
+                width: 1000, // ajusta según el tamaño real de tus iconos
+                height: 1000,
+                anchorY: 1000, // ajusta según la ubicación del punto que deseas señalar
+              })}
+            sizeScale={2}  // Todos los tamaños se duplicarán
+            getSize={(d) => 10}  // Tamaño base para todos los elementos
+          />
+        )}
+        {/*<IconLayer
+          //intento 2
+          id= "icon-layer2"
+          data= {filterIcons(data_asentamientos)}
+          getPosition={(d) => d.geometry.coordinates}
+          getIcon= {(d) => ({
+              url: d.properties.iconPath,
+              width: 1000, // ajusta según el tamaño real de tus iconos
+              height: 1000,
+              anchorY: 1000, // ajusta según la ubicación del punto que deseas señalar
+            })}
+          sizeScale={2}  // Todos los tamaños se duplicarán
+          getSize={(d) => 10}  // Tamaño base para todos los elementos
+          />  */}
       </CustomMap>
       <ButtonControls
         color={color}
@@ -104,6 +152,16 @@ export const SegregacionControls = () => {
         color={color}
         formatter={legendMapping[activeButton].formatter}
       />
+      <Checkbox 
+        onChange={handleCheckboxChange} 
+        isChecked={showAsentamientos}
+        className="checkbox"
+        width="210px"
+      >
+        <Heading size="xs" color="gray.700">
+          Asentamientos Informales
+        </Heading>
+      </Checkbox>
       {/** ERROR: Por alguna razon el zoom no funciona bien si no tiene un slider */}
       <Slider />
       {hoverInfo && hoverInfo.object && (
