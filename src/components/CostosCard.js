@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import { ResponseTitle, ContextTitle } from "./Card";
-import { COSTOS_LAYER } from "../utils/constants";
-import { useCardContext } from "../views/Problematica";
-import {
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
-} from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export const CostosControls = () => {
   const [chartData, setChartData] = useState([]);
@@ -53,22 +49,21 @@ export const CostosControls = () => {
 
   const municipioColorMap = {
     "Abasolo": "#FF6633",
-  "Apodaca": "#FFB399",
-  "Cadereyta Jiménez": "#FF33FF",
-  "Ciénega de Flores": "#FFFF99",
-  "García": "#00B3E6",
-  "General Escobedo": "#E6B333",
-  "General Zuazua": "#3366E6",
-  "Guadalupe": "#999966",
-  "Hidalgo": "#99FF99",
-  "Juárez": "#B34D4D",
-  "Monterrey": "#80B300",
-  "Pesquería": "#809900",
-  "Salinas Victoria": "#E6B3B3",
-  "San Nicolás de los Garza": "#6680B3",
-  "San Pedro Garza García": "#66991A",
-  "Santa Catarina": "#FF99E6",
-    // ... define colores para todos los municipios que necesitas ...
+    "Apodaca": "#FFB399",
+    "Cadereyta Jiménez": "#FF33FF",
+    "Ciénega de Flores": "#FFFF99",
+    "García": "#00B3E6",
+    "General Escobedo": "#E6B333",
+    "General Zuazua": "#3366E6",
+    "Guadalupe": "#999966",
+    "Hidalgo": "#99FF99",
+    "Juárez": "#B34D4D",
+    "Monterrey": "#80B300",
+    "Pesquería": "#809900",
+    "Salinas Victoria": "#E6B3B3",
+    "San Nicolás de los Garza": "#6680B3",
+    "San Pedro Garza García": "#66991A",
+    "Santa Catarina": "#FF99E6",
   };
   
   // Esta función busca el color del municipio en el objeto de arriba.
@@ -81,7 +76,7 @@ export const CostosControls = () => {
     <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={chartData}
-          margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+          margin={{ top: 10, right: 30, left: 55, bottom: 0 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="fecha" />
@@ -89,18 +84,18 @@ export const CostosControls = () => {
           <Tooltip />
           <Legend />
           {
-  chartData.length > 0 &&
-  Object.keys(chartData[0]).filter(key => key !== 'fecha').map((municipio, index) => (
-    <Area
-      key={index}
-      type="monotone"
-      dataKey={municipio}
-      stackId="1"
-      stroke={getColorForMunicipio(municipio)} // Necesitarás crear una función que asigne un color a cada municipio
-      fill={getColorForMunicipio(municipio)} // o que los mapee de alguna manera para que sean consistentes
-    />
-  ))
-}
+            chartData.length > 0 &&
+            Object.keys(chartData[0]).filter(key => key !== 'fecha').map((municipio, index) => (
+              <Area
+                key={index}
+                type="monotone"
+                dataKey={municipio}
+                stackId="1"
+                stroke={getColorForMunicipio(municipio)} // Necesitarás crear una función que asigne un color a cada municipio
+                fill={getColorForMunicipio(municipio)} // o que los mapee de alguna manera para que sean consistentes
+              />
+            ))
+          }
         </AreaChart>
       </ResponsiveContainer>
   );
