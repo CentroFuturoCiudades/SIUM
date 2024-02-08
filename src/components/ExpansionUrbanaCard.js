@@ -8,7 +8,7 @@ import {
   EXPANSION_URL,
   EXPANSION_CHART_URL,
   generateGradientColors,
-} from "../utils/constants";
+} from "../utils/constants"; 
 import "../index.css";
 import { Chart } from "./Chart";
 import { GeoJsonLayer } from "@deck.gl/layers";

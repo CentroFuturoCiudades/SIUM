@@ -157,3 +157,17 @@ p {
   border-style: solid;
   border-color: rgba(255, 255, 255, 0.9) transparent transparent transparent;
 }
+
+.tooltip-container-mobile {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: relative;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 5px 10px;
+  box-shadow: 0 2px 8px rgba(50, 50, 50, 0.3);
+  z-index: 10;
+  width: 350px; /* Ajusta el ancho según tus necesidades */
+  border-radius: 5px;
+}
