@@ -14,7 +14,7 @@ import {
   useFetch,
 } from "../utils/constants";
 import { Chart } from "./Chart";
-import { Legend } from "./CustomLegend";
+import { CustomLegend } from "./CustomLegend";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import { GeoJsonLayer, HeatmapLayer, IconLayer } from "deck.gl";
 import Loading from "./Loading";
@@ -114,7 +114,7 @@ export const IslasCalorControls = () => {
           sizeMinPixels={6}
         />
       </CustomMap>
-      <Legend
+      <CustomLegend
         title={"Islas de calor"}
         legendItems={legendItems}
         color={color}

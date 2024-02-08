@@ -9,7 +9,7 @@ import {
   useFetch,
 } from "../utils/constants";
 import { AreaChartChart } from "./AreaChart";
-import { Legend } from "./CustomLegend.js";
+import { CustomLegend } from "./CustomLegend.js";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import { GeoJsonLayer } from "deck.gl";
 import Loading from "./Loading";
@@ -23,7 +23,6 @@ const ESCENARIOS_FUTUROS_COLORS = generateGradientColors(startColor, endColor, 3
 const EXPANSION_ACTUAL_URL = 
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/mancha_urbana.geojson";
 const ESCENARIOS_FUTUROS_ACELERADA_URL =
-// "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/islas_calor.geojson";
 "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/escenario_acelerado.geojson"; // Acelerado
 const ESCENARIOS_FUTUROS_INERCIAL_URL =
 "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/escenario_inercial.geojson"; // Inercial
@@ -49,19 +48,16 @@ export const EscenariosFuturosControls = () => {
   useEffect(() => {
     switch(activeButton){
       case "acelerada": 
-        console.log(expansion_futura_acelerada_data);
         setData(expansion_futura_acelerada_data);
         break;
         case "inercial": 
-        console.log(expansion_futura_inercial_data);
         setData(expansion_futura_inercial_data);
         break;
         case "controlada": 
-        console.log(expansion_futura_controlada_data);
         setData(expansion_futura_controlada_data);
         break;
       default:
-        console.log("error: no hay active button")
+        console.log('error: no hay "active_button"')
     }
 
     if (!expansion_actual_data || !data) return;
@@ -105,7 +101,6 @@ export const EscenariosFuturosControls = () => {
             colorInterpolate(
               d.properties["year"],
               [1990, 1995, 2000, 2005, 2010, 2015, 2020],
-              // ESCENARIOS_FUTUROS_COLORS,
               ["white"],
               0.7
             )
@@ -124,7 +119,7 @@ export const EscenariosFuturosControls = () => {
         ]}
       />
       </CustomMap>
-      {/* <Legend
+      {/* <CustomLegend
         title={"Escenarios a futuro"}
         legendItems={legendItems}
         color={color}
@@ -139,14 +134,6 @@ export function EscenariosFuturosCard() {
 
   const { color } = useCardContext();
   const { data: chartData } = useFetch(ESCENARIOS_FUTUROS_CHART_URL, []);
-
-// acelerada: 435.22
-// controlada: 435.22
-// inercial: 435.22
-// years: 1975
-  useEffect(() => {
-    // console.log(chartData);
-  }, [chartData]);
 
   return (
     <>
@@ -167,14 +154,11 @@ export function EscenariosFuturosCard() {
         <AreaChartChart
         title="Proyección de superficie urbanizada 2020-2050"
         data={chartData}
-        // domain={[1975, 2070]}
+        domain={[1975, 2070]}
         lines={["inercial", "acelerada", "controlada"]}
         lineColors={ESCENARIOS_FUTUROS_COLORS}
-        // lineColors={['blue', 'green', 'red']}
         columnKey="years"
-        // columnKey="name"
         formatter={(d) => `${d.toLocaleString("en-US")}`}
-        // formatter={(d) => `${Math.round(d).toLocaleString("en-US")}`}
       />
       
     </>

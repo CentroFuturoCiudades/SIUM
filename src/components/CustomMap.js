@@ -10,7 +10,6 @@ import { Map } from "react-map-gl";
 import mapboxgl from "mapbox-gl";
 import { GeoJsonLayer, TextLayer } from "deck.gl";
 import { useCardContext } from "../views/Problematica";
-import { useFetch } from "../utils/constants";
 import Loading from "./Loading";
 import { useEffect, useState } from "react";
 import {
