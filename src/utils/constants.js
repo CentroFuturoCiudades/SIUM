@@ -10,11 +10,12 @@ import {
   MdOutlineAttachMoney,
   MdOutlineFamilyRestroom,
   MdDeviceThermostat,
-  PiThermometerHotBold,
+  MdOutlineAccessTime,
 } from "react-icons/md";
 import { HiMiniBuildingOffice } from "react-icons/hi2";
-import { GiHoleLadder, GiInjustice, GiRobber } from "react-icons/gi";
+import { GiInjustice, GiRobber } from "react-icons/gi";
 import { FaPeopleArrows } from "react-icons/fa";
+
 
 import {
   ExpansionUrbanaCard,
@@ -41,9 +42,12 @@ import {
   IslasCalorCard,
   IslasCalorControls,
 } from "../components/IslasCalorCard";
+import {
+  EscenariosFuturosCard,
+  EscenariosFuturosControls,
+} from "../components/EscenariosFuturosCard";
 import { BrushingExtension } from "@deck.gl/extensions";
 import { useEffect, useState } from "react";
-import { useMediaQuery } from "@chakra-ui/react";
 
 export function colorInterpolate(value, thresholds, colors, opacity = 1) {
   // Create a scale using the thresholds and colors
@@ -563,9 +567,18 @@ export const sectionsInfo = {
     title:
       "¿Por qué sentimos tanto calor en la Zona Metropolitana de Monterrey?",
     answer: "-----------------------",
-    color: "teal",
+    color: "green",
     icon: MdDeviceThermostat,
     component: IslasCalorCard,
     controls: IslasCalorControls,
+  },
+  escenariosFuturos: {
+    title:
+      "¿Por qué sentimos tanto calor en la Zona Metropolitana de Monterrey?",
+    answer: "-----------------------",
+    color: "teal",
+    icon: MdOutlineAccessTime,
+    component: EscenariosFuturosCard,
+    controls: EscenariosFuturosControls,
   },
 };

@@ -67,7 +67,7 @@ export function CustomMap({ viewState, infanciasHover, children }) {
   useEffect(() => {
     setProcessedViewState({ ...processedViewState, zoom: isMobile ? viewState.zoom * 0.9 : viewState.zoom });
   }, [isMobile]);
-  
+
   if (!municipalityData) return <Loading />;
   
   return (
