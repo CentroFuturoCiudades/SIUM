@@ -25,15 +25,13 @@ export const LegendMobile = ({ title, legendItems, formatting }) => {
 
     svg.selectAll(".legendLinear").remove();
     const height =
-      (svg.node().getBoundingClientRect().height * 0.5) / legendItems.length;
+      (svg.node().getBoundingClientRect().height * 0.8) / legendItems.length;
 
     const legendLinear = legendColor()
       .shapeWidth(5)
       .shapeHeight(height)
       .shapePadding(2)
       .labelOffset(5)
-      .title(title)
-      .titleWidth(100)
       .labelFormat(formatting)
       .orient("vertical")
       .scale(linear)
@@ -52,18 +50,42 @@ export const LegendMobile = ({ title, legendItems, formatting }) => {
   }, [legendItems, title]);
 
   return (
-    <svg
+    <div
       style={{
-        height: "100%",
+        height: "40dvh",
         position: "absolute",
+        display: "flex",
+        flexDirection: "column",
+        margin: "auto",
+        left: "0px",
         top: "0px",
         bottom: "0px",
-        left: 0,
-        transform: "translateY(25%)",
+        pointerEvents: "none",
       }}
-      ref={svgRef}
-      width={110}
-    ></svg>
+    >
+      <svg
+        style={{
+          height: "100%",
+        }}
+        ref={svgRef}
+        width={110}
+      ></svg>
+      <div style={{ display: "flex", marginLeft: "10px" }}>
+        <p style={{ width: "30dvw" }}>{title}</p>
+        <Tooltip
+          label="Datos obtenidos de blah blah blah"
+          placement="top"
+          hasArrow
+          gutter={12}
+        >
+          <InfoIcon
+            boxSize={3}
+            color="gray.400"
+            style={{ cursor: "pointer" }}
+          />
+        </Tooltip>
+      </div>
+    </div>
   );
 };
 

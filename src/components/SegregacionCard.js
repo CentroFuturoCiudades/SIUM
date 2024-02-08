@@ -108,7 +108,7 @@ export const SegregacionControls = () => {
           getIcon={d => 'marker'}
           getPosition={d => d.geometry.coordinates}
           sizeUnits={'meters'}
-          sizeScale={2000}
+          sizeScale={1000}
           sizeMinPixels={6}
         /> 
         )}
