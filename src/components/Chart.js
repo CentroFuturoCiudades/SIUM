@@ -35,7 +35,7 @@ export const mappingNames = {
   "Hidalgo": "Hidalgo",
 };
 
-const CustomBarLabel = memo((props) => {
+export const CustomBarLabel = memo((props) => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
   const { x, y, width, height, index, data, columnKey } = props;
   const dataObject = data[index];

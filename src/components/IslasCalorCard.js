@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useCardContext } from "../views/Problematica";
 import { ResponseTitle, ContextTitle } from "./Card";
 import {
+  DATA_URL,
   INDUSTRIA_URL,
   ISLAS_CALOR_CHART_URL,
   ISLAS_CALOR_URL,
@@ -13,11 +14,22 @@ import {
   separateLegendItemsByCategory,
   useFetch,
 } from "../utils/constants";
-import { Chart } from "./Chart";
+import { Chart, CustomBarLabel, mappingNames } from "./Chart";
 import { Legend } from "./CustomLegend";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import { GeoJsonLayer, HeatmapLayer, IconLayer } from "deck.gl";
 import Loading from "./Loading";
+import {
+  Bar,
+  BarChart,
+  Cell,
+  LabelList,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from "recharts";
+import { Heading, useMediaQuery, useToken } from "@chakra-ui/react";
+import _ from "lodash";
 
 // Usar paleta de segregación
 // const startColor = "#68736d";
@@ -53,7 +65,6 @@ export const IslasCalorControls = () => {
   const { data: dataIndustrias } = useFetch(INDUSTRIA_URL);
 
   useEffect(() => {
-    console.log(data);
     if (!data) return;
     const values = data.features.map((feat) => feat.properties["Value"]);
     setLegendItems(
@@ -70,13 +81,19 @@ export const IslasCalorControls = () => {
   return (
     <>
       <CustomMap viewState={viewState} setViewState={setViewState}>
-        {/* <HeatmapLayer
+        <HeatmapLayer
           id="heatmap"
           data={dataIndustrias.features}
           getPosition={(d) => d.geometry.coordinates}
           getWeight={1}
+          // use grey color to indicate intensity
+          colorRange={[
+            [0, 0, 0, 0],
+            [0, 0, 0, 255],
+          ]}
           radiusPixels={30}
-        /> */}
+          intensity={3}
+        />
         <GeoJsonLayer
           id="islas_calor_layer"
           data={cleanedGeoData(data.features, "Value")}
@@ -88,9 +105,8 @@ export const IslasCalorControls = () => {
               0.8
             )
           }
-          getLineColor={[118, 124, 130]}
-          getLineWidth={30}
-          opacity={0.5}
+          getLineWidth={0}
+          opacity={0.7}
         />
         <GeoJsonLayer
           id="parques_layer"
@@ -105,17 +121,6 @@ export const IslasCalorControls = () => {
           data={VIAS_URL}
           getLineColor={[200, 80, 80, 255]}
           getLineWidth={50}
-        />
-        <IconLayer
-          id="industrias_layer"
-          data={dataIndustrias.features}
-          iconAtlas="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png"
-          iconMapping="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.json"
-          getIcon={d => 'marker'}
-          getPosition={d => d.geometry.coordinates}
-          sizeUnits={'meters'}
-          sizeScale={400}
-          sizeMinPixels={6}
         />
       </CustomMap>
       <Legend
@@ -133,7 +138,8 @@ export function IslasCalorCard() {
   const { data: chartData } = useFetch(ISLAS_CALOR_CHART_URL, []);
   const chartData2 = chartData.map((d) => ({
     ...d,
-    caliente_chart: (d.muy_caliente || 0) + (d.caliente || 0),
+    caliente2:
+      (d.muy_caliente || 0) + (d.caliente || 0) + (d.ligeramente_calido || 0),
   }));
 
   return (
@@ -163,20 +169,145 @@ export function IslasCalorCard() {
         costo de vida de los residentes, especialmente durante los meses de
         verano.
       </p>
-      <br />
       <ContextTitle color={color}>
         El rápido crecimiento urbano, sumado a la escasez de infraestructura
         verde y a la falta de una planificación sostenible, agrava aún más este
         fenómeno.
       </ContextTitle>
-      <Chart
+      <IslasCalorChart
         title="Islas de calor datos"
         data={chartData2}
-        domain={[0, 0.25]}
-        column="caliente_chart"
+        domain={[0, 100]}
+        column="caliente2"
         columnKey="NOM_MUN"
         formatter={(d) => `${d.toLocaleString("en-US")}`}
       />
     </>
   );
 }
+
+export const IslasCalorChart = ({
+  data,
+  title,
+  column,
+  columnKey,
+  formatter,
+  reducer,
+  filtering,
+  domain = undefined,
+}) => {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
+  const { setOutline } = useCardContext();
+  const { data: municipalityData } = useFetch(
+    `${DATA_URL}/div-municipal.geojson`,
+    { features: [] }
+  );
+  let filteredData = useMemo(
+    () =>
+      _(data || [])
+        .filter((x) => mappingNames[x[columnKey]])
+        .filter((x) => !filtering || filtering(x))
+        .value()
+        .sort((a, b) => b[column] - a[column]),
+    [data, columnKey, column, reducer, filtering]
+  );
+  console.log(filteredData);
+  const [activeMunicipality, setActiveMunicipality] = useState(null);
+  const handleMouseMove = useCallback(
+    (activeLabel) => {
+      setOutline({
+        type: GeoJsonLayer,
+        props: {
+          id: "municipality-layer",
+          data: municipalityData.features.filter(
+            (x) => x.properties.NOMGEO === activeLabel
+          ),
+          getFillColor: [255, 174, 0, 80],
+          getLineColor: [255, 174, 0, 250],
+          getLineWidth: 120,
+        },
+      });
+      setActiveMunicipality(activeLabel);
+    },
+    [data]
+  );
+  const containerMobile = {
+    height: "200px",
+    bottom: "-10px",
+    width: "100%",
+  };
+  const container = {
+    height: "min(15dvw, 30dvh)",
+    bottom: "-10px",
+    position: "absolute",
+    width: "100%",
+  };
+  console.log(filteredData);
+  const categories = [
+    "muy_caliente",
+    "caliente",
+    "ligeramente_calido",
+    "templado",
+    "ligeramente_frio",
+    "frio",
+    "muy_frio",
+  ];
+  console.log(activeMunicipality);
+  return (
+    <div style={isMobile ? containerMobile : container}>
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart layout="vertical" data={filteredData} barCategoryGap={0}>
+          <XAxis
+            tickFormatter={formatter}
+            type="number"
+            dataKey={column}
+            style={{ fontSize: isMobile ? "0.6rem" : "min(1dvw, 1.2dvh)" }}
+            domain={domain}
+            tickCount={8}
+          />
+          <YAxis type="category" dataKey={columnKey} hide />
+          {categories.map((key, index) => (
+            <Bar
+              isAnimationActive={false}
+              stackId="bars"
+              fill={ISLAS_CALOR_COLORS[index]}
+              dataKey={key}
+              style={{ cursor: "pointer", pointerEvents: "none" }}
+            >
+              {index === 2 && (
+                <LabelList
+                  content={
+                    <CustomBarLabel columnKey={columnKey} data={filteredData} />
+                  }
+                />
+              )}
+              {filteredData.map((item, index) => (
+                <Cell
+                  key={`cell-${item[columnKey]}`}
+                  onMouseEnter={() => handleMouseMove(item[columnKey])}
+                  onMouseLeave={() => {
+                    setOutline(null);
+                    setActiveMunicipality(null);
+                  }}
+                  opacity={activeMunicipality === item[columnKey] ? 1 : 0.7}
+                  style={{ cursor: "pointer", transition: "fill 0.05s ease" }}
+                />
+              ))}
+            </Bar>
+          ))}
+        </BarChart>
+      </ResponsiveContainer>
+      <Heading
+        size="xs"
+        color="green.700"
+        style={{
+          textAlign: "center",
+          fontSize: isMobile ? "0.9rem" : "min(1dvw, 1.4dvh)",
+          marginTop: "-15px",
+        }}
+      >
+        {title}
+      </Heading>
+    </div>
+  );
+};
