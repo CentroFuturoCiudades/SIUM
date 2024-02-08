@@ -133,8 +133,12 @@ export const filterDataAll = (
   return filteredData;
 };
 
+
 export const DATA_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos";
+export const MANCHA_URBANA_URL = `${DATA_URL}/mancha_urbana.geojson`;
+export const SATELLITE_IMAGES_URL = (x) => `${DATA_URL}/expansion_${x}.jpg`;
+export const MUNICIPIOS_URL = `${DATA_URL}/div-municipal.geojson`;
 export const EXPANSION_URL = `${DATA_URL}/agebs-pob.geojson`;
 export const EXPANSION_CHART_URL = `${DATA_URL}/expansion_municipality.json`;
 export const EMPLEO_URL = `${DATA_URL}/denue_2020.geojson`;
@@ -146,12 +150,18 @@ export const VIAS_URL = `${DATA_URL}/vias-primarias.geojson`;
 export const VIVIENDA_URL = `${DATA_URL}/vivienda-hex.geojson`;
 export const VIVIENDA_CHART_URL = `${DATA_URL}/vivienda_municipality.json`;
 export const SEGREGATION_URL = `${DATA_URL}/income2.geojson`;
+export const ASENTAMIENTOSINF_URL = `${DATA_URL}/asentamientos_informales.geojson`;
 export const SEGREGACION_CHART_URL = `${DATA_URL}/income_municipality.json`;
 export const DELINCUENCIA_URL = `${DATA_URL}/crimen-hex.geojson`;
 export const DELINCUENCIA_CHART_URL = `${DATA_URL}/crimen_municipality.json`;
 export const COSTOS_URL = `${DATA_URL}/crimen-hex.geojson`;
 export const POB05_URL = `${DATA_URL}/pob_infancia.geojson`;
+export const POB05_CHART_URL = `${DATA_URL}/pob_infancia_municipality.json`;
+export const PARQUES_URL = `${DATA_URL}/parques.geojson`;
 export const SERVICIOS_URL = `${DATA_URL}/denue_infancia.geojson`;
+export const ISLAS_CALOR_URL = `${DATA_URL}/islas_calor.geojson`;
+export const ISLAS_CALOR_CHART_URL = `${DATA_URL}/heat_island_municipality.json`;
+export const INDUSTRIA_URL = `${DATA_URL}/industria.geojson`;
 
 export const PERIPHERIES = [
   "Juárez",
@@ -306,17 +316,18 @@ function getWindowDimensions() {
   return {
     width,
     height,
+    ratio: width / height,
   };
 }
 
 export default function useWindowDimensions() {
   const [windowDimensions, setWindowDimensions] = useState(
-    getWindowDimensions()
+    getWindowDimensions(window)
   );
 
   useEffect(() => {
     function handleResize() {
-      setWindowDimensions(getWindowDimensions());
+      setWindowDimensions(getWindowDimensions(window));
     }
 
     window.addEventListener("resize", handleResize);
@@ -546,14 +557,6 @@ export const sectionsInfo = {
     component: DelincuenciaCard,
     controls: DelincuenciaControls,
   },
-  costos: {
-    title: "¿Por qué la expansión nos cuenta tanto dinero?",
-    answer: "Hay que llevar servicios públicos más lejos",
-    color: "teal",
-    icon: MdOutlineAttachMoney,
-    component: CostosCard,
-    controls: CostosControls,
-  },
   infancias: {
     title: "¿Por qué la expansión limita el desarrollo de la primera infancia?",
     answer:
@@ -581,4 +584,12 @@ export const sectionsInfo = {
     component: EscenariosFuturosCard,
     controls: EscenariosFuturosControls,
   },
-};
+  costos: {
+    title: "¿Por qué la expansión nos cuenta tanto dinero?",
+    answer: "Hay que llevar servicios públicos más lejos",
+    color: "teal",
+    icon: MdOutlineAttachMoney,
+    component: CostosCard,
+    controls: CostosControls,
+  },
+  };

@@ -1,7 +1,13 @@
 import { ResponseTitle, ContextTitle } from "./Card";
 import { useState, useEffect } from "react";
 import { useCardContext } from "../views/Problematica.js";
-import { TRANSPORTE_CHART_URL, TRANSPORTE_MASIVO_URL, TRANSPORTE_URL, VIAS_URL, useFetch } from "../utils/constants.js";
+import {
+  TRANSPORTE_CHART_URL,
+  TRANSPORTE_MASIVO_URL,
+  TRANSPORTE_URL,
+  VIAS_URL,
+  useFetch,
+} from "../utils/constants.js";
 import { TripsLayer } from "@deck.gl/geo-layers";
 import { Chart } from "./Chart.js";
 import _ from "lodash";
@@ -69,9 +75,10 @@ const filtering = (x, activeButton) =>
 export const TransporteControls = () => {
   const { color, setSharedProps } = useCardContext();
   const { data } = useFetch(TRANSPORTE_URL);
-  const [activeButton, setActiveButton] = useState("General");
+  const [activeButton, setActiveButton] = useState("TPUB");
   const { time, isPlaying, handleSliderChange, togglePlay } =
     TimeComponentClean(300, 1320, 0.005, 0.1, true, 1020);
+  console.log(data);
 
   useEffect(() => {
     setSharedProps({ activeButton });
@@ -118,8 +125,14 @@ export const TransporteControls = () => {
           )}
           getPath={(d) => d.waypoints.map((point) => point.coordinates)}
           getTimestamps={(d) => d.waypoints.map((point) => point.timestamp)}
-          getColor={[26, 87, 255]}
-          opacity={0.5}
+          getColor={(d, i) => {
+            const item = data.features[i.index].properties;
+            const isTrabajo =
+              item.Motivo == "Regreso A Casa" ||
+              item.Motivo == "Trabajo";
+            return isTrabajo ? [26, 87, 255] : [126, 96, 62];
+          }}
+          opacity={0.3}
           widthMinPixels={3}
           rounded={true}
           trailLength={10}

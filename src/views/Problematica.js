@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Box, Heading, useMediaQuery } from "@chakra-ui/react";
 
 import { BarMobile, Sidebar } from "../components/Sidebar";

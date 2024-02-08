@@ -9,6 +9,9 @@
   left: 0;
   bottom: 0;
   z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .sidebarMobile {
@@ -20,13 +23,13 @@
   left: 0;
   bottom: 0;
   z-index: 0;
+  overflow-x: scroll;
 }
 
 .sidebarContainer {
   list-style: none;
   padding: 0;
   margin: 0;
-  display: grid;
 }
 
 .sidebarContainerMobile {
@@ -38,4 +41,5 @@
 
 .sidebarItem {
   border-radius: 0px !important;
+  width: 100%;
 }

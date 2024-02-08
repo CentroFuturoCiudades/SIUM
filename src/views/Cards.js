@@ -1,7 +1,7 @@
 import React from "react";
 import CardBody from "../components/CardBody";
 import { sectionsInfo } from "../utils/constants";
-import { Heading, useMediaQuery } from "@chakra-ui/react";
+import { Heading, SimpleGrid, useMediaQuery } from "@chakra-ui/react";
 
 const Cards = () => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
@@ -15,29 +15,25 @@ const Cards = () => {
         alignItems: "center",
       }}
     >
-      <Heading
-        color="gray.600"
-        fontSize={isMobile ? "2xl" : "6xl"}
-        mx={isMobile ? "5px" : "100px"}
-        my="25px"
-        style={{ textAlign: "center" }}
-      >
-        Explora los problemas de la Expansión Urbana en Monterrey
-      </Heading>
       <div
         style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
       >
-        {Object.keys(sectionsInfo).map((key) => (
-          <div key={key} style={{ margin: "2%" }}>
-            <CardBody
-              id={key}
-              icon={sectionsInfo[key].icon}
-              question={sectionsInfo[key].title}
-              answer={sectionsInfo[key].answer}
-              color={`${sectionsInfo[key].color}.500`}
-            />
-          </div>
-        ))}
+        <SimpleGrid
+          columns={isMobile ? 3 : 4}
+          style={{ height: "100dvh", width: "100%", alignItems: 'center' }}
+        >
+          {Object.keys(sectionsInfo).map((key) => (
+            <div key={key} style={{ margin: "2dvw" }}>
+              <CardBody
+                id={key}
+                icon={sectionsInfo[key].icon}
+                question={sectionsInfo[key].title}
+                answer={sectionsInfo[key].answer}
+                color={`${sectionsInfo[key].color}.500`}
+              />
+            </div>
+          ))}
+        </SimpleGrid>
       </div>
     </div>
   );

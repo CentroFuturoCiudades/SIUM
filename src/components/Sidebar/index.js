@@ -1,7 +1,16 @@
-import { Box, Button, Icon, Tooltip } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Icon,
+  IconButton,
+  Spacer,
+  Tooltip,
+} from "@chakra-ui/react";
 
 import "./index.css";
 import { sectionsInfo } from "../../utils/constants";
+import { MdDownload, MdPeople } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 export const Sidebar = ({ section, setSection }) => {
   function goToSection(url) {
@@ -40,6 +49,47 @@ export const Sidebar = ({ section, setSection }) => {
           </Tooltip>
         ))}
       </div>
+      <div style={{ flex: 1 }} />
+      <Tooltip
+        label="Acerca del Equipo"
+        hasArrow
+        padding="0.5rem"
+        bg="gray.700"
+        fontSize="md"
+        borderRadius="md"
+        placement="right"
+      >
+        <Link to="/equipo">
+          <IconButton
+            size="sm"
+            isRound={true}
+            icon={<MdPeople />}
+            variant="solid"
+            style={{ marginBottom: "5px" }}
+            colorScheme="blackAlpha"
+          />
+        </Link>
+      </Tooltip>
+      <Tooltip
+        label="Descarga de Datos"
+        hasArrow
+        padding="0.5rem"
+        bg="gray.700"
+        fontSize="md"
+        borderRadius="md"
+        placement="right"
+      >
+        <Link to="/descargas">
+          <IconButton
+            size="sm"
+            isRound={true}
+            icon={<MdDownload />}
+            variant="solid"
+            style={{ marginBottom: "5px" }}
+            colorScheme="blackAlpha"
+          />
+        </Link>
+      </Tooltip>
     </Box>
   );
 };
@@ -66,6 +116,47 @@ export const BarMobile = ({ section, setSection }) => {
             <Icon as={sectionsInfo[k].icon} boxSize={5} color="white" />
           </Button>
         ))}
+        <div style={{ marginLeft: "20px" }}></div>
+        <Tooltip
+          label="Acerca del Equipo"
+          hasArrow
+          padding="0.5rem"
+          bg="gray.700"
+          fontSize="md"
+          borderRadius="md"
+          placement="right"
+        >
+          <Link to="/equipo" style={{ margin: "auto" }}>
+            <IconButton
+              size="sm"
+              isRound={true}
+              icon={<MdPeople />}
+              variant="solid"
+              style={{ marginRight: "5px" }}
+              colorScheme="blackAlpha"
+            />
+          </Link>
+        </Tooltip>
+        <Tooltip
+          label="Descarga de Datos"
+          hasArrow
+          padding="0.5rem"
+          bg="gray.700"
+          fontSize="md"
+          borderRadius="md"
+          placement="right"
+        >
+          <Link to="/descargas" style={{ margin: "auto" }}>
+            <IconButton
+              size="sm"
+              isRound={true}
+              icon={<MdDownload />}
+              variant="solid"
+              style={{ marginRight: "5px" }}
+              colorScheme="blackAlpha"
+            />
+          </Link>
+        </Tooltip>
       </div>
     </Box>
   );

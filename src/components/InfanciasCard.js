@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useCardContext } from "../views/Problematica";
 import { ResponseTitle, ContextTitle } from "./Card";
 import {
+  PARQUES_URL,
+  POB05_CHART_URL,
   POB05_URL,
   SERVICIOS_URL,
   cleanedGeoData,
@@ -14,8 +16,10 @@ import { LegendCustom } from "./LegendCustom";
 import { GeoJsonLayer } from "deck.gl";
 import { CustomMap, SPECIAL_INFANCIAS_STATE } from "./CustomMap";
 import { BrushingExtension } from "@deck.gl/extensions";
+import _ from "lodash";
 
 import Loading from "./Loading";
+import { Chart } from "./Chart";
 
 const startColor = "#998f5d";
 const endColor = "#1A57FF";
@@ -32,11 +36,11 @@ export const InfanciasControls = () => {
   const { color } = useCardContext();
   const [viewState, setViewState] = useState(SPECIAL_INFANCIAS_STATE); //para que empiece en el punto que dijo nelida
   const { data: dataPob } = useFetch(POB05_URL);
+  const { data: dataParques } = useFetch(PARQUES_URL);
   const { data: dataServ } = useFetch(SERVICIOS_URL);
   const [brushingRadius, setBrushingRadius] = useState(1000); //radio esta en metros
 
-  const [circleServicesLegend, setCircleServicesLegend] = useState([]);
-  const [circlePobRatioLegend, setCirclePobRatioLegend] = useState([]);
+  const [circlePayload, setCirclePayload] = useState({});
 
   /*useEffect(() => {
     if (!dataPob || !dataServ) return;
@@ -51,7 +55,6 @@ export const InfanciasControls = () => {
   }, [dataPob, dataServ]);*/
 
   const radiusInDegrees = (brushingRadius / 40075000) * 360; //formula para convertir metros a grados (con la circunferencia de la Tierra 40,075,000 mts)
-  //console.log("radius in degrees",radiusInDegrees); ////0.008983156581409857 (si brushingRadius=1000)
 
   ///CALCULAR SERVICIOS DENTRO DEL CIRCULO CON DISTANCIA EUCLIDEANA
   function EuclideanDistance(x1, y1, x2, y2) {
@@ -77,27 +80,19 @@ export const InfanciasControls = () => {
         preescolar: SERVICIOS_COLORS[3],
       };
 
-      //constantes para la parte de manzanas con pob05
-      let totalRatioPob05 = null;
-      let totPobAdulto = null;
-      let totPobInf = null;
-
       //filter de servicios dentro del circulo
       const enclosedDataServices = dataServ.features.filter((feature) => {
         //por cada feature se sacan sus coordenadas de [longitud, latitud]
         const coordinates = feature.geometry.coordinates;
         const [featureLong, featureLat] = coordinates;
-
-        const sector = feature.properties.sector;
-
         const distance = EuclideanDistance(
           longCenter,
           latCenter,
           featureLong,
           featureLat
-        ); //distancia euclidiana en grados
+        );
 
-        //return distance <= radiusInDegrees;
+        const sector = feature.properties.sector;
         if (distance <= radiusInDegrees) {
           sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
           return feature;
@@ -105,43 +100,41 @@ export const InfanciasControls = () => {
       });
 
       //filter de manzanas pob05 dentro del circulo
-      const enclosedDataPob05 = dataPob.features.filter((feature) => {
+      const filteredDataPob05 = dataPob.features.filter((feature) => {
         const centerBlockLong = feature.properties.longitud;
         const centerBlockLat = feature.properties.latitud;
-
         const distance = EuclideanDistance(
           longCenter,
           latCenter,
           centerBlockLong,
           centerBlockLat
-        ); //distancia euclidiana en grados
-        //return distance <= radiusInDegrees && feature.properties.ratio_pob05 != 0.0;
-        //if(distance <= radiusInDegrees && feature.properties.ratio_pob05 != 0.0)
-        if (distance <= radiusInDegrees) {
-          totalRatioPob05 += feature.properties.ratio_pob05;
-
-          totPobAdulto += feature.properties.POBTOT;
-          totPobInf += feature.properties.pob05;
-          return feature;
-        }
+        );
+        return distance <= radiusInDegrees;
       });
-      //console.log("Datos dentro del rango para servicios con DIST EUC:", enclosedDataServices);
-      //console.log("sections", sectorCounts)
-      //setCircleServicesLegend(countServicesLegend(enclosedDataServices,SERVICIOS_COLORS));
-      setCircleServicesLegend(
-        countServicesLegendNOREP(
+
+      const filteredDataParques = dataParques.features.filter((feature) => {
+        const centerBlockLong = feature.properties.longitude;
+        const centerBlockLat = feature.properties.latitude;
+        const distance = EuclideanDistance(
+          longCenter,
+          latCenter,
+          centerBlockLong,
+          centerBlockLat
+        );
+        return distance <= radiusInDegrees;
+      });
+      const sumPob = _.sumBy(filteredDataPob05, (f) => f.properties.POBTOT);
+      const sumPob05 = _.sumBy(filteredDataPob05, (f) => f.properties.pob05);
+      const promedio = (sumPob05 / sumPob) * 100;
+      setCirclePayload({
+        services: countServicesLegendNOREP(
           enclosedDataServices,
           sectorCounts,
           sectorColors
-        )
-      );
-
-      //setCirclePobRatioLegend(totalRatioPob05)
-      //console.log("van a ser", totPobInf, "/", totPobAdulto)
-      const promedioInf = (totPobInf / totPobAdulto) * 100;
-      setCirclePobRatioLegend(Math.round(promedioInf * 100) / 100);
-      //console.log("las manzanas con pob de 0-5 dentro del circulo son", enclosedDataPob05)
-      //console.log("y el tot ratio de pob05 años en el circulo es", totalRatioPob05)
+        ),
+        pob_ratio: Math.round(promedio * 100) / 100,
+        area_parques: _.sumBy(filteredDataParques, (f) => f.properties.area),
+      });
     }
   };
 
@@ -173,6 +166,16 @@ export const InfanciasControls = () => {
           brushingRadius={brushingRadius}
           extensions={[new BrushingExtension()]}
         />
+        <GeoJsonLayer
+          id="parques_layer"
+          data={cleanedGeoData(dataParques.features, "ara")}
+          getFillColor={[0, 255, 0, 255]}
+          getLineColor={[118, 124, 130]}
+          getLineWidth={5}
+          brushingEnabled={true}
+          brushingRadius={brushingRadius}
+          extensions={[new BrushingExtension()]}
+        />
 
         <GeoJsonLayer
           id="servicios2_layer"
@@ -193,13 +196,13 @@ export const InfanciasControls = () => {
           extensions={[new BrushingExtension()]}
         />
       </CustomMap>
-
       <LegendCustom
         title="Población 0-5 años"
-        info1={circlePobRatioLegend}
+        info1={circlePayload.pob_ratio}
+        area={circlePayload.area_parques}
         color={"color"}
         title2="Servicios"
-        legendItems={circleServicesLegend}
+        legendItems={circlePayload.services}
       />
     </>
   );
@@ -207,10 +210,12 @@ export const InfanciasControls = () => {
 
 export function InfanciasCard() {
   const { color } = useCardContext();
+  const { data: chartData } = useFetch(POB05_CHART_URL, []);
   return (
     <>
       <ResponseTitle color={color}>
-        La oferta de servicios de proximidad no corresponde con las zonas donde viven las infancias tempranas.
+        La oferta de servicios de proximidad no corresponde con las zonas donde
+        viven las infancias tempranas.
       </ResponseTitle>
       <p>
         Las familias jóvenes con primeras infancias (0-5 años de edad) han
@@ -232,6 +237,14 @@ export function InfanciasCard() {
         garantizar a través de servicios de salud, nutrición óptima,
         oportunidades para el aprendizaje, protección y seguridad.
       </ContextTitle>
+      <Chart
+        title="Porcentage de población entre 0 a 5 años"
+        data={chartData}
+        domain={[0.04, 0.15]}
+        column="ratio_pob05"
+        columnKey="NOM_MUN"
+        formatter={(d) => `${d.toLocaleString("en-US", { style: "percent" })}`}
+      />
     </>
   );
 }

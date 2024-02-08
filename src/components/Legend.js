@@ -68,8 +68,7 @@ export const LegendMobile = ({ title, legendItems, formatting }) => {
 };
 
 export const Legend = ({ title, legendItems, color, formatter }) => {
-  const formatting =
-    formatter || d3.format(",.0f");
+  const formatting = formatter || d3.format(",.0f");
   const [isMobile] = useMediaQuery("(max-width: 800px)");
   if (isMobile)
     return (
@@ -98,7 +97,10 @@ export const Legend = ({ title, legendItems, color, formatter }) => {
           marginTop: "5px",
         }}
       >
-        <Heading size="xs" color="gray.700">
+        <Heading
+          color="gray.700"
+          style={{ fontSize: isMobile ? "0.9rem" : "min(1.6dvw, 1.8dvh)" }}
+        >
           {title}
         </Heading>
         <Tooltip
@@ -122,9 +124,24 @@ export const Legend = ({ title, legendItems, color, formatter }) => {
             style={{ backgroundColor: item.color }}
           />
           <div className="legend-numbers">
-            <span className="legend-label">{formatting(item.item1)}</span>
-            <span className="legend-dash">—</span>
-            <span className="legend-label">{formatting(item.item2)}</span>
+            <span
+              className="legend-label"
+              style={{ fontSize: isMobile ? "0.9rem" : "min(1.2dvw, 1.4dvh)" }}
+            >
+              {formatting(item.item1)}
+            </span>
+            <span
+              className="legend-dash"
+              style={{ fontSize: isMobile ? "0.9rem" : "min(1.2dvw, 1.4dvh)" }}
+            >
+              —
+            </span>
+            <span
+              className="legend-label"
+              style={{ fontSize: isMobile ? "0.9rem" : "min(1.2dvw, 1.4dvh)" }}
+            >
+              {formatting(item.item2)}
+            </span>
           </div>
         </Flex>
       ))}
