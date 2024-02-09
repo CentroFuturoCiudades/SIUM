@@ -1,110 +1,142 @@
 import { useEffect, useState } from "react";
 import { ResponseTitle, ContextTitle } from "./Card";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 export const CostosControls = () => {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
-    fetch("https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/costos_municipality.json")
-      .then(response => response.json())
-      .then(data => {
+    fetch(
+      "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/costos_municipality.json"
+    )
+      .then((response) => response.json())
+      .then((data) => {
         setChartData(processData(data));
       })
-      .catch(error => console.error("Error al cargar datos para el gráfico:", error));
+      .catch((error) =>
+        console.error("Error al cargar datos para el gráfico:", error)
+      );
   }, []);
 
   const processData = (data) => {
     // Inicializa un objeto para mantener la suma de obras por año para cada municipio
     const obrasPorAnoYMunicipio = {};
-  
-    data.forEach(item => {
+
+    data.forEach((item) => {
       const año = item.fecha;
       const municipio = item.nom_mun;
       const obras = item.obras;
-  
+
       if (!obrasPorAnoYMunicipio[año]) {
         obrasPorAnoYMunicipio[año] = {};
       }
-      
+
       if (!obrasPorAnoYMunicipio[año][municipio]) {
         obrasPorAnoYMunicipio[año][municipio] = 0;
       }
-  
+
       obrasPorAnoYMunicipio[año][municipio] += obras;
     });
-  
+
     // Transforma el objeto en un array de datos para Recharts
-    const chartData = Object.keys(obrasPorAnoYMunicipio).map(fecha => {
+    const chartData = Object.keys(obrasPorAnoYMunicipio).map((fecha) => {
       const dataForYear = { fecha };
-      Object.keys(obrasPorAnoYMunicipio[fecha]).forEach(municipio => {
+      Object.keys(obrasPorAnoYMunicipio[fecha]).forEach((municipio) => {
         dataForYear[municipio] = obrasPorAnoYMunicipio[fecha][municipio];
       });
       return dataForYear;
     });
-    console.log(chartData)
+    console.log(chartData);
 
     return chartData;
   };
 
   const municipioColorMap = {
-    "Abasolo": "#FF6633",
-    "Apodaca": "#FFB399",
-    "Cadereyta Jiménez": "#FF33FF",
-    "Ciénega de Flores": "#FFFF99",
-    "García": "#00B3E6",
-    "General Escobedo": "#E6B333",
-    "General Zuazua": "#3366E6",
-    "Guadalupe": "#999966",
-    "Hidalgo": "#99FF99",
-    "Juárez": "#B34D4D",
-    "Monterrey": "#80B300",
-    "Pesquería": "#809900",
-    "Salinas Victoria": "#E6B3B3",
-    "San Nicolás de los Garza": "#6680B3",
-    "San Pedro Garza García": "#66991A",
-    "Santa Catarina": "#FF99E6",
+    // blues
+    Monterrey: "rgb(0, 0, 250)",
+    "San Nicolás de los Garza": "rgb(40, 20, 210)",
+    Guadalupe: "rgb(60, 30, 190)",
+    "San Pedro Garza García": "rgb(20, 10, 230)",
+    "Santa Catarina": "rgb(80, 40, 210)",
+    // reds
+    Apodaca: "rgb(250, 0, 0)",
+    "General Escobedo": "rgb(230, 10, 20)",
+    García: "rgb(210, 20, 40)",
+    "Cadereyta Jiménez": "rgb(190, 30, 60)",
+    Juárez: "rgb(210, 40, 80)",
+    "Salinas Victoria": "rgb(230, 50, 100)",
+    "General Zuazua": "rgb(250, 60, 120)",
+    Pesquería: "rgb(250, 70, 140)",
+    Hidalgo: "rgb(250, 80, 160)",
+    "Ciénega de Flores": "rgb(250, 90, 180)",
+    Abasolo: "rgb(250, 100, 200)",
   };
-  
+
   // Esta función busca el color del municipio en el objeto de arriba.
   // Si no encuentra el municipio, devuelve un color predeterminado.
   const getColorForMunicipio = (municipio) => {
     return municipioColorMap[municipio] || "#000000"; // Color negro por defecto
   };
+  const municipios = [
+    "Monterrey",
+    "San Nicolás de los Garza",
+    "Guadalupe",
+    "San Pedro Garza García",
+    "Santa Catarina",
+    "Apodaca",
+    "General Escobedo",
+    "García",
+    "Cadereyta Jiménez",
+    "Juárez",
+    "Salinas Victoria",
+    "General Zuazua",
+    "Pesquería",
+    "Hidalgo",
+    "Ciénega de Flores",
+    "Abasolo",
+  ];
 
   return (
     <ResponsiveContainer width="100%" height="100%">
-        <AreaChart
-          data={chartData}
-          margin={{ top: 10, right: 30, left: 55, bottom: 0 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="fecha" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          {
-            chartData.length > 0 &&
-            Object.keys(chartData[0]).filter(key => key !== 'fecha').map((municipio, index) => (
-              <Area
-                key={index}
-                type="monotone"
-                dataKey={municipio}
-                stackId="1"
-                stroke={getColorForMunicipio(municipio)} // Necesitarás crear una función que asigne un color a cada municipio
-                fill={getColorForMunicipio(municipio)} // o que los mapee de alguna manera para que sean consistentes
-              />
-            ))
-          }
-        </AreaChart>
-      </ResponsiveContainer>
+      <AreaChart
+        data={chartData}
+        margin={{ top: 20, right: 30, left: 30, bottom: 0 }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="fecha" style={{ fontSize: "1dvw" }} />
+        <YAxis
+          tickFormatter={(value) => `$${value / 1000000000} mil millones`}
+          style={{ fontSize: "1dvw" }}
+        />
+        <Tooltip formatter={(value) => `$${value.toLocaleString()}`} />
+
+        <Legend />
+        {chartData.length > 0 &&
+          municipios.map((municipio, index) => (
+            <Area
+              key={index}
+              type="monotone"
+              dataKey={municipio}
+              stackId="1"
+              stroke={getColorForMunicipio(municipio)} // Necesitarás crear una función que asigne un color a cada municipio
+              fill={getColorForMunicipio(municipio)} // o que los mapee de alguna manera para que sean consistentes
+            />
+          ))}
+      </AreaChart>
+    </ResponsiveContainer>
   );
 };
 
-
 export function CostosCard({ color, isCurrentSection }) {
- 
-
   return (
     <>
       <ResponseTitle color={color}>
