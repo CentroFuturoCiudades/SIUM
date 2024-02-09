@@ -16,6 +16,15 @@ import { CustomMap, INITIAL_STATE } from "./CustomMap.js";
 import Loading from "./Loading.js";
 import { GeoJsonLayer } from "deck.gl";
 import ButtonControls from "./ButtonControls.js";
+import {
+  Box,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
 
 const marks = [
   { value: 300, label: "5:00" },
@@ -128,8 +137,7 @@ export const TransporteControls = () => {
           getColor={(d, i) => {
             const item = data.features[i.index].properties;
             const isTrabajo =
-              item.Motivo == "Regreso A Casa" ||
-              item.Motivo == "Trabajo";
+              item.Motivo == "Regreso A Casa" || item.Motivo == "Trabajo";
             return isTrabajo ? [26, 87, 255] : [126, 96, 62];
           }}
           opacity={0.3}
@@ -139,6 +147,38 @@ export const TransporteControls = () => {
           currentTime={time}
         />
       </CustomMap>
+      <Box
+        borderRadius="md"
+        borderColor={`${color}.200`}
+        borderWidth="0.08rem"
+        className="legend-container"
+        style={{ bottom: "60px" }}
+      >
+        <TableContainer>
+          <Table size="xs" variant="unstyled">
+            <Tbody>
+              <Tr fontSize="0.7dvw">
+                <Td>
+                  <div
+                    className="legend-color"
+                    style={{ backgroundColor: "rgb(26, 87, 255)" }}
+                  />
+                </Td>
+                <Td>Trabajo y Regreso a Casa</Td>
+              </Tr>
+              <Tr fontSize="0.7dvw">
+                <Td>
+                  <div
+                    className="legend-color"
+                    style={{ backgroundColor: "rgb(126, 96, 62)" }}
+                  />
+                </Td>
+                <Td>Otros motivos</Td>
+              </Tr>
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </Box>
       <ButtonControls
         color={color}
         activeButton={activeButton}

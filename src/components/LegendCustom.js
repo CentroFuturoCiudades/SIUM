@@ -69,7 +69,7 @@ export const LegendCustom = ({
                 <Td className="legend-label2">
                   <span className="legend-label2">{item.label}</span>
                 </Td>
-                <Td fontSize="0.7dvw" isNumeric style={{ padding: "0 10px" }}>
+                <Td>
                   {item.formatting(item.value)}
                 </Td>
               </Tr>
