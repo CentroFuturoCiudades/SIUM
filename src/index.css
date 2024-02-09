@@ -110,6 +110,13 @@ body {
   font-family: "Arial", Courier, monospace;
 }
 
+.legend-label2 {
+  text-align: left !important;
+  font-size: 0.8dvw;
+  color: #333;
+  font-family: "Arial", Courier, monospace;
+}
+
 .legend-label:last-child {
   text-align: right;
 }

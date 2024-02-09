@@ -109,8 +109,7 @@ export const IslasCalorControls = () => {
           data={cleanedGeoData(dataParques.features, "area")}
           getFillColor={[0, 255, 0, 255]}
           getLineColor={[118, 124, 130]}
-          getLineWidth={5}
-          opacity={0.4}
+          getLineWidth={10}
         />
         <GeoJsonLayer
           id="primary_routes"

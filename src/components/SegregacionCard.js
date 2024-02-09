@@ -142,7 +142,7 @@ export const SegregacionControls = () => {
         width="210px"
       >
         <Heading size="xs" color="gray.700">
-          Asentamientos Informales
+          Asentamientos autoproducidos
         </Heading>
       </Checkbox>
       {/** ERROR: Por alguna razon el zoom no funciona bien si no tiene un slider */}
