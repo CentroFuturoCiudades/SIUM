@@ -2,7 +2,7 @@ import { InfoIcon } from "@chakra-ui/icons";
 import { Box, Flex, Heading, Tooltip } from "@chakra-ui/react";
 import { IslasCalorCard } from "./IslasCalorCard";
 
-export const Legend = ({ title, legendItems, color, legendLabels }) => {
+export const CustomLegend = ({ title, legendItems, color, legendLabels }) => {
   if (legendItems.length === 0) {
     return null; 
   } 

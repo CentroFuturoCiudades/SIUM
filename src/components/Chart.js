@@ -2,7 +2,6 @@ import {
   Bar,
   BarChart,
   Cell,
-  Label,
   LabelList,
   ResponsiveContainer,
   XAxis,
@@ -109,7 +108,7 @@ export const Chart = ({
       setOutline({
         type: GeoJsonLayer,
         props: {
-          id: "municipality-layer",
+          id: "municipality-highlight-layer",
           data: municipalityData.features.filter(
             (x) => x.properties.NOMGEO === activeLabel
           ),
@@ -117,13 +116,6 @@ export const Chart = ({
           getLineColor: [255, 174, 0, 250],
           getLineWidth: 120,
         },
-        // props: {
-        //   id: "municipality-layer",
-        //   data: municipalityData.features,
-        //   getFillColor: [255, 174, 0, 0],
-        //   getLineColor: [255, 174, 0, 250],
-        //   getLineWidth: 120,
-        // },
       });
       setActiveMunicipality(activeLabel);
     },

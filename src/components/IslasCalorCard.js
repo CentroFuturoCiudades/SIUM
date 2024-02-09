@@ -14,8 +14,8 @@ import {
   separateLegendItemsByCategory,
   useFetch,
 } from "../utils/constants";
-import { Chart, CustomBarLabel, mappingNames } from "./Chart";
-import { Legend } from "./CustomLegend";
+import { CustomBarLabel, mappingNames } from "./Chart";
+import { CustomLegend } from "./CustomLegend";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import { GeoJsonLayer, HeatmapLayer, IconLayer } from "deck.gl";
 import Loading from "./Loading";
@@ -30,11 +30,6 @@ import {
 } from "recharts";
 import { Heading, useMediaQuery, useToken } from "@chakra-ui/react";
 import _ from "lodash";
-
-// Usar paleta de segregación
-// const startColor = "#68736d";
-// const endColor = "#1A57FF";
-// const ISLAS_CALOR_COLORS = generateGradientColors(startColor, endColor, 8);
 
 const ISLAS_CALOR_COLORS = [
   "rgb(255, 0, 0)",
@@ -66,6 +61,7 @@ export const IslasCalorControls = () => {
 
   useEffect(() => {
     if (!data) return;
+
     const values = data.features.map((feat) => feat.properties["Value"]);
     setLegendItems(
       separateLegendItemsByCategory(
@@ -123,7 +119,7 @@ export const IslasCalorControls = () => {
           getLineWidth={50}
         />
       </CustomMap>
-      <Legend
+      <CustomLegend
         title={"Islas de calor"}
         legendItems={legendItems}
         color={color}
@@ -134,7 +130,7 @@ export const IslasCalorControls = () => {
 };
 
 export function IslasCalorCard() {
-  const { color, setOutline } = useCardContext();
+  const { color } = useCardContext();
   const { data: chartData } = useFetch(ISLAS_CALOR_CHART_URL, []);
   const chartData2 = chartData.map((d) => ({
     ...d,

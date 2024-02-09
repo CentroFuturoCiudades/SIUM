@@ -10,6 +10,7 @@ import { Map } from "react-map-gl";
 import mapboxgl from "mapbox-gl";
 import { GeoJsonLayer, TextLayer } from "deck.gl";
 import { useCardContext } from "../views/Problematica";
+import Loading from "./Loading";
 import { useEffect, useState } from "react";
 import {
   DATA_URL,
@@ -55,6 +56,7 @@ export function CustomMap({ viewState, infanciasHover, children }) {
     ...viewState,
     zoom: isMobile ? viewState.zoom * 0.9 : viewState.zoom,
   });
+  
   const { outline, color } = useCardContext();
   const { data: municipalityData } = useFetch(MUNICIPIOS_URL, { features: [] });
   const [colorValue] = useToken("colors", [`${color}.800`]);
@@ -82,7 +84,6 @@ export function CustomMap({ viewState, infanciasHover, children }) {
   }, [isMobile]);
 
   if (!municipalityData) return <Loading />;
-
   return (
     <>
       <DeckGL
