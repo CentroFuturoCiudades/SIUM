@@ -8,23 +8,18 @@ import {
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { Map } from "react-map-gl";
 import mapboxgl from "mapbox-gl";
-import { GeoJsonLayer, TextLayer } from "deck.gl";
+import { GeoJsonLayer, ScatterplotLayer, TextLayer } from "deck.gl";
 import { useCardContext } from "../views/Problematica";
 import Loading from "./Loading";
-import { useEffect, useState } from "react";
-import {
-  DATA_URL,
-  MUNICIPIOS_URL,
-  hexToRgb,
-  useFetch,
-} from "../utils/constants";
+import { useCallback, useEffect, useState } from "react";
+import { MUNICIPIOS_URL, hexToRgb, useFetch } from "../utils/constants";
 import { mappingNames } from "./Chart";
+import { debounce } from "lodash";
 
 mapboxgl.workerClass =
   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
 export const DECK_GL_CONTROLLER = {
-  scrollZoom: false,
   touchZoom: true,
   keyboard: { moveSpeed: false },
   dragMode: "pan",
@@ -56,7 +51,16 @@ export function CustomMap({ viewState, infanciasHover, children }) {
     ...viewState,
     zoom: isMobile ? viewState.zoom * 0.9 : viewState.zoom,
   });
-  
+  const [hoverCenter, setHoverCenter] = useState(null);
+  const infanciasHover2 = useCallback((info, event) => {
+    if (!infanciasHover) return;
+    infanciasHover(info, event);
+  }, []);
+  const debouncedInfanciasHover = useCallback(
+    debounce(infanciasHover2, 200),
+    []
+  );
+
   const { outline, color } = useCardContext();
   const { data: municipalityData } = useFetch(MUNICIPIOS_URL, { features: [] });
   const [colorValue] = useToken("colors", [`${color}.800`]);
@@ -91,7 +95,18 @@ export function CustomMap({ viewState, infanciasHover, children }) {
         viewState={processedViewState}
         onViewStateChange={({ viewState }) => setProcessedViewState(viewState)}
         controller={DECK_GL_CONTROLLER}
-        onHover={infanciasHover}
+        onHover={(info, event) => {
+          if (info.coordinate) {
+            const [longCenter, latCenter] = [
+              info.coordinate[0],
+              info.coordinate[1],
+            ];
+            setHoverCenter([longCenter, latCenter]);
+          } else {
+            setHoverCenter(null);
+          }
+          debouncedInfanciasHover(info, event);
+        }}
       >
         <Map
           width="100%"
@@ -125,6 +140,21 @@ export function CustomMap({ viewState, infanciasHover, children }) {
           getColor={[0, 0, 0, 150]}
           fontFamily="Inter, Courier, monospace"
         />
+        {infanciasHover && hoverCenter && (
+          <ScatterplotLayer
+            id="circle-layer"
+            data={[{ position: hoverCenter, size: 1000 }]}
+            pickable={true}
+            stroked={true}
+            filled={true}
+            lineWidthMinPixels={1}
+            getPosition={hoverCenter}
+            getRadius={1100}
+            getFillColor={[0, 0, 0, 20]} // Circle color
+            getLineWidth={80}
+            getLineColor={[80, 80, 80]} // Border color
+          />
+        )}
       </DeckGL>
       <div style={{ position: "absolute", top: 10, right: 10, zIndex: 10 }}>
         <ButtonGroup isAttached size="sm" colorScheme="blackAlpha">

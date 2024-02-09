@@ -8,12 +8,11 @@ import {
   SERVICIOS_URL,
   cleanedGeoData,
   colorInterpolate,
-  countServicesLegendNOREP,
   generateGradientColors,
   useFetch,
 } from "../utils/constants";
 import { LegendCustom } from "./LegendCustom";
-import { GeoJsonLayer } from "deck.gl";
+import { GeoJsonLayer, ScatterplotLayer } from "deck.gl";
 import { CustomMap, SPECIAL_INFANCIAS_STATE } from "./CustomMap";
 import { BrushingExtension } from "@deck.gl/extensions";
 import _ from "lodash";
@@ -25,12 +24,19 @@ const startColor = "#998f5d";
 const endColor = "#1A57FF";
 const INFANCIA_COLORS = generateGradientColors(startColor, endColor, 8);
 
+//["comercio al por menor", "preescolar", "salud", "guarderia"],
 const SERVICIOS_COLORS = [
-  "green", //rojo para comercio
-  "cyan", //azul para salud
-  "yellow", //amarillo para guarderia
-  "orange", //verde para preescolar
+  "brown", //verde para preescolar
+  "orange", //azul para salud
+  "#7F00FF", //amarillo para guarderia
+  "red", //rojo para comercio
 ];
+const sectorColors = {
+  guarderia: SERVICIOS_COLORS[0],
+  preescolar: SERVICIOS_COLORS[1],
+  salud: SERVICIOS_COLORS[2],
+  "comercio al por menor": SERVICIOS_COLORS[3],
+};
 
 export const InfanciasControls = () => {
   const { color } = useCardContext();
@@ -39,20 +45,7 @@ export const InfanciasControls = () => {
   const { data: dataParques } = useFetch(PARQUES_URL);
   const { data: dataServ } = useFetch(SERVICIOS_URL);
   const [brushingRadius, setBrushingRadius] = useState(1000); //radio esta en metros
-
-  const [circlePayload, setCirclePayload] = useState({});
-
-  /*useEffect(() => {
-    if (!dataPob || !dataServ) return;
-    
-    const valuesPob05 = dataPob.features.map(
-      (feat) => feat.properties["ratio_pob05"]
-    );
-    const valuesServicios = dataServ.features.map(
-        (feat) => feat.properties["sector"]
-      );
-    
-  }, [dataPob, dataServ]);*/
+  const [circlePayload, setCirclePayload] = useState();
 
   const radiusInDegrees = (brushingRadius / 40075000) * 360; //formula para convertir metros a grados (con la circunferencia de la Tierra 40,075,000 mts)
 
@@ -67,22 +60,10 @@ export const InfanciasControls = () => {
   //se llama cada vez que se mueve el circulo
   const handleInfanciasHover = (info) => {
     if (info.coordinate) {
-      //coordenadas del centro del circulo
       const [longCenter, latCenter] = [info.coordinate[0], info.coordinate[1]];
-      //console.log("coor", [longCenter, latCenter])
-
-      //constantes para la parte de servicios
-      const sectorCounts = {};
-      const sectorColors = {
-        "comercio al por menor": SERVICIOS_COLORS[0],
-        salud: SERVICIOS_COLORS[1],
-        guarderia: SERVICIOS_COLORS[2],
-        preescolar: SERVICIOS_COLORS[3],
-      };
 
       //filter de servicios dentro del circulo
       const enclosedDataServices = dataServ.features.filter((feature) => {
-        //por cada feature se sacan sus coordenadas de [longitud, latitud]
         const coordinates = feature.geometry.coordinates;
         const [featureLong, featureLat] = coordinates;
         const distance = EuclideanDistance(
@@ -91,12 +72,7 @@ export const InfanciasControls = () => {
           featureLong,
           featureLat
         );
-
-        const sector = feature.properties.sector;
-        if (distance <= radiusInDegrees) {
-          sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
-          return feature;
-        }
+        return distance <= radiusInDegrees;
       });
 
       //filter de manzanas pob05 dentro del circulo
@@ -125,20 +101,23 @@ export const InfanciasControls = () => {
       });
       const sumPob = _.sumBy(filteredDataPob05, (f) => f.properties.POBTOT);
       const sumPob05 = _.sumBy(filteredDataPob05, (f) => f.properties.pob05);
+      const servicesCount = _.countBy(
+        enclosedDataServices,
+        (f) => f.properties.sector
+      );
       const promedio = (sumPob05 / sumPob) * 100;
+
       setCirclePayload({
-        services: countServicesLegendNOREP(
-          enclosedDataServices,
-          sectorCounts,
-          sectorColors
-        ),
+        ...servicesCount,
         pob_ratio: Math.round(promedio * 100) / 100,
         area_parques: _.sumBy(filteredDataParques, (f) => f.properties.area),
       });
+    } else {
+      setCirclePayload(null);
     }
   };
 
-  if (!dataPob || !dataServ) return <Loading color={color} />;
+  if (!dataPob || !dataParques || !dataServ) return <Loading color={color} />;
 
   return (
     <>
@@ -151,14 +130,12 @@ export const InfanciasControls = () => {
           id="infancias2_layer"
           data={cleanedGeoData(dataPob.features, "ratio_pob05")}
           getFillColor={(d) =>
-            d.properties["ratio_pob05"] === 0.0
-              ? [0, 0, 0, 0] // Si ratio_pob05 es 0.0, establece el color como transparente
-              : colorInterpolate(
-                  d.properties["ratio_pob05"],
-                  [0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.2, 0.3, 0.4],
-                  INFANCIA_COLORS,
-                  1
-                )
+            colorInterpolate(
+              d.properties["ratio_pob05"],
+              [0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.2, 0.3, 0.4],
+              INFANCIA_COLORS,
+              1
+            )
           }
           getLineColor={[118, 124, 130]}
           getLineWidth={5}
@@ -168,7 +145,7 @@ export const InfanciasControls = () => {
         />
         <GeoJsonLayer
           id="parques_layer"
-          data={cleanedGeoData(dataParques.features, "ara")}
+          data={cleanedGeoData(dataParques.features, "area")}
           getFillColor={[0, 255, 0, 255]}
           getLineColor={[118, 124, 130]}
           getLineWidth={5}
@@ -184,7 +161,6 @@ export const InfanciasControls = () => {
           getLineColor={(d) =>
             colorInterpolate(
               d.properties["codigo_act"],
-              //["comercio al por menor", "preescolar", "salud", "guarderia"],
               [460000, 611000, 621000, 624000],
               SERVICIOS_COLORS,
               1
@@ -196,14 +172,17 @@ export const InfanciasControls = () => {
           extensions={[new BrushingExtension()]}
         />
       </CustomMap>
-      <LegendCustom
-        title="Población 0-5 años"
-        info1={circlePayload.pob_ratio}
-        area={circlePayload.area_parques}
-        color={"color"}
-        title2="Servicios"
-        legendItems={circlePayload.services}
-      />
+      {circlePayload && (
+        <LegendCustom
+          pob05={circlePayload["pob_ratio"] || 0}
+          area={circlePayload["area_parques"] || 0}
+          color={color}
+          guarderias={circlePayload["guarderia"] || 0}
+          preescolares={circlePayload["preescolar"] || 0}
+          comercios={circlePayload["comercio al por menor"] || 0}
+          salud={circlePayload["salud"] || 0}
+        />
+      )}
     </>
   );
 };
