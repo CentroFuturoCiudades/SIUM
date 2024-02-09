@@ -9,6 +9,7 @@ const ButtonControls = ({ activeButton, setActiveButton, mapping, color }) => {
         width: "100%",
         alignItems: "center",
         justifyContent: "center",
+        zIndex: 1,
       }}
     >
       <Select

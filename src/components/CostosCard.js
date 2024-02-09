@@ -10,9 +10,13 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import ButtonControls from "./ButtonControls";
+import { useCardContext } from "../views/Problematica";
 
 export const CostosControls = () => {
+  const { color } = useCardContext();
   const [chartData, setChartData] = useState([]);
+  const [activeButton, setActiveButton] = useState("obras");
 
   useEffect(() => {
     fetch(
@@ -25,7 +29,7 @@ export const CostosControls = () => {
       .catch((error) =>
         console.error("Error al cargar datos para el gráfico:", error)
       );
-  }, []);
+  }, [activeButton]);
 
   const processData = (data) => {
     // Inicializa un objeto para mantener la suma de obras por año para cada municipio
@@ -34,7 +38,7 @@ export const CostosControls = () => {
     data.forEach((item) => {
       const año = item.fecha;
       const municipio = item.nom_mun;
-      const obras = item.obras;
+      const obras = item[activeButton];
 
       if (!obrasPorAnoYMunicipio[año]) {
         obrasPorAnoYMunicipio[año] = {};
@@ -104,35 +108,60 @@ export const CostosControls = () => {
     "Ciénega de Flores",
     "Abasolo",
   ];
+  function labelMoney(value) {
+    if (value > 1000000000) {
+      return `$${value / 1000000000} mil millones`
+    } else {
+      return `$${value.toLocaleString()}`
+    }
+  }
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <AreaChart
-        data={chartData}
-        margin={{ top: 20, right: 30, left: 30, bottom: 0 }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="fecha" style={{ fontSize: "1dvw" }} />
-        <YAxis
-          tickFormatter={(value) => `$${value / 1000000000} mil millones`}
-          style={{ fontSize: "1dvw" }}
-        />
-        <Tooltip formatter={(value) => `$${value.toLocaleString()}`} />
+    <>
+      <ButtonControls
+        color={color}
+        activeButton={activeButton}
+        setActiveButton={setActiveButton}
+        mapping={[
+          { id: "obras", name: "Gastos en obras publicas" },
+          {
+            id: "obras_percapita",
+            name: "Gastos en obras publicas por persona",
+          },
+          {
+            id: "obras_perarea",
+            name: "Gastos en obras publicas por área construida",
+          },
+        ]}
+      />
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart
+          data={chartData}
+          margin={{ top: 100, right: 30, left: 30, bottom: 0 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="fecha" style={{ fontSize: "1dvw" }} />
+          <YAxis
+            tickFormatter={labelMoney}
+            style={{ fontSize: "1dvw" }}
+          />
+          <Tooltip formatter={(value) => `$${value.toLocaleString()}`} />
 
-        <Legend />
-        {chartData.length > 0 &&
-          municipios.map((municipio, index) => (
-            <Area
-              key={index}
-              type="monotone"
-              dataKey={municipio}
-              stackId="1"
-              stroke={getColorForMunicipio(municipio)} // Necesitarás crear una función que asigne un color a cada municipio
-              fill={getColorForMunicipio(municipio)} // o que los mapee de alguna manera para que sean consistentes
-            />
-          ))}
-      </AreaChart>
-    </ResponsiveContainer>
+          <Legend />
+          {chartData.length > 0 &&
+            municipios.map((municipio, index) => (
+              <Area
+                key={index}
+                type="monotone"
+                dataKey={municipio}
+                stackId="1"
+                stroke={getColorForMunicipio(municipio)} // Necesitarás crear una función que asigne un color a cada municipio
+                fill={getColorForMunicipio(municipio)} // o que los mapee de alguna manera para que sean consistentes
+              />
+            ))}
+        </AreaChart>
+      </ResponsiveContainer>
+    </>
   );
 };
 
