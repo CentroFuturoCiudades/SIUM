@@ -4,7 +4,14 @@ import {
   Button,
   Flex,
   Heading,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
   Tooltip,
+  Tr,
   useMediaQuery,
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
@@ -107,66 +114,60 @@ export const Legend = ({ title, legendItems, color, formatter }) => {
       borderColor={`${color}.200`}
       borderWidth="0.08rem"
       className="legend-container"
-      width="210px"
+      style={{ width: "min-content" }}
     >
       <div
         style={{
           width: "100%",
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center",
+          alignItems: "start",
           marginBottom: "5px",
           marginTop: "5px",
         }}
       >
-        <Heading
-          color="gray.700"
-          style={{ fontSize: isMobile ? "0.9rem" : "min(1.6dvw, 1.8dvh)" }}
-        >
-          {title}
-        </Heading>
         <Tooltip
           label="Datos obtenidos de blah blah blah"
           placement="top"
           hasArrow
           gutter={12}
         >
-          <InfoIcon
-            boxSize={3}
-            color="gray.400"
-            style={{ cursor: "pointer" }}
-            marginLeft="0.6rem"
-          />
+          <Heading color="gray.700" fontSize="0.9dvw">
+            <InfoIcon
+              boxSize={2.5}
+              color="gray.400"
+              style={{ cursor: "pointer" }}
+              mr="1"
+            />
+            {title}
+          </Heading>
         </Tooltip>
       </div>
-      {legendItems.map((item, index) => (
-        <Flex key={index} className="legend-item" columns={4}>
-          <div
-            className="legend-color"
-            style={{ backgroundColor: item.color }}
-          />
-          <div className="legend-numbers">
-            <span
-              className="legend-label"
-              style={{ fontSize: isMobile ? "0.9rem" : "min(1.2dvw, 1.4dvh)" }}
-            >
-              {formatting(item.item1)}
-            </span>
-            <span
-              className="legend-dash"
-              style={{ fontSize: isMobile ? "0.9rem" : "min(1.2dvw, 1.4dvh)" }}
-            >
-              —
-            </span>
-            <span
-              className="legend-label"
-              style={{ fontSize: isMobile ? "0.9rem" : "min(1.2dvw, 1.4dvh)" }}
-            >
-              {formatting(item.item2)}
-            </span>
-          </div>
-        </Flex>
-      ))}
+      <TableContainer>
+        <Table size="xs" variant="unstyled">
+          <Tbody>
+            {legendItems.map((item, index) => (
+              <Tr fontSize="0.7dvw">
+                <Td>
+                  <div
+                    className="legend-color"
+                    style={{ backgroundColor: item.color }}
+                  />
+                </Td>
+                <Td>
+                  <span className="legend-label">{formatting(item.item1)}</span>
+                </Td>
+                <Td>
+                  <span className="legend-dash">—</span>
+                </Td>
+                <Td>
+                  <span className="legend-label">{formatting(item.item2)}</span>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
     </Box>
   );
 };
