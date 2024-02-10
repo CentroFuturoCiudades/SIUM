@@ -197,11 +197,11 @@ export function InfanciasCard() {
         {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
-        Las familias jóvenes con primeras infancias (0-5 años de edad) han
-        migrado hacia las periferias, en donde existe una cobertura reducida o
-        nula de servicios de proximidad: educativos, de salud y comercial. En
-        contraste, en las zonas centrales en donde hay una mayor oferta de
-        servicios, la población infantil es menor.
+        Las familias jóvenes con primeras infancias, de 0 a 5 años de edad, han
+        migrado hacia las periferias, en donde existe una cobertura reducida de
+        servicios de proximidad: educativos, de salud y comercial; así como
+        falta de espacios públicos. En contraste, en las zonas centrales en
+        donde hay una mayor oferta de servicios, la población infantil es menor.
       </p>
       <p>
         Si sumamos a este desequilibrio, condiciones de asentamientos
@@ -211,10 +211,9 @@ export function InfanciasCard() {
         proximidad.
       </p>
       <ContextTitle color={color}>
-        De acuerdo con el Marco para el Cuidado Cariñoso y Sensible, liderado
-        por UNICEF, las necesidades de las primeras infancias se deben
-        garantizar a través de servicios de salud, nutrición óptima,
-        oportunidades para el aprendizaje, protección y seguridad.
+        De acuerdo con la UNICEF, las necesidades de la primera infancia deben
+        garantizarse a través de servicios de salud, nutrición, aprendizaje,
+        protección y seguridad.
       </ContextTitle>
       <Chart
         title="Porcentage de población entre 0 a 5 años"

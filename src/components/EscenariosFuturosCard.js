@@ -128,33 +128,8 @@ export function EscenariosFuturosCard() {
       <ResponseTitle color={color}>
         {sectionsInfo[currentSection].answer}
       </ResponseTitle>
-      <p>
-        La Zona Metropolitana de Monterrey se enfrenta a un creciente fenómeno
-        conocido como el efecto de isla de calor. Este se manifiesta cuando las
-        áreas urbanas experimentan temperaturas significativamente más altas que
-        sus entornos rurales, siendo una consecuencia directa de la presencia de
-        edificios, asfalto, concreto y otras superficies urbanas que retienen el
-        calor
-      </p>
-      <p>
-        En el centro de la Zona Metropolitana de Monterrey, la alta densidad de
-        edificaciones junto con la falta de espacios verdes como parques,
-        jardines, camellones y áreas arboladas, juega un papel crucial en el
-        incremento de las temperaturas, en contraste con las zonas menos
-        urbanizadas. Las infraestructuras urbanas, principalmente compuestas por
-        materiales como asfalto y concreto que son impermeables y retienen el
-        calor, contribuyen significativamente a este fenómeno. Durante el día,
-        estos materiales acumulan calor, que luego liberan gradualmente durante
-        la noche. Este proceso intensifica el efecto isla de calor,
-        repercutiendo adversamente en la salud, en la calidad de vida y en el
-        costo de vida de los residentes, especialmente durante los meses de
-        verano.
-      </p>
-      <br />
       <ContextTitle color={color}>
-        El rápido crecimiento urbano, sumado a la escasez de infraestructura
-        verde y a la falta de una planificación sostenible, agrava aún más este
-        fenómeno.
+        -------
       </ContextTitle>
       <AreaChartChart
         title="Proyección de superficie urbanizada 2020-2050"

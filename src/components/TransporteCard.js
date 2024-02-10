@@ -222,33 +222,31 @@ export function TransporteCard() {
         {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
-        <b>El 45% de los desplazamientos</b> en Monterrey son viajes al trabajo
-        y casi la mitad de ellos realizados en automóvil, con la particularidad
-        de que la mitad se efectúan con una sola persona en el vehículo. Los
-        habitantes de la Zona Metropolitana invierten en promedio 50 minutos por
-        viaje redondo en automóvil, equivalente a doce días al año. El
-        transporte público requiere mejorarse, ya que las personas pasan en
-        promedio 70 minutos al día en este medio, y un tercio de ellas
-        experimentan viajes de 3 horas diarias.
+        <b>El 45% de los desplazamientos</b> en Monterrey son viajes al trabajo,
+        casi la mitad en automóvil, con la particularidad de que la mitad se
+        hace con una sola persona. Los residentes{" "}
+        <b>
+          invierten en promedio 50 minutos por viaje redondo en auto,
+          equivalente a doce días al año
+        </b>
+        . El transporte público requiere mejoras; las personas pasan en promedio
+        70 minutos al día en él, con un tercio experimentando viajes de 3 horas
+        diarias.
       </p>
       <p>
-        <b>El 40% de los traslados provienen de la periferia</b>, como Apodaca,
+        <b>El 40% de los traslados vienen de la periferia</b>, como Apodaca,
         Escobedo, García y Juárez, mientras que el 26% se dirige a Monterrey.
-        Solo el 21% de la población utiliza transporte público y un 19% se
-        traslada caminando. Es esencial expandir el acceso al transporte público
-        y mejorar la infraestructura para ciclistas y peatones, con un{" "}
-        <b>Sistema Integrado de Transporte</b>, para contrarrestar el impacto
-        ambiental negativo y en la salud pública generado por el elevado número
-        de viajes en automóvil.
+        Solo el 21% utiliza transporte público y un 19% se traslada caminando.
+        Es esencial expandir el acceso al transporte público y mejorar la
+        infraestructura para contrarrestar el impacto negativo en la salud
+        pública y el medio ambiente por el elevado número de viajes en
+        automóvil.
       </p>
 
       <ContextTitle color={color}>
-        "Los SITP's ofrecen como beneficios una ciudad conectada y ordenada,
-        servicios de mayor calidad, un sistema único de información y atención,
-        menor tiempo de viaje, mayor seguridad personal y vial, tarifas de
-        acuerdo al tipo de viaje y condición social, mayor accesibilidad al
-        transporte público y conectividad con todas las zonas de la ciudad y
-        grupos poblacionales." Comisión Ambiental de la Megalópolis
+        Los Sistemas Integrados de Transporte brindan una ciudad conectada,
+        ordenada, de calidad, rápida y segura. Son importantes para la seguridad
+        de las personas al hacer viajes intermodales.
       </ContextTitle>
       <Chart
         title={`Tiempo de traslado regreso a casa en ${sharedProps.activeButton}`}

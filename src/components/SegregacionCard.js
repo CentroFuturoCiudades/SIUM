@@ -66,7 +66,7 @@ export const SegregacionControls = () => {
 
   //console.log("asentamientos ifn", data_asentamientos)
   const ICON_MAPPING = {
-    marker: {x: 0, y: 0, width: 128, height: 128, mask: true}
+    marker: { x: 0, y: 0, width: 128, height: 128, mask: true },
   };
 
   const handleCheckboxChange = () => {
@@ -78,7 +78,6 @@ export const SegregacionControls = () => {
 
   return (
     <>
-      
       <CustomMap viewState={INITIAL_STATE}>
         <GeoJsonLayer
           id="segregacion_layer"
@@ -98,19 +97,19 @@ export const SegregacionControls = () => {
           autoHighlight={true}
           getPosition={(d) => d.position}
         />
-        
+
         {showAsentamientos && (
-        <IconLayer
-          id="asentamientos_layer"
-          data={data_asentamientos.features}
-          iconAtlas="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png"
-          iconMapping="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.json"
-          getIcon={d => 'marker'}
-          getPosition={d => d.geometry.coordinates}
-          sizeUnits={'meters'}
-          sizeScale={1000}
-          sizeMinPixels={6}
-        /> 
+          <IconLayer
+            id="asentamientos_layer"
+            data={data_asentamientos.features}
+            iconAtlas="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png"
+            iconMapping="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.json"
+            getIcon={(d) => "marker"}
+            getPosition={(d) => d.geometry.coordinates}
+            sizeUnits={"meters"}
+            sizeScale={1000}
+            sizeMinPixels={6}
+          />
         )}
       </CustomMap>
       <ButtonControls
@@ -135,8 +134,8 @@ export const SegregacionControls = () => {
         color={color}
         formatter={legendMapping[activeButton].formatter}
       />
-      <Checkbox 
-        onChange={handleCheckboxChange} 
+      <Checkbox
+        onChange={handleCheckboxChange}
         isChecked={showAsentamientos}
         className="checkbox"
         width="210px"
@@ -189,24 +188,21 @@ export function SegregacionCard() {
       </ResponseTitle>
       <p>
         Al expandirnos en estos niveles es innevitable que ciertos grupos
-        poblacionales queden alejados de las áreas con oportunidades y
-        servicios.
+        poblacionales, incluyendo las familias jóvenes o con primeras infancias,
+        queden alejados de las áreas con oportunidades y servicios.
       </p>
       <p>
-        La expansión provoca que zonas con mayores ingresos queden rodeadas de
-        zonas de menor ingreso, ya que los costos del suelo son más bajos, como
-        sucede en Céntrika y Loma Larga, y en Estanzuela Fomerrey y los límites
-        de la colonia Independencia con Loma Larga.
-      </p>
-      <p>
-        Integrar las zonas marginadas e informales por medio de transporte
-        colectivo, disminuirá la segregación económica que la expansión provoca.
-        Similarmente, se deben de generar políticas de vivienda asequible menos
-        desconectadas de las zonas funcionales de la ciudad.
+        La expansión provoca una segregación espacial que divide zonas
+        abruptamente. Las zonas de mayor ingreso como San Pedro o el Sur de
+        Monterrey y las de menor ingreso, que cuentan con costos de suelo más
+        bajos, como sucede en Céntrika y Loma Larga, y en Estanzuela Fomerrey y
+        los límites de la colonia Independencia con Loma Larga.
       </p>
       <ContextTitle color={color}>
-        La segregación aleja y separa, tanto de nosotros mismos, como de áreas
-        urbanas imprescindibles para el desarrollo humano pleno.
+        Integrar la Zona Metropolitana de Monterrey por medio de transporte
+        colectivo, disminuirá la segregación económica que la expansión provoca.
+        Simultáneamente, se deben de generar políticas de vivienda asequible
+        menos desconectadas de las zonas funcionales de la ciudad.
       </ContextTitle>
       <Chart
         title="Ingreso mensual per capita en 2020"

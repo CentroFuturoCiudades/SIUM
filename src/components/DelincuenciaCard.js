@@ -171,19 +171,15 @@ export function DelincuenciaCard() {
         incrementa en un 0.04%.
       </p>
       <p>
-        Las incidencias delictivas como robos en calles o a viviendas, así como
-        violencia familiar se concentran en regiones segregadas. Estar alejado
-        de actividades económicas aumenta la incidencia delictiva. Estar cercano
-        a centros con comercio al por menor, la disminuyen.
+        Las incidencias delictivas como robos a transeúntes o a viviendas, así
+        como violencia familiar se concentran en regiones segregadas. Estar
+        alejado de actividades económicas aumenta la incidencia delictiva. Estar
+        cercano a centros con comercio al por menor, la disminuyen.
       </p>
-      <p>
+      <ContextTitle color={color}>
         Las ciudades compactas y multifuncionales incentivan una vida pública
         activa, lo que podría disminuir los indices delictivos en la Zona
         Metropolitana de Monterrey.
-      </p>
-      <ContextTitle color={color}>
-        Densificar, diversificar usos de suelo y transporte colectivo,
-        incrementar los flujos peatonales e incentivar la vigilancia colectiva
       </ContextTitle>
       <Chart
         title={`Acumulado ${

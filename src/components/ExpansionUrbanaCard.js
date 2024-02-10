@@ -122,30 +122,25 @@ export function ExpansionUrbanaCard() {
         {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
-        <b>En 1990</b>, las familias jóvenes, con edades entre 19 y 65 años,
-        residían principalmente en las zonas centrales de la zona metropolitana,
-        Monterrey, Guadalupe, San Pedro y San Nicolás.
+        <b>En 1990</b>, las familias jóvenes residían mayormente en zonas
+        centrales como Monterrey, Guadalupe, San Pedro y San Nicolás.
       </p>
       <p>
-        <b>En 2020</b>, en contraste, las familias jóvenes han migrado hacia la
-        periferia, estableciéndose en lugares como Juárez, García, Apodaca,
-        Santa Catarina y General Zuazua. Los adultos mayores permanecen en la
-        zona central.
+        <b>Para 2020</b>, migraron a la periferia: Juárez, García, Apodaca,
+        Santa Catarina y General Zuazua. Mientras que los adultos mayores
+        permanecieron en las zonas centrales.
       </p>
       <p>
-        En los últimos años, ha habido un cambio significativo en la
-        distribución de la población. Existe la necesidad de una adaptación de
-        las políticas públicas y servicios urbanos a las nuevas dinámicas. Una
-        de las causas principales de la migración de los hogares jóvenes a la
-        periferia urbana es la falta de una oferta de vivienda adecuada a su
-        nivel de ingreso y estilo de vida en la zona central.
+        Recientemente, cambios demográficos demandan ajustes en políticas y
+        servicios urbanos. La migración de hogares jóvenes hacia la periferia se
+        debe, en gran medida, a la escasez de viviendas adecuadas en el centro
+        urbano para sus ingresos y preferencias de vida.
       </p>
       <ContextTitle color={color}>
         Promover la densificación y optar por soluciones habitacionales
         asequibles, fomentará la permanencia de una demografía diversa en las
-        centralidades
+        centralidades.
       </ContextTitle>
-
       <Chart
         title={`Cambio poblacional de ${sharedProps.time} a 2020`}
         data={chartData}

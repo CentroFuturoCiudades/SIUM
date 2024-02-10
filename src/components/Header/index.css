@@ -37,7 +37,7 @@
   text-align: center;
   line-height: 1.6rem;
   margin-bottom: 0.3rem;
-  font-weight: 700;
+  font-weight: 700 !important;
 }
 
 .titleMobile {

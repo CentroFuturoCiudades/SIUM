@@ -86,32 +86,28 @@ export function EmpleoCard() {
         {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
-        La migración de las familias jóvenes hacia la periferia provoca una
-        disminución de población en centros y subcentros urbanos, genera un
-        aumento en los desplazamientos hacia los lugares de empleo.
+        La migración de familias jóvenes a la periferia reduce población en
+        centros urbanos, aumentando desplazamientos al trabajo.
       </p>
       <p>
-        Aunque{" "}
         <b>
-          la mayoría de los empleos continúan concentrándose en el centro, a
-          unos diez kilómetros alrededor de la Macroplaza
-        </b>
-        , han surgido nuevas centralidades. En 2010, el 53% de los empleos se
-        concentraba en esta zona, disminuyó al 47% en el 2020.{" "}
+          Los empleos continúan a diez kilómetros alrededor de la Macroplaza
+          pero existen nuevas centralidades.
+        </b>{" "}
+        En 2010, el 53% de empleos estaba en la Macroplaza; en 2020, bajó al
+        47%.{" "}
         <b>
-          Los ritmos de crecimiento de los centros de empleo son menores en
-          comparación con la migración hacia la periferia urbana.
+          El crecimiento de los centros de empleo se mantienen constantes ante
+          la migración hacia la periferia.
         </b>
       </p>
       <p>
-        Durante el periodo de 1990 a 2020, la población de la Zona Metropolitana
-        de Monterrey se duplicó, mientras que la expansión de la mancha urbana
-        creció a un ritmo de 2.8 veces,{" "}
-        <b>incrementando el tiempos de traslado en la ciudad.</b>
+        La población de Monterrey duplicó de 1990 a 2020, y la expansión urbana
+        creció 2.8 veces, <b>incrementando el tiempo de traslado</b>.
       </p>
       <ContextTitle color={color}>
-        Incrementar la atracción de personas a centros y subcentros urbanos para
-        una mejor accesibilidad a empleos.
+        Replantear los centros y subcentros económicos como promotores
+        vocacionales de diversidad de usos para disminuir el tiempo de traslado.
       </ContextTitle>
 
       <Chart

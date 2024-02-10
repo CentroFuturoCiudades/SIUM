@@ -136,20 +136,17 @@ export function ViviendaCard() {
         {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
-        La zona central de Monterrey se ha transformado en una zona comercial,
-        sin residentes: los hogares migran y los comercios se quedan. El centro
-        es la zona mejor conectada de la ciudad porque, durante décadas, la
-        mejor infrastructura de transporte y vialidades se construyó para
-        conectar el empleo, en el centro, con el resto de las zonas
-        residenciales. El centro es la zona mejor conectada y accesible de la
-        ciudad y eso le otorga un gran valor comercial, y por tanto, un alto
-        valor a su suelo. El alto valor del suelo hace inviable la producción de
-        vivienda asequible en la zona central; la vivienda económica se
-        construye en las periferias urbanas.
+        La zona central de Monterrey se ha convertido en un área comercial sin
+        residentes. Los hogares se mudan mientras los comercios permanecen.
+        Durante décadas, se ha invertido en infraestructura de transporte para
+        conectar el empleo en el centro con las zonas residenciales. Esto le
+        otorga un alto valor comercial al centro y hace inviable la producción
+        de vivienda asequible. La vivienda económica, a la que las familias
+        jóvenes tienen acceso, se construye en las periferias urbanas.
       </p>
       <ContextTitle color={color}>
         Aunque los costos de la vivienda sean menores en las periferias, otros
-        costos se elevan, aumentando desigualdad.
+        costos como traslado o servicios se elevan.
       </ContextTitle>
       <Chart
         title={`Número de Creditos acumulados en ${sharedProps.time}`}

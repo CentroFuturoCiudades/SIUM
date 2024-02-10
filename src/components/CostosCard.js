@@ -111,9 +111,9 @@ export const CostosControls = () => {
   ];
   function labelMoney(value) {
     if (value > 1000000000) {
-      return `$${value / 1000000000} mil millones`
+      return `$${value / 1000000000} mil millones`;
     } else {
-      return `$${value.toLocaleString()}`
+      return `$${value.toLocaleString()}`;
     }
   }
 
@@ -142,10 +142,7 @@ export const CostosControls = () => {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="fecha" style={{ fontSize: "1dvw" }} />
-          <YAxis
-            tickFormatter={labelMoney}
-            style={{ fontSize: "1dvw" }}
-          />
+          <YAxis tickFormatter={labelMoney} style={{ fontSize: "1dvw" }} />
           <Tooltip formatter={(value) => `$${value.toLocaleString()}`} />
 
           <Legend />
@@ -174,19 +171,24 @@ export function CostosCard() {
         {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
-        Incidencias delictivas como el robos en calles o a viviendas, así como
-        violencia familiar se concentran en regiones segregadas.
+        La expansión urbana no solo tiene altos costos sociales y ambientales,
+        implica un gasto público mayor, en comparación con modelos de ciudades
+        compactas. En 1995, se gastaban alrededor de tres mil millones en obras
+        públicas de infrastructura para llevar servicios a las zonas urbananas.
       </p>
       <p>
-        Estar alejado de actividades económicas como el comercio al por mayor
-        aumentan la incidencia delictiva, mientras que estar cercano a centros
-        con comercio al por menor la disminuyen.
+        En 2020 se gastaron casi treinta y seis mil millones, un aumento del
+        1,200%. Aún con este aumento, el gasto no ha sido suficiente ya que el
+        gasto per cápita ha disminuido en un 88% en el mismo periodo.
       </p>
-      <br />
-      <br />
+      <p>
+        Los municipios ahora gastan más por metro cuadrado de la mancha urbana,
+        de $223/m2 en 1990 a $2,000/m2 en 2020.
+      </p>
       <ContextTitle color={color}>
-        La malas condiciones de vida en zonas marginadas contribuyen a la falta
-        de oportunidades y a la delincuencia.
+        Intensificar el uso del suelo urbano existente y mejorar las políticas
+        regulatorias para la expansión mitigarían el gasto público excesivo en
+        servicios urbanos e infrastructura.
       </ContextTitle>
     </>
   );

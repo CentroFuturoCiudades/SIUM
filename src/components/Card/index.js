@@ -67,7 +67,7 @@ export const ResponseTitle = ({ children, color }) => {
       <Heading
         className="response"
         color={`${color}.600`}
-        style={{ fontSize: isMobile ? "0.9rem" : "min(1.6dvw, 1.8dvh)" }}
+        style={{ fontSize: isMobile ? "0.9rem" : "1.1dvw"}}
       >
         {children}
       </Heading>
@@ -83,7 +83,7 @@ export const ContextTitle = ({ children, color }) => {
         as={"p"}
         className="context"
         color={`${color}.600`}
-        style={{ fontSize: isMobile ? "0.8rem" : "min(1.4dvw, 1.6dvh)" }}
+        style={{ fontSize: isMobile ? "0.8rem" : "1dvw" }}
       >
         {children}
       </Text>
