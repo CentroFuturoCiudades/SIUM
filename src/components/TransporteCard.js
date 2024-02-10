@@ -6,6 +6,7 @@ import {
   TRANSPORTE_MASIVO_URL,
   TRANSPORTE_URL,
   VIAS_URL,
+  sectionsInfo,
   useFetch,
 } from "../utils/constants.js";
 import { TripsLayer } from "@deck.gl/geo-layers";
@@ -24,6 +25,7 @@ import {
   Td,
   Thead,
   Tr,
+  useToken,
 } from "@chakra-ui/react";
 
 const marks = [
@@ -83,6 +85,8 @@ const filtering = (x, activeButton) =>
 
 export const TransporteControls = () => {
   const { color, setSharedProps } = useCardContext();
+  const [startColor] = useToken("colors", [`${color}.600`]);
+  const endColor = "#1A57FF";
   const { data } = useFetch(TRANSPORTE_URL);
   const [activeButton, setActiveButton] = useState("TPUB");
   const { time, isPlaying, handleSliderChange, togglePlay } =
@@ -161,7 +165,7 @@ export const TransporteControls = () => {
                 <Td>
                   <div
                     className="legend-color"
-                    style={{ backgroundColor: "rgb(26, 87, 255)" }}
+                    style={{ backgroundColor: endColor }}
                   />
                 </Td>
                 <Td>Trabajo y Regreso a Casa</Td>
@@ -170,7 +174,7 @@ export const TransporteControls = () => {
                 <Td>
                   <div
                     className="legend-color"
-                    style={{ backgroundColor: "rgb(126, 96, 62)" }}
+                    style={{ backgroundColor: startColor }}
                   />
                 </Td>
                 <Td>Otros motivos</Td>
@@ -206,7 +210,7 @@ export const TransporteControls = () => {
 };
 
 export function TransporteCard() {
-  const { color, setOutline, sharedProps } = useCardContext();
+  const { color, currentSection, sharedProps } = useCardContext();
   const { data: chartData } = useFetch(TRANSPORTE_CHART_URL, []);
   const filteredChartData = chartData.filter(
     (x) => x["Motivo"] === "Regreso A Casa"
@@ -215,7 +219,7 @@ export function TransporteCard() {
   return (
     <>
       <ResponseTitle color={color}>
-        Demasiados de nosotros en auto
+        {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
         <b>El 45% de los desplazamientos</b> en Monterrey son viajes al trabajo

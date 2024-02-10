@@ -12,6 +12,7 @@ import {
 } from "recharts";
 import ButtonControls from "./ButtonControls";
 import { useCardContext } from "../views/Problematica";
+import { sectionsInfo } from "../utils/constants";
 
 export const CostosControls = () => {
   const { color } = useCardContext();
@@ -165,11 +166,12 @@ export const CostosControls = () => {
   );
 };
 
-export function CostosCard({ color, isCurrentSection }) {
+export function CostosCard() {
+  const { color, currentSection } = useCardContext();
   return (
     <>
       <ResponseTitle color={color}>
-        Hay que llevar servicios públicos más lejos
+        {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
         Incidencias delictivas como el robos en calles o a viviendas, así como

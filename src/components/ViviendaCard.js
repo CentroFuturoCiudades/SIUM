@@ -8,6 +8,7 @@ import {
   VIVIENDA_URL,
   VIVIENDA_CHART_URL,
   generateGradientColors,
+  sectionsInfo,
 } from "../utils/constants";
 import { Chart } from "./Chart";
 import { GeoJsonLayer } from "@deck.gl/layers";
@@ -18,13 +19,11 @@ import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import Loading from "./Loading";
 import Tooltip from "./Tooltip";
 import * as d3 from "d3";
+import { useToken } from "@chakra-ui/react";
 
-const startColor = "#827347";
-const endColor = "#1A57FF";
 const VIVIENDA_QUANTILES = [
   160000, 400000, 500000, 600000, 800000, 1000000, 1200000, 1800000,
 ];
-const VIVIENDA_COLORS = generateGradientColors(startColor, endColor, 8);
 
 const marks = [
   { value: 2000, label: "2000" },
@@ -36,6 +35,9 @@ const marks = [
 
 export const ViviendaControls = () => {
   const { color, setSharedProps } = useCardContext();
+  const [startColor] = useToken("colors", [`${color}.600`]);
+  const endColor = "#1A57FF";
+  const VIVIENDA_COLORS = generateGradientColors(startColor, endColor, 8);
   const { data } = useFetch(VIVIENDA_URL);
   const [legendItems, setLegendItems] = useState([]);
   const [hoverInfo, setHoverInfo] = useState();
@@ -125,13 +127,13 @@ export const ViviendaControls = () => {
 };
 
 export function ViviendaCard() {
-  const { color, setOutline, sharedProps } = useCardContext();
+  const { color, currentSection, setOutline, sharedProps } = useCardContext();
   const { data: chartData } = useFetch(VIVIENDA_CHART_URL, []);
 
   return (
     <>
       <ResponseTitle color={color}>
-        La vivienda es más asequible en las periferias
+        {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
         La zona central de Monterrey se ha transformado en una zona comercial,

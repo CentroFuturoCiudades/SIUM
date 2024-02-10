@@ -7,6 +7,7 @@ import {
   cleanedGeoData,
   colorInterpolate,
   generateGradientColors,
+  sectionsInfo,
   separateLegendItems,
   useFetch,
 } from "../utils/constants";
@@ -16,15 +17,15 @@ import { GeoJsonLayer } from "deck.gl";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import Loading from "./Loading";
 import Tooltip from "./Tooltip";
-import { Slider } from "@chakra-ui/react";
+import { Slider, useToken } from "@chakra-ui/react";
 
-const startColor = "#998f5d";
-const endColor = "#1A57FF";
 const EMPLEO_QUANTILES = [0, 50, 200, 400, 800, 1000, 2000, 8400];
-const EMPLEO_COLORS = generateGradientColors(startColor, endColor, 7);
 
 export const EmpleoControls = () => {
   const { color } = useCardContext();
+  const [startColor] = useToken("colors", [`${color}.600`]);
+  const endColor = "#1A57FF";
+  const EMPLEO_COLORS = generateGradientColors(startColor, endColor, 7);
   const { data } = useFetch(EMPLEO_URL);
   const [hoverInfo, setHoverInfo] = useState();
   const [legendItems, setLegendItems] = useState([]);
@@ -76,13 +77,13 @@ export const EmpleoControls = () => {
 };
 
 export function EmpleoCard() {
-  const { color, setOutline } = useCardContext();
+  const { color, currentSection } = useCardContext();
   const { data: chartData } = useFetch(EMPLEO_CHART_URL, []);
 
   return (
     <>
       <ResponseTitle color={color}>
-        Principalmente en el centro, aunque hay nuevas centralidades.
+        {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
         La migración de las familias jóvenes hacia la periferia provoca una

@@ -5,6 +5,7 @@ import {
   cleanedGeoData,
   colorInterpolate,
   generateGradientColors,
+  sectionsInfo,
   separateLegendItemsByCategory,
   useFetch,
 } from "../utils/constants";
@@ -119,13 +120,13 @@ export const EscenariosFuturosControls = () => {
 };
 
 export function EscenariosFuturosCard() {
-  const { color } = useCardContext();
+  const { color, currentSection } = useCardContext();
   const { data: chartData } = useFetch(ESCENARIOS_FUTUROS_CHART_URL, []);
 
   return (
     <>
       <ResponseTitle color={color}>
-        -----------Respuesta------------
+        {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
         La Zona Metropolitana de Monterrey se enfrenta a un creciente fenómeno

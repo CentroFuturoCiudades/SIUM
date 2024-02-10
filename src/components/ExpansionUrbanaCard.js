@@ -8,6 +8,7 @@ import {
   EXPANSION_URL,
   EXPANSION_CHART_URL,
   generateGradientColors,
+  sectionsInfo,
 } from "../utils/constants";
 import "../index.css";
 import { Chart } from "./Chart";
@@ -18,11 +19,9 @@ import { Legend } from "./Legend";
 import { CustomMap, INITIAL_STATE } from "../components/CustomMap";
 import Loading from "./Loading";
 import Tooltip from "./Tooltip";
+import { useToken } from "@chakra-ui/react";
 
-const startColor = "#605631";
-const endColor = "#1A57FF";
 const EXPANSION_QUANTILES = [-5100, -2000, -1000, 0, 2000, 4000, 6000, 11100];
-const EXPANSION_COLORS = generateGradientColors(startColor, endColor, 8);
 
 const marks = [
   { value: 1990, label: "1990-2020" },
@@ -32,6 +31,9 @@ const marks = [
 
 export const ExpansionUrbanaControls = () => {
   const { color, setSharedProps } = useCardContext();
+  const [startColor] = useToken("colors", [`${color}.600`]);
+  const endColor = "#1A57FF";
+  const EXPANSION_COLORS = generateGradientColors(startColor, endColor, 8);
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const { data } = useFetch(EXPANSION_URL);
   const [legendItems, setLegendItems] = useState([]);
@@ -111,13 +113,13 @@ export const ExpansionUrbanaControls = () => {
 };
 
 export function ExpansionUrbanaCard() {
-  const { color, setOutline, sharedProps } = useCardContext();
+  const { color, currentSection, sharedProps } = useCardContext();
   const { data: chartData } = useFetch(EXPANSION_CHART_URL, []);
 
   return (
     <>
       <ResponseTitle color={color}>
-        Hacia las Periferias, lejos unos de otros
+        {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
         <b>En 1990</b>, las familias jóvenes, con edades entre 19 y 65 años,

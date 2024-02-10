@@ -11,6 +11,7 @@ import {
   separateLegendItems,
   useFetch,
   filterIcons,
+  sectionsInfo,
 } from "../utils/constants";
 import { Chart } from "./Chart";
 import { Legend } from "./Legend";
@@ -19,14 +20,10 @@ import Tooltip from "./Tooltip";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import Loading from "./Loading";
 import ButtonControls from "./ButtonControls";
-import { Slider } from "@chakra-ui/react";
+import { Slider, useToken } from "@chakra-ui/react";
 import * as d3 from "d3";
 import { IconLayer } from "deck.gl";
 import { Checkbox, Heading } from "@chakra-ui/react";
-
-const startColor = "#68736d";
-const endColor = "#1A57FF";
-const SEGREGACION_COLORS = generateGradientColors(startColor, endColor, 8);
 
 const legendMapping = {
   income_pc: {
@@ -48,6 +45,9 @@ const legendMapping = {
 
 export const SegregacionControls = () => {
   const { color } = useCardContext();
+  const [startColor] = useToken("colors", [`${color}.600`]);
+  const endColor = "#1A57FF";
+  const SEGREGACION_COLORS = generateGradientColors(startColor, endColor, 8);
   const { data } = useFetch(SEGREGATION_URL);
   const { data: data_asentamientos } = useFetch(ASENTAMIENTOSINF_URL);
   const [legendItems, setLegendItems] = useState([]);
@@ -179,13 +179,13 @@ export const SegregacionControls = () => {
 };
 
 export function SegregacionCard() {
-  const { color, setOutline } = useCardContext();
+  const { color, currentSection } = useCardContext();
   const { data: chartData } = useFetch(SEGREGACION_CHART_URL, []);
 
   return (
     <>
       <ResponseTitle color={color}>
-        Porque expulsa a los más vulnerables a la periferia
+        {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
         Al expandirnos en estos niveles es innevitable que ciertos grupos

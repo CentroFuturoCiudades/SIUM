@@ -16,7 +16,6 @@ import { HiMiniBuildingOffice } from "react-icons/hi2";
 import { GiInjustice, GiRobber } from "react-icons/gi";
 import { FaPeopleArrows } from "react-icons/fa";
 
-
 import {
   ExpansionUrbanaCard,
   ExpansionUrbanaControls,
@@ -132,7 +131,6 @@ export const filterDataAll = (
 
   return filteredData;
 };
-
 
 export const DATA_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos";
@@ -508,10 +506,18 @@ export const useFetch = (url, initialData = undefined) => {
 };
 
 export const sectionsInfo = {
+  vivienda: {
+    title: "¿Por qué nos expandimos?",
+    answer: "La vivienda es más asequible en las periferias",
+    color: "brown",
+    icon: MdHome,
+    component: ViviendaCard,
+    controls: ViviendaControls,
+  },
   "expansion-urbana": {
     title: "¿Hacia dónde nos expandimos?",
     answer: "Hacia las Periferias, lejos unos de otros",
-    color: "brown",
+    color: "brown2",
     icon: FaPeopleArrows,
     component: ExpansionUrbanaCard,
     controls: ExpansionUrbanaControls,
@@ -519,77 +525,68 @@ export const sectionsInfo = {
   empleo: {
     title: "¿En dónde trabajamos?",
     answer: "Principalmente en el centro, aunque hay nuevas centralidades",
-    color: "brown2",
+    color: "orange",
     icon: HiMiniBuildingOffice,
     component: EmpleoCard,
     controls: EmpleoControls,
   },
   transporte: {
     title: "¿Cómo nos movemos?",
-    answer: "Demasiados de nosotros en auto",
-    color: "orange",
+    answer: "Demasiados de nosotros en auto.",
+    color: "yellow",
     icon: MdDirectionsCar,
     component: TransporteCard,
     controls: TransporteControls,
   },
-  vivienda: {
-    title: "¿Por qué nos expandimos?",
-    answer: "La vivienda es más asequible en las periferias",
-    color: "yellow",
-    icon: MdHome,
-    component: ViviendaCard,
-    controls: ViviendaControls,
+  infancias: {
+    title: "¿Por qué limita el desarrollo infantil?",
+    answer:
+      "La oferta de servicios de proximidad no corresponde con las zonas donde viven las infancias tempranas",
+    color: "sage",
+    icon: MdOutlineFamilyRestroom,
+    component: InfanciasCard,
+    controls: InfanciasControls,
   },
   segregacion: {
-    title: "¿Por qué la expansión segrega?",
+    title: "¿Por qué segrega?",
     answer: "Porque expulsa a los más vulnerables a la periferia",
-    color: "sage",
+    color: "green1",
     icon: GiInjustice,
     component: SegregacionCard,
     controls: SegregacionControls,
   },
   delincuencia: {
-    title: "¿Por qué la expansión aumenta la inseguridad?",
+    title: "¿Por qué aumenta la inseguridad?",
     answer:
       "Porque al estar alejados, no nos podemos cuidar los unos a los otros",
-    color: "green",
+    color: "green2",
     icon: GiRobber,
     component: DelincuenciaCard,
     controls: DelincuenciaControls,
   },
-  infancias: {
-    title: "¿Por qué la expansión limita el desarrollo de la primera infancia?",
-    answer:
-      "La oferta de servicios de proximidad no corresponde con las zonas donde viven las infancias tempranas.",
-    color: "blue",
-    icon: MdOutlineFamilyRestroom,
-    component: InfanciasCard,
-    controls: InfanciasControls,
+  costos: {
+    title: "¿Por qué nos cuenta tanto dinero?",
+    answer: "Hay que llevar servicios públicos más lejos",
+    color: "green3",
+    icon: MdOutlineAttachMoney,
+    component: CostosCard,
+    controls: CostosControls,
   },
   islasCalor: {
-    title:
-      "¿Por qué sentimos tanto calor en la Zona Metropolitana de Monterrey?",
-    answer: "-----------------------",
-    color: "green",
+    title: "¿Por qué sentimos tanto calor?",
+    answer: "-----------Respuesta------------",
+    color: "teal1",
     icon: MdDeviceThermostat,
     component: IslasCalorCard,
     controls: IslasCalorControls,
   },
   escenariosFuturos: {
-    title:
-      "¿Por qué sentimos tanto calor en la Zona Metropolitana de Monterrey?",
-    answer: "-----------------------",
-    color: "teal",
+    title: "¿Qué pasaría si no cambiamos?",
+    answer:
+      "Vamos a tener una ciudad más dispersa, fragmentada social y territorialmente con centralidades desconectadas",
+    color: "teal2",
     icon: MdOutlineAccessTime,
     component: EscenariosFuturosCard,
     controls: EscenariosFuturosControls,
   },
-  costos: {
-    title: "¿Por qué la expansión nos cuenta tanto dinero?",
-    answer: "Hay que llevar servicios públicos más lejos",
-    color: "teal",
-    icon: MdOutlineAttachMoney,
-    component: CostosCard,
-    controls: CostosControls,
-  },
-  };
+};

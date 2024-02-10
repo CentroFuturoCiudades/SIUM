@@ -9,6 +9,7 @@ import {
   DELINCUENCIA_URL,
   DELINCUENCIA_CHART_URL,
   generateGradientColors,
+  sectionsInfo,
 } from "../utils/constants";
 import { Chart } from "./Chart";
 import { Legend } from "./Legend";
@@ -156,13 +157,13 @@ export const DelincuenciaControls = () => {
 };
 
 export function DelincuenciaCard() {
-  const { color, setOutline, sharedProps } = useCardContext();
+  const { color, currentSection, setOutline, sharedProps } = useCardContext();
   const { data: chartData } = useFetch(DELINCUENCIA_CHART_URL, []);
 
   return (
     <>
       <ResponseTitle color={color}>
-        Porque al estar alejados, no nos podemos cuidar los unos a los otros
+        {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
         Entre más aumenta la mancha urbana, más aumenta la inseguridad: cuando

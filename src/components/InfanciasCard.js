@@ -9,6 +9,7 @@ import {
   cleanedGeoData,
   colorInterpolate,
   generateGradientColors,
+  sectionsInfo,
   useFetch,
 } from "../utils/constants";
 import { LegendCustom } from "./LegendCustom";
@@ -19,10 +20,7 @@ import _ from "lodash";
 
 import Loading from "./Loading";
 import { Chart } from "./Chart";
-
-const startColor = "#998f5d";
-const endColor = "#1A57FF";
-const INFANCIA_COLORS = generateGradientColors(startColor, endColor, 8);
+import { useToken } from "@chakra-ui/react";
 
 //["comercio al por menor", "preescolar", "salud", "guarderia"],
 const SERVICIOS_COLORS = [
@@ -40,6 +38,9 @@ const sectorColors = {
 
 export const InfanciasControls = () => {
   const { color } = useCardContext();
+  const [startColor] = useToken("colors", [`${color}.400`]);
+  const endColor = "#1A57FF";
+  const INFANCIA_COLORS = generateGradientColors(startColor, endColor, 8);
   const [viewState, setViewState] = useState(SPECIAL_INFANCIAS_STATE); //para que empiece en el punto que dijo nelida
   const { data: dataPob } = useFetch(POB05_URL);
   const { data: dataParques } = useFetch(PARQUES_URL);
@@ -188,13 +189,12 @@ export const InfanciasControls = () => {
 };
 
 export function InfanciasCard() {
-  const { color } = useCardContext();
+  const { color, currentSection } = useCardContext();
   const { data: chartData } = useFetch(POB05_CHART_URL, []);
   return (
     <>
       <ResponseTitle color={color}>
-        La oferta de servicios de proximidad no corresponde con las zonas donde
-        viven las infancias tempranas.
+        {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
         Las familias jóvenes con primeras infancias (0-5 años de edad) han
