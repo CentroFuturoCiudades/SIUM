@@ -7,11 +7,11 @@ const Tooltip2 = ({ hoverInfo, children }) => {
   useLayoutEffect(() => {
     if (tooltipRef.current && hoverInfo) {
       const tooltipWidth = tooltipRef.current.offsetWidth;
-      const tooltipHeight = tooltipRef.current.offsetHeight; 
-
+      const tooltipHeight = tooltipRef.current.offsetHeight;
+  
       setPositionStyle({
-        left: `calc(${hoverInfo.x}px - ${tooltipWidth / 2}px)`,
-        top: `calc(${hoverInfo.y}px - ${tooltipHeight}px - 10px)`,
+        left: `${hoverInfo.x + 60}px`, 
+        top: `${hoverInfo.y - tooltipHeight / 2}px`, 
         opacity: 1,
         transition: "opacity 0.2s, transform 0.2s",
       });
@@ -23,7 +23,7 @@ const Tooltip2 = ({ hoverInfo, children }) => {
   return (
     <div
       ref={tooltipRef}
-      className="tooltip-container"
+      className="tooltip-container2"
       style={{
         position: "absolute",
         zIndex: 1,
