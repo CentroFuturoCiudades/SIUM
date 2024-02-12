@@ -54,8 +54,9 @@ export const LegendCustom = ({
       borderColor={`${color}.200`}
       borderWidth="0.08rem"
       className="legend-container"
-      style={{ right: '20px', left: 'auto' }}
+      style={{ right: "20px", left: "auto" }}
     >
+      <p>Radio de 1 kilometro de distancia</p>
       <TableContainer>
         <Table size="xs" variant="unstyled">
           <Tbody>

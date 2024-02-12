@@ -36,7 +36,7 @@ const CONTROLLER = {
 };
 
 // const IMAGE_BOUNDS = [-102.1, 25.031, -99.487, 26.435];
-const IMAGE_BOUNDS = [-102.107, 25.031, -99.483, 26.428];
+const IMAGE_BOUNDS = [-102.105, 25.04, -99.485, 26.423];
 
 const minWidth = 400;
 const minMultiplier = 0.88;

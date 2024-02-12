@@ -53,6 +53,12 @@ const marks = [
   { value: 1260, label: "21:00" },
   { value: 1320, label: "22:00" },
 ];
+const labelsMapping = [
+  { id: "General", name: "General" },
+  { id: "Autómovil", name: "Auto" },
+  { id: "TPUB", name: "Transporte público" },
+  { id: "transporteActivo", name: "Transporte Activo" },
+];
 
 function convertirHoraATimestamp(horaString) {
   const [hora, minutos] = horaString.split(":");
@@ -96,6 +102,9 @@ export const TransporteControls = () => {
   const [activeButton, setActiveButton] = useState("TPUB");
   const { time, isPlaying, handleSliderChange, togglePlay } =
     TimeComponentClean(300, 1320, 0.005, 0.1, true, 1020);
+  const currentTransporte = labelsMapping.find(
+    (x) => x.id == activeButton
+  )?.name;
 
   useEffect(() => {
     setSharedProps({ activeButton });
@@ -167,7 +176,7 @@ export const TransporteControls = () => {
       </CustomMap>
       <CustomLegend
         color={color}
-        title={`Traslados en ${activeButton} por motivo de viaje`}
+        title={`Traslados en ${currentTransporte} por motivo de viaje`}
         description={
           <>
             <b>
@@ -185,12 +194,7 @@ export const TransporteControls = () => {
         color={color}
         activeButton={activeButton}
         setActiveButton={setActiveButton}
-        mapping={[
-          { id: "General", name: "General" },
-          { id: "Autómovil", name: "Auto" },
-          { id: "TPUB", name: "Transporte público" },
-          { id: "transporteActivo", name: "Transporte Activo" },
-        ]}
+        mapping={labelsMapping}
       />
       <SliderHTML
         time={time}
@@ -213,6 +217,9 @@ export function TransporteCard() {
   const filteredChartData = chartData.filter(
     (x) => x["Motivo"] === "Regreso A Casa"
   );
+  const currentTransporte = labelsMapping.find(
+    (x) => x.id == sharedProps.activeButton
+  )?.name;
 
   return (
     <>
@@ -247,7 +254,7 @@ export function TransporteCard() {
         de las personas al hacer viajes intermodales.
       </ContextTitle>
       <Chart
-        title={`Tiempo de traslado regreso a casa en ${sharedProps.activeButton}`}
+        title={`Tiempo de traslado regreso a casa en ${currentTransporte}`}
         data={filteredChartData}
         column="TiempoTraslado"
         columnKey="MunDest"

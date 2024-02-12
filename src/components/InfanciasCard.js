@@ -47,7 +47,6 @@ export const InfanciasControls = () => {
   const [circlePayload, setCirclePayload] = useState();
 
   const radiusInDegrees = (brushingRadius / 40075000) * 360; //formula para convertir metros a grados (con la circunferencia de la Tierra 40,075,000 mts)
-
   ///CALCULAR SERVICIOS DENTRO DEL CIRCULO CON DISTANCIA EUCLIDEANA
   function EuclideanDistance(x1, y1, x2, y2) {
     //distancia euclidiana normal (0.14 ej) x1 y1 es del centro x2 y2 de otro puntp

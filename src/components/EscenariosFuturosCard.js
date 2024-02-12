@@ -156,7 +156,24 @@ export function EscenariosFuturosCard() {
       <ResponseTitle color={color}>
         {sectionsInfo[currentSection].answer}
       </ResponseTitle>
-      <ContextTitle color={color}>-------</ContextTitle>
+      <ContextTitle color={color}>
+        <p>
+          El patrón de urbanización de Monterrey en las últimas tres décadas
+          muestra una expansión de baja densidad hacia las periferias.
+          Utilizando datos históricos, simulamos y proyectamos que, de continuar
+          así, en 2040 la superficie urbanizada crecería un XXXX%, fragmentando
+          la ciudad y aumentando la integración de centralidades lejanas como
+          Santigago, Saltillo y Ramos Arizpe a la metrópoli.
+        </p>
+        <p>
+          Planteamos dos alternativas: crecimiento compacto (XXXX km²
+          urbanizados) y acelerado (XXXX km² urbanizados). Alcanzar uno u otro
+          escenario dependerá de las políticas actuales para regular el
+          crecimiento, enfocándose en regenerar y densificar, asegurando
+          vivienda asequible en municipios centrales como San Nicolás, Guadalupe
+          y Monterrey.
+        </p>
+      </ContextTitle>
       <AreaChartChart
         title="Proyección de superficie urbanizada 2020-2050"
         data={chartData}

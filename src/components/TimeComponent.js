@@ -46,6 +46,7 @@ export function SliderHTML({
       >
         <IconButton
           colorScheme={color}
+          textColor="white"
           isRound={true}
           onClick={togglePlay}
           size="xs"
