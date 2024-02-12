@@ -76,6 +76,13 @@ export const ExpansionUrbanaControls = () => {
       <Legend
         title={`Cambio Poblacional de ${time} a 2020`}
         legendItems={legendItems}
+        description={
+          <>
+            <b>Censos de población INEGI 1990, 2010, 2020</b>
+            <p>Malla geostadística de unidades comparables.</p>
+            <p>Esta visualización proyecta diferentes censos por AGEB.</p>
+          </>
+        }
         color={color}
       />
       <SliderHTML

@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { MdPause, MdPlayArrow } from "react-icons/md";
 import _ from "lodash";
+import { useCardContext } from "../views/Problematica";
 
 export function SliderHTML({
   time,
@@ -23,6 +24,7 @@ export function SliderHTML({
   handleSliderChange,
   marks,
 }) {
+  const { color } = useCardContext();
   const [isMobile] = useMediaQuery("(max-width: 800px)");
   return (
     <div
@@ -36,14 +38,14 @@ export function SliderHTML({
       }}
     >
       <Box
-        bgColor="orange.100"
+        bgColor={`${color}.100`}
         borderRadius="16px"
         borderWidth={1}
-        borderColor="orange.200"
+        borderColor={`${color}.200`}
         style={{ display: "flex", width: "100%" }}
       >
         <IconButton
-          colorScheme="orange"
+          colorScheme={color}
           isRound={true}
           onClick={togglePlay}
           size="xs"
@@ -76,10 +78,10 @@ export function SliderHTML({
               {label}
             </SliderMark>
           ))}
-          <SliderTrack bg="orange.200">
-            <SliderFilledTrack bg="orange.500" />
+          <SliderTrack bg={`${color}.200`}>
+            <SliderFilledTrack bg={`${color}.500`} />
           </SliderTrack>
-          <SliderThumb boxSize={3} bgColor="orange.600" />
+          <SliderThumb boxSize={3} bgColor={`${color}.600`} />
         </Slider>
       </Box>
     </div>

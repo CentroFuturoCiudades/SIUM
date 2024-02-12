@@ -20,7 +20,7 @@ import Tooltip from "./Tooltip";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import Loading from "./Loading";
 import ButtonControls from "./ButtonControls";
-import { Slider, useToken } from "@chakra-ui/react";
+import { Slider, useMediaQuery, useToken } from "@chakra-ui/react";
 import * as d3 from "d3";
 import { IconLayer } from "deck.gl";
 import { Checkbox, Heading } from "@chakra-ui/react";
@@ -45,6 +45,7 @@ const legendMapping = {
 
 export const SegregacionControls = () => {
   const { color } = useCardContext();
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
   const [startColor] = useToken("colors", [`${color}.600`]);
   const endColor = "#1A57FF";
   const SEGREGACION_COLORS = generateGradientColors(startColor, endColor, 8);
@@ -133,14 +134,36 @@ export const SegregacionControls = () => {
         legendItems={legendItems}
         color={color}
         formatter={legendMapping[activeButton].formatter}
+        description={
+          <>
+            <b>
+              Censo de 2020 la encuesta nacional de ingreso en los hogares del
+              2018
+            </b>
+            <p>
+              A través del metodo Iterative Proportional Fitting (IPF), se
+              proporcionaron datos sintetivos de ingreso por AGEB.
+            </p>
+            <p>
+              Peraza-Mues, G., Ponce-Lopez, R., Muñoz Sanchez, J. A., Cavazos
+              Alanis, F., Olivera Martínez, G., & Brambila Paz, C. (2023).
+              Income Segregation Analysis in Limited-Data Contexts: A
+              Methodology Based on Iterative Proportional Fitting. Geographical
+              Analysis.
+            </p>
+          </>
+        }
       />
       <Checkbox
         onChange={handleCheckboxChange}
         isChecked={showAsentamientos}
+        colorScheme={color}
+        borderColor={`${color}.500`}
         className="checkbox"
-        width="210px"
+        width="2dvw"
+        style={{ bottom: isMobile ? "60px" : "70px" }}
       >
-        <Heading size="xs" color="gray.700">
+        <Heading fontSize={isMobile ? "12px" : "1dvw"} color="gray.700">
           Asentamientos autoproducidos
         </Heading>
       </Checkbox>

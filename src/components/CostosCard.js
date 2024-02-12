@@ -13,9 +13,11 @@ import {
 import ButtonControls from "./ButtonControls";
 import { useCardContext } from "../views/Problematica";
 import { sectionsInfo } from "../utils/constants";
+import { useMediaQuery } from "@chakra-ui/react";
 
 export const CostosControls = () => {
   const { color } = useCardContext();
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
   const [chartData, setChartData] = useState([]);
   const [activeButton, setActiveButton] = useState("obras");
 
@@ -60,7 +62,6 @@ export const CostosControls = () => {
       });
       return dataForYear;
     });
-    console.log(chartData);
 
     return chartData;
   };
@@ -141,11 +142,11 @@ export const CostosControls = () => {
           margin={{ top: 100, right: 30, left: 30, bottom: 0 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="fecha" style={{ fontSize: "1dvw" }} />
-          <YAxis tickFormatter={labelMoney} style={{ fontSize: "1dvw" }} />
+          <XAxis dataKey="fecha" style={{ fontSize: isMobile ? "12px" : "1dvw" }} />
+          <YAxis tickFormatter={labelMoney} style={{ fontSize: isMobile ? "12px" : "1dvw" }} />
           <Tooltip formatter={(value) => `$${value.toLocaleString()}`} />
 
-          <Legend />
+          <Legend wrapperStyle={{ fontSize: isMobile ? '10px' : '1dvw' }} />
           {chartData.length > 0 &&
             municipios.map((municipio, index) => (
               <Area

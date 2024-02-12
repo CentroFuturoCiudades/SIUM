@@ -96,7 +96,7 @@ export const LegendMobile = ({ title, legendItems, formatting }) => {
   );
 };
 
-export const Legend = ({ title, legendItems, color, formatter }) => {
+export const Legend = ({ title, legendItems, color, description, formatter }) => {
   const formatting = formatter || d3.format(",.0f");
   const [isMobile] = useMediaQuery("(max-width: 800px)");
   if (isMobile)
@@ -127,17 +127,17 @@ export const Legend = ({ title, legendItems, color, formatter }) => {
         }}
       >
         <Tooltip
-          label="Datos obtenidos de blah blah blah"
+          label={description}
           placement="top"
           hasArrow
           gutter={12}
         >
           <Heading color="gray.700" fontSize="0.9dvw">
             <InfoIcon
-              boxSize={2.5}
+              boxSize="0.7dvw"
               color="gray.400"
               style={{ cursor: "pointer" }}
-              mr="1"
+              mr="0.3dvw"
             />
             {title}
           </Heading>
@@ -147,7 +147,7 @@ export const Legend = ({ title, legendItems, color, formatter }) => {
         <Table size="xs" variant="unstyled">
           <Tbody>
             {legendItems.map((item, index) => (
-              <Tr fontSize="0.7dvw">
+              <Tr key={`legend-item-${index}`} fontSize="0.7dvw">
                 <Td>
                   <div
                     className="legend-color"

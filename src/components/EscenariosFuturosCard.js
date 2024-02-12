@@ -5,25 +5,23 @@ import {
   cleanedGeoData,
   colorInterpolate,
   generateGradientColors,
+  hexToRgb,
   sectionsInfo,
   separateLegendItemsByCategory,
   useFetch,
 } from "../utils/constants";
 import { AreaChartChart } from "./AreaChart";
-import { CustomLegend } from "./CustomLegend.js";
+import {
+  CustomLegend,
+  CustomLegendMobile,
+  LegendItem,
+} from "./CustomLegend.js";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import { GeoJsonLayer } from "deck.gl";
 import Loading from "./Loading";
 import ButtonControls from "./ButtonControls.js";
-
-// Paleta de segregación
-const startColor = "#68736d";
-const endColor = "#1A57FF";
-const ESCENARIOS_FUTUROS_COLORS = generateGradientColors(
-  startColor,
-  endColor,
-  3
-);
+import { Area, XAxis, YAxis } from "recharts";
+import { useToken } from "@chakra-ui/react";
 
 const EXPANSION_ACTUAL_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/mancha_urbana_2020.geojson";
@@ -49,6 +47,8 @@ const ISLAS_CALOR_LEGEND_DATA = [
 
 export const EscenariosFuturosControls = () => {
   const { color } = useCardContext();
+  const startColor = useToken("colors", `${color}.700`);
+  const endColor = "#1A57FF";
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const [legendItems, setLegendItems] = useState([]);
   const [activeButton, setActiveButton] = useState("acelerada");
@@ -90,12 +90,12 @@ export const EscenariosFuturosControls = () => {
         <GeoJsonLayer
           id={`escenarios_futuros_layer`}
           data={cleanedGeoData(data.features, "index")}
-          getFillColor={[200, 50, 50]}
+          getFillColor={hexToRgb(endColor)}
         />
         <GeoJsonLayer
           id="escenarios_actuales_layer"
           data={expansion_actual_data}
-          getFillColor={[255, 255, 255]}
+          getFillColor={hexToRgb(startColor)}
         />
         <ButtonControls
           color={color}
@@ -108,13 +108,34 @@ export const EscenariosFuturosControls = () => {
           ]}
         />
       </CustomMap>
-      {/* <CustomLegend
+      <CustomLegend
         title={"Escenarios a futuro"}
-        legendItems={legendItems}
         color={color}
-        // legendLabels={ISLAS_CALOR_LEGEND_DATA}
-        legendLabels={[`Expansión ${activeButton}`]}
-      /> */}
+        description={
+          <>
+            <b>
+              SLEUTH (Slope-Land
+              use-Elevation-Urbanization-Transportation-Hillshade)
+            </b>
+            <p>
+              Modelo de simulacion urbana de monterrey se construyó a partir de
+              este modelo.
+            </p>
+            <p>
+              El modelo tuvo un proceso de calibracion para simular procesos de
+              expansion a partir de la informaicon histórica de Monterrey.
+            </p>
+            <p>
+              Clarke, K. C., & Johnson, J. M. (2020). Calibrating SLEUTH with
+              big data: Projecting California's land use to 2100. Computers,
+              Environment and Urban Systems, 83, 101525.
+            </p>
+          </>
+        }
+      >
+        <LegendItem color={startColor} label="Expansión actual" />
+        <LegendItem color={endColor} label={`Expansión ${activeButton}`} />
+      </CustomLegend>
     </>
   );
 };
@@ -122,15 +143,20 @@ export const EscenariosFuturosControls = () => {
 export function EscenariosFuturosCard() {
   const { color, currentSection } = useCardContext();
   const { data: chartData } = useFetch(ESCENARIOS_FUTUROS_CHART_URL, []);
+  const startColor = useToken("colors", `${color}.700`);
+  const endColor = "#1A57FF";
+  const ESCENARIOS_FUTUROS_COLORS = generateGradientColors(
+    startColor,
+    endColor,
+    4
+  );
 
   return (
     <>
       <ResponseTitle color={color}>
         {sectionsInfo[currentSection].answer}
       </ResponseTitle>
-      <ContextTitle color={color}>
-        -------
-      </ContextTitle>
+      <ContextTitle color={color}>-------</ContextTitle>
       <AreaChartChart
         title="Proyección de superficie urbanizada 2020-2050"
         data={chartData}
@@ -139,7 +165,7 @@ export function EscenariosFuturosCard() {
         lineColors={ESCENARIOS_FUTUROS_COLORS}
         columnKey="years"
         formatter={(d) => `${d.toLocaleString("en-US")}`}
-      />
+      ></AreaChartChart>
     </>
   );
 }

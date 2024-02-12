@@ -62,6 +62,18 @@ export const EmpleoControls = () => {
       <Legend
         title="Número de Empleos en 2020"
         legendItems={legendItems}
+        description={
+          <>
+            <b>
+              Directorio Estadístico Nacional de Unidades Económicas (DENUE)
+            </b>
+            <p>
+              El número de empleos de cada unidad económica se aproxima con la
+              mayoría de las categorías intermedias de empleo. Agregados por
+              hexágono.
+            </p>
+          </>
+        }
         color={color}
       />
       {hoverInfo && hoverInfo.object && (

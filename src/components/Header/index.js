@@ -85,7 +85,7 @@ export const HeaderMobile = ({ color, title, open, setOpen }) => {
         color="white"
         bg={`${color}.500`}
         borderColor={`${color}.500`}
-        fontSize="0.7rem"
+        fontSize="0.8rem"
         onClick={() => setOpen(!open)}
       >
         <motion.div

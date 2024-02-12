@@ -4,6 +4,7 @@ import {
   Cell,
   LabelList,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
@@ -22,16 +23,16 @@ export const mappingNames = {
   "General Zuazua": "Zuazua",
   "Salinas Victoria": "Salinas",
   "Cadereyta Jiménez": "Cadereyta",
-  "Monterrey": "Monterrey",
-  "Juárez": "Juarez",
-  "Apodaca": "Apodaca",
-  "García": "Garcia",
+  Monterrey: "Monterrey",
+  Juárez: "Juarez",
+  Apodaca: "Apodaca",
+  García: "Garcia",
   "Santa Catarina": "Santa Catarina",
-  "Guadalupe": "Guadalupe",
-  "Pesquería": "Pesqueria",
-  "Santiago": "Santiago",
+  Guadalupe: "Guadalupe",
+  Pesquería: "Pesqueria",
+  Santiago: "Santiago",
   "El Carmen": "El Carmen",
-  "Hidalgo": "Hidalgo",
+  Hidalgo: "Hidalgo",
 };
 
 export const CustomBarLabel = memo((props) => {
@@ -68,7 +69,6 @@ export const CustomBarLabel = memo((props) => {
     </text>
   );
 });
-const excludedMunicipalities = ["Abasolo", "Hidalgo", "El Carmen"];
 
 export const Chart = ({
   data,
@@ -137,6 +137,16 @@ export const Chart = ({
     <div style={isMobile ? containerMobile : container}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart layout="vertical" data={filteredData} barCategoryGap={0}>
+          <Tooltip
+            formatter={formatter}
+            labelStyle={{ fontSize: isMobile ? "10px" : "0.9dvw" }}
+            itemStyle={{ fontSize: isMobile ? "10px" : "0.9dvw", padding: "0px" }}
+            contentStyle={{
+              borderColor: colorValue,
+              borderRadius: "6px",
+              padding: "5px 10px",
+            }}
+          />
           <XAxis
             tickFormatter={formatter}
             type="number"
@@ -177,8 +187,7 @@ export const Chart = ({
         </BarChart>
       </ResponsiveContainer>
       <Heading
-        size="xs"
-        color="green.700"
+        color="gray.600"
         style={{
           textAlign: "center",
           fontSize: isMobile ? "0.9rem" : "min(1dvw, 1.4dvh)",

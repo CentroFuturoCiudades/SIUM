@@ -130,6 +130,20 @@ export const DelincuenciaControls = () => {
       <Legend
         title={legendMapping[activeButton].title}
         legendItems={legendItems}
+        description={
+          <>
+            <b>
+              Reportes y datos anonimizados del Secretario Ejecutivo de
+              Seguridad Pública
+            </b>
+            <p>
+              Los datos se muestran para 4 tipos de delitos violencia familiar,
+              robo a transeúnte, negocio y casa habitación. Se reporta la
+              incidencia delictiva acumulada de 2017 al 2020 del número de
+              delitos por cada diez mil personas.
+            </p>
+          </>
+        }
         color={color}
       />
       {hoverInfo && hoverInfo.object && (

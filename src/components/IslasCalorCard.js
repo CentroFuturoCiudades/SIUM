@@ -16,7 +16,7 @@ import {
   useFetch,
 } from "../utils/constants";
 import { CustomBarLabel, mappingNames } from "./Chart";
-import { CustomLegend } from "./CustomLegend";
+import { CustomLegend, LegendItem } from "./CustomLegend";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import { GeoJsonLayer, HeatmapLayer, IconLayer } from "deck.gl";
 import Loading from "./Loading";
@@ -26,11 +26,13 @@ import {
   Cell,
   LabelList,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
 import { Heading, useMediaQuery, useToken } from "@chakra-ui/react";
 import _ from "lodash";
+import * as d3 from "d3";
 
 const ISLAS_CALOR_COLORS = [
   "rgb(255, 0, 0)",
@@ -115,16 +117,41 @@ export const IslasCalorControls = () => {
         <GeoJsonLayer
           id="primary_routes"
           data={VIAS_URL}
-          getLineColor={[200, 80, 80, 255]}
+          getLineColor={[0, 0, 0, 255]}
           getLineWidth={50}
         />
       </CustomMap>
+      [legendItems &&{" "}
       <CustomLegend
         title={"Islas de calor"}
-        legendItems={legendItems}
         color={color}
-        legendLabels={ISLAS_CALOR_LEGEND_DATA}
-      />
+        description={
+          <>
+            <b>Urban reporting based on satellite analysis (URSA)</b>
+            <p>
+              Las islas de calor se calculan a partir de la banda que determinan
+              los satelites LANDSAT, se toma el promedio de la temperatura pixel
+              por un año y se comparan la zona rural con cobertura vegetal
+              circundaria. A partir de la temperatura de la desviacion estandar
+              de la temperatura rural. Las zonas más calientes son aquellas que
+              están más de 3 desviaciones estándar arriba de la temperatura
+              rural.
+            </p>
+          </>
+        }
+      >
+        <LegendItem color="black" label="Vialidades Principales" />
+        <LegendItem color="gray" label="Zonas Industriales" />
+        <LegendItem color="lightgreen" label="Parques" />
+        <div style={{ height: "10px" }} />
+        {legendItems.map((item, index) => (
+          <LegendItem
+            color={item.color}
+            label={ISLAS_CALOR_LEGEND_DATA[item.item - 1]}
+          />
+        ))}
+      </CustomLegend>
+      ]
     </>
   );
 };
@@ -168,7 +195,7 @@ export function IslasCalorCard() {
         domain={[0, 100]}
         column="caliente2"
         columnKey="NOM_MUN"
-        formatter={(d) => `${d.toLocaleString("en-US")}`}
+        formatter={(d) => d3.format(".2f")(d) + "%"}
       />
     </>
   );
@@ -199,7 +226,6 @@ export const IslasCalorChart = ({
         .sort((a, b) => b[column] - a[column]),
     [data, columnKey, column, reducer, filtering]
   );
-  console.log(filteredData);
   const [activeMunicipality, setActiveMunicipality] = useState(null);
   const handleMouseMove = useCallback(
     (activeLabel) => {
@@ -230,7 +256,6 @@ export const IslasCalorChart = ({
     position: "absolute",
     width: "100%",
   };
-  console.log(filteredData);
   const categories = [
     "muy_caliente",
     "caliente",
@@ -240,7 +265,6 @@ export const IslasCalorChart = ({
     "frio",
     "muy_frio",
   ];
-  console.log(activeMunicipality);
   return (
     <div style={isMobile ? containerMobile : container}>
       <ResponsiveContainer width="100%" height="100%">
@@ -254,8 +278,21 @@ export const IslasCalorChart = ({
             tickCount={8}
           />
           <YAxis type="category" dataKey={columnKey} hide />
+          <Tooltip
+            formatter={formatter}
+            labelStyle={{ fontSize: isMobile ? "10px" : "0.9dvw" }}
+            itemStyle={{
+              fontSize: isMobile ? "10px" : "0.9dvw",
+              padding: "0px",
+            }}
+            contentStyle={{
+              borderRadius: "10px",
+              padding: "5px 10px",
+            }}
+          />
           {categories.map((key, index) => (
             <Bar
+              key={key}
               isAnimationActive={false}
               stackId="bars"
               fill={ISLAS_CALOR_COLORS[index]}
@@ -286,8 +323,7 @@ export const IslasCalorChart = ({
         </BarChart>
       </ResponsiveContainer>
       <Heading
-        size="xs"
-        color="green.700"
+        color="gray.600"
         style={{
           textAlign: "center",
           fontSize: isMobile ? "0.9rem" : "min(1dvw, 1.4dvh)",

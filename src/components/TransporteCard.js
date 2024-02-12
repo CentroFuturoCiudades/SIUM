@@ -19,14 +19,18 @@ import { GeoJsonLayer } from "deck.gl";
 import ButtonControls from "./ButtonControls.js";
 import {
   Box,
+  Heading,
   Table,
   TableContainer,
   Tbody,
   Td,
   Thead,
+  Tooltip,
   Tr,
   useToken,
 } from "@chakra-ui/react";
+import { InfoIcon } from "@chakra-ui/icons";
+import { CustomLegend, LegendItem } from "./CustomLegend.js";
 
 const marks = [
   { value: 300, label: "5:00" },
@@ -91,7 +95,6 @@ export const TransporteControls = () => {
   const [activeButton, setActiveButton] = useState("TPUB");
   const { time, isPlaying, handleSliderChange, togglePlay } =
     TimeComponentClean(300, 1320, 0.005, 0.1, true, 1020);
-  console.log(data);
 
   useEffect(() => {
     setSharedProps({ activeButton });
@@ -151,38 +154,21 @@ export const TransporteControls = () => {
           currentTime={time}
         />
       </CustomMap>
-      <Box
-        borderRadius="md"
-        borderColor={`${color}.200`}
-        borderWidth="0.08rem"
-        className="legend-container"
-        style={{ bottom: "60px" }}
+      <CustomLegend
+        color={color}
+        title={`Traslados en ${activeButton} por motivo de viaje`}
+        description={
+          <>
+            <b>
+              Encuesta origen destino del Programa Integral de Movilidad Urbana
+              Sustentable (PIMUS) 2019
+            </b>
+          </>
+        }
       >
-        <TableContainer>
-          <Table size="xs" variant="unstyled">
-            <Tbody>
-              <Tr fontSize="0.7dvw">
-                <Td>
-                  <div
-                    className="legend-color"
-                    style={{ backgroundColor: endColor }}
-                  />
-                </Td>
-                <Td>Trabajo y Regreso a Casa</Td>
-              </Tr>
-              <Tr fontSize="0.7dvw">
-                <Td>
-                  <div
-                    className="legend-color"
-                    style={{ backgroundColor: startColor }}
-                  />
-                </Td>
-                <Td>Otros motivos</Td>
-              </Tr>
-            </Tbody>
-          </Table>
-        </TableContainer>
-      </Box>
+        <LegendItem color={endColor} label="Trabajo y Regreso a Casa" />
+        <LegendItem color={startColor} label="Otros motivos" />
+      </CustomLegend>
       <ButtonControls
         color={color}
         activeButton={activeButton}

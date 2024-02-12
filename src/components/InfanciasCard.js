@@ -20,7 +20,9 @@ import _ from "lodash";
 
 import Loading from "./Loading";
 import { Chart } from "./Chart";
-import { useToken } from "@chakra-ui/react";
+import { useMediaQuery, useToken } from "@chakra-ui/react";
+import { CustomLegend, LegendItem } from "./CustomLegend";
+import { Legend } from "recharts";
 
 //["comercio al por menor", "preescolar", "salud", "guarderia"],
 const SERVICIOS_COLORS = [
@@ -29,15 +31,11 @@ const SERVICIOS_COLORS = [
   "#7F00FF", //amarillo para guarderia
   "red", //rojo para comercio
 ];
-const sectorColors = {
-  guarderia: SERVICIOS_COLORS[0],
-  preescolar: SERVICIOS_COLORS[1],
-  salud: SERVICIOS_COLORS[2],
-  "comercio al por menor": SERVICIOS_COLORS[3],
-};
+const INFANCIAS_QUANTILES = [0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.2, 0.3, 0.4];
 
 export const InfanciasControls = () => {
   const { color } = useCardContext();
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
   const [startColor] = useToken("colors", [`${color}.400`]);
   const endColor = "#1A57FF";
   const INFANCIA_COLORS = generateGradientColors(startColor, endColor, 8);
@@ -117,6 +115,13 @@ export const InfanciasControls = () => {
       setCirclePayload(null);
     }
   };
+  if (isMobile)
+    return (
+      <div>
+        Esta sección no se encuentra disponible en móvil por el momento. <br />
+        Para ver esta sección, por favor visita la página en una computadora.
+      </div>
+    );
 
   if (!dataPob || !dataParques || !dataServ) return <Loading color={color} />;
 
@@ -173,6 +178,37 @@ export const InfanciasControls = () => {
           extensions={[new BrushingExtension()]}
         />
       </CustomMap>
+      <CustomLegend
+        color={color}
+        title={"Porcentaje de población entre 0 a 5 años"}
+        description={
+          <>
+            <b>Censo INEGI 2020</b>
+            <p>La fuente de información son menores de 5 años.</p>
+            <b>Open Street Maps</b>
+            <p>
+              Equipamiento de salud y educación DENUE 2020. Información de
+              parques y espacio público.
+            </p>
+          </>
+        }
+      >
+        {INFANCIA_COLORS.map((color, index) => (
+          <LegendItem
+            key={index}
+            color={color}
+            label={`${(INFANCIAS_QUANTILES[index] * 100).toFixed(0)}% - ${(
+              INFANCIAS_QUANTILES[index + 1] * 100
+            ).toFixed(0)}%`}
+          />
+        ))}
+        <div style={{ height: "10px" }} />
+        <LegendItem color={"rgb(0, 255, 0)"} label="Parques" />
+        <LegendItem color={"red"} label="Guardería" />
+        <LegendItem color={"orange"} label="Preescolar" />
+        <LegendItem color={"#7F00FF"} label="Equipamiento de Salud" />
+        <LegendItem color={"brown"} label="Comercio al por menor" />
+      </CustomLegend>
       {circlePayload && (
         <LegendCustom
           pob05={circlePayload["pob_ratio"] || 0}

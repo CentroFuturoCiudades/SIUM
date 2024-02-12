@@ -40,7 +40,7 @@ export const Sidebar = ({ section, setSection }) => {
               size="lg"
               variant="solid"
               colorScheme={sectionsInfo[k].color}
-              bgColor={`${sectionsInfo[k].color}.300`}
+              bgColor={`${sectionsInfo[k].color}.400`}
               isActive={section === k}
               onClick={() => goToSection(k)}
             >

@@ -54,12 +54,13 @@ export const LegendCustom = ({
       borderColor={`${color}.200`}
       borderWidth="0.08rem"
       className="legend-container"
+      style={{ right: '20px', left: 'auto' }}
     >
       <TableContainer>
         <Table size="xs" variant="unstyled">
           <Tbody>
             {all.map((item, index) => (
-              <Tr fontSize="0.7dvw">
+              <Tr key={`legend-item-${index}`} fontSize="0.7dvw">
                 <Td>
                   <div
                     className="legend-color"
@@ -70,7 +71,7 @@ export const LegendCustom = ({
                   <span className="legend-label2">{item.label}</span>
                 </Td>
                 <Td>
-                  {item.formatting(item.value)}
+                  <b>{item.formatting(item.value)}</b>
                 </Td>
               </Tr>
             ))}

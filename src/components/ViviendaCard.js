@@ -80,6 +80,13 @@ export const ViviendaControls = () => {
         title={"Precio de Venta 2000-2020"}
         legendItems={legendItems}
         color={color}
+        description={
+          <>
+            <b>Créditos de INFONAVIT activos en 2020</b>
+            <p>Las viviendas adquiridas a través de un crédito de INFONAVIT.</p>
+            <p>Datos actualizados por inflación presentados en precios de 2020.</p>
+          </>
+        }
         formatter={d3.format("$,.0f")}
       />
       <SliderHTML

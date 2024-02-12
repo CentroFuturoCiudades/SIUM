@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Box, Heading, useMediaQuery } from "@chakra-ui/react";
 
 import { BarMobile, Sidebar } from "../components/Sidebar";
@@ -128,9 +134,19 @@ const Problematica = () => {
       }
     }
   }, []);
+  function updateSection(section) {
+    if (!isMobile) {
+      const el = document.getElementById(section);
+      if (el) {
+        el.scrollIntoView();
+      }
+    }
+    window.history.replaceState(null, null, `#${section}`);
+    setCurrentSection(section);
+  }
   return (
     <div style={{ display: isMobile ? "inline-block" : "flex" }}>
-      <Bar section={currentSection} setSection={setCurrentSection} />
+      <Bar section={currentSection} setSection={updateSection} />
       <CardContext.Provider
         value={{
           currentSection,
