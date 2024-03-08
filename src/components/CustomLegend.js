@@ -112,10 +112,32 @@ export const CustomLegend = ({ title, color, description, children }) => {
 
 export const LegendItem = ({ color, label }) => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
+  
   return (
     <Tr fontSize="0.7dvw">
       <Td>
-        <div className="legend-color" style={{ backgroundColor: color }} />
+        {label === "Preescolar" || label === "Guardería" || label === "Equipamiento de Salud" ? (
+            <div
+              className="legend-symbol"
+              style={{
+                color: color,
+                fontSize: "2.3em",
+                lineHeight: "0.8em",
+                marginRight: "5px",
+                fontWeight: "bold"
+              }}
+            >
+              X
+            </div>
+          ) : (
+            <div
+              className="legend-color"
+              style={{
+                backgroundColor: color,
+                borderRadius: label === "Comercio al por menor" ? "50%" : "0%",
+              }}
+            />
+          )}
       </Td>
       <Td>
         <div className="legend-numbers">

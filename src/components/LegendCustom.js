@@ -20,31 +20,31 @@ export const LegendCustom = ({
     {
       value: area,
       label: "Parques",
-      color: "rgb(0, 255, 0)",
+      color: "#91baa5",
       formatting: (d) => d3.format(".2f")(d) + " ha",
     },
     {
       value: guarderias,
       label: "Guarderías",
-      color: "red",
+      color: "#8b0b0b",
       formatting: d3.format(".0f"),
     },
     {
       value: preescolares,
       label: "Preescolar",
-      color: "orange",
+      color: "#1f562f",
       formatting: d3.format(".0f"),
     },
     {
       value: salud,
       label: "Equipamientos de Salud",
-      color: "#7F00FF",
+      color: "#e95481",
       formatting: d3.format(".0f"),
     },
     {
       value: comercios,
       label: "Comercios al por menor",
-      color: "brown",
+      color: "#ff7130",
       formatting: d3.format(".0f"),
     },
   ];
@@ -62,10 +62,28 @@ export const LegendCustom = ({
             {all.map((item, index) => (
               <Tr key={`legend-item-${index}`} fontSize="0.7dvw">
                 <Td>
-                  <div
-                    className="legend-color"
-                    style={{ backgroundColor: item.color }}
-                  />
+                  {item.label === "Preescolar" || item.label === "Guarderías" || item.label === "Equipamientos de Salud" ? (
+                    <div
+                      className="legend-symbol"
+                      style={{
+                        color: item.color,
+                        fontSize: "2.3em",
+                        lineHeight: "0.8em",
+                        marginRight: "5px",
+                        fontWeight: "bold"
+                      }}
+                    >
+                      X
+                    </div>
+                  ) : (
+                    <div
+                      className="legend-color"
+                      style={{
+                        backgroundColor: item.color,
+                        borderRadius: item.label === "Comercios al por menor" ? "50%" : "0%",
+                      }}
+                    />
+                  )}
                 </Td>
                 <Td className="legend-label2">
                   <span className="legend-label2">{item.label}</span>
