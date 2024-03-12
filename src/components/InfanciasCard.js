@@ -183,9 +183,9 @@ export const InfanciasControls = () => {
           id="servicios_tachas"
           data={dataServ.features.filter(d => d.properties.sector === "guarderia" || d.properties.sector === "preescolar" || d.properties.sector === "salud")}
           //iconAtlas="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png"
-          iconAtlas="https://res.cloudinary.com/dgbvampjx/image/upload/v1709854466/icon-altas2_xmpljs.png"
+          iconAtlas="https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/images/icon-atlas2.png"
           //iconMapping="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.json"
-          iconMapping="https://res.cloudinary.com/dgbvampjx/raw/upload/v1709870954/dl40tprspjgltjxn21np.json"
+          iconMapping="https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/images/icon-atlas2.json"
           //getIcon={d => 'marker'}
           getIcon={d => getIconByCodigoAct(d.properties.sector)}
           getPosition={d => d.geometry.coordinates}

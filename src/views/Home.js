@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { IconButton, Text, Tooltip, useMediaQuery } from "@chakra-ui/react";
+import { IconButton, Text, Tooltip, useMediaQuery, Flex, Image, Box, flexbox } from "@chakra-ui/react";
 import Cards from "./Cards";
 import { BitmapLayer, DeckGL, GeoJsonLayer, TileLayer } from "deck.gl";
 import useWindowDimensions, {
@@ -9,6 +9,7 @@ import useWindowDimensions, {
 } from "../utils/constants";
 import { Link } from "react-router-dom";
 import { MdDownload, MdPeople } from "react-icons/md";
+//import logoFemsa from 'http://localhost:3000/SIUM/tec.png';
 
 const bounding = [-120, 15, -80, 40];
 const boundingBox = {
@@ -246,6 +247,28 @@ const Home = () => {
 
   return (
     <>
+    
+    <Flex 
+      align="center" 
+      p={2}
+      position="absolute"
+      bg="transparent"
+    >
+      {["SIUM.png", "tec.png", "femsa.png"].map((imagen, index) => (
+        <img
+          key={index}
+          className="headerImage"
+          src={`/SIUM/${imagen}`}
+          alt="SIUM"
+          style={{
+            padding: "5px",
+            height: "auto",
+            width: "200px",
+            objectFit: "contain",
+          }}
+        />
+      ))}
+    </Flex>
       <div>
         <Map year={!isInitial ? year : undefined} />
         <div style={{ display: "grid" }}>
