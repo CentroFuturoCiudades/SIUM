@@ -6,6 +6,7 @@ import {
   TRANSPORTE_MASIVO_URL,
   TRANSPORTE_URL,
   VIAS_URL,
+  VIAS_CICLISTAS_URL,
   sectionsInfo,
   useFetch,
 } from "../utils/constants.js";
@@ -127,6 +128,16 @@ export const TransporteControls = () => {
           }}
         />
         <GeoJsonLayer
+          id="ciclist-routes"
+          data={VIAS_CICLISTAS_URL}
+          stroked={true}
+          filled={true}
+          lineWidthScale={10}
+          lineWidthMinPixels={2}
+          getLineWidth={10}
+          getLineColor={[200, 0, 0]}
+        />
+        <GeoJsonLayer
           id="primary_routes"
           data={VIAS_URL}
           getLineColor={[180, 180, 180, 255]}
@@ -165,6 +176,7 @@ export const TransporteControls = () => {
             </b>
           </>
         }
+        note={"*Transporte activo considera: movilidad ciclista y peatonal"}
       >
         <LegendItem color={endColor} label="Trabajo y Regreso a Casa" />
         <LegendItem color={startColor} label="Otros motivos" />

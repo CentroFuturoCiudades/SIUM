@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { IconButton, Text, Tooltip, useMediaQuery } from "@chakra-ui/react";
+import { CardBody, IconButton, Text, Tooltip, useMediaQuery } from "@chakra-ui/react";
 import Cards from "./Cards";
 import { BitmapLayer, DeckGL, GeoJsonLayer, TileLayer } from "deck.gl";
 import useWindowDimensions, {
   MANCHA_URBANA_URL,
   SATELLITE_IMAGES_URL,
+  COSTOS_MUNICIPALITY_URL,
   useFetch,
 } from "../utils/constants";
 import { Link } from "react-router-dom";
@@ -46,6 +47,34 @@ const Map = ({ year }) => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
   const { width } = useWindowDimensions();
   const { data } = useFetch(MANCHA_URBANA_URL);
+  const { data: dataSuperficieConstruida } = useFetch(COSTOS_MUNICIPALITY_URL);
+  const [superficieConstFiltrada, setSuperficieConstFiltrada] = useState([]);
+
+  useEffect(() => {
+    const filtrarYSumarSuperficie = (datos) => {
+      const superficieFiltrada = {};
+      
+      // Si hay datos
+      if (datos) {
+        datos.forEach((dato) => {
+          const { fecha, superficie_construida } = dato;
+          
+          if (!superficieFiltrada[fecha]) {
+            superficieFiltrada[fecha] = superficie_construida;
+          } else {
+            superficieFiltrada[fecha] += superficie_construida;
+          }
+        });
+      }
+      
+      return superficieFiltrada;
+    };
+  
+    const superficieFiltrada = filtrarYSumarSuperficie(dataSuperficieConstruida);
+    setSuperficieConstFiltrada(superficieFiltrada);
+  
+  }, [dataSuperficieConstruida]);
+  
   const tileLayerURL =
     "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
   const multiplier =
@@ -53,6 +82,8 @@ const Map = ({ year }) => {
     ((maxMultiplier - minMultiplier) / (maxWidth - minWidth)) *
       (width - minWidth);
   const image = SATELLITE_IMAGES_URL(year || 1990);
+
+
 
   const initialViewState = {
     latitude: 25.68,
@@ -76,13 +107,21 @@ const Map = ({ year }) => {
     zIndex: -1,
     boxShadow: "5px 10px 10px 0px rgba(0,0,0,0.3)",
   };
+
   const yearStyle = {
     display: "flex",
     padding: "1dvw",
     justifyContent: "end",
-    alignItems: "center",
     height: "100%",
     textAlign: "end",
+    flexDirection: "column"
+  };
+  const noteStyle = {
+    height: "100%", 
+    display: "flex", 
+    flexDirection: "column", 
+    justifyContent: "end", 
+    margin: "1dvw",
   };
 
   return (
@@ -143,28 +182,52 @@ const Map = ({ year }) => {
         }
         stroked={true}
       />
-      <div style={yearStyle}>
-        <div>
-          {year ? (
+
+        <div style={yearStyle}>            
+          <div style={{height: "100%"}}>
+            {/* Div vacío */}
+          </div>
+
+          <div style={{height: "100%"}}>
+            {year ? (
+            <>
+            <Text style={{color: "white"}}><b>{`${(superficieConstFiltrada["1995"]/1000000).toFixed(2)} km`}</b><sup>2</sup></Text>
+            <br/>
             <Text
               style={{ color: "white", lineHeight: 0.5 }}
               fontFamily="Poppins"
               fontSize="3.5dvw"
-            >
+              >
               <b>1990</b>
             </Text>
-          ) : null}
-          {year > 1990 ? (
-            <Text
-              fontFamily="Poppins"
-              fontSize="3.5dvw"
-              style={{ color: "rgb(26, 87, 255)" }}
-            >
-              <b>{year}</b>
-            </Text>
+            </>
+            ) : null}
+            {year > 1990 ? (
+              <>
+                <Text
+                  fontFamily="Poppins"
+                  fontSize="3.5dvw"
+                  style={{ color: "rgb(26, 87, 255)" }}
+                  >
+                  <b>{year}</b>
+                </Text>
+                <Text style={{color: "rgb(26, 87, 255)"}}><b>
+                  {`${(superficieConstFiltrada[year]/1000000).toFixed(2)} km`}
+                  <sup>2</sup>
+                </b></Text>
+              </>
+            ) : null}
+          </div>
+
+          {year ? (
+          <>
+            <div style={noteStyle}>
+              <Text style={{color: "white", alignItems: "end"}}>*Superficie construida con techo</Text>
+            </div>
+          </>
           ) : null}
         </div>
-      </div>
+
     </DeckGL>
   );
 };

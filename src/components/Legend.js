@@ -49,7 +49,6 @@ export const LegendMobile = ({ title, legendItems, formatting }) => {
       .attr("class", "legendLinear")
       .attr("transform", "translate(10,10)")
       .call(legendLinear);
-
     legendGroup.selectAll(".label").attr("transform", (d, i) => {
       let yPosition = i + height;
       return `translate(10, ${yPosition})`;
