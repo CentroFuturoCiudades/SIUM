@@ -508,14 +508,6 @@ export const useFetch = (url, initialData = undefined) => {
 };
 
 export const sectionsInfo = {
-  vivienda: {
-    title: "¿Por qué nos expandimos?",
-    answer: "La vivienda es más asequible en las periferias",
-    color: "brown",
-    icon: MdHome,
-    component: ViviendaCard,
-    controls: ViviendaControls,
-  },
   "expansion-urbana": {
     title: "¿Hacia dónde nos expandimos?",
     answer: "Hacia las Periferias, lejos unos de otros",
@@ -523,6 +515,14 @@ export const sectionsInfo = {
     icon: FaPeopleArrows,
     component: ExpansionUrbanaCard,
     controls: ExpansionUrbanaControls,
+  },
+  vivienda: {
+    title: "¿Por qué nos expandimos?",
+    answer: "La vivienda es más asequible en las periferias",
+    color: "brown",
+    icon: MdHome,
+    component: ViviendaCard,
+    controls: ViviendaControls,
   },
   empleo: {
     title: "¿En dónde trabajamos?",
