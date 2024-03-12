@@ -11,7 +11,7 @@ export const Header = ({ section, color, title }) => (
       style={{
         display: "flex",
         justifyContent: "space-around",
-        height: "100%",
+        height: "8dvh",
         width: "100%",
       }}
     >
@@ -58,9 +58,9 @@ export const Header = ({ section, color, title }) => (
     <Box className="titleContainer" bgColor={`${color}.500`}>
       <Heading
         className="title"
-        color={`${color}.600`}
+        color={`${color}.500`}
         borderColor={`${color}.500`}
-        style={{ fontSize: "1.2dvw" }}
+        style={{ fontSize: "min(2.4dvh, 1.2dvw)" }}
       >
         <motion.div
           key={section}

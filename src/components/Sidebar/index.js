@@ -37,14 +37,20 @@ export const Sidebar = ({ section, setSection }) => {
             <Button
               key={k}
               className="sidebarItem"
-              size="lg"
               variant="solid"
               colorScheme={sectionsInfo[k].color}
               bgColor={`${sectionsInfo[k].color}.400`}
               isActive={section === k}
               onClick={() => goToSection(k)}
             >
-              <Icon as={sectionsInfo[k].icon} boxSize={7} color="white" />
+              <Icon
+                as={sectionsInfo[k].icon}
+                color="white"
+                style={{
+                  height: "min(4dvh, 1.5dvw)",
+                  width: "min(4dvh, 1.5dvw)",
+                }}
+              />
             </Button>
           </Tooltip>
         ))}
@@ -61,12 +67,19 @@ export const Sidebar = ({ section, setSection }) => {
       >
         <Link to="/equipo">
           <IconButton
-            size="sm"
             isRound={true}
-            icon={<MdPeople />}
+            icon={
+              <MdPeople
+                style={{ width: "min(2dvh, 1dvw)", height: "min(2dvh, 1dvw)" }}
+              />
+            }
             variant="solid"
-            style={{ marginBottom: "5px" }}
             colorScheme="blackAlpha"
+            style={{
+              minWidth: "min(6dvh, 2dvw)",
+              height: "min(6dvh, 2dvw)",
+              margin: "0.2rem",
+            }}
           />
         </Link>
       </Tooltip>
@@ -81,12 +94,19 @@ export const Sidebar = ({ section, setSection }) => {
       >
         <Link to="/descargas">
           <IconButton
-            size="sm"
             isRound={true}
-            icon={<MdDownload />}
+            icon={
+              <MdDownload
+                style={{ width: "min(2dvh, 1dvw)", height: "min(2dvh, 1dvw)" }}
+              />
+            }
             variant="solid"
-            style={{ marginBottom: "5px" }}
             colorScheme="blackAlpha"
+            style={{
+              minWidth: "min(6dvh, 2dvw)",
+              height: "min(6dvh, 2dvw)",
+              margin: "0.2rem",
+            }}
           />
         </Link>
       </Tooltip>

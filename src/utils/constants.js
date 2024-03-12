@@ -135,7 +135,7 @@ export const filterDataAll = (
 export const DATA_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos";
 export const MANCHA_URBANA_URL = `${DATA_URL}/mancha_urbana.geojson`;
-export const SATELLITE_IMAGES_URL = (x) => `${DATA_URL}/expansion_${x}.jpg`;
+export const SATELLITE_IMAGES_URL = (x) => `SIUM/images/expansion_${x}.jpg`;
 export const MUNICIPIOS_URL = `${DATA_URL}/div-municipal.geojson`;
 export const EXPANSION_URL = `${DATA_URL}/agebs-pob.geojson`;
 export const EXPANSION_CHART_URL = `${DATA_URL}/expansion_municipality.json`;

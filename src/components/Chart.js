@@ -127,7 +127,7 @@ export const Chart = ({
     width: "100%",
   };
   const container = {
-    height: "min(15dvw, 30dvh)",
+    height: "min(50dvw, 25dvh)",
     bottom: "-10px",
     position: "absolute",
     width: "100%",
@@ -191,7 +191,7 @@ export const Chart = ({
         style={{
           textAlign: "center",
           fontSize: isMobile ? "0.9rem" : "min(1dvw, 1.4dvh)",
-          marginTop: "-15px",
+          transform: "translateY(min(-0.5dvw, -0.7dvh))",
         }}
       >
         {title}

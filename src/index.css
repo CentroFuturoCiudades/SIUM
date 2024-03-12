@@ -14,9 +14,9 @@ body {
 }
 
 .cardsContainer p {
-  margin-top: 0.5rem;
-  margin-bottom: 0.3rem;
-  font-size: 0.9dvw;
+  margin-top: 0.5dvw;
+  margin-bottom: 0.5dvw;
+  font-size: min(1.6dvh, 0.9dvw);
 }
 
 .cardsContainer {
@@ -25,14 +25,14 @@ body {
 
 .mapContainer {
   width: 65%;
-  border-width: 0 0 0.15rem 0.15rem;
-  border-radius: 0 0 0 2rem;
-  height: calc(100vh - 0.5rem);
+  border-width: 0 0 0.25dvh 0.25dvh;
+  border-radius: 0 0 0 4dvh;
+  height: calc(100vh - 1dvh);
   overflow: hidden;
   position: sticky;
   right: 0em;
   top: 0rem;
-  bottom: 0.5rem;
+  bottom: 1dvh;
 }
 
 .mapContainerMobile {

@@ -1,21 +1,18 @@
 .cardSection {
   display: flex;
-  top: 0px;
   left: 0px;
-  margin: 0px;
   scroll-snap-align: center;
   scroll-snap-stop: always;
   width: calc(100% - 0.4rem);
+  padding-top: 8dvh;
+  padding-bottom: 1dvh;
+  height: 100dvh;
 }
 
 .card {
-  padding: 1rem;
-  border: 0.14rem solid;
-  margin-top: calc(1.2dvw + 2.6rem);
-  padding-top: 4rem;
-  margin-bottom: 0.4rem;
-  border-radius: 2rem;
-  height: calc(100dvh - 4.4rem);
+  border: 0.25dvh solid;
+  padding: 7dvh 1dvw 2dvh 1dvw;
+  border-radius: 4dvh;
   width: 100%;
   overflow: hidden;
   background-color: rgba(255, 255, 255, 0.9);

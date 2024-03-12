@@ -1,5 +1,5 @@
 .sidebar {
-  width: 3.5rem;
+  width: 3.5dvw;
   height: 100vh;
   color: white;
   overflow-y: auto;
@@ -42,4 +42,5 @@
 .sidebarItem {
   border-radius: 0px !important;
   width: 100%;
+  height: min(8dvh, 3dvw) !important;
 }
