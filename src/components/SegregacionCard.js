@@ -100,16 +100,12 @@ export const SegregacionControls = () => {
         />
 
         {showAsentamientos && (
-          <IconLayer
+          <GeoJsonLayer
             id="asentamientos_layer"
             data={data_asentamientos.features}
-            iconAtlas="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png"
-            iconMapping="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.json"
-            getIcon={(d) => "marker"}
-            getPosition={(d) => d.geometry.coordinates}
-            sizeUnits={"meters"}
-            sizeScale={1000}
-            sizeMinPixels={6}
+            getFillColor={[255, 0, 0, 255]}
+            autoHighlight={true}
+            getPosition={(d) => d.position}
           />
         )}
       </CustomMap>
@@ -157,13 +153,13 @@ export const SegregacionControls = () => {
       <Checkbox
         onChange={handleCheckboxChange}
         isChecked={showAsentamientos}
-        colorScheme={color}
-        borderColor={`${color}.500`}
+        colorScheme="red"
+        borderColor="red.500"
         className="checkbox"
         width="2dvw"
         style={{ bottom: isMobile ? "60px" : "70px" }}
       >
-        <Heading fontSize={isMobile ? "12px" : "1dvw"} color="gray.700">
+        <Heading fontSize={isMobile ? "12px" : "1dvw"} color="red.700">
           Asentamientos autoproducidos
         </Heading>
       </Checkbox>
