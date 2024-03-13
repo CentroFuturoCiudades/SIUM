@@ -26,7 +26,7 @@ const ButtonControls = ({ activeButton, setActiveButton, mapping, color }) => {
         margin="auto"
       >
         {mapping.map((button) => (
-          <option value={button.id} key={`button-${button.id}`}>
+          <option value={button.id} key={`button-${button.id}`} style={{color: "gray"}}>
             {button.name}
           </option>
         ))}

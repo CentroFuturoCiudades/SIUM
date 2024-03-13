@@ -57,7 +57,7 @@ export const CustomLegendMobile = ({ title, color, description, children }) => {
   );
 };
 
-export const CustomLegend = ({ title, color, description, children }) => {
+export const CustomLegend = ({ title, color, description, children, note="" }) => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
 
 
@@ -106,6 +106,9 @@ export const CustomLegend = ({ title, color, description, children }) => {
           <Tbody>{children}</Tbody>
         </Table>
       </TableContainer>
+      <b><p style={{fontSize:"0.6dvw"}}>
+        {note}
+        </p></b>
     </Box>
   );
 };
