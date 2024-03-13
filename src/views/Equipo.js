@@ -36,7 +36,7 @@ const Equipo = () => {
         
         {/* Botones */}
         <Box w="40%" style={{display: "flex", justifyContent: "space-around", alignItems: "center"}}>
-          <Link to="/equipo">
+          <Link to="/objetivo">
             <Button variant={"text"} style={{fontSize: "1.5dvw"}}>
               Objetivo
             </Button>
@@ -48,9 +48,18 @@ const Equipo = () => {
           </Link>
         </Box>
       </Box>
+      <Box width="60%" style={{ textAlign: "center", fontSize: "1dvw", paddingTop: "2dvw"}}>
+        <p style={{fontSize: "0.9dvw"}}>
+          Este proyecto ha sido fondeado generosamente por fundación FEMSA desde 2019.
+        </p>
+        <p style={{fontSize: "0.9dvw"}}>
+          El SIUM, Sistema de Indformación Urabano Metropolitano, es un proyecto del 
+          Centro para el Futuro de las Ciudades del Tecnológico de Monterrey.
+        </p>
+      </Box>
 
       {/* Equipo  */}
-      <Box bg='#FEF5E7' w='100%' h='30%' p={4} color='#04511B' style={{marginTop: "5dvw", textAlign: "center", paddingTop: "7dvw", fontSize: "2dvw"}}>
+      <Box bg='#FEF5E7' w='100%' h='30%' p={4} color='#04511B' style={{marginTop: "2dvw", textAlign: "center", paddingTop: "6dvw", fontSize: "2dvw"}}>
         <b>Equipo</b>
       </Box>
       <Box w='100%' h='30%' p={4} color='#04511B' style={{paddingTop: "2dvw", display: "flex", justifyContent: "space-around", textAlign: "center"}}>
