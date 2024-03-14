@@ -156,7 +156,10 @@ export function CustomMap({ viewState, infanciasHover, children }) {
           />
         )}
       </DeckGL>
-      <div style={{ position: "absolute", top: 10, right: 10, zIndex: 10 }}>
+
+      {/* Botones de zoom in y zoom out eliminados y sustituídos por boton de video y al hacer scroll */}
+
+      {/* <div style={{ position: "absolute", top: 10, right: 10, zIndex: 10 }}>
         <ButtonGroup isAttached size="sm" colorScheme="blackAlpha">
           <IconButton
             aria-label="Zoom In"
@@ -169,7 +172,7 @@ export function CustomMap({ viewState, infanciasHover, children }) {
             icon={<MinusIcon />}
           />
         </ButtonGroup>
-      </div>
+      </div> */}
     </>
   );
 }

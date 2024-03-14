@@ -19,6 +19,7 @@ import { Legend } from "./Legend";
 import { CustomMap, INITIAL_STATE } from "../components/CustomMap";
 import Loading from "./Loading";
 import Tooltip from "./Tooltip";
+import PopupButton from "./PopupButton";
 import { useToken } from "@chakra-ui/react";
 
 const EXPANSION_QUANTILES = [-5100, -2000, -1000, 0, 2000, 4000, 6000, 11100];
@@ -71,6 +72,13 @@ export const ExpansionUrbanaControls = () => {
           pickable={true}
           autoHighlight={true}
           getPosition={(d) => d.position}
+        />
+        <PopupButton 
+          videoId="BBJa32lCaaY" 
+          color={color} // Este es el color de la card
+          title="ROBERTO PONCE" 
+          subtitle="Tecnológico de Monterrey" 
+          text="Motivos generales de la expansión urbana de Monterrey." 
         />
       </CustomMap>
       <Legend

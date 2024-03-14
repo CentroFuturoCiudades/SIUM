@@ -18,6 +18,7 @@ import { Legend } from "./Legend";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import Loading from "./Loading";
 import Tooltip from "./Tooltip";
+import PopupButton from "./PopupButton";
 import * as d3 from "d3";
 import { useToken } from "@chakra-ui/react";
 
@@ -75,6 +76,7 @@ export const ViviendaControls = () => {
           autoHighlight={true}
           getPosition={(d) => d.position}
         />
+        <PopupButton videoId="BBJa32lCaaY" color={color} />
       </CustomMap>
       <Legend
         title={"Precio de Venta 2000-2020"}
@@ -91,7 +93,7 @@ export const ViviendaControls = () => {
       />
       <SliderHTML
         time={time}
-        min={2000}
+        min={2000} 
         max={2020}
         step={5}
         defaultValue={time}
