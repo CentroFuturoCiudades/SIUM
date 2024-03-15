@@ -204,7 +204,7 @@ const DescargaDatos = () => {
             ref={mapRef}
             width="100%"
             height="100%"
-            mapStyle="mapbox://styles/mapbox/light-v11"
+            mapStyle="mapbox://styles/lameouchi/cls55h898029301pfb1t07mtc"
             mapboxAccessToken="pk.eyJ1IjoidXJpZWxzYTk2IiwiYSI6ImNsbnV2MzBkZDBlajYya211bWk2eTNuc2MifQ.ZnhFC3SyhckuIQBLO59HxA"
           />
         </DeckGL>
