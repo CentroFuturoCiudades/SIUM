@@ -1,0 +1,26 @@
+{
+    "marker-guarderia": {
+      "x": 0,
+      "y": 0,
+      "width": 128,
+      "height": 128,
+      "anchorY": 128,
+      "mask": false
+    },
+    "marker-preescolar": {
+      "x": 128,
+      "y": 0,
+      "width": 128,
+      "height": 128,
+      "anchorY": 128,
+      "mask": false
+    },
+    "marker-salud": {
+        "x": 0,
+        "y": 128,
+        "width": 128,
+        "height": 128,
+        "anchorY": 128,
+        "mask": false
+      }
+  }

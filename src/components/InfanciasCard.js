@@ -9,6 +9,7 @@ import {
   cleanedGeoData,
   colorInterpolate,
   generateGradientColors,
+  generateQuantileColors,
   sectionsInfo,
   useFetch,
 } from "../utils/constants";
@@ -23,22 +24,18 @@ import { Chart } from "./Chart";
 import { useMediaQuery, useToken } from "@chakra-ui/react";
 import { CustomLegend, LegendItem } from "./CustomLegend";
 import { Legend } from "recharts";
+import { IconLayer } from "deck.gl";
 
-//["comercio al por menor", "preescolar", "salud", "guarderia"],
-const SERVICIOS_COLORS = [
-  "brown", //verde para preescolar
-  "orange", //azul para salud
-  "#7F00FF", //amarillo para guarderia
-  "red", //rojo para comercio
-];
-const INFANCIAS_QUANTILES = [0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.2, 0.3, 0.4];
+//const INFANCIAS_QUANTILES = [0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.2, 0.3, 0.4];
+const INFANCIAS_QUANTILES = [0, 0.1, 0.2, 0.3, 0.4];
 
 export const InfanciasControls = () => {
   const { color } = useCardContext();
   const [isMobile] = useMediaQuery("(max-width: 800px)");
-  const [startColor] = useToken("colors", [`${color}.400`]);
+  const startColor = "#d9ffff";
   const endColor = "#1A57FF";
-  const INFANCIA_COLORS = generateGradientColors(startColor, endColor, 8);
+  //const INFANCIA_COLORS = generateGradientColors(startColor, endColor, 8);
+  const INFANCIA_COLORS = generateQuantileColors(startColor, endColor, 4);
   const [viewState, setViewState] = useState(SPECIAL_INFANCIAS_STATE); //para que empiece en el punto que dijo nelida
   const { data: dataPob } = useFetch(POB05_URL);
   const { data: dataParques } = useFetch(PARQUES_URL);
@@ -53,6 +50,17 @@ export const InfanciasControls = () => {
     const deltaX = x2 - x1;
     const deltaY = y2 - y1;
     return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+  }
+
+  function getIconByCodigoAct(sector) {
+    switch (sector) {
+      case 'guarderia':
+        return 'marker-guarderia';
+      case 'preescolar':
+        return 'marker-preescolar';
+      case 'salud':
+        return 'marker-salud';
+    }
   }
 
   //se llama cada vez que se mueve el circulo
@@ -132,18 +140,19 @@ export const InfanciasControls = () => {
         infanciasHover={handleInfanciasHover}
       >
         <GeoJsonLayer
-          id="infancias2_layer"
+          id="infancias2_layer" //aqui me falta arreglar el degradado de colores correcto y quitar el delineado de bordes
           data={cleanedGeoData(dataPob.features, "ratio_pob05")}
           getFillColor={(d) =>
             colorInterpolate(
               d.properties["ratio_pob05"],
-              [0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.2, 0.3, 0.4],
+              //[0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.2, 0.3, 0.4],
+              [0, 0.1, 0.2, 0.3, 0.4],
               INFANCIA_COLORS,
               1
             )
           }
           getLineColor={[118, 124, 130]}
-          getLineWidth={5}
+          getLineWidth={0}
           brushingEnabled={true}
           brushingRadius={brushingRadius}
           extensions={[new BrushingExtension()]}
@@ -151,31 +160,42 @@ export const InfanciasControls = () => {
         <GeoJsonLayer
           id="parques_layer"
           data={cleanedGeoData(dataParques.features, "area")}
-          getFillColor={[0, 255, 0, 255]}
-          getLineColor={[118, 124, 130]}
-          getLineWidth={5}
+          getFillColor={[145, 186, 165, 255]}
+          getLineColor={[145, 186, 165]}
+          //getLineWidth={5}
           brushingEnabled={true}
           brushingRadius={brushingRadius}
           extensions={[new BrushingExtension()]}
         />
 
         <GeoJsonLayer
-          id="servicios2_layer"
-          data={cleanedGeoData(dataServ.features, "codigo_act")}
-          getFillColor={(d) => [255, 0, 0, 255]}
-          getLineColor={(d) =>
-            colorInterpolate(
-              d.properties["codigo_act"],
-              [460000, 611000, 621000, 624000],
-              SERVICIOS_COLORS,
-              1
-            )
-          }
+          id="comercios_layer"
+          //data={cleanedGeoData(dataServ.features, "codigo_act")}
+          data={dataServ.features.filter(d => d.properties.sector === "comercio al por menor")}
+          getFillColor={"#ff7130"}
+          getLineColor={[255, 113, 48]}
           getLineWidth={30}
           brushingEnabled={true}
           brushingRadius={brushingRadius}
           extensions={[new BrushingExtension()]}
         />
+        <IconLayer
+          id="servicios_tachas"
+          data={dataServ.features.filter(d => d.properties.sector === "guarderia" || d.properties.sector === "preescolar" || d.properties.sector === "salud")}
+          //iconAtlas="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png"
+          iconAtlas="https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/images/icon-atlas2.png"
+          //iconMapping="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.json"
+          iconMapping="https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/images/icon-atlas2.json"
+          //getIcon={d => 'marker'}
+          getIcon={d => getIconByCodigoAct(d.properties.sector)}
+          getPosition={d => d.geometry.coordinates}
+          sizeUnits={'meters'}
+          sizeScale={100}
+          sizeMinPixels={6}
+          brushingEnabled={true}
+          brushingRadius={brushingRadius}
+          extensions={[new BrushingExtension()]}
+        /> 
       </CustomMap>
       <CustomLegend
         color={color}
@@ -202,11 +222,11 @@ export const InfanciasControls = () => {
           />
         ))}
         <div style={{ height: "10px" }} />
-        <LegendItem color={"rgb(0, 255, 0)"} label="Parques" />
-        <LegendItem color={"red"} label="Guardería" />
-        <LegendItem color={"orange"} label="Preescolar" />
-        <LegendItem color={"#7F00FF"} label="Equipamiento de Salud" />
-        <LegendItem color={"brown"} label="Comercio al por menor" />
+        <LegendItem color={"#91baa5"} label="Parques" />
+        <LegendItem color={"#8b0b0b"} label="Guardería" />
+        <LegendItem color={"#1f562f"} label="Preescolar" />
+        <LegendItem color={"#e95481"} label="Equipamiento de Salud" />
+        <LegendItem color={"#ff7130"} label="Comercio al por menor" />
       </CustomLegend>
       {circlePayload && (
         <LegendCustom

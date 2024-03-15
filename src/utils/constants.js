@@ -401,6 +401,17 @@ export function generateGradientColors(startColor, endColor, steps) {
   return gradientColors;
 }
 
+export function generateQuantileColors(startColor, endColor, numberOfColors) {
+  let colors = [];
+  const interpolate = d3.interpolate(startColor, endColor);
+  const step = 1 / (numberOfColors - 1);
+  for (let i = 0; i < numberOfColors; i++) {
+    const color = interpolate(i * step);
+    colors.push(color);
+  }
+  return colors;
+}
+
 export function separateLegendItems(thresholds, colors) {
   // Generate legend items
   const newLegendItems = thresholds.slice(0, -1).map((threshold, index) => {
@@ -513,7 +524,7 @@ export const sectionsInfo = {
   "expansion-urbana": {
     title: "¿Hacia dónde nos expandimos?",
     answer: "Hacia las Periferias, lejos unos de otros",
-    color: "brown2",
+    color: "brown",
     icon: FaPeopleArrows,
     component: ExpansionUrbanaCard,
     controls: ExpansionUrbanaControls,
@@ -521,7 +532,7 @@ export const sectionsInfo = {
   vivienda: {
     title: "¿Por qué nos expandimos?",
     answer: "La vivienda es más asequible en las periferias",
-    color: "brown",
+    color: "brown2",
     icon: BsHouseFill,
     component: ViviendaCard,
     controls: ViviendaControls,
