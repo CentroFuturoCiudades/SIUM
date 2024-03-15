@@ -9,6 +9,7 @@ import {
   cleanedGeoData,
   colorInterpolate,
   generateGradientColors,
+  generateQuantileColors,
   sectionsInfo,
   useFetch,
 } from "../utils/constants";
@@ -31,10 +32,10 @@ const INFANCIAS_QUANTILES = [0, 0.1, 0.2, 0.3, 0.4];
 export const InfanciasControls = () => {
   const { color } = useCardContext();
   const [isMobile] = useMediaQuery("(max-width: 800px)");
-  const [startColor] = useToken("colors", [`${color}.400`]);
+  const startColor = "#d9ffff";
   const endColor = "#1A57FF";
   //const INFANCIA_COLORS = generateGradientColors(startColor, endColor, 8);
-  const INFANCIA_COLORS = generateGradientColors(startColor, endColor, 4);
+  const INFANCIA_COLORS = generateQuantileColors(startColor, endColor, 4);
   const [viewState, setViewState] = useState(SPECIAL_INFANCIAS_STATE); //para que empiece en el punto que dijo nelida
   const { data: dataPob } = useFetch(POB05_URL);
   const { data: dataParques } = useFetch(PARQUES_URL);
@@ -152,7 +153,7 @@ export const InfanciasControls = () => {
             )
           }
           getLineColor={[118, 124, 130]}
-          getLineWidth={5}
+          getLineWidth={0}
           brushingEnabled={true}
           brushingRadius={brushingRadius}
           extensions={[new BrushingExtension()]}

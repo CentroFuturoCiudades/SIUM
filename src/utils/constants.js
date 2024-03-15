@@ -397,6 +397,17 @@ export function generateGradientColors(startColor, endColor, steps) {
   return gradientColors;
 }
 
+export function generateQuantileColors(startColor, endColor, numberOfColors) {
+  let colors = [];
+  const interpolate = d3.interpolate(startColor, endColor);
+  const step = 1 / (numberOfColors - 1);
+  for (let i = 0; i < numberOfColors; i++) {
+    const color = interpolate(i * step);
+    colors.push(color);
+  }
+  return colors;
+}
+
 export function separateLegendItems(thresholds, colors) {
   // Generate legend items
   const newLegendItems = thresholds.slice(0, -1).map((threshold, index) => {
