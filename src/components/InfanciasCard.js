@@ -32,7 +32,7 @@ const INFANCIAS_QUANTILES = [0, 0.1, 0.2, 0.3, 0.4];
 export const InfanciasControls = () => {
   const { color } = useCardContext();
   const [isMobile] = useMediaQuery("(max-width: 800px)");
-  const startColor = "#d9ffff";
+  const startColor = "#cae5e5";
   const endColor = "#1A57FF";
   //const INFANCIA_COLORS = generateGradientColors(startColor, endColor, 8);
   const INFANCIA_COLORS = generateQuantileColors(startColor, endColor, 4);
