@@ -194,14 +194,13 @@ td {
 }
 
 .button-popup {
-  position: absolute;
+  position: absolute !important;
   top: 20px; 
   right: 20px; 
   border-radius: 4px;
   width: 60px;
   height: 30px;
   z-index: 10;
-  background-color: #a98274; 
   color: #FFF;
   border: none;
   cursor: pointer;

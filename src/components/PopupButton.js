@@ -1,21 +1,25 @@
 import React, { useState } from 'react';
 import '../index.css'; 
+import { useCardContext } from '../views/Problematica';
+import { Button, Box } from '@chakra-ui/react';
 
-const PopupButton = ({ videoId, color, title, subtitle, text }) => {
+const PopupButton = ({ videoId, title, subtitle, text }) => {
+  const { color } = useCardContext();
   const [showPopup, setShowPopup] = useState(false);
 
   return (
     <>
-      <button
+      <Button
+        size="sm"
         className="button-popup"
-        style={{ backgroundColor: color }}
+        colorScheme={color}
         onClick={() => setShowPopup(!showPopup)}
       >
         Video
-      </button>
+      </Button>
 
       {showPopup && (
-        <div className="popup" style={{ backgroundColor: color }}>
+        <Box className="popup" bgColor={`${color}.400`}>
           <div className="popup-header">
             <h2>{title}</h2>
             <h3>{subtitle}</h3>
@@ -29,7 +33,7 @@ const PopupButton = ({ videoId, color, title, subtitle, text }) => {
             ></iframe>
           </div>
           {/* Puedes agregar un botón de cierre si lo necesitas */}
-        </div>
+        </Box>
       )}
     </>
   );
