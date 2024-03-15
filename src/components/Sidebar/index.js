@@ -11,6 +11,7 @@ import "./index.css";
 import { sectionsInfo } from "../../utils/constants";
 import { MdDownload, MdPeople } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { VscTriangleLeft } from "react-icons/vsc";
 
 export const Sidebar = ({ section, setSection }) => {
   function goToSection(url) {
@@ -23,6 +24,23 @@ export const Sidebar = ({ section, setSection }) => {
   return (
     <Box className="sidebar" bgColor="blackAlpha.400">
       <div className="sidebarContainer">
+        <Link to="/">
+          <Button
+            className="sidebarItem"
+            variant="solid"
+            colorScheme="blackAlpha"
+            bgColor="blackAlpha.400"
+          >
+            <Icon
+              as={VscTriangleLeft}
+              color="white"
+              style={{
+                height: "min(3dvh, 1dvw)",
+                width: "min(3dvh, 1dvw)",
+              }}
+            />
+          </Button>
+        </Link>
         {Object.keys(sectionsInfo).map((k) => (
           <Tooltip
             key={k}

@@ -5,8 +5,6 @@ import { scaleQuantile } from "d3-scale";
 import { GeoJsonLayer } from "@deck.gl/layers";
 
 import {
-  MdHome,
-  MdDirectionsCar,
   MdOutlineAttachMoney,
   MdOutlineFamilyRestroom,
   MdDeviceThermostat,
@@ -15,6 +13,10 @@ import {
 import { HiMiniBuildingOffice } from "react-icons/hi2";
 import { GiInjustice, GiRobber } from "react-icons/gi";
 import { FaPeopleArrows } from "react-icons/fa";
+import { BsHouseFill } from "react-icons/bs";
+import { IoMdSubway } from "react-icons/io";
+import { VscTriangleLeft } from "react-icons/vsc";
+
 
 import {
   ExpansionUrbanaCard,
@@ -520,7 +522,7 @@ export const sectionsInfo = {
     title: "¿Por qué nos expandimos?",
     answer: "La vivienda es más asequible en las periferias",
     color: "brown",
-    icon: MdHome,
+    icon: BsHouseFill,
     component: ViviendaCard,
     controls: ViviendaControls,
   },
@@ -536,7 +538,7 @@ export const sectionsInfo = {
     title: "¿Cómo nos movemos?",
     answer: "Demasiados de nosotros en auto.",
     color: "yellow",
-    icon: MdDirectionsCar,
+    icon: IoMdSubway,
     component: TransporteCard,
     controls: TransporteControls,
   },
