@@ -58,7 +58,7 @@ export const EmpleoControls = () => {
           autoHighlight={true}
           getPosition={(d) => d.position}
         />
-        <PopupButton videoId="BBJa32lCaaY" color={color} />
+        <PopupButton videoId="2eRmyQBQ5aA" />
       </CustomMap>
       <Slider />
       <Legend

@@ -74,9 +74,8 @@ export const ExpansionUrbanaControls = () => {
           getPosition={(d) => d.position}
         />
         <PopupButton 
-          videoId="BBJa32lCaaY" 
-          color={color} // Este es el color de la card
-          title="ROBERTO PONCE" 
+          videoId="2eRmyQBQ5aA"
+          title="LUISA PEREZ" 
           subtitle="Tecnológico de Monterrey" 
           text="Motivos generales de la expansión urbana de Monterrey." 
         />
