@@ -15,6 +15,7 @@ import {
 } from "../utils/constants";
 import { Chart } from "./Chart";
 import { Legend } from "./Legend";
+import PopupButton from "./PopupButton";
 import { GeoJsonLayer } from "deck.gl";
 import Tooltip from "./Tooltip";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
@@ -108,6 +109,7 @@ export const SegregacionControls = () => {
             getPosition={(d) => d.position}
           />
         )}
+        <PopupButton videoId="BBJa32lCaaY" color={color} />
       </CustomMap>
       <ButtonControls
         color={color}

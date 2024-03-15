@@ -17,6 +17,7 @@ import { GeoJsonLayer } from "deck.gl";
 import { CustomMap, INITIAL_STATE } from "./CustomMap";
 import Loading from "./Loading";
 import Tooltip from "./Tooltip";
+import PopupButton from "./PopupButton";
 import { Slider, useToken } from "@chakra-ui/react";
 
 const EMPLEO_QUANTILES = [0, 50, 200, 400, 800, 1000, 2000, 8400];
@@ -57,6 +58,7 @@ export const EmpleoControls = () => {
           autoHighlight={true}
           getPosition={(d) => d.position}
         />
+        <PopupButton videoId="BBJa32lCaaY" color={color} />
       </CustomMap>
       <Slider />
       <Legend
