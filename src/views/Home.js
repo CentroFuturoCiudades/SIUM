@@ -115,8 +115,10 @@ const Map = ({ year }) => {
     justifyContent: "end",
     height: "100%",
     textAlign: "end",
-    flexDirection: "column"
+    flexDirection: "column",
   };
+
+
   const noteStyle = {
     height: "100%", 
     display: "flex", 
@@ -287,6 +289,7 @@ const Home = () => {
     alignItems: "left",
     borderRadius: "0px 0px 0px 50px",
     flexDirection: "column", // Para colocar los textos uno debajo del otro
+
   };
 
   const titleStyle = {
@@ -316,7 +319,10 @@ const Home = () => {
       flexDirection: "column",
       justifyContent: "space-between",
       alignItems: "center",
-      marginTop: "0"
+      marginTop: "0",
+      //position:"fixed",
+      //overflowY: "auto"
+
   }}
     >
     
@@ -351,7 +357,7 @@ const Home = () => {
       </Flex>
 
       {/* Botones */}
-      <Flex w="20%" justify="space-around" align="center">
+      <Flex w="40%" justify="space-around" align="center">
         <Link to="/objetivo">
           <Button variant="text" color="white" style={{ fontSize: "1.5dvw" }}>
             Objetivo
