@@ -128,6 +128,7 @@ const Map = ({ year }) => {
   };
 
   return (
+    
     <DeckGL
       initialViewState={{ ...initialViewState, pitch: year ? 0 : 10 }}
       controller={CONTROLLER}
@@ -289,7 +290,7 @@ const Home = () => {
     alignItems: "left",
     borderRadius: "0px 0px 0px 50px",
     flexDirection: "column", // Para colocar los textos uno debajo del otro
-
+    overflowX: "hidden",
   };
 
   const titleStyle = {
@@ -312,20 +313,20 @@ const Home = () => {
   };
   
   return (
+    <div>
     <div
-    style={{
-      height: isMobile ? "100%" : "100dvh",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "space-between",
-      alignItems: "center",
-      marginTop: "0",
-      //position:"fixed",
-      //overflowY: "auto"
-
-  }}
+      style={{
+        height: isMobile ? "100%" : "100dvh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginTop: "0",
+        //overflowX: "hidden"
+        //position:"fixed",
+        //overflowY: "auto"
+      }}
     >
-    
     <Flex
       align="center"
       p={2}
@@ -334,7 +335,7 @@ const Home = () => {
       w="100%"
       justify="space-between"
       display="flex"
-      
+      //overflowX= "hidden"
     >
       {/* Logos */}
       <Flex w="20%" style={{display: "flex", alignItems: "center"}}>
@@ -357,7 +358,7 @@ const Home = () => {
       </Flex>
 
       {/* Botones */}
-      <Flex w="40%" justify="space-around" align="center">
+      <Flex w="20%" justify="space-around" align="center" style={{marginRight: "10px"}}>
         <Link to="/objetivo">
           <Button variant="text" color="white" style={{ fontSize: "1.5dvw" }}>
             Objetivo
@@ -373,7 +374,7 @@ const Home = () => {
 
       <div>
         <Map year={!isInitial ? year : undefined} />
-        <div style={{ display: "grid" }}>
+        <div style={{ display: "grid"}}>
           <div style={containerStyle}>
             <div>
               <h1 style={titleStyle}>Ciudad Finita</h1>
@@ -480,6 +481,7 @@ const Home = () => {
       </div>
       <Cards />
     
+      </div>
       </div>
   );
 };
