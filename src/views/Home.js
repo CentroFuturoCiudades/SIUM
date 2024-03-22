@@ -49,32 +49,6 @@ const Map = ({ year }) => {
   const { width } = useWindowDimensions();
   const { data } = useFetch(MANCHA_URBANA_URL);
   const { data: dataPoblacionSuperficieConst } = useFetch(POBLACION_SUPERFICIE_CONST_URL);
-
-  useEffect(() => {
-    // console.log(dataPoblacionSuperficieConst[0])
-    // const filtrarYSumarSuperficie = (datos) => {
-    //   const superficieFiltrada = {};
-      
-    //   // Si hay datos
-    //   if (datos) {
-    //     datos.forEach((dato) => {
-    //       const { fecha, superficie_construida } = dato;
-          
-    //       if (!superficieFiltrada[fecha]) {
-    //         superficieFiltrada[fecha] = superficie_construida;
-    //       } else {
-    //         superficieFiltrada[fecha] += superficie_construida;
-    //       }
-    //     });
-    //   }
-      
-    //   return superficieFiltrada;
-    // };
-  
-    // const superficieFiltrada = filtrarYSumarSuperficie(dataPoblacionSuperficieConst);
-    // setSuperficieConstFiltrada(superficieFiltrada);
-  
-  }, [dataPoblacionSuperficieConst]);
   
   const tileLayerURL =
     "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";

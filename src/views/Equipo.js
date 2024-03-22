@@ -100,12 +100,6 @@ const Equipo = () => {
           <p style={{ fontSize: '1dvw'}}>
             <b>Contacto:</b> rpl@tec.mx
           </p>
-
-          {/* Que son tecnicas de negociacion
-          Para que sirven
-          Ejemplos
-          Tips para negociar 
-          Quiz de 5 preguntas */}
         </Box>
         
         <Box style={{marginLeft: "2dvw", marginRight: "2dvw"}}>
