@@ -141,6 +141,7 @@ export const SATELLITE_IMAGES_URL = (x) => `${DATA_URL}/expansion_${x}.jpg`;
 export const MUNICIPIOS_URL = `${DATA_URL}/div-municipal.geojson`;
 export const EXPANSION_URL = `${DATA_URL}/agebs-pob.geojson`;
 export const EXPANSION_CHART_URL = `${DATA_URL}/expansion_municipality.json`;
+export const POBLACION_SUPERFICIE_CONST_URL = `${DATA_URL}/pob-built.json`;
 export const EMPLEO_URL = `${DATA_URL}/denue_2020.geojson`;
 export const EMPLEO_CHART_URL = `${DATA_URL}/empleo_municipality.json`;
 export const TRANSPORTE_CHART_URL = `${DATA_URL}/transporte_municipality.json`;
