@@ -1,92 +1,58 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useDisclosure } from '@chakra-ui/react';
 import '../index.css'; 
 import { useCardContext } from '../views/Problematica';
-import { Button, Box } from '@chakra-ui/react';
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button
+} from '@chakra-ui/react';
+
 
 const PopupButton = ({ videoId, title, subtitle, text }) => {
   const { color } = useCardContext();
-  const [showPopup, setShowPopup] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <Button
-        size="sm"
-        className="button-popup"
-        colorScheme={color}
-        onClick={() => setShowPopup(!showPopup)}
-      >
+      <Button size="sm" className="button-popup" onClick={onOpen} colorScheme={color}>
         Video
       </Button>
 
-      {showPopup && (
-        <Box className="popup" bgColor={`${color}.400`}>
-          <div className="popup-header">
-            <h2>{title}</h2>
-            <h3>{subtitle}</h3>
-            <p>{text}</p>
-          </div>
-          <div className="video-container">
-            <iframe 
-              src={`https://www.youtube.com/embed/${videoId}?rel=0`} 
-              frameBorder="0"
-              allowFullScreen
-            ></iframe>
-          </div>
-          {/* Puedes agregar un botón de cierre si lo necesitas */}
-        </Box>
-      )}
+      <Modal isOpen={isOpen} onClose={onClose}  motionPreset='slideInRight'>
+        <ModalOverlay />
+        <ModalContent 
+          bg={`${color}.400`}
+          colorScheme={color}
+          maxW={{ base: "calc(60vw - 40px)", md: "calc(60vw - 60px)" }}
+          maxH={{ base: "calc(100vh - 40px)", md: "calc(100vh - 60px)" }}
+          m={4}
+          mr={7}
+          mt={{ base: "4%", md: "4%" }}
+          ml="auto"
+          overflowY="auto">  {/* Aplicar color al modal*/}
+            <ModalHeader className="modal-header" >{title}</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody p={6}> 
+              <h3 className="subtitle">{subtitle}</h3>
+              <p className="description" mb={3}>{text}</p>
+              <div className="video-container" style={{ margin: '10px 0' }}>
+                <iframe
+                  src={`https://www.youtube.com/embed/${videoId}?rel=0`}
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </ModalBody>
+        </ModalContent>
+      </Modal>
     </>
   );
 };
 
 export default PopupButton;
-
-
-
-
-
-
-// import React, { useState } from 'react';
-// import '../index.css'; 
-
-// const PopupButton = ({ videoId, title, subtitle, description, color }) => {
-//   const [showPopup, setShowPopup] = useState(false);
-
-//   // Añadimos estilos en línea para el color del texto
-//   const textStyle = {
-//     color: color, // Text color same as the card
-//   };
-
-//   return (
-//     <>
-//       <button
-//         className="button-popup" style={{ backgroundColor: color }}
-//         onClick={() => setShowPopup(!showPopup)}
-//       >
-//         Video
-//       </button>
-
-//       {showPopup && (
-//         <div className="popup" style={{ backgroundColor: '#FFF' }}> {/* Cambia a un fondo blanco para el popup */}
-//           <div className="popup-header" style={textStyle}>
-//             <span className="popup-title">{title}</span>
-//             <span className="popup-subtitle">{subtitle}</span>
-//             <button className="popup-close" onClick={() => setShowPopup(false)}>X</button>
-//           </div>
-//           <div className="popup-body">
-//             <p className="popup-description" style={textStyle}>{description}</p>
-//             <iframe 
-//               width="100%" 
-//               height="315" 
-//               src={`https://www.youtube.com/embed/${videoId}?rel=0`} 
-//               frameBorder="0" 
-//               allowFullScreen
-//             ></iframe>
-//           </div>
-//         </div>
-//       )}
-//     </>
-//   );
-// };
-
-// export default PopupButton;

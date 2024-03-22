@@ -11,7 +11,7 @@ import {
   useFetch,
 } from "../utils/constants";
 import { AreaChartChart } from "./AreaChart";
-import {
+import { 
   CustomLegend,
   CustomLegendMobile,
   LegendItem,
@@ -22,6 +22,7 @@ import Loading from "./Loading";
 import ButtonControls from "./ButtonControls.js";
 import { Area, XAxis, YAxis } from "recharts";
 import { useToken } from "@chakra-ui/react";
+import PopupButton from "./PopupButton";
 
 const EXPANSION_ACTUAL_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/mancha_urbana_2020.geojson";
@@ -106,6 +107,12 @@ export const EscenariosFuturosControls = () => {
             { id: "controlada", name: "Controlada" },
             { id: "inercial", name: "Inercial" },
           ]}
+        />
+        <PopupButton 
+          videoId="2eRmyQBQ5aA"
+          title="Lorem Ipsum" 
+          subtitle="Lorem Ipsum" 
+          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam." 
         />
       </CustomMap>
       <CustomLegend

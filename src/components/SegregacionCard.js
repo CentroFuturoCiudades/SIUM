@@ -26,6 +26,7 @@ import * as d3 from "d3";
 import { IconLayer } from "deck.gl";
 import { Checkbox, Heading } from "@chakra-ui/react";
 
+
 const legendMapping = {
   income_pc: {
     title: "Ingreso mensual per capita en 2020",
@@ -109,7 +110,12 @@ export const SegregacionControls = () => {
             getPosition={(d) => d.position}
           />
         )}
-        <PopupButton videoId="2eRmyQBQ5aA" />
+        <PopupButton 
+          videoId="0iY7lM81XiQ?si=UBJTuAb7Vo30TAck"
+          title="Lorem Ipsum" 
+          subtitle="Lorem Ipsum" 
+          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam." 
+        />
       </CustomMap>
       <ButtonControls
         color={color}

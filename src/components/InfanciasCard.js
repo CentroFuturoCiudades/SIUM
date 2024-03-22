@@ -25,6 +25,7 @@ import { useMediaQuery, useToken } from "@chakra-ui/react";
 import { CustomLegend, LegendItem } from "./CustomLegend";
 import { Legend } from "recharts";
 import { IconLayer } from "deck.gl";
+import PopupButton from "./PopupButton";
 
 //const INFANCIAS_QUANTILES = [0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.2, 0.3, 0.4];
 const INFANCIAS_QUANTILES = [0, 0.1, 0.2, 0.3, 0.4];
@@ -195,6 +196,12 @@ export const InfanciasControls = () => {
           brushingEnabled={true}
           brushingRadius={brushingRadius}
           extensions={[new BrushingExtension()]}
+        />
+        <PopupButton 
+          videoId="ROtsJ6c4dIo?si=HAPfOj40Rip_XPPl"
+          title="Lorem Ipsum" 
+          subtitle="Lorem Ipsum" 
+          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam." 
         /> 
       </CustomMap>
       <CustomLegend
