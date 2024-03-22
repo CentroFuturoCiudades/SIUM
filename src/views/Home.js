@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { IconButton, Text, Tooltip, useMediaQuery, Flex } from "@chakra-ui/react";
+import { IconButton, Text, Tooltip, useMediaQuery, Flex, Box, Button} from "@chakra-ui/react";
 import Cards from "./Cards";
 import { BitmapLayer, DeckGL, GeoJsonLayer, TileLayer } from "deck.gl";
 import useWindowDimensions, {
@@ -89,8 +89,10 @@ const Map = ({ year }) => {
     justifyContent: "end",
     height: "100%",
     textAlign: "end",
-    flexDirection: "column"
+    flexDirection: "column",
   };
+
+
   const noteStyle = {
     height: "100%", 
     display: "flex", 
@@ -100,6 +102,7 @@ const Map = ({ year }) => {
   };
 
   return (
+    
     <DeckGL
       initialViewState={{ ...initialViewState, pitch: year ? 0 : 10 }}
       controller={CONTROLLER}
@@ -284,6 +287,7 @@ const Home = () => {
     alignItems: "left",
     borderRadius: "0px 0px 0px 50px",
     flexDirection: "column", // Para colocar los textos uno debajo del otro
+    overflowX: "hidden",
   };
 
   const titleStyle = {
@@ -304,17 +308,35 @@ const Home = () => {
     paddingBottom: "100px",
     lineHeight: isMobile ? "1.5" : "1.8",
   };
-
+  
   return (
-    <>
-    
-    <Flex 
-      align="center" 
+    <div>
+    <div
+      style={{
+        height: isMobile ? "100%" : "100dvh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginTop: "0",
+        //overflowX: "hidden"
+        //position:"fixed",
+        //overflowY: "auto"
+      }}
+    >
+    <Flex
+      align="center"
       p={2}
       position="absolute"
       bg="transparent"
+      w="100%"
+      justify="space-between"
+      display="flex"
+      //overflowX= "hidden"
     >
-      {["SIUM.png", "tec.png", "femsa.png"].map((imagen, index) => (
+      {/* Logos */}
+      <Flex w="20%" style={{display: "flex", alignItems: "center"}}>
+        {["SIUM.png", "tec.png", "femsa.png"].map((imagen, index) => (
         <img
           key={index}
           className="headerImage"
@@ -323,15 +345,33 @@ const Home = () => {
           style={{
             padding: "5px",
             height: "auto",
-            width: "200px",
+            width: "auto",
+            //maxWidth: "200px",
+            maxWidth: isMobile ? "100%" : "200px",
             objectFit: "contain",
           }}
         />
-      ))}
+        ))}
+      </Flex>
+
+      {/* Botones */}
+      <Flex w="20%" justify="space-around" align="center" style={{marginRight: "10px"}}>
+        <Link to="/objetivo">
+          <Button variant="text" color="white" style={{ fontSize: "1.5dvw" }}>
+            Objetivo
+          </Button>
+        </Link>
+        <Link to="/equipo">
+          <Button variant="text" color="white" style={{ fontSize: "1.5dvw" }}>
+            Equipo
+          </Button>
+        </Link>
+      </Flex>
     </Flex>
+
       <div>
         <Map year={!isInitial ? year : undefined} />
-        <div style={{ display: "grid" }}>
+        <div style={{ display: "grid"}}>
           <div style={containerStyle}>
             <div>
               <h1 style={titleStyle}>Ciudad Finita</h1>
@@ -437,7 +477,9 @@ const Home = () => {
         </Tooltip>
       </div>
       <Cards />
-    </>
+    
+      </div>
+      </div>
   );
 };
 

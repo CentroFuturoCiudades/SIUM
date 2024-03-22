@@ -42,5 +42,5 @@
 .sidebarItem {
   border-radius: 0px !important;
   width: 100%;
-  height: min(8dvh, 3dvw) !important;
+  height: 40px !important;
 }
