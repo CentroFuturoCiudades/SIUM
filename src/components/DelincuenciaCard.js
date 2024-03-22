@@ -17,6 +17,7 @@ import { GeoJsonLayer } from "deck.gl";
 import { CustomMap, INITIAL_STATE } from "./CustomMap.js";
 import Loading from "./Loading.js";
 import ButtonControls from "./ButtonControls.js";
+import PopupButton from "./PopupButton";
 import Tooltip from "./Tooltip";
 import { TimeComponentClean } from "./TimeComponent.js";
 import {
@@ -118,6 +119,12 @@ export const DelincuenciaControls = () => {
           pickable={true}
           autoHighlight={true}
           getPosition={(d) => d.position}
+        />
+        <PopupButton 
+          videoId="_h7bXZyN2po?si=7bjy87ZtKRCb49Zi"
+          title="Lorem Ipsum" 
+          subtitle="Lorem Ipsum" 
+          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam." 
         />
       </CustomMap>
       <ButtonControls

@@ -18,6 +18,7 @@ import { CustomMap, INITIAL_STATE } from "./CustomMap.js";
 import Loading from "./Loading.js";
 import { GeoJsonLayer } from "deck.gl";
 import ButtonControls from "./ButtonControls.js";
+import PopupButton from "./PopupButton";
 import {
   Box,
   Heading,
@@ -26,7 +27,7 @@ import {
   Tbody,
   Td,
   Thead,
-  Tooltip,
+  Tooltip, 
   Tr,
   useToken,
 } from "@chakra-ui/react";
@@ -173,6 +174,12 @@ export const TransporteControls = () => {
           trailLength={10}
           currentTime={time}
         />
+        <PopupButton 
+          videoId="2eRmyQBQ5aA?si=krgUsYc8Z88oMbLq"
+          title="Lorem Ipsum" 
+          subtitle="Lorem Ipsum" 
+          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam." 
+        />        
       </CustomMap>
       <CustomLegend
         color={color}

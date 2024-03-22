@@ -212,32 +212,12 @@ td {
   font-weight: bold;
 }
 
-/* Estilos para el popup */
-.popup {
-  position: absolute;
-  top: 60px; 
-  right: 20px; 
-  width: 500px;
-  height: 400px;
-  background-color: #a98274;
-  color: #000;
-  padding: 20px;
-  border-radius: 10px;
-  z-index: 100;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-sizing: border-box;
-}
-
 /* Estilos para el contenedor del video dentro del popup */
 .video-container {
   position: relative;
   padding-top: 56.25%; 
 }
 
-/* Estilos para el iframe del video para que ocupe todo el contenedor */
 .video-container iframe {
   position: absolute;
   top: 0;
@@ -245,4 +225,13 @@ td {
   width: 100%;
   height: 100%;
 }
+
+.subtitle, .description {
+  margin-bottom: 0.2rem; 
+}
+
+.modal-header {
+  margin-bottom: -30px; 
+}
+
 

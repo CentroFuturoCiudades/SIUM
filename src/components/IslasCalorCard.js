@@ -33,6 +33,7 @@ import {
 import { Heading, useMediaQuery, useToken } from "@chakra-ui/react";
 import _ from "lodash";
 import * as d3 from "d3";
+import PopupButton from "./PopupButton";
 
 const ISLAS_CALOR_COLORS = [
   "rgb(255, 0, 0)",
@@ -119,6 +120,12 @@ export const IslasCalorControls = () => {
           data={VIAS_URL}
           getLineColor={[0, 0, 0, 255]}
           getLineWidth={50}
+        />
+        <PopupButton 
+          videoId="awKx7yDA6k8?si=C_doMgtFy68xD2CE"
+          title="Lorem Ipsum" 
+          subtitle="Lorem Ipsum" 
+          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam." 
         />
       </CustomMap>
       [legendItems &&{" "}

@@ -75,8 +75,13 @@ export const ViviendaControls = () => {
           pickable={true}
           autoHighlight={true}
           getPosition={(d) => d.position}
+        /> 
+        <PopupButton 
+          videoId="OsVuAKg3G0U?si=lgWZXJSOss-RFvqo"
+          title="Lorem Ipsum" 
+          subtitle="Lorem Ipsum" 
+          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam." 
         />
-        <PopupButton videoId="2eRmyQBQ5aA" />
       </CustomMap>
       <Legend
         title={"Precio de Venta 2000-2020"}
