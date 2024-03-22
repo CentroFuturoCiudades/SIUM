@@ -5,7 +5,7 @@ import { BitmapLayer, DeckGL, GeoJsonLayer, TileLayer } from "deck.gl";
 import useWindowDimensions, {
   MANCHA_URBANA_URL,
   SATELLITE_IMAGES_URL,
-  COSTOS_MUNICIPALITY_URL,
+  POBLACION_SUPERFICIE_CONST_URL,
   useFetch,
 } from "../utils/constants";
 import { Link } from "react-router-dom";
@@ -48,33 +48,33 @@ const Map = ({ year }) => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
   const { width } = useWindowDimensions();
   const { data } = useFetch(MANCHA_URBANA_URL);
-  const { data: dataSuperficieConstruida } = useFetch(COSTOS_MUNICIPALITY_URL);
-  const [superficieConstFiltrada, setSuperficieConstFiltrada] = useState([]);
+  const { data: dataPoblacionSuperficieConst } = useFetch(POBLACION_SUPERFICIE_CONST_URL);
 
   useEffect(() => {
-    const filtrarYSumarSuperficie = (datos) => {
-      const superficieFiltrada = {};
+    // console.log(dataPoblacionSuperficieConst[0])
+    // const filtrarYSumarSuperficie = (datos) => {
+    //   const superficieFiltrada = {};
       
-      // Si hay datos
-      if (datos) {
-        datos.forEach((dato) => {
-          const { fecha, superficie_construida } = dato;
+    //   // Si hay datos
+    //   if (datos) {
+    //     datos.forEach((dato) => {
+    //       const { fecha, superficie_construida } = dato;
           
-          if (!superficieFiltrada[fecha]) {
-            superficieFiltrada[fecha] = superficie_construida;
-          } else {
-            superficieFiltrada[fecha] += superficie_construida;
-          }
-        });
-      }
+    //       if (!superficieFiltrada[fecha]) {
+    //         superficieFiltrada[fecha] = superficie_construida;
+    //       } else {
+    //         superficieFiltrada[fecha] += superficie_construida;
+    //       }
+    //     });
+    //   }
       
-      return superficieFiltrada;
-    };
+    //   return superficieFiltrada;
+    // };
   
-    const superficieFiltrada = filtrarYSumarSuperficie(dataSuperficieConstruida);
-    setSuperficieConstFiltrada(superficieFiltrada);
+    // const superficieFiltrada = filtrarYSumarSuperficie(dataPoblacionSuperficieConst);
+    // setSuperficieConstFiltrada(superficieFiltrada);
   
-  }, [dataSuperficieConstruida]);
+  }, [dataPoblacionSuperficieConst]);
   
   const tileLayerURL =
     "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
@@ -190,9 +190,22 @@ const Map = ({ year }) => {
           </div>
 
           <div style={{height: "100%"}}>
-            {year ? (
+            {year&&dataPoblacionSuperficieConst ? (
             <>
-            <Text style={{color: "white"}}><b>{`${(superficieConstFiltrada["1995"]/1000000).toFixed(2)} km`}</b><sup>2</sup></Text>
+              {dataPoblacionSuperficieConst ? (
+                <>
+                  <Text style={{color: "white", fontSize:"1.5dvw"}}>
+                    <b>
+                      {`${(dataPoblacionSuperficieConst[0].population/1000000).toFixed(1)} millones de personas`}
+                    </b>
+                  </Text>
+                  <Text style={{color: "white", fontSize:"1.5dvw"}}>
+                    <b>
+                      {`${(dataPoblacionSuperficieConst[0].mts_built/1000000).toFixed(0)} km`} <sup>2</sup>
+                    </b>
+                  </Text>
+                </>
+              ) : ""}
             <br/>
             <Text
               style={{ color: "white", lineHeight: 0.5 }}
@@ -212,10 +225,20 @@ const Map = ({ year }) => {
                   >
                   <b>{year}</b>
                 </Text>
-                <Text style={{color: "rgb(26, 87, 255)"}}><b>
-                  {`${(superficieConstFiltrada[year]/1000000).toFixed(2)} km`}
-                  <sup>2</sup>
-                </b></Text>
+                  {dataPoblacionSuperficieConst ? (
+                    <>
+                      <Text style={{color: "rgb(26, 87, 255)", fontSize:"1.5dvw"}}>
+                        <b>
+                          {`${(dataPoblacionSuperficieConst[(year-1990)/5].mts_built/1000000).toFixed(0)} km`} <sup>2</sup>
+                        </b>
+                      </Text>
+                      <Text style={{color: "rgb(26, 87, 255)", fontSize:"1.5dvw"}}>
+                        <b>
+                          {`${(dataPoblacionSuperficieConst[(year-1990)/5].population/1000000).toFixed(1)} millones de personas`}
+                        </b>
+                      </Text>
+                    </>
+                  ) : ""}
               </>
             ) : null}
           </div>

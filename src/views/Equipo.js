@@ -1,20 +1,31 @@
 import React from "react";
 import {useMediaQuery, Box, Button } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverBody,
+  PopoverArrow,
+} from '@chakra-ui/react';
+import { sectionsInfo } from "../utils/constants";
 
 const Equipo = () => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
   return (
     <div
     style={{
-        height: isMobile ? "100%" : "100dvh",
+        height: "200dvh",
         display: "flex",
         flexDirection: "column",
         justifyContent: "between",
         alignItems: "center",
         backgroundColor: "white",
+        behavior: "smooth"
+
     }}
     >
+      <Box h="50%" id="equipo">
       {/* Header */}
       <Box bg='black' w='100%' h='10%' color='white' style={{marginTop: "0", display: "flex", justifyContent: "space-between"}}>
         
@@ -36,19 +47,24 @@ const Equipo = () => {
         
         {/* Botones */}
         <Box w="40%" style={{display: "flex", justifyContent: "space-around", alignItems: "center"}}>
-          <Link to="/objetivo">
+          <Link to="/">
             <Button variant={"text"} style={{fontSize: "1.5dvw"}}>
-              Objetivo
+              Inicio
             </Button>
           </Link>
-          <Link to="/equipo">
+          <a href="#equipo">
             <Button variant={"text"} style={{fontSize: "1.5dvw"}}>
               Equipo
             </Button>
-          </Link>
+          </a>
+          <a href="#objetivo">
+            <Button variant={"text"} style={{fontSize: "1.5dvw"}}>
+              Objetivo
+            </Button>
+          </a>
         </Box>
       </Box>
-      <Box width="60%" style={{ textAlign: "center", fontSize: "1dvw", paddingTop: "2dvw"}}>
+      <Box width="100%" style={{ textAlign: "center", fontSize: "1dvw", paddingTop: "2dvw"}}>
         <p style={{fontSize: "0.9dvw"}}>
           Este proyecto ha sido fondeado generosamente por fundación FEMSA desde 2019.
         </p>
@@ -75,11 +91,21 @@ const Equipo = () => {
             José Antonio Torre
           </p>
           <p style={{ fontSize: '1dvw'}}>
-            Roberto Ponce López
+            Roberto Ponce
           </p>
           <p style={{ fontSize: '1dvw'}}>
-            Uriel Salazar Urquidi
+            Uriel Salazar
           </p>
+          <br/>   
+          <p style={{ fontSize: '1dvw'}}>
+            <b>Contacto:</b> rpl@tec.mx
+          </p>
+
+          {/* Que son tecnicas de negociacion
+          Para que sirven
+          Ejemplos
+          Tips para negociar 
+          Quiz de 5 preguntas */}
         </Box>
         
         <Box style={{marginLeft: "2dvw", marginRight: "2dvw"}}>
@@ -88,7 +114,7 @@ const Equipo = () => {
           </div>
           
           <p style={{ fontSize: '1dvw'}}>
-          Andrea Martínez Santillán
+          Andrea Martínez
           </p>
           <p style={{ fontSize: '1dvw'}}>
             Alberto Meouchi
@@ -101,19 +127,19 @@ const Equipo = () => {
           </div>
           
           <p style={{ fontSize: '1dvw'}}>
-            Gonzalo Gaudencio Peraza Mues
+            Gonzalo Gaudencio Peraza
           </p>
           <p style={{ fontSize: '1dvw'}}>
-            Rodolfo Figueroa Soriano
+            Rodolfo Figueroa
           </p>
           <p style={{ fontSize: '1dvw'}}>
-            Nélida Escobedo Ruíz
+            Nélida Escobedo
           </p>
           <p style={{ fontSize: '1dvw'}}>
-            Claudia Ledezma Garza
+            Claudia Ledezma
           </p>
           <p style={{ fontSize: '1dvw'}}>
-            Fabián Lozano García
+            Fabián Lozano
           </p>
         </Box>
         
@@ -123,16 +149,16 @@ const Equipo = () => {
           </div>
           
           <p style={{ fontSize: '1dvw'}}>
-            Jeannette Arjona Hernández
+            Jeannette Arjona
           </p>
           <p style={{ fontSize: '1dvw'}}>
-            Adrian Tadeo Barrera Almanza
+            Adrian Tadeo Barrera
           </p>
           <p style={{ fontSize: '1dvw'}}>
-            Diego Alejandro Michel Castro
+            Diego Alejandro Michel
           </p>
           <p style={{ fontSize: '1dvw'}}>
-            Erick Schiller Echavarría
+            Erick Schiller
           </p>
         </Box>
         
@@ -148,7 +174,7 @@ const Equipo = () => {
             Rebecca Bell
           </p>
           <p style={{ fontSize: '1dvw'}}>
-            Ana Fernanda Hierro
+            Ana Fernanda
           </p>
           <p style={{ fontSize: '1dvw'}}>
             Carlos Hurtado
@@ -157,7 +183,7 @@ const Equipo = () => {
             Lucía Elizondo
           </p>
           <p style={{ fontSize: '1dvw'}}>
-            Sindy González Tijerina
+            Sindy González
           </p>
           <p style={{ fontSize: '1dvw'}}>
             Javiel Leal
@@ -166,11 +192,179 @@ const Equipo = () => {
             Martha Montemayor
           </p>
           <p style={{ fontSize: '1dvw'}}>
-            Luisa Pérez Barbosa
+            Luisa Pérez
+          </p>
+          <p style={{ fontSize: '1dvw'}}>
+            Carlos Placencia
           </p>
         </Box>
 
       </Box>
+
+      </Box>
+      <Box h="50%" id="objetivo">
+
+      {/* Header */}
+      <Box bg='black' w='100%' h='10%' color='white' style={{display: "flex", justifyContent: "space-between"}}>
+        
+        {/* Logos */}
+        <Box w="50%" style={{display: "flex", alignItems: "center"}}>
+          <img
+        className="headerImage"
+        src="logos_SIUM.png"
+        alt="SIUM"
+        style={{
+          padding: "1dvw",
+          height: "auto",
+          width: "auto",
+          objectFit: "contain",
+        }}
+      />
+
+        </Box>
+        
+        {/* Botones */}
+        <Box w="40%" style={{display: "flex", justifyContent: "space-around", alignItems: "center"}}>
+          <Link to="/">
+            <Button variant={"text"} style={{fontSize: "1.5dvw"}}>
+              Inicio
+            </Button>
+          </Link>
+          <a href="#equipo">
+            <Button variant={"text"} style={{fontSize: "1.5dvw"}}>
+              Equipo
+            </Button>
+          </a>
+          <a href="#objetivo">
+            <Button variant={"text"} style={{fontSize: "1.5dvw"}}>
+              Objetivo
+            </Button>
+          </a>
+        </Box>
+      </Box>
+
+        {/* Imagen y objetivo */}
+      <Box bg='#FEF5E7' w='100%' h='30%' p={4} color='#04511B' style={{display: "flex", justifyContent: "space-around", marginTop: "3dvw", textAlign: "center", fontSize: "2dvw"}}>
+        <Box w="26%" style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+            {/* Imagen y texto  */}
+            <Box height={"90%"} style={{position: "absolute", display: "flex", flexDirection: "column", justifyContent: "center", marginTop: "25dvw"}}>
+                <img
+                    className="headerImage"
+                    src="aspectos.png"
+                    alt="SIUM"
+                    style={{
+                    height: "70%",
+                    objectFit: "contain",
+                    }}
+                    />
+                <p style={{marginTop: "3dvw", fontSize: "1.5dvw", textAlign: "center", color: "#665232"}}>
+                    Y mucho más...
+                </p>
+            </Box>
+        </Box>
+        <Box width="26%" style={{display: "flex", flexDirection: "column", justifyContent: "space-around", textAlign: "center", color: "#665232"}}>
+            <p style={{fontSize: "1.5dvw"}}><b>Objetivo General</b></p>
+            <p style={{fontSize: "1dvw", marginTop: "1dvw"}}>
+                El SIUM tiene como finalidad mostrar el impacto de la expansión
+                urbana en la Zona Metropolitana de Monterrey.
+            </p>
+            <p style={{fontSize: "1dvw", marginTop: "1dvw"}}>
+                Generar una discusión colectiva que lleve a un nuevo modelo 
+                urbano.
+            </p>
+        </Box>
+      </Box>
+
+      <Box w='100%' h='50%' style={{display: "flex", backgroundColor: "white"}}>
+        <Box w="50%" h="100%">
+
+        </Box>
+
+        {/* Tarjetas */}
+        <Box w="50%" h="100%" style={{display: "flex", flexDirection: "column", justifyContent: "space-around"}}>
+            <p style={{textAlign: "center", fontSize: "1.5dvw", color: "#665232"}}>
+                <b>Principios</b>
+            </p>
+
+            <Box style={{display: "flex", justifyContent: "space-around"}}>
+              
+                  <Popover trigger="hover" placement="top">
+                      <PopoverTrigger>
+                          <Button w={"13dvw"} h={"10dvw"} colorScheme={sectionsInfo.vivienda.color} variant='outline' style={{borderRadius: 60}}>
+                              DISCUSIÓN
+                          </Button>
+                      </PopoverTrigger>
+
+                      <PopoverContent w={"auto"} color="white" bg="#2C3147" borderColor="#2C3147">
+                          <PopoverArrow bg='#2C3147'/>
+                          <PopoverBody style={{textAlign: "center"}}>Para la toma de decisiones</PopoverBody>
+                      </PopoverContent>
+                  </Popover>
+
+                  <Popover trigger="hover"  placement="top">
+                      <PopoverTrigger>
+                          <Button w={"13dvw"} h={"10dvw"} colorScheme={sectionsInfo["expansion-urbana"].color} variant='outline' style={{borderRadius: 60}}>
+                              TRANSPARENCIA
+                          </Button>
+                      </PopoverTrigger>
+
+                      <PopoverContent w={"auto"} color="white" bg="#2C3147" borderColor="#2C3147">
+                          <PopoverArrow bg='#2C3147'/>
+                          <PopoverBody  style={{textAlign: "center"}} >Acceso a la información</PopoverBody>
+                      </PopoverContent>
+                  </Popover>
+
+                  <Popover trigger="hover"  placement="top">
+                      <PopoverTrigger>
+                          <Button w={"13dvw"} h={"10dvw"} colorScheme={sectionsInfo.empleo.color} variant='outline' style={{borderRadius: 60}}>
+                              COLECTIVIDAD
+                          </Button>
+                      </PopoverTrigger>
+
+                      <PopoverContent w={"auto"} color="white" bg="#2C3147" borderColor="#2C3147">
+                          <PopoverArrow bg='#2C3147'/>
+                          <PopoverBody  style={{textAlign: "center"}} >Participación ciudadana</PopoverBody>
+                      </PopoverContent>
+                  </Popover>
+
+            </Box>
+
+            <Box style={{display: "flex", justifyContent: "space-evenly"}}>
+
+                  <Popover trigger="hover"  placement="top">
+                      <PopoverTrigger>
+                          <Button w={"13dvw"} h={"10dvw"} colorScheme={sectionsInfo.transporte.color} variant='outline' style={{borderRadius: 60}}>
+                              ACCIÓN
+                          </Button>
+                      </PopoverTrigger>
+
+                      <PopoverContent w={"auto"} color="white" bg="#2C3147" borderColor="#2C3147">
+                          <PopoverArrow bg='#2C3147'/>
+                          <PopoverBody  style={{textAlign: "center"}}>Diversidad de opiniones</PopoverBody>
+                      </PopoverContent>
+                  </Popover>
+
+                  <Popover trigger="hover"  placement="top">
+                      <PopoverTrigger>
+                          <Button w={"13dvw"} h={"10dvw"} colorScheme={sectionsInfo.infancias.color} variant='outline' style={{borderRadius: 60}}>
+                              INNOVACIÓN
+                          </Button>
+                      </PopoverTrigger>
+
+                      <PopoverContent w={"auto"} color="white" bg="#2C3147" borderColor="#2C3147">
+                          <PopoverArrow bg='#2C3147'/>
+                          <PopoverBody  style={{textAlign: "center"}}>Nuevo Modelo Urbano</PopoverBody>
+                      </PopoverContent>
+                  </Popover>
+
+            </Box>
+
+        </Box>
+
+
+      </Box>
+      </Box>
+
     </div>
   );
 };
