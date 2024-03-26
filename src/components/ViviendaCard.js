@@ -75,12 +75,12 @@ export const ViviendaControls = () => {
           pickable={true}
           autoHighlight={true}
           getPosition={(d) => d.position}
-        /> 
-        <PopupButton 
+        />
+        <PopupButton
           videoId="OsVuAKg3G0U?si=lgWZXJSOss-RFvqo"
-          title="Lorem Ipsum" 
-          subtitle="Lorem Ipsum" 
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam." 
+          title="Lorem Ipsum"
+          subtitle="Lorem Ipsum"
+          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam."
         />
       </CustomMap>
       <Legend
@@ -91,14 +91,16 @@ export const ViviendaControls = () => {
           <>
             <b>Créditos de INFONAVIT activos en 2020</b>
             <p>Las viviendas adquiridas a través de un crédito de INFONAVIT.</p>
-            <p>Datos actualizados por inflación presentados en precios de 2020.</p>
+            <p>
+              Datos actualizados por inflación presentados en precios de 2020.
+            </p>
           </>
         }
         formatter={d3.format("$,.0f")}
       />
       <SliderHTML
         time={time}
-        min={2000} 
+        min={2000}
         max={2020}
         step={5}
         defaultValue={time}
@@ -109,6 +111,9 @@ export const ViviendaControls = () => {
       />
       {hoverInfo && hoverInfo.object && (
         <Tooltip hoverInfo={hoverInfo}>
+          <span className="tooltip-label">
+            <b>AGEB:</b> {hoverInfo.object.properties["CVEGEO"]}
+          </span>
           <span className="tooltip-label">
             <b>Año en venta:</b> {hoverInfo.object.properties["year_end"]}
           </span>

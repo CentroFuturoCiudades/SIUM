@@ -142,7 +142,7 @@ export const MUNICIPIOS_URL = `${DATA_URL}/div-municipal.geojson`;
 export const EXPANSION_URL = `${DATA_URL}/agebs-pob.geojson`;
 export const EXPANSION_CHART_URL = `${DATA_URL}/expansion_municipality.json`;
 export const POBLACION_SUPERFICIE_CONST_URL = `${DATA_URL}/pob-built.json`;
-export const EMPLEO_URL = `${DATA_URL}/denue_2020.geojson`;
+export const EMPLEO_URL = `${DATA_URL}/empleo-hex.geojson`;
 export const EMPLEO_CHART_URL = `${DATA_URL}/empleo_municipality.json`;
 export const TRANSPORTE_CHART_URL = `${DATA_URL}/transporte_municipality.json`;
 export const TRANSPORTE_URL = `${DATA_URL}/transporte.geojson`;
@@ -590,7 +590,7 @@ export const sectionsInfo = {
   },
   islasCalor: {
     title: "¿Por qué sentimos tanto calor?",
-    answer: "-----------Respuesta------------",
+    answer: "Porque el 25% del área de la zona urbana son vialidades, hemos construido una ciudad de asfalto.",
     color: "teal1",
     icon: MdDeviceThermostat,
     component: IslasCalorCard,

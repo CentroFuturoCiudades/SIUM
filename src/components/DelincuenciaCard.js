@@ -120,11 +120,11 @@ export const DelincuenciaControls = () => {
           autoHighlight={true}
           getPosition={(d) => d.position}
         />
-        <PopupButton 
+        <PopupButton
           videoId="_h7bXZyN2po?si=7bjy87ZtKRCb49Zi"
-          title="Lorem Ipsum" 
-          subtitle="Lorem Ipsum" 
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam." 
+          title="Lorem Ipsum"
+          subtitle="Lorem Ipsum"
+          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam."
         />
       </CustomMap>
       <ButtonControls
@@ -155,6 +155,10 @@ export const DelincuenciaControls = () => {
       />
       {hoverInfo && hoverInfo.object && (
         <Tooltip hoverInfo={hoverInfo}>
+          <span className="tooltip-label">
+            <b>AGEB:</b>{" "}
+            {hoverInfo.object.properties["CVEGEO"]}
+          </span>
           <span className="tooltip-label">
             <b>Número de delitos:</b>{" "}
             {hoverInfo.object.properties["num_crimen"]}

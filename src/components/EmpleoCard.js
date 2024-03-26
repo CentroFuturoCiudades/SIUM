@@ -58,11 +58,11 @@ export const EmpleoControls = () => {
           autoHighlight={true}
           getPosition={(d) => d.position}
         />
-        <PopupButton 
+        <PopupButton
           videoId="Z5yubfNSwCU?si=wAY3jOd8scsgJNAt"
-          title="Lorem Ipsum" 
-          subtitle="Lorem Ipsum" 
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam." 
+          title="Lorem Ipsum"
+          subtitle="Lorem Ipsum"
+          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam."
         />
       </CustomMap>
       <Slider />
@@ -85,6 +85,9 @@ export const EmpleoControls = () => {
       />
       {hoverInfo && hoverInfo.object && (
         <Tooltip hoverInfo={hoverInfo}>
+          <span className="tooltip-label">
+            <b>AGEB:</b> {hoverInfo.object.properties["CVEGEO"]}
+          </span>
           <span className="tooltip-label">
             <b>Número de empleos en 2020:</b>{" "}
             {hoverInfo.object.properties["Empleos"].toLocaleString("en-US")}

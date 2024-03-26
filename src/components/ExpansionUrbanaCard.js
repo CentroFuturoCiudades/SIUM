@@ -73,11 +73,11 @@ export const ExpansionUrbanaControls = () => {
           autoHighlight={true}
           getPosition={(d) => d.position}
         />
-        <PopupButton 
+        <PopupButton
           videoId="uoH8Are8Z-c?si=nEEUHnmObsm-UqMG"
-          title="LUISA PEREZ" 
-          subtitle="Tecnológico de Monterrey" 
-          text="Motivos generales de la expansión urbana de Monterrey." 
+          title="LUISA PEREZ"
+          subtitle="Tecnológico de Monterrey"
+          text="Motivos generales de la expansión urbana de Monterrey."
         />
       </CustomMap>
       <Legend
@@ -105,6 +105,9 @@ export const ExpansionUrbanaControls = () => {
       />
       {hoverInfo && hoverInfo.object && (
         <Tooltip hoverInfo={hoverInfo}>
+          <span className="tooltip-label">
+            <b>AGEB:</b> {hoverInfo.object.properties["CVEGEO"]}
+          </span>
           <span className="tooltip-label">
             <b>Cambio poblacional de 1990 a 2000:</b>{" "}
             {hoverInfo.object.properties["1990"].toLocaleString("en-US")}{" "}
