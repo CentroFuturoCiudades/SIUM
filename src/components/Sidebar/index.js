@@ -83,7 +83,7 @@ export const Sidebar = ({ section, setSection }) => {
         borderRadius="md"
         placement="right"
       >
-        <Link to="/equipo">
+        <Link to="/acerca">
           <IconButton
             isRound={true}
             icon={
@@ -164,7 +164,7 @@ export const BarMobile = ({ section, setSection }) => {
           borderRadius="md"
           placement="right"
         >
-          <Link to="/equipo" style={{ margin: "auto" }}>
+          <Link to="/acerca" style={{ margin: "auto" }}>
             <IconButton
               size="sm"
               isRound={true}

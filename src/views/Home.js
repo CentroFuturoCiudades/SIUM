@@ -356,12 +356,12 @@ const Home = () => {
 
       {/* Botones */}
       <Flex w="20%" justify="space-around" align="center" style={{marginRight: "10px"}}>
-        <Link to="/objetivo">
+        <Link to="/acerca#objetivo">
           <Button variant="text" color="white" style={{ fontSize: "1.5dvw" }}>
             Objetivo
           </Button>
         </Link>
-        <Link to="/equipo">
+        <Link to="/acerca#equipo">
           <Button variant="text" color="white" style={{ fontSize: "1.5dvw" }}>
             Equipo
           </Button>
@@ -444,7 +444,7 @@ const Home = () => {
           borderRadius="md"
           placement="right"
         >
-          <Link to="/equipo">
+          <Link to="/acerca">
             <IconButton
               size="sm"
               isRound={true}
