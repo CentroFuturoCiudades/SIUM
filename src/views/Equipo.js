@@ -122,7 +122,7 @@ const Equipo = () => {
           2019.
         </p>
         <p style={{ fontSize: "0.9dvw" }}>
-          El SIUM, Sistema de Indformación Urabano Metropolitano, es un proyecto
+          El SIUM, Sistema de Información Urabano Metropolitano, es un proyecto
           del Centro para el Futuro de las Ciudades del Tecnológico de
           Monterrey.
         </p>
@@ -426,14 +426,14 @@ const Navbar = () => {
               Inicio
             </Button>
           </Link>
-          <a href="#equipo">
-            <Button variant={"text"} style={{ fontSize: "1.5dvw" }}>
-              Equipo
-            </Button>
-          </a>
           <a href="#objetivo">
             <Button variant={"text"} style={{ fontSize: "1.5dvw" }}>
               Objetivo
+            </Button>
+          </a>
+          <a href="#equipo">
+            <Button variant={"text"} style={{ fontSize: "1.5dvw" }}>
+              Equipo
             </Button>
           </a>
         </Box>
@@ -456,8 +456,8 @@ const Acerca = () => {
       }}
     >
       <Navbar />
-      <Equipo />
       <Objetivo />
+      <Equipo />
     </div>
   );
 };
