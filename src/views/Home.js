@@ -198,18 +198,18 @@ const Map = ({ year }) => {
               <Text
                 fontFamily="Poppins"
                 fontSize="3.5dvw"
-                style={{ color: "#783CB4", filter: 'drop-shadow(2px 0px 2px white)' }}
+                style={{ color: "#783CB4", filter: 'drop-shadow(2px 2px 2px white)' }}
               >
                 <b>{year}</b>
               </Text>
               {dataPoblacionSuperficieConst ? (
                 <>
-                  <Text style={{ color: "#783CB4", fontSize: "1.5dvw", filter: 'drop-shadow(1px 0px 1px white)' }}>
+                  <Text style={{ color: "#783CB4", fontSize: "1.5dvw", filter: 'drop-shadow(1px 1px 1px white)' }}>
                     <b>
                       {`${(dataPoblacionSuperficieConst[(year - 1990) / 5].mts_built / 1000000).toFixed(0)} km`} <sup>2</sup>
                     </b>
                   </Text>
-                  <Text style={{ color: "#783CB4", fontSize: "1.5dvw", filter: 'drop-shadow(1px 0px 1px white)' }}>
+                  <Text style={{ color: "#783CB4", fontSize: "1.5dvw", filter: 'drop-shadow(1px 1px 1px white)' }}>
                     <b>
                       {`${(dataPoblacionSuperficieConst[(year - 1990) / 5].population / 1000000).toFixed(1)} millones de personas`}
                     </b>
