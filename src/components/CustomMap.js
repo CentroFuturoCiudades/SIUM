@@ -11,8 +11,13 @@ import mapboxgl from "mapbox-gl";
 import { GeoJsonLayer, ScatterplotLayer, TextLayer } from "deck.gl";
 import { useCardContext } from "../views/Problematica";
 import Loading from "./Loading";
-import { useCallback, useEffect, useState } from "react";
-import { MUNICIPIOS_URL, hexToRgb, useFetch } from "../utils/constants";
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  MUNICIPIOS_URL,
+  VIAS_URL,
+  hexToRgb,
+  useFetch,
+} from "../utils/constants";
 import { mappingNames } from "./Chart";
 import { debounce } from "lodash";
 
@@ -116,11 +121,17 @@ export function CustomMap({ viewState, infanciasHover, children }) {
         />
         {children}
         <GeoJsonLayer
+          id="primary_routes"
+          data={VIAS_URL}
+          getLineColor={[100, 120, 150, 255]}
+          getLineWidth={50}
+        />
+        <GeoJsonLayer
           id="municipality-layer"
           data={municipalityData.features}
           getFillColor={[128, 174, 0, 0]}
-          getLineColor={[128, 128, 128, 80]}
-          getLineWidth={100}
+          getLineColor={[100, 100, 100, 250]}
+          getLineWidth={40}
         />
         {outline ? (
           <GeoJsonLayer

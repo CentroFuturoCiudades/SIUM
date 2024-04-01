@@ -156,7 +156,7 @@ const Map = ({ year }) => {
             : []
         }
         getFillColor={(d) =>
-          +d.properties.year === 1990 ? [200, 200, 200, 60] : [26, 87, 255, 160]
+          +d.properties.year === 1990 ? [200, 200, 200, 60] : [106, 46, 171, 160]
         }
         stroked={true}
       />
@@ -198,18 +198,18 @@ const Map = ({ year }) => {
               <Text
                 fontFamily="Poppins"
                 fontSize="3.5dvw"
-                style={{ color: "rgb(26, 87, 255)" }}
+                style={{ color: "#783CB4", filter: 'drop-shadow(2px 0px 2px white)' }}
               >
                 <b>{year}</b>
               </Text>
               {dataPoblacionSuperficieConst ? (
                 <>
-                  <Text style={{ color: "rgb(26, 87, 255)", fontSize: "1.5dvw" }}>
+                  <Text style={{ color: "#783CB4", fontSize: "1.5dvw", filter: 'drop-shadow(1px 0px 1px white)' }}>
                     <b>
                       {`${(dataPoblacionSuperficieConst[(year - 1990) / 5].mts_built / 1000000).toFixed(0)} km`} <sup>2</sup>
                     </b>
                   </Text>
-                  <Text style={{ color: "rgb(26, 87, 255)", fontSize: "1.5dvw" }}>
+                  <Text style={{ color: "#783CB4", fontSize: "1.5dvw", filter: 'drop-shadow(1px 0px 1px white)' }}>
                     <b>
                       {`${(dataPoblacionSuperficieConst[(year - 1990) / 5].population / 1000000).toFixed(1)} millones de personas`}
                     </b>

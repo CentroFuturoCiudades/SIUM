@@ -48,8 +48,8 @@ const ISLAS_CALOR_LEGEND_DATA = [
 
 export const EscenariosFuturosControls = () => {
   const { color } = useCardContext();
-  const startColor = useToken("colors", `${color}.700`);
-  const endColor = "#9904fd";
+  const endColor = useToken("colors", `${color}.300`);
+  const startColor = "#6a2eab";
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const [legendItems, setLegendItems] = useState([]);
   const [activeButton, setActiveButton] = useState("acelerada");
