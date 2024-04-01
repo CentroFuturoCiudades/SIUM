@@ -49,7 +49,7 @@ export const SegregacionControls = () => {
   const { color } = useCardContext();
   const [isMobile] = useMediaQuery("(max-width: 800px)");
   const [startColor] = useToken("colors", [`${color}.600`]);
-  const endColor = "#1A57FF";
+  const endColor = "#9904fd";
   const SEGREGACION_COLORS = generateGradientColors(startColor, endColor, 8);
   const { data } = useFetch(SEGREGATION_URL);
   const { data: data_asentamientos } = useFetch(ASENTAMIENTOSINF_URL);

@@ -33,7 +33,7 @@ const marks = [
 export const ExpansionUrbanaControls = () => {
   const { color, setSharedProps } = useCardContext();
   const [startColor] = useToken("colors", [`${color}.600`]);
-  const endColor = "#1A57FF";
+  const endColor = "#9904fd";
   const EXPANSION_COLORS = generateGradientColors(startColor, endColor, 8);
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const { data } = useFetch(EXPANSION_URL);

@@ -34,7 +34,7 @@ export const InfanciasControls = () => {
   const { color } = useCardContext();
   const [isMobile] = useMediaQuery("(max-width: 800px)");
   const startColor = "#cae5e5";
-  const endColor = "#1A57FF";
+  const endColor = "#9904fd";
   //const INFANCIA_COLORS = generateGradientColors(startColor, endColor, 8);
   const INFANCIA_COLORS = generateQuantileColors(startColor, endColor, 4);
   const [viewState, setViewState] = useState(SPECIAL_INFANCIAS_STATE); //para que empiece en el punto que dijo nelida

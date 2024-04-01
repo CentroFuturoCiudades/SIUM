@@ -25,7 +25,7 @@ const EMPLEO_QUANTILES = [0, 50, 200, 400, 800, 1000, 2000, 8400];
 export const EmpleoControls = () => {
   const { color } = useCardContext();
   const [startColor] = useToken("colors", [`${color}.600`]);
-  const endColor = "#1A57FF";
+  const endColor = "#9904fd";
   const EMPLEO_COLORS = generateGradientColors(startColor, endColor, 7);
   const { data } = useFetch(EMPLEO_URL);
   const [hoverInfo, setHoverInfo] = useState();

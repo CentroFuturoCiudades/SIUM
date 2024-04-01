@@ -58,7 +58,7 @@ const Equipo = () => {
             </Button>
           </a>
           <a href="#objetivo">
-            <Button variant={"text"} style={{fontSize: "1.5dvw"}}>
+            <Button variant={"text"} style={{fontSize: "1.5dvw" }}>
               Objetivo
             </Button>
           </a>

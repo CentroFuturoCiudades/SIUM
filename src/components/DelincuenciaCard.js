@@ -54,7 +54,7 @@ const legendMapping = {
 };
 
 const startColor = "#5c6255";
-const endColor = "#1A57FF";
+const endColor = "#9904fd";
 const DELINCUENCIA_COLORS = generateGradientColors(startColor, endColor, 8);
 const mappingTipoDelitos = [
   { id: "num_crimen", name: "Delitos" },

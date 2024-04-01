@@ -49,7 +49,7 @@ const ISLAS_CALOR_LEGEND_DATA = [
 export const EscenariosFuturosControls = () => {
   const { color } = useCardContext();
   const startColor = useToken("colors", `${color}.700`);
-  const endColor = "#1A57FF";
+  const endColor = "#9904fd";
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const [legendItems, setLegendItems] = useState([]);
   const [activeButton, setActiveButton] = useState("acelerada");
@@ -151,7 +151,7 @@ export function EscenariosFuturosCard() {
   const { color, currentSection } = useCardContext();
   const { data: chartData } = useFetch(ESCENARIOS_FUTUROS_CHART_URL, []);
   const startColor = useToken("colors", `${color}.700`);
-  const endColor = "#1A57FF";
+  const endColor = "#9904fd";
   const ESCENARIOS_FUTUROS_COLORS = generateGradientColors(
     startColor,
     endColor,

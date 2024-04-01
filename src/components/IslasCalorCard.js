@@ -36,14 +36,14 @@ import * as d3 from "d3";
 import PopupButton from "./PopupButton";
 
 const ISLAS_CALOR_COLORS = [
-  "rgb(255, 0, 0)",
-  "rgb(255, 50, 50)",
-  "rgb(255, 150, 150)",
-  "rgb(255, 200, 200)",
-  "rgb(250, 200, 250)",
-  "rgb(150, 150, 255)",
-  "rgb(50, 50, 255)",
-  "rgb(0, 0, 255)",
+  "#9904FD",
+  "#8D1BEF",
+  "#8132E1",
+  "#7549D3",
+  "#6A60C6",
+  "#5E77B8",
+  "#528EAA",
+  "#46A59C",
 ];
 const ISLAS_CALOR_LEGEND_DATA = [
   "Muy frío",
@@ -111,21 +111,21 @@ export const IslasCalorControls = () => {
         <GeoJsonLayer
           id="parques_layer"
           data={cleanedGeoData(dataParques.features, "area")}
-          getFillColor={[0, 255, 0, 255]}
+          getFillColor={[92, 178, 112]}
           getLineColor={[118, 124, 130]}
           getLineWidth={10}
         />
         <GeoJsonLayer
           id="primary_routes"
           data={VIAS_URL}
-          getLineColor={[0, 0, 0, 255]}
+          getLineColor={[0, 0, 0, 200]}
           getLineWidth={50}
         />
-        <PopupButton 
+        <PopupButton
           videoId="awKx7yDA6k8?si=C_doMgtFy68xD2CE"
-          title="Lorem Ipsum" 
-          subtitle="Lorem Ipsum" 
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam." 
+          title="Lorem Ipsum"
+          subtitle="Lorem Ipsum"
+          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam."
         />
       </CustomMap>
       [legendItems &&{" "}

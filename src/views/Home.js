@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { IconButton, Text, Tooltip, useMediaQuery, Flex, Box, Button} from "@chakra-ui/react";
+import { IconButton, Text, Tooltip, useMediaQuery, Flex, Box, Button } from "@chakra-ui/react";
 import Cards from "./Cards";
 import { BitmapLayer, DeckGL, GeoJsonLayer, TileLayer } from "deck.gl";
 import useWindowDimensions, {
@@ -49,13 +49,13 @@ const Map = ({ year }) => {
   const { width } = useWindowDimensions();
   const { data } = useFetch(MANCHA_URBANA_URL);
   const { data: dataPoblacionSuperficieConst } = useFetch(POBLACION_SUPERFICIE_CONST_URL);
-  
+
   const tileLayerURL =
     "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
   const multiplier =
     minMultiplier +
     ((maxMultiplier - minMultiplier) / (maxWidth - minWidth)) *
-      (width - minWidth);
+    (width - minWidth);
   const image = SATELLITE_IMAGES_URL(year || 1990);
 
 
@@ -94,15 +94,15 @@ const Map = ({ year }) => {
 
 
   const noteStyle = {
-    height: "100%", 
-    display: "flex", 
-    flexDirection: "column", 
-    justifyContent: "end", 
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "end",
     margin: "1dvw",
   };
 
   return (
-    
+
     <DeckGL
       initialViewState={{ ...initialViewState, pitch: year ? 0 : 10 }}
       controller={CONTROLLER}
@@ -151,8 +151,8 @@ const Map = ({ year }) => {
         data={
           data
             ? data.features
-                .filter((x) => +x.properties.year <= year)
-                .sort((a, b) => +b.properties.year - +a.properties.year)
+              .filter((x) => +x.properties.year <= year)
+              .sort((a, b) => +b.properties.year - +a.properties.year)
             : []
         }
         getFillColor={(d) =>
@@ -161,73 +161,73 @@ const Map = ({ year }) => {
         stroked={true}
       />
 
-        <div style={yearStyle}>            
-          <div style={{height: "100%"}}>
-            {/* Div vacío */}
-          </div>
+      <div style={yearStyle}>
+        <div style={{ height: "100%" }}>
+          {/* Div vacío */}
+        </div>
 
-          <div style={{height: "100%"}}>
-            {year&&dataPoblacionSuperficieConst ? (
+        <div style={{ height: "100%" }}>
+          {year && dataPoblacionSuperficieConst ? (
             <>
               {dataPoblacionSuperficieConst ? (
                 <>
-                  <Text style={{color: "white", fontSize:"1.5dvw"}}>
+                  <Text style={{ color: "white", fontSize: "1.5dvw" }}>
                     <b>
-                      {`${(dataPoblacionSuperficieConst[0].population/1000000).toFixed(1)} millones de personas`}
+                      {`${(dataPoblacionSuperficieConst[0].population / 1000000).toFixed(1)} millones de personas`}
                     </b>
                   </Text>
-                  <Text style={{color: "white", fontSize:"1.5dvw"}}>
+                  <Text style={{ color: "white", fontSize: "1.5dvw" }}>
                     <b>
-                      {`${(dataPoblacionSuperficieConst[0].mts_built/1000000).toFixed(0)} km`} <sup>2</sup>
+                      {`${(dataPoblacionSuperficieConst[0].mts_built / 1000000).toFixed(0)} km`} <sup>2</sup>
                     </b>
                   </Text>
                 </>
               ) : ""}
-            <br/>
-            <Text
-              style={{ color: "white", lineHeight: 0.5 }}
-              fontFamily="Poppins"
-              fontSize="3.5dvw"
+              <br />
+              <Text
+                style={{ color: "white", lineHeight: 0.5 }}
+                fontFamily="Poppins"
+                fontSize="3.5dvw"
               >
-              <b>1990</b>
-            </Text>
+                <b>1990</b>
+              </Text>
             </>
-            ) : null}
-            {year > 1990 ? (
-              <>
-                <Text
-                  fontFamily="Poppins"
-                  fontSize="3.5dvw"
-                  style={{ color: "rgb(26, 87, 255)" }}
-                  >
-                  <b>{year}</b>
-                </Text>
-                  {dataPoblacionSuperficieConst ? (
-                    <>
-                      <Text style={{color: "rgb(26, 87, 255)", fontSize:"1.5dvw"}}>
-                        <b>
-                          {`${(dataPoblacionSuperficieConst[(year-1990)/5].mts_built/1000000).toFixed(0)} km`} <sup>2</sup>
-                        </b>
-                      </Text>
-                      <Text style={{color: "rgb(26, 87, 255)", fontSize:"1.5dvw"}}>
-                        <b>
-                          {`${(dataPoblacionSuperficieConst[(year-1990)/5].population/1000000).toFixed(1)} millones de personas`}
-                        </b>
-                      </Text>
-                    </>
-                  ) : ""}
-              </>
-            ) : null}
-          </div>
-
-          {year ? (
-          <>
-            <div style={noteStyle}>
-              <Text style={{color: "white", alignItems: "end"}}>*Superficie construida con techo</Text>
-            </div>
-          </>
+          ) : null}
+          {year > 1990 ? (
+            <>
+              <Text
+                fontFamily="Poppins"
+                fontSize="3.5dvw"
+                style={{ color: "rgb(26, 87, 255)" }}
+              >
+                <b>{year}</b>
+              </Text>
+              {dataPoblacionSuperficieConst ? (
+                <>
+                  <Text style={{ color: "rgb(26, 87, 255)", fontSize: "1.5dvw" }}>
+                    <b>
+                      {`${(dataPoblacionSuperficieConst[(year - 1990) / 5].mts_built / 1000000).toFixed(0)} km`} <sup>2</sup>
+                    </b>
+                  </Text>
+                  <Text style={{ color: "rgb(26, 87, 255)", fontSize: "1.5dvw" }}>
+                    <b>
+                      {`${(dataPoblacionSuperficieConst[(year - 1990) / 5].population / 1000000).toFixed(1)} millones de personas`}
+                    </b>
+                  </Text>
+                </>
+              ) : ""}
+            </>
           ) : null}
         </div>
+
+        {year ? (
+          <>
+            <div style={noteStyle}>
+              <Text style={{ color: "white", alignItems: "end" }}>*Superficie construida con techo</Text>
+            </div>
+          </>
+        ) : null}
+      </div>
 
     </DeckGL>
   );
@@ -291,14 +291,15 @@ const Home = () => {
   };
 
   const titleStyle = {
-    fontSize: "12dvw", // Ajusta el tamaño del texto según tus preferencias
+    fontSize: "13dvw", // Ajusta el tamaño del texto según tus preferencias
     color: "antiquewhite", // Ajusta el color del texto
     textAlign: "left", // Alinea el texto a la izquierda
     marginLeft: "1rem", // Elimina el margen predeterminado
+    fontWeight: 900,
   };
   const subTitleStyle = {
-    fontSize: "4dvw", // Ajusta el tamaño del texto según tus preferencias
-    lineHeight: "1.2",
+    fontSize: "3dvw", // Ajusta el tamaño del texto según tus preferencias
+    lineHeight: "1.1",
     textAlign: "left", // Alinea el texto a la izquierda
     marginLeft: "2rem", // Elimina el margen predeterminado
   };
@@ -306,180 +307,184 @@ const Home = () => {
     width: isMobile ? "60%" : "calc(40% - 60px)",
     margin: isMobile ? "200px 10px 0 10px" : "200px 40px 0 40px",
     paddingBottom: "100px",
-    lineHeight: isMobile ? "1.5" : "1.8",
+    lineHeight: isMobile ? "1.5" : "1.4",
   };
-  
+
   return (
     <div>
-    <div
-      style={{
-        height: isMobile ? "100%" : "100dvh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginTop: "0",
-        //overflowX: "hidden"
-        //position:"fixed",
-        //overflowY: "auto"
-      }}
-    >
-    <Flex
-      align="center"
-      p={2}
-      position="absolute"
-      bg="transparent"
-      w="100%"
-      justify="space-between"
-      display="flex"
-      //overflowX= "hidden"
-    >
-      {/* Logos */}
-      <Flex w="20%" style={{display: "flex", alignItems: "center"}}>
-        {["SIUM.png", "tec.png", "femsa.png"].map((imagen, index) => (
-        <img
-          key={index}
-          className="headerImage"
-          src={`/SIUM/${imagen}`}
-          alt="SIUM"
-          style={{
-            padding: "5px",
-            height: "auto",
-            width: "auto",
-            //maxWidth: "200px",
-            maxWidth: isMobile ? "100%" : "200px",
-            objectFit: "contain",
-          }}
-        />
-        ))}
-      </Flex>
+      <div
+        style={{
+          height: isMobile ? "100%" : "100dvh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: "0",
+          //overflowX: "hidden"
+          //position:"fixed",
+          //overflowY: "auto"
+        }}
+      >
+        <Flex
+          align="center"
+          p={2}
+          position="absolute"
+          bg="transparent"
+          w="100%"
+          justify="space-between"
+          display="flex"
+        //overflowX= "hidden"
+        >
+          {/* Logos */}
+          <Flex w="20%" style={{ display: "flex", alignItems: "center" }}>
+            {["SIUM.png", "tec.png", "femsa.png"].map((imagen, index) => (
+              <img
+                key={index}
+                className="headerImage"
+                src={`/SIUM/${imagen}`}
+                alt="SIUM"
+                style={{
+                  padding: "5px",
+                  height: "auto",
+                  width: "auto",
+                  //maxWidth: "200px",
+                  // maxWidth: isMobile ? "100%" : "200px",
+                  maxHeight: isMobile ? "100%" : "50px",
+                  objectFit: "contain",
+                }}
+              />
+            ))}
+          </Flex>
 
-      {/* Botones */}
-      <Flex w="20%" justify="space-around" align="center" style={{marginRight: "10px"}}>
-        <Link to="/objetivo">
-          <Button variant="text" color="white" style={{ fontSize: "1.5dvw" }}>
-            Objetivo
-          </Button>
-        </Link>
-        <Link to="/equipo">
-          <Button variant="text" color="white" style={{ fontSize: "1.5dvw" }}>
-            Equipo
-          </Button>
-        </Link>
-      </Flex>
-    </Flex>
+          {/* Botones */}
+          <Flex w="20%" justify="space-around" align="center" style={{ marginRight: "10px" }}>
+            <Link to="/objetivo">
+              <Button variant="text" color="white" style={{ fontSize: "1.5dvw" }}>
+                Objetivo
+              </Button>
+            </Link>
+            <Link to="/equipo">
+              <Button variant="text" color="white" style={{ fontSize: "1.5dvw" }}>
+                Equipo
+              </Button>
+            </Link>
+          </Flex>
+        </Flex>
 
-      <div>
-        <Map year={!isInitial ? year : undefined} />
-        <div style={{ display: "grid"}}>
-          <div style={containerStyle}>
-            <div>
-              <h1 style={titleStyle}>Ciudad Finita</h1>
-              <Text style={subTitleStyle} color="aliceblue" m="0">
-                Expansión urbana en la
+        <div>
+          <Map year={!isInitial ? year : undefined} />
+          <div style={{ display: "grid" }}>
+            <div style={containerStyle}>
+              <div>
+                <h1 style={titleStyle}>CIUDAD FINITA</h1>
+                <Text style={subTitleStyle} color="aliceblue" m="0">
+                  Expansión urbana en la
+                </Text>
+                <Text style={subTitleStyle} color="aliceblue" m="0">
+                  Zona Metropolitana de
+                </Text>
+                <Text style={subTitleStyle} color="orange.500" m="0">
+                  <b>Monterrey</b>
+                </Text>
+              </div>
+            </div>
+            <div ref={containerRef}>
+              <Text
+                color="gray.100"
+                fontSize={isMobile ? "sm" : "1.5dvw"}
+                style={textStyle}
+              >
+                <b><u>Los recursos de la metropolis son limitados</u></b><br></br>
+                En las últimas tres décadas, la mancha urbana de Monterrey ha
+                experimentado un <b>crecimiento exponencial, triplicándose</b> en tamaño.
+                Este desarrollo, si bien evidencia el dinamismo de la ciudad,
+                también conlleva riesgos ambientales, económicos y sociales. Los
+                recursos urbanos y ambientales, que son esenciales para el
+                bienestar de la comunidad, <b>son finitos</b> y deben manejarse con
+                responsabilidad.
               </Text>
-              <Text style={subTitleStyle} color="aliceblue" m="0">
-                Zona Metropolitana de
+              <Text
+                color="gray.100"
+                fontSize={isMobile ? "sm" : "1.5dvw"}
+                style={textStyle}
+              >
+                <b><u>Crecimiento sin planeación</u></b><br></br>
+                <b>La 'mancha urbana'</b> se refiere a la expansión continua de la
+                ciudad en términos de construcción y desarrollo. En este contexto,
+                es crucial destacar que esta expansión no planificada y
+                descontrolada requiere una <b>reconsideración urgente.</b>
               </Text>
-              <Text style={subTitleStyle} color="orange.500" m="0">
-                <b>Monterrey</b>
+              <Text
+                color="gray.100"
+                fontSize={isMobile ? "sm" : "1.5dvw"}
+                style={textStyle}
+              >
+                <b><u>Visibilización, propuestas y acción colectiva</u></b><br></br>
+                La <b>finitud de los recursos</b> urbanos, ambientales y la
+                expansión <b>aparentemente 'infinita'</b> de la ciudad, nos hace
+                plantearnos diversas preguntas fundamentales sobre la
+                sostenibilidad y la gestión responsable de nuestro entorno.
+                Enfrentar estos desafíos requiere un <b>enfoque reflexivo y acciones
+                concertadas</b> para garantizar un futuro sostenible para la comunidad
+                y el entorno en la Zona Metropolitana de Monterrey.
               </Text>
             </div>
           </div>
-          <div ref={containerRef}>
-            <Text
-              color="gray.100"
-              fontSize={isMobile ? "sm" : "1.5dvw"}
-              style={textStyle}
-            >
-              En las últimas tres décadas, la mancha urbana de Monterrey ha
-              experimentado un crecimiento exponencial, triplicándose en tamaño.
-              Este desarrollo, si bien evidencia el dinamismo de la ciudad,
-              también conlleva riesgos ambientales, económicos y sociales. Los
-              recursos urbanos y ambientales, que son esenciales para el
-              bienestar de la comunidad, son finitos y deben manejarse con
-              responsabilidad.
-            </Text>
-            <Text
-              color="gray.100"
-              fontSize={isMobile ? "sm" : "1.5dvw"}
-              style={textStyle}
-            >
-              <b>La 'mancha urbana'</b> se refiere a la expansión continua de la
-              ciudad en términos de construcción y desarrollo. En este contexto,
-              es crucial destacar que esta expansión no planificada y
-              descontrolada requiere una reconsideración urgente.
-            </Text>
-            <Text
-              color="gray.100"
-              fontSize={isMobile ? "sm" : "1.5dvw"}
-              style={textStyle}
-            >
-              <b>La finitud de los recursos</b> urbanos, ambientales y la
-              expansión aparentemente 'infinita' de la ciudad, nos hace
-              plantearnos diversas preguntas fundamentales sobre la
-              sostenibilidad y la gestión responsable de nuestro entorno.
-              Enfrentar estos desafíos requiere un enfoque reflexivo y acciones
-              concertadas para garantizar un futuro sostenible para la comunidad
-              y el entorno en la Zona Metropolitana de Monterrey.
-            </Text>
-          </div>
         </div>
-      </div>
-      <div
-        style={{
-          position: "fixed",
-          bottom: "0",
-          right: "0",
-          margin: "10px",
-          display: "grid",
-        }}
-      >
-        <Tooltip
-          label="Acerca del Equipo"
-          hasArrow
-          padding="0.5rem"
-          bg="gray.700"
-          fontSize="xs"
-          borderRadius="md"
-          placement="right"
+        <div
+          style={{
+            position: "fixed",
+            bottom: "0",
+            right: "0",
+            margin: "10px",
+            display: "grid",
+          }}
         >
-          <Link to="/equipo">
-            <IconButton
-              size="sm"
-              isRound={true}
-              icon={<MdPeople />}
-              variant="solid"
-              style={{ marginBottom: "5px" }}
-              colorScheme="blackAlpha"
-            />
-          </Link>
-        </Tooltip>
-        <Tooltip
-          label="Descarga de Datos"
-          hasArrow
-          padding="0.5rem"
-          bg="gray.700"
-          fontSize="xs"
-          borderRadius="md"
-          placement="right"
-        >
-          <Link to="/descargas">
-            <IconButton
-              size="sm"
-              isRound={true}
-              icon={<MdDownload />}
-              variant="solid"
-              style={{ marginBottom: "5px" }}
-              colorScheme="blackAlpha"
-            />
-          </Link>
-        </Tooltip>
+          <Tooltip
+            label="Acerca del Equipo"
+            hasArrow
+            padding="0.5rem"
+            bg="gray.700"
+            fontSize="xs"
+            borderRadius="md"
+            placement="right"
+          >
+            <Link to="/equipo">
+              <IconButton
+                size="sm"
+                isRound={true}
+                icon={<MdPeople />}
+                variant="solid"
+                style={{ marginBottom: "5px" }}
+                colorScheme="blackAlpha"
+              />
+            </Link>
+          </Tooltip>
+          <Tooltip
+            label="Descarga de Datos"
+            hasArrow
+            padding="0.5rem"
+            bg="gray.700"
+            fontSize="xs"
+            borderRadius="md"
+            placement="right"
+          >
+            <Link to="/descargas">
+              <IconButton
+                size="sm"
+                isRound={true}
+                icon={<MdDownload />}
+                variant="solid"
+                style={{ marginBottom: "5px" }}
+                colorScheme="blackAlpha"
+              />
+            </Link>
+          </Tooltip>
+        </div>
+        <Cards />
+
       </div>
-      <Cards />
-    
-      </div>
-      </div>
+    </div>
   );
 };
 

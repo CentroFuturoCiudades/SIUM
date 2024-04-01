@@ -37,7 +37,7 @@ const marks = [
 export const ViviendaControls = () => {
   const { color, setSharedProps } = useCardContext();
   const [startColor] = useToken("colors", [`${color}.600`]);
-  const endColor = "#1A57FF";
+  const endColor = "#9904fd";
   const VIVIENDA_COLORS = generateGradientColors(startColor, endColor, 8);
   const { data } = useFetch(VIVIENDA_URL);
   const [legendItems, setLegendItems] = useState([]);
