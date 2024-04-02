@@ -142,11 +142,22 @@ export const CostosControls = () => {
           margin={{ top: 100, right: 30, left: 30, bottom: 0 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="fecha" style={{ fontSize: isMobile ? "12px" : "1dvw" }} />
-          <YAxis tickFormatter={labelMoney} style={{ fontSize: isMobile ? "12px" : "1dvw" }} />
-          <Tooltip formatter={(value) => `$${value.toLocaleString()}`} />
+          <XAxis
+            dataKey="fecha"
+            style={{ fontSize: isMobile ? "12px" : "1dvw" }}
+          />
+          <YAxis
+            tickFormatter={labelMoney}
+            style={{ fontSize: isMobile ? "12px" : "1dvw" }}
+          />
+          <Tooltip
+            formatter={(value) => `$${value.toLocaleString()}`}
+            labelFormatter={(value) => `Año ${value}`}
+            itemStyle={{ fontSize: "1dvw" }}
+            labelStyle={{ fontSize: "1.2dvw", fontWeight: "bold" }}
+          />
 
-          <Legend wrapperStyle={{ fontSize: isMobile ? '10px' : '1dvw' }} />
+          <Legend wrapperStyle={{ fontSize: isMobile ? "10px" : "1dvw" }} />
           {chartData.length > 0 &&
             municipios.map((municipio, index) => (
               <Area
