@@ -365,7 +365,7 @@ const Home = () => {
                 alt="SIUM"
                 style={{
                   padding: "5px",
-                  height: "auto",
+                  height: "10dvh",
                   width: "auto",
                   //maxWidth: "200px",
                   maxWidth: isMobile ? "100%" : "200px",

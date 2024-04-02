@@ -18,8 +18,8 @@ const CardBody = ({ id, question, answer, icon, color }) => {
           borderRadius={20}
           p="1dvw"
           style={{
-            width: isMobile ? '25dvw' : '15dvw',
-            height: isMobile ? '25dvw' : '15dvw',
+            width: isMobile ? "25dvw" : "15dvw",
+            height: isMobile ? "25dvw" : "15dvw",
             display: "flex",
             justifyContent: "center",
             cursor: "pointer",
@@ -38,13 +38,35 @@ const CardBody = ({ id, question, answer, icon, color }) => {
           >
             {isFlipped ? (
               <div>
-                <Icon as={icon} boxSize={isMobile ? '5dvw' : '3dvw'} />
-                <h3 style={{ fontFamily: "Inter", fontSize: isMobile ? '1.6dvw' : '1dvw' }}>{answer}</h3>
+                {/* <Icon as={icon} boxSize={isMobile ? "5dvw" : "3dvw"} /> */}
+                <h1
+                  style={{
+                    fontFamily: "Inter",
+                    fontSize: isMobile ? "1.8dvw" : "1.2dvw",
+                    marginBottom: '0.8dvw',
+                  }}
+                >
+                  <b>{question}</b>
+                </h1>
+                <h3
+                  style={{
+                    fontFamily: "Inter",
+                    fontSize: isMobile ? "1.6dvw" : "1dvw",
+                    textAlign: 'start'
+                  }}
+                >
+                  {answer}
+                </h3>
               </div>
             ) : (
               <div>
-                <Icon as={icon} boxSize={isMobile ? '5dvw' : '3dvw'} />
-                <h1 style={{ fontFamily: "Inter", fontSize: isMobile ? '1.8dvw' : '1.2dvw' }}>
+                <Icon as={icon} boxSize={isMobile ? "5dvw" : "3dvw"} />
+                <h1
+                  style={{
+                    fontFamily: "Inter",
+                    fontSize: isMobile ? "1.8dvw" : "1.2dvw",
+                  }}
+                >
                   <b>{question}</b>
                 </h1>
               </div>
