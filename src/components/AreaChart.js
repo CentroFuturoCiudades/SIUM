@@ -5,6 +5,7 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
+  Label,
 } from "recharts";
 import _ from "lodash";
 import { Heading, useMediaQuery, useToken } from "@chakra-ui/react";
@@ -38,20 +39,33 @@ export const AreaChartChart = ({
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={data}>
           <XAxis
+            type="number"
             dataKey={columnKey}
             domain={domain}
             fontSize="min(1dvw, 1.2dvh)"
-          />
+            tickCount={6}
+          >
+            <Label
+              value={title}
+              position="insideBottom"
+              style={{
+                fontWeight: "bold",
+                fontSize: isMobile ? "0.9rem" : "min(0.8dvw, 1.4dvh)",
+                transform: "translateY(min(0.4dvw, 0.7dvh))",
+              }}
+            />
+          </XAxis>
           <YAxis
+            type="number"
             fontSize="min(1dvw, 1.2dvh)"
             width={32}
             tickCount={5}
-            tickFormatter={d3.format(",.0f")}
+            tickFormatter={formatter}
           />
           <Tooltip
             labelStyle={{ fontSize: "0.9dvw" }}
             itemStyle={{ fontSize: "0.9dvw", padding: "0px" }}
-            formatter={d3.format(",.0f")}
+            formatter={(value) => formatter(value)}
           />
           {lines.map((lineName, index) => (
             <>
@@ -67,16 +81,6 @@ export const AreaChartChart = ({
           ))}
         </AreaChart>
       </ResponsiveContainer>
-      <Heading
-        color="gray.600"
-        style={{
-          textAlign: "center",
-          marginTop: "-15px",
-          fontSize: "min(0.9dvw, 1.4dvh)",
-        }}
-      >
-        {title}
-      </Heading>
     </div>
   );
 };

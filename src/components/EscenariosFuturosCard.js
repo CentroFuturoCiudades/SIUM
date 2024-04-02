@@ -11,7 +11,7 @@ import {
   useFetch,
 } from "../utils/constants";
 import { AreaChartChart } from "./AreaChart";
-import { 
+import {
   CustomLegend,
   CustomLegendMobile,
   LegendItem,
@@ -36,23 +36,17 @@ const ESCENARIOS_FUTUROS_CONTROLADA_URL =
 const ESCENARIOS_FUTUROS_CHART_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/escenarios.json"; // Chart
 
-const ISLAS_CALOR_LEGEND_DATA = [
-  "Muy frío",
-  "Frío",
-  "Ligeramente frío",
-  "Templado",
-  "Ligeramente cálido",
-  "Caliente",
-  "Muy caliente",
-];
+const COLORS = ["#3EA5A3", "#407E9F", "#6D4F90"];
+const SCENARIOS_NAMES = ["acelerada", "inercial", "controlada"];
 
 export const EscenariosFuturosControls = () => {
   const { color } = useCardContext();
   const startColor = useToken("colors", `${color}.700`);
   const endColor = "#1A57FF";
   const [viewState, setViewState] = useState(INITIAL_STATE);
-  const [legendItems, setLegendItems] = useState([]);
   const [activeButton, setActiveButton] = useState("acelerada");
+  const currentColor =
+    COLORS[SCENARIOS_NAMES.findIndex((t) => t === activeButton)];
   var { data: expansion_futura_acelerada_data } = useFetch(
     ESCENARIOS_FUTUROS_ACELERADA_URL
   );
@@ -91,7 +85,7 @@ export const EscenariosFuturosControls = () => {
         <GeoJsonLayer
           id={`escenarios_futuros_layer`}
           data={cleanedGeoData(data.features, "index")}
-          getFillColor={hexToRgb(endColor)}
+          getFillColor={hexToRgb(currentColor)}
         />
         <GeoJsonLayer
           id="escenarios_actuales_layer"
@@ -108,11 +102,11 @@ export const EscenariosFuturosControls = () => {
             { id: "inercial", name: "Inercial" },
           ]}
         />
-        <PopupButton 
+        <PopupButton
           videoId="2eRmyQBQ5aA"
-          title="Lorem Ipsum" 
-          subtitle="Lorem Ipsum" 
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam." 
+          title="Lorem Ipsum"
+          subtitle="Lorem Ipsum"
+          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam."
         />
       </CustomMap>
       <CustomLegend
@@ -141,7 +135,7 @@ export const EscenariosFuturosControls = () => {
         }
       >
         <LegendItem color={startColor} label="Expansión actual" />
-        <LegendItem color={endColor} label={`Expansión ${activeButton}`} />
+        <LegendItem color={currentColor} label={`Expansión ${activeButton}`} />
       </CustomLegend>
     </>
   );
@@ -150,45 +144,34 @@ export const EscenariosFuturosControls = () => {
 export function EscenariosFuturosCard() {
   const { color, currentSection } = useCardContext();
   const { data: chartData } = useFetch(ESCENARIOS_FUTUROS_CHART_URL, []);
-  const startColor = useToken("colors", `${color}.700`);
-  const endColor = "#1A57FF";
-  const ESCENARIOS_FUTUROS_COLORS = generateGradientColors(
-    startColor,
-    endColor,
-    4
-  );
-
   return (
     <>
       <ResponseTitle color={color}>
         {sectionsInfo[currentSection].answer}
       </ResponseTitle>
-      <ContextTitle color={color}>
-        <p>
-          El patrón de urbanización de Monterrey en las últimas tres décadas
-          muestra una expansión de baja densidad hacia las periferias.
-          Utilizando datos históricos, simulamos y proyectamos que, de continuar
-          así, en 2040 la superficie urbanizada crecería un XXXX%, fragmentando
-          la ciudad y aumentando la integración de centralidades lejanas como
-          Santigago, Saltillo y Ramos Arizpe a la metrópoli.
-        </p>
-        <p>
-          Planteamos dos alternativas: crecimiento compacto (XXXX km²
-          urbanizados) y acelerado (XXXX km² urbanizados). Alcanzar uno u otro
-          escenario dependerá de las políticas actuales para regular el
-          crecimiento, enfocándose en regenerar y densificar, asegurando
-          vivienda asequible en municipios centrales como San Nicolás, Guadalupe
-          y Monterrey.
-        </p>
-      </ContextTitle>
+      <p>
+        El patrón de urbanización de Monterrey en las últimas tres décadas
+        muestra una expansión de baja densidad hacia las periferias. Utilizando
+        datos históricos, simulamos y proyectamos que, de continuar así, en 2040
+        la superficie urbanizada crecería un XXXX%, fragmentando la ciudad y
+        aumentando la integración de centralidades lejanas como Santigago,
+        Saltillo y Ramos Arizpe a la metrópoli.
+      </p>
+      <p>
+        Planteamos dos alternativas: crecimiento compacto (XXXX km² urbanizados)
+        y acelerado (XXXX km² urbanizados). Alcanzar uno u otro escenario
+        dependerá de las políticas actuales para regular el crecimiento,
+        enfocándose en regenerar y densificar, asegurando vivienda asequible en
+        municipios centrales como San Nicolás, Guadalupe y Monterrey.
+      </p>
       <AreaChartChart
         title="Proyección de superficie urbanizada 2020-2050"
         data={chartData}
-        domain={[1975, 2070]}
-        lines={["inercial", "acelerada", "controlada"]}
-        lineColors={ESCENARIOS_FUTUROS_COLORS}
-        columnKey="years"
-        formatter={(d) => `${d.toLocaleString("en-US")}`}
+        domain={[2020, 2030, 2040, 2050, 2060, 2070]}
+        lines={["acelerada", "inercial", "controlada"]}
+        lineColors={COLORS}
+        columnKey="year"
+        formatter={(d) => d.toLocaleString("en-US", { maximumFractionDigits: 0 }) + " km²"}
       ></AreaChartChart>
     </>
   );
