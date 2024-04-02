@@ -8,11 +8,20 @@ import {
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { Map } from "react-map-gl";
 import mapboxgl from "mapbox-gl";
-import { GeoJsonLayer, ScatterplotLayer, TextLayer } from "deck.gl";
+import {
+  GeoJsonLayer,
+  ScatterplotLayer,
+  TextLayer,
+  WebMercatorViewport,
+} from "deck.gl";
 import { useCardContext } from "../views/Problematica";
 import Loading from "./Loading";
 import { useCallback, useEffect, useState } from "react";
-import { MUNICIPIOS_URL, hexToRgb, useFetch } from "../utils/constants";
+import useWindowDimensions, {
+  MUNICIPIOS_URL,
+  hexToRgb,
+  useFetch,
+} from "../utils/constants";
 import { mappingNames } from "./Chart";
 import { debounce } from "lodash";
 
@@ -25,13 +34,13 @@ export const DECK_GL_CONTROLLER = {
   dragMode: "pan",
 };
 export const INITIAL_STATE = {
-  latitude: 25.675,
-  longitude: -100.286419,
+  latitude: 25.68,
+  longitude: -100.3,
   zoom: 9.5,
   transitionDuration: 100,
   pitch: 0,
   bearing: 0,
-  minZoom: 8.5,
+  minZoom: 9,
   maxZoom: 14,
 };
 
@@ -44,12 +53,24 @@ export const SPECIAL_INFANCIAS_STATE = {
   pitch: 0,
   bearing: 0,
 };
+const LONGITUDE_RANGE = [-100.7, -99.9];
+const LATITUDE_RANGE = [25.35, 26.01];
 
 export function CustomMap({ viewState, infanciasHover, children }) {
+  const dimensions = useWindowDimensions();
   const [isMobile] = useMediaQuery("(max-width: 800px)");
+  const view = new WebMercatorViewport({
+    width: dimensions.width,
+    height: dimensions.height,
+  });
+  const { latitude, longitude, zoom } = view.fitBounds([
+    [LONGITUDE_RANGE[0], LATITUDE_RANGE[0]],
+    [LONGITUDE_RANGE[1], LATITUDE_RANGE[1]],
+  ]);
+
   const [processedViewState, setProcessedViewState] = useState({
     ...viewState,
-    zoom: isMobile ? viewState.zoom * 0.9 : viewState.zoom,
+    zoom: isMobile ? viewState.zoom * 0.9 : zoom,
   });
   const [hoverCenter, setHoverCenter] = useState(null);
   const infanciasHover2 = useCallback((info, event) => {
@@ -93,7 +114,17 @@ export function CustomMap({ viewState, infanciasHover, children }) {
       <DeckGL
         style={{ position: "relative" }}
         viewState={processedViewState}
-        onViewStateChange={({ viewState }) => setProcessedViewState(viewState)}
+        onViewStateChange={({ viewState }) => {
+          viewState.longitude = Math.min(
+            LONGITUDE_RANGE[1],
+            Math.max(LONGITUDE_RANGE[0], viewState.longitude)
+          );
+          viewState.latitude = Math.min(
+            LATITUDE_RANGE[1],
+            Math.max(LATITUDE_RANGE[0], viewState.latitude)
+          );
+          setProcessedViewState(viewState);
+        }}
         controller={DECK_GL_CONTROLLER}
         onHover={(info, event) => {
           if (info.coordinate) {

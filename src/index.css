@@ -62,7 +62,7 @@ body {
   bottom: 80px;
   left: 20px;
   background: rgba(255, 255, 255, 0.9);
-  padding: 5px 15px;
+  padding: min(0.4dvh, 0.2dvw) min(1.6dvh, 0.8dvw);
   box-shadow: 0 2px 8px rgba(50, 50, 50, 0.2);
   z-index: 10;
 }
@@ -90,9 +90,8 @@ body {
 }
 
 .legend-color {
-  width: 15px;
-  height: 15px;
-  margin-right: 5px;
+  height: min(1.6dvh, 0.8dvw);
+  width: min(1.6dvh, 0.8dvw);
 }
 
 .legend-numbers {
@@ -103,7 +102,7 @@ body {
 .legend-label {
   flex: 1;
   text-align: right;
-  font-size: 0.8dvw;
+  font-size: min(1.6dvh, 0.8dvw);
   color: #333;
   font-family: "Arial", Courier, monospace;
 }
@@ -119,9 +118,9 @@ body {
 }
 
 .legend-dash {
-  margin: 0 10px;
+  margin: 0 min(1dvh, 0.5dvw);
   flex-shrink: 0;
-  font-size: 0.8dvw;
+  font-size: min(1.6dvh, 0.8dvw);
   font-family: "Arial", Courier, monospace;
 }
 

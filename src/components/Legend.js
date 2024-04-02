@@ -131,9 +131,9 @@ export const Legend = ({ title, legendItems, color, description, formatter }) =>
           hasArrow
           gutter={12}
         >
-          <Heading color="gray.700" fontSize="0.9dvw">
+          <Heading color="gray.700" fontSize="min(1.8dvh, 0.9dvw)">
             <InfoIcon
-              boxSize="0.7dvw"
+              boxSize="min(1.4dvh, 0.7dvw)"
               color="gray.400"
               style={{ cursor: "pointer" }}
               mr="0.3dvw"

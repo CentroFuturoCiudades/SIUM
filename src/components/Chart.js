@@ -2,6 +2,7 @@ import {
   Bar,
   BarChart,
   Cell,
+  Label,
   LabelList,
   ResponsiveContainer,
   Tooltip,
@@ -140,7 +141,10 @@ export const Chart = ({
           <Tooltip
             formatter={formatter}
             labelStyle={{ fontSize: isMobile ? "10px" : "0.9dvw" }}
-            itemStyle={{ fontSize: isMobile ? "10px" : "0.9dvw", padding: "0px" }}
+            itemStyle={{
+              fontSize: isMobile ? "10px" : "0.9dvw",
+              padding: "0px",
+            }}
             contentStyle={{
               borderColor: colorValue,
               borderRadius: "6px",
@@ -154,7 +158,17 @@ export const Chart = ({
             style={{ fontSize: isMobile ? "0.6rem" : "min(1dvw, 1.2dvh)" }}
             domain={domain}
             tickCount={8}
-          />
+          >
+            <Label
+              value={title}
+              position="insideBottom"
+              style={{
+                fontWeight: "bold",
+                fontSize: isMobile ? "0.9rem" : "min(0.8dvw, 1.4dvh)",
+                transform: "translateY(min(0.4dvw, 0.7dvh))",
+              }}
+            />
+          </XAxis>
           <YAxis type="category" dataKey={columnKey} hide />
           <Bar
             isAnimationActive={false}
@@ -186,16 +200,6 @@ export const Chart = ({
           </Bar>
         </BarChart>
       </ResponsiveContainer>
-      <Heading
-        color="gray.600"
-        style={{
-          textAlign: "center",
-          fontSize: isMobile ? "0.9rem" : "min(1dvw, 1.4dvh)",
-          transform: "translateY(min(-0.5dvw, -0.7dvh))",
-        }}
-      >
-        {title}
-      </Heading>
     </div>
   );
 };

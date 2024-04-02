@@ -71,8 +71,8 @@ export function SliderHTML({
               mt="5"
               style={{
                 textWrap: "nowrap",
-                fontSize: isMobile ? "1.6dvw" : "1dvw",
-                transform: "translateX(-50%)",
+                fontSize: isMobile ? "1.6dvw" : "min(1.8dvh, 0.9dvw)",
+                transform: i == 0 ? "translateX(0%)" : i == marks.length - 1 ? "translateX(-90%)" : "translateX(-50%)",
                 color: "#464646",
               }}
             >
