@@ -24,6 +24,7 @@ import {
   Bar,
   BarChart,
   Cell,
+  DefaultTooltipContent,
   LabelList,
   ResponsiveContainer,
   Tooltip,
@@ -121,11 +122,11 @@ export const IslasCalorControls = () => {
           getLineColor={[0, 0, 0, 255]}
           getLineWidth={50}
         />
-        <PopupButton 
+        <PopupButton
           videoId="awKx7yDA6k8?si=C_doMgtFy68xD2CE"
-          title="Lorem Ipsum" 
-          subtitle="Lorem Ipsum" 
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam." 
+          title="Lorem Ipsum"
+          subtitle="Lorem Ipsum"
+          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam."
         />
       </CustomMap>
       [legendItems &&{" "}
@@ -207,6 +208,27 @@ export function IslasCalorCard() {
     </>
   );
 }
+
+const mappings = {
+  muy_caliente: "Clima muy caliente",
+  caliente: "Clima caliente",
+  ligeramente_calido: "Clima ligeramente cálido",
+  templado: "Clima templado",
+  frio: "Clima frío",
+  ligeramente_frio: "Clima ligeramente frío",
+  muy_frio: "Clima muy frío",
+};
+
+const CustomTooltip = (props) => {
+  if (!props.active) {
+    return null;
+  }
+  for (let i = 0; i < props.payload.length; i++) {
+    props.payload[i].name =
+      mappings[props.payload[i].name] || props.payload[i].name;
+  }
+  return <DefaultTooltipContent {...props} />;
+};
 
 export const IslasCalorChart = ({
   data,
@@ -296,6 +318,7 @@ export const IslasCalorChart = ({
               borderRadius: "10px",
               padding: "5px 10px",
             }}
+            content={<CustomTooltip />}
           />
           {categories.map((key, index) => (
             <Bar

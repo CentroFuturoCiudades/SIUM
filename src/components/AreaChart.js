@@ -6,10 +6,28 @@ import {
   Tooltip,
   ResponsiveContainer,
   Label,
+  DefaultTooltipContent,
 } from "recharts";
 import _ from "lodash";
 import { Heading, useMediaQuery, useToken } from "@chakra-ui/react";
 import * as d3 from "d3";
+
+const mappings = {
+  acelerada: "Crecimiento acelerado",
+  inercial: "Crecimiento inercial",
+  controlada: "Crecimiento controlado",
+};
+
+const CustomTooltip = (props) => {
+  if (!props.active) {
+    return null;
+  }
+  for (let i = 0; i < props.payload.length; i++) {
+    props.payload[i].name =
+      mappings[props.payload[i].name] || props.payload[i].name;
+  }
+  return <DefaultTooltipContent {...props} />;
+};
 
 export const AreaChartChart = ({
   data,
@@ -66,6 +84,7 @@ export const AreaChartChart = ({
             labelStyle={{ fontSize: "0.9dvw" }}
             itemStyle={{ fontSize: "0.9dvw", padding: "0px" }}
             formatter={(value) => formatter(value)}
+            content={<CustomTooltip />}
           />
           {lines.map((lineName, index) => (
             <>

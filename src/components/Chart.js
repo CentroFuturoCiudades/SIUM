@@ -2,6 +2,7 @@ import {
   Bar,
   BarChart,
   Cell,
+  DefaultTooltipContent,
   Label,
   LabelList,
   ResponsiveContainer,
@@ -34,6 +35,28 @@ export const mappingNames = {
   Santiago: "Santiago",
   "El Carmen": "El Carmen",
   Hidalgo: "Hidalgo",
+};
+const mappings = {
+  population_change: "Cambio de población",
+  creditos: "Créditos acumulados",
+  per_ocu: "Número de empleos",
+  TiempoTraslado: "Tiempo de traslado",
+  ratio_pob05: "Población de 0 a 5 años",
+  income_pc: "Ingreso per cápita",
+  num_crimen: "Número de delitos",
+  violencia_familiar: "Casos de violencia familiar",
+  robo_transeunte: "Casos de robo a transeúnte",
+  robo_negocio: "Casos de robo a negocio",
+  robo_casa: "Casos de robo a casa",
+  muy_caliente: "Clima muy caliente",
+  caliente: "Clima caliente",
+  ligeramente_calido: "Clima ligeramente cálido",
+  templado: "Clima templado",
+  frio: "Clima frío",
+  muy_frio: "Clima muy frío",
+  acelerada: "Crecimiento acelerado",
+  inercial: "Crecimiento inercial",
+  controlada: "Crecimiento controlado",
 };
 
 export const CustomBarLabel = memo((props) => {
@@ -70,6 +93,17 @@ export const CustomBarLabel = memo((props) => {
     </text>
   );
 });
+
+const CustomTooltip = (props) => {
+  if (!props.active) {
+    return null;
+  }
+  for (let i = 0; i < props.payload.length; i++) {
+    props.payload[i].name =
+      mappings[props.payload[i].name] || props.payload[i].name;
+  }
+  return <DefaultTooltipContent {...props} />;
+};
 
 export const Chart = ({
   data,
@@ -139,6 +173,7 @@ export const Chart = ({
       <ResponsiveContainer width="100%" height="100%">
         <BarChart layout="vertical" data={filteredData} barCategoryGap={0}>
           <Tooltip
+            content={<CustomTooltip />}
             formatter={formatter}
             labelStyle={{ fontSize: isMobile ? "10px" : "0.9dvw" }}
             itemStyle={{
