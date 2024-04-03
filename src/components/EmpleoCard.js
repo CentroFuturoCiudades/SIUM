@@ -88,6 +88,11 @@ export const EmpleoControls = () => {
           <span className="tooltip-label">
             <b>AGEB:</b> {hoverInfo.object.properties["CVEGEO"]}
           </span>
+          {hoverInfo.object.properties["colonia"] && (
+            <span className="tooltip-label">
+              <b>Colonia:</b> {hoverInfo.object.properties["colonia"]}
+            </span>
+          )}
           <span className="tooltip-label">
             <b>Número de empleos en 2020:</b>{" "}
             {hoverInfo.object.properties["Empleos"].toLocaleString("en-US")}

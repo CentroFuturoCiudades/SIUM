@@ -114,6 +114,11 @@ export const ViviendaControls = () => {
           <span className="tooltip-label">
             <b>AGEB:</b> {hoverInfo.object.properties["CVEGEO"]}
           </span>
+          {hoverInfo.object.properties["colonia"] && (
+            <span className="tooltip-label">
+              <b>Colonia:</b> {hoverInfo.object.properties["colonia"]}
+            </span>
+          )}
           <span className="tooltip-label">
             <b>Año en venta:</b> {hoverInfo.object.properties["year_end"]}
           </span>

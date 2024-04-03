@@ -108,6 +108,11 @@ export const ExpansionUrbanaControls = () => {
           <span className="tooltip-label">
             <b>AGEB:</b> {hoverInfo.object.properties["CVEGEO"]}
           </span>
+          {hoverInfo.object.properties["colonia"] && (
+            <span className="tooltip-label">
+              <b>Colonia:</b> {hoverInfo.object.properties["colonia"]}
+            </span>
+          )}
           <span className="tooltip-label">
             <b>Cambio poblacional de 1990 a 2000:</b>{" "}
             {hoverInfo.object.properties["1990"].toLocaleString("en-US")}{" "}
