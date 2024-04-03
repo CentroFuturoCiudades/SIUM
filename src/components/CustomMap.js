@@ -16,9 +16,10 @@ import {
 } from "deck.gl";
 import { useCardContext } from "../views/Problematica";
 import Loading from "./Loading";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useWindowDimensions, {
   MUNICIPIOS_URL,
+  VIAS_URL,
   hexToRgb,
   useFetch,
 } from "../utils/constants";
@@ -147,17 +148,23 @@ export function CustomMap({ viewState, infanciasHover, children }) {
         />
         {children}
         <GeoJsonLayer
+          id="primary_routes"
+          data={VIAS_URL}
+          getLineColor={[100, 120, 150, 255]}
+          getLineWidth={50}
+        />
+        <GeoJsonLayer
           id="municipality-layer"
           data={municipalityData.features}
           getFillColor={[128, 174, 0, 0]}
-          getLineColor={[128, 128, 128, 80]}
-          getLineWidth={100}
+          getLineColor={[100, 100, 100, 250]}
+          getLineWidth={40}
         />
         {outline ? (
           <GeoJsonLayer
             {...outline.props}
             getLineWidth={200}
-            getLineColor={[...hexToRgb(colorValue), 150]}
+            getLineColor={[...hexToRgb(colorValue), 255]}
             getFillColor={[160, 160, 160, 100]}
           />
         ) : null}

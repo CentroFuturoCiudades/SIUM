@@ -7,6 +7,7 @@ import {
   cleanedGeoData,
   colorInterpolate,
   generateGradientColors,
+  generateQuantileColors,
   sectionsInfo,
   separateLegendItems,
   useFetch,
@@ -24,9 +25,9 @@ const EMPLEO_QUANTILES = [0, 50, 200, 400, 800, 1000, 2000, 8400];
 
 export const EmpleoControls = () => {
   const { color } = useCardContext();
-  const [startColor] = useToken("colors", [`${color}.600`]);
-  const endColor = "#1A57FF";
-  const EMPLEO_COLORS = generateGradientColors(startColor, endColor, 7);
+  const [startColor] = useToken("colors", [`${color}.200`]);
+  const endColor = "#6a2eab";
+  const EMPLEO_COLORS = generateQuantileColors(startColor, endColor, 8);
   const { data } = useFetch(EMPLEO_URL);
   const [hoverInfo, setHoverInfo] = useState();
   const [legendItems, setLegendItems] = useState([]);
@@ -48,11 +49,11 @@ export const EmpleoControls = () => {
               d.properties["Empleos"],
               EMPLEO_QUANTILES,
               EMPLEO_COLORS,
-              0.7
+              0.8
             )
           }
           getLineColor={[118, 124, 130]}
-          getLineWidth={5}
+          getLineWidth={0}
           onHover={(info) => setHoverInfo(info)}
           pickable={true}
           autoHighlight={true}

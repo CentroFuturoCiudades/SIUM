@@ -33,7 +33,7 @@ const marks = [
 export const ExpansionUrbanaControls = () => {
   const { color, setSharedProps } = useCardContext();
   const [startColor] = useToken("colors", [`${color}.600`]);
-  const endColor = "#1A57FF";
+  const endColor = "#6a2eab";
   const EXPANSION_COLORS = generateGradientColors(startColor, endColor, 8);
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const { data } = useFetch(EXPANSION_URL);
@@ -67,7 +67,7 @@ export const ExpansionUrbanaControls = () => {
             )
           }
           getLineColor={[118, 124, 130]}
-          getLineWidth={5}
+          getLineWidth={0}
           onHover={(info) => setHoverInfo(info)}
           pickable={true}
           autoHighlight={true}

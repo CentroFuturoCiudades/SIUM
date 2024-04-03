@@ -12,6 +12,7 @@ import {
   useFetch,
   filterIcons,
   sectionsInfo,
+  generateQuantileColors,
 } from "../utils/constants";
 import { Chart } from "./Chart";
 import { Legend } from "./Legend";
@@ -48,9 +49,9 @@ const legendMapping = {
 export const SegregacionControls = () => {
   const { color } = useCardContext();
   const [isMobile] = useMediaQuery("(max-width: 800px)");
-  const [startColor] = useToken("colors", [`${color}.600`]);
-  const endColor = "#1A57FF";
-  const SEGREGACION_COLORS = generateGradientColors(startColor, endColor, 8);
+  const [startColor] = useToken("colors", [`${color}.100`]);
+  const endColor = "#6a2eab";
+  const SEGREGACION_COLORS = generateQuantileColors(startColor, endColor, 8);
   const { data } = useFetch(SEGREGATION_URL);
   const { data: data_asentamientos } = useFetch(ASENTAMIENTOSINF_URL);
   const [legendItems, setLegendItems] = useState([]);
@@ -94,7 +95,7 @@ export const SegregacionControls = () => {
             )
           }
           getLineColor={[118, 124, 130]}
-          getLineWidth={8}
+          getLineWidth={0}
           onHover={(info) => setHoverInfo(info)}
           pickable={true}
           autoHighlight={true}
@@ -105,7 +106,7 @@ export const SegregacionControls = () => {
           <GeoJsonLayer
             id="asentamientos_layer"
             data={data_asentamientos.features}
-            getFillColor={[255, 0, 0, 255]}
+            getFillColor={[200, 80, 80, 255]}
             autoHighlight={true}
             getPosition={(d) => d.position}
           />

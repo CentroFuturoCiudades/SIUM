@@ -64,6 +64,7 @@ export const CustomBarLabel = memo((props) => {
   const { x, y, width, height, index, data, columnKey } = props;
   const dataObject = data[index];
   const text = mappingNames[dataObject[columnKey]] || dataObject[columnKey];
+  console.log(props.inverse)
 
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d");
@@ -79,7 +80,7 @@ export const CustomBarLabel = memo((props) => {
       key={`label-${index}`}
       x={width <= 0 ? x + 5 : fitsInside ? insideX : outsideX}
       y={y + height / 2}
-      fill={fitsInside ? "white" : "grey"}
+      fill={fitsInside && !props.inverse ? "white" : "grey"}
       textAnchor={fitsInside ? "end" : "start"}
       dominantBaseline="middle"
       style={{
@@ -148,7 +149,7 @@ export const Chart = ({
             (x) => x.properties.NOMGEO === activeLabel
           ),
           getFillColor: [255, 174, 0, 80],
-          getLineColor: [255, 174, 0, 250],
+          getLineColor: [255, 174, 0, 0],
           getLineWidth: 120,
         },
       });

@@ -98,7 +98,7 @@ const filtering = (x, activeButton) =>
 export const TransporteControls = () => {
   const { color, setSharedProps } = useCardContext();
   const [startColor] = useToken("colors", [`${color}.600`]);
-  const endColor = "#1A57FF";
+  const endColor = "#9904fd";
   const { data } = useFetch(TRANSPORTE_URL);
   const [activeButton, setActiveButton] = useState("TPUB");
   const { time, isPlaying, handleSliderChange, togglePlay } =

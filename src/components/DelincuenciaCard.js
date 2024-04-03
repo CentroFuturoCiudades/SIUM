@@ -10,6 +10,7 @@ import {
   DELINCUENCIA_CHART_URL,
   generateGradientColors,
   sectionsInfo,
+  generateQuantileColors,
 } from "../utils/constants";
 import { Chart } from "./Chart";
 import { Legend } from "./Legend";
@@ -29,6 +30,7 @@ import {
   SliderTrack,
 } from "@chakra-ui/react";
 import { MdPause } from "react-icons/md";
+import { useToken } from "@chakra-ui/react";
 
 const legendMapping = {
   num_crimen: {
@@ -53,9 +55,6 @@ const legendMapping = {
   },
 };
 
-const startColor = "#5c6255";
-const endColor = "#1A57FF";
-const DELINCUENCIA_COLORS = generateGradientColors(startColor, endColor, 8);
 const mappingTipoDelitos = [
   { id: "num_crimen", name: "Delitos" },
   {
@@ -78,6 +77,9 @@ const mappingTipoDelitos = [
 
 export const DelincuenciaControls = () => {
   const { color, setSharedProps } = useCardContext();
+  const startColor = useToken("colors", [`${color}.200`]);
+  const endColor = "#6a2eab";
+  const DELINCUENCIA_COLORS = generateQuantileColors(startColor, endColor, 8);
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const { data } = useFetch(DELINCUENCIA_URL);
   const [legendItems, setLegendItems] = useState([]);
@@ -114,7 +116,7 @@ export const DelincuenciaControls = () => {
             )
           }
           getLineColor={[118, 124, 130]}
-          getLineWidth={5}
+          getLineWidth={0}
           onHover={(info) => setHoverInfo(info)}
           pickable={true}
           autoHighlight={true}

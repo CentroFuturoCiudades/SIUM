@@ -41,8 +41,7 @@ const SCENARIOS_NAMES = ["acelerada", "inercial", "controlada"];
 
 export const EscenariosFuturosControls = () => {
   const { color } = useCardContext();
-  const startColor = useToken("colors", `${color}.700`);
-  const endColor = "#1A57FF";
+  const startColor =  useToken("colors", `${color}.600`);
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const [activeButton, setActiveButton] = useState("acelerada");
   const currentColor =
@@ -86,11 +85,13 @@ export const EscenariosFuturosControls = () => {
           id={`escenarios_futuros_layer`}
           data={cleanedGeoData(data.features, "index")}
           getFillColor={hexToRgb(currentColor)}
+          opacity={0.8}
         />
         <GeoJsonLayer
           id="escenarios_actuales_layer"
           data={expansion_actual_data}
           getFillColor={hexToRgb(startColor)}
+          opacity={1}
         />
         <ButtonControls
           color={color}

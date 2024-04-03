@@ -37,14 +37,13 @@ import * as d3 from "d3";
 import PopupButton from "./PopupButton";
 
 const ISLAS_CALOR_COLORS = [
-  "rgb(255, 0, 0)",
-  "rgb(255, 50, 50)",
-  "rgb(255, 150, 150)",
-  "rgb(255, 200, 200)",
-  "rgb(250, 200, 250)",
-  "rgb(150, 150, 255)",
-  "rgb(50, 50, 255)",
-  "rgb(0, 0, 255)",
+  "#C32B21",
+  "#FF4945",
+  "#FEBDBC",
+  "#46A59C",
+  "#528EAA",
+  "#6A60C6",
+  "#8132E1",
 ];
 const ISLAS_CALOR_LEGEND_DATA = [
   "Muy frío",
@@ -89,11 +88,11 @@ export const IslasCalorControls = () => {
           getWeight={1}
           // use grey color to indicate intensity
           colorRange={[
-            [0, 0, 0, 0],
+            [0, 0, 0, 100],
             [0, 0, 0, 255],
           ]}
-          radiusPixels={30}
-          intensity={3}
+          radiusPixels={20}
+          intensity={5}
         />
         <GeoJsonLayer
           id="islas_calor_layer"
@@ -107,20 +106,20 @@ export const IslasCalorControls = () => {
             )
           }
           getLineWidth={0}
-          opacity={0.7}
+          opacity={0.8}
         />
         <GeoJsonLayer
           id="parques_layer"
           data={cleanedGeoData(dataParques.features, "area")}
-          getFillColor={[0, 255, 0, 255]}
+          getFillColor={[92, 178, 112]}
           getLineColor={[118, 124, 130]}
-          getLineWidth={10}
+          getLineWidth={0}
         />
         <GeoJsonLayer
           id="primary_routes"
           data={VIAS_URL}
           getLineColor={[0, 0, 0, 255]}
-          getLineWidth={50}
+          getLineWidth={70}
         />
         <PopupButton
           videoId="awKx7yDA6k8?si=C_doMgtFy68xD2CE"
@@ -150,7 +149,7 @@ export const IslasCalorControls = () => {
       >
         <LegendItem color="black" label="Vialidades Principales" />
         <LegendItem color="gray" label="Zonas Industriales" />
-        <LegendItem color="lightgreen" label="Parques" />
+        <LegendItem color="rgb(92, 178, 112)" label="Parques" />
         <div style={{ height: "10px" }} />
         {legendItems.map((item, index) => (
           <LegendItem
@@ -332,7 +331,7 @@ export const IslasCalorChart = ({
               {index === 2 && (
                 <LabelList
                   content={
-                    <CustomBarLabel columnKey={columnKey} data={filteredData} />
+                    <CustomBarLabel columnKey={columnKey} data={filteredData} inverse />
                   }
                 />
               )}

@@ -9,7 +9,6 @@ import {
   Button,
 } from "@chakra-ui/react";
 import Cards from "./Cards";
-import { Map as StaticMap } from "react-map-gl";
 import { BitmapLayer, DeckGL, GeoJsonLayer, TileLayer } from "deck.gl";
 import useWindowDimensions, {
   MANCHA_URBANA_URL,
@@ -157,7 +156,9 @@ const Map = ({ year }) => {
             : []
         }
         getFillColor={(d) =>
-          +d.properties.year === 1990 ? [200, 200, 200, 80] : [26, 87, 255, 120]
+          +d.properties.year === 1990
+            ? [200, 200, 200, 80]
+            : [106, 46, 171, 120]
         }
         stroked={true}
       />
@@ -205,15 +206,13 @@ const Map = ({ year }) => {
                 fontFamily="Poppins"
                 fontSize="3.5dvw"
                 mb="1"
-                style={{ color: "rgb(26, 87, 255)", lineHeight: 1 }}
+                style={{ color: "#783CB4", lineHeight: 1 }}
               >
                 <b>{year}</b>
               </Text>
               {dataPoblacionSuperficieConst ? (
                 <>
-                  <Text
-                    style={{ color: "rgb(26, 87, 255)", fontSize: "1.2dvw" }}
-                  >
+                  <Text style={{ color: "#783CB4", fontSize: "1.2dvw" }}>
                     <b>
                       {`${(
                         dataPoblacionSuperficieConst[(year - 1990) / 5]
@@ -222,9 +221,7 @@ const Map = ({ year }) => {
                       <sup>2</sup>
                     </b>
                   </Text>
-                  <Text
-                    style={{ color: "rgb(26, 87, 255)", fontSize: "1.2dvw" }}
-                  >
+                  <Text style={{ color: "#783CB4", fontSize: "1.2dvw" }}>
                     <b>
                       {`${(
                         dataPoblacionSuperficieConst[(year - 1990) / 5]
@@ -312,14 +309,15 @@ const Home = () => {
   };
 
   const titleStyle = {
-    fontSize: "12dvw", // Ajusta el tamaño del texto según tus preferencias
+    fontSize: "13dvw", // Ajusta el tamaño del texto según tus preferencias
     color: "antiquewhite", // Ajusta el color del texto
     textAlign: "left", // Alinea el texto a la izquierda
     marginLeft: "1rem", // Elimina el margen predeterminado
+    fontWeight: 900,
   };
   const subTitleStyle = {
-    fontSize: "4dvw", // Ajusta el tamaño del texto según tus preferencias
-    lineHeight: "1.2",
+    fontSize: "3dvw", // Ajusta el tamaño del texto según tus preferencias
+    lineHeight: "1.1",
     textAlign: "left", // Alinea el texto a la izquierda
     marginLeft: "2rem", // Elimina el margen predeterminado
   };
@@ -327,7 +325,7 @@ const Home = () => {
     width: isMobile ? "60%" : "calc(40% - 60px)",
     margin: isMobile ? "200px 10px 0 10px" : "200px 40px 0 40px",
     paddingBottom: "100px",
-    lineHeight: isMobile ? "1.5" : "1.8",
+    lineHeight: isMobile ? "1.5" : "1.4",
   };
 
   return (
@@ -408,7 +406,7 @@ const Home = () => {
           <div style={{ display: "grid" }}>
             <div style={containerStyle}>
               <div>
-                <h1 style={titleStyle}>Ciudad Finita</h1>
+                <h1 style={titleStyle}>CIUDAD FINITA</h1>
                 <Text style={subTitleStyle} color="aliceblue" m="0">
                   Expansión urbana en la
                 </Text>
@@ -426,36 +424,51 @@ const Home = () => {
                 fontSize={isMobile ? "sm" : "1.5dvw"}
                 style={textStyle}
               >
+                <b>
+                  <u>Los recursos de la metropolis son limitados</u>
+                </b>
+                <br></br>
                 En las últimas tres décadas, la mancha urbana de Monterrey ha
-                experimentado un crecimiento exponencial, triplicándose en
-                tamaño. Este desarrollo, si bien evidencia el dinamismo de la
+                experimentado un <b>
+                  crecimiento exponencial, triplicándose
+                </b>{" "}
+                en tamaño. Este desarrollo, si bien evidencia el dinamismo de la
                 ciudad, también conlleva riesgos ambientales, económicos y
                 sociales. Los recursos urbanos y ambientales, que son esenciales
-                para el bienestar de la comunidad, son finitos y deben manejarse
-                con responsabilidad.
+                para el bienestar de la comunidad, <b>son finitos</b> y deben
+                manejarse con responsabilidad.
               </Text>
               <Text
                 color="gray.100"
                 fontSize={isMobile ? "sm" : "1.5dvw"}
                 style={textStyle}
               >
+                <b>
+                  <u>Crecimiento sin planeación</u>
+                </b>
+                <br></br>
                 <b>La 'mancha urbana'</b> se refiere a la expansión continua de
                 la ciudad en términos de construcción y desarrollo. En este
                 contexto, es crucial destacar que esta expansión no planificada
-                y descontrolada requiere una reconsideración urgente.
+                y descontrolada requiere una <b>reconsideración urgente.</b>
               </Text>
               <Text
                 color="gray.100"
                 fontSize={isMobile ? "sm" : "1.5dvw"}
                 style={textStyle}
               >
-                <b>La finitud de los recursos</b> urbanos, ambientales y la
-                expansión aparentemente 'infinita' de la ciudad, nos hace
+                <b>
+                  <u>Visibilización, propuestas y acción colectiva</u>
+                </b>
+                <br></br>
+                La <b>finitud de los recursos</b> urbanos, ambientales y la
+                expansión <b>aparentemente 'infinita'</b> de la ciudad, nos hace
                 plantearnos diversas preguntas fundamentales sobre la
                 sostenibilidad y la gestión responsable de nuestro entorno.
-                Enfrentar estos desafíos requiere un enfoque reflexivo y
-                acciones concertadas para garantizar un futuro sostenible para
-                la comunidad y el entorno en la Zona Metropolitana de Monterrey.
+                Enfrentar estos desafíos requiere un{" "}
+                <b>enfoque reflexivo y acciones concertadas</b> para garantizar
+                un futuro sostenible para la comunidad y el entorno en la Zona
+                Metropolitana de Monterrey.
               </Text>
             </div>
           </div>
