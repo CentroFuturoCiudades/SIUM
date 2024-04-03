@@ -38,7 +38,6 @@ const Equipo = () => {
         style={{
           display: "flex",
           justifyContent: "space-around",
-          textAlign: "center",
         }}
       >
         <Box style={{ marginLeft: "2dvw", marginRight: "2dvw" }}>
@@ -112,7 +111,7 @@ const Equipo = () => {
         width="100%"
         h="10dvh"
         style={{
-          textAlign: "center",
+          marginLeft: "2dvw",
           fontSize: "1dvw",
           paddingTop: "2dvw",
         }}
@@ -197,7 +196,7 @@ const Objetivo = () => {
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-around",
-              textAlign: "center",
+              textAlign: "start",
               color: "#665232",
             }}
           >
