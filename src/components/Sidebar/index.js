@@ -5,6 +5,7 @@ import {
   IconButton,
   Spacer,
   Tooltip,
+  useMediaQuery,
 } from "@chakra-ui/react";
 
 import "./index.css";
@@ -14,6 +15,7 @@ import { Link } from "react-router-dom";
 import { VscTriangleLeft } from "react-icons/vsc";
 
 export const Sidebar = ({ section, setSection }) => {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
   function goToSection(url) {
     const el = document.getElementById(url);
     if (el) {
@@ -30,6 +32,7 @@ export const Sidebar = ({ section, setSection }) => {
             variant="solid"
             colorScheme="blackAlpha"
             bgColor="blackAlpha.400"
+            style={{ height: isMobile ? "40px" : "min(7dvh, 3dvw)" }}
           >
             <Icon
               as={VscTriangleLeft}
@@ -60,6 +63,7 @@ export const Sidebar = ({ section, setSection }) => {
               bgColor={`${sectionsInfo[k].color}.400`}
               isActive={section === k}
               onClick={() => goToSection(k)}
+              style={{ height: isMobile ? "40px" : "min(7dvh, 3dvw)" }}
             >
               <Icon
                 as={sectionsInfo[k].icon}

@@ -19,7 +19,7 @@ const mappings = {
 };
 
 const CustomTooltip = (props) => {
-  if (!props.active) {
+  if (!props.active || !props.payload || props.payload.length === 0) {
     return null;
   }
   for (let i = 0; i < props.payload.length; i++) {
