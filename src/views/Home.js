@@ -358,7 +358,7 @@ const Home = () => {
       </Flex>
 
       {/* Botones */}
-      <Flex w="20%" justify="space-around" align="center" style={{marginRight: "10px"}}>
+      <Flex w="30%" justify="space-around" align="center" style={{marginRight: "10px"}}>
         <Link to="/objetivo">
           <Button variant="text" color="white" style={{ fontSize: "1.5dvw" }}>
             Objetivo
