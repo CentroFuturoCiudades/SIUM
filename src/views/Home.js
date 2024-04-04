@@ -8,6 +8,7 @@ import {
   Box,
   Button,
   Heading,
+  Icon,
 } from "@chakra-ui/react";
 import Cards from "./Cards";
 import { BitmapLayer, DeckGL, GeoJsonLayer, TileLayer } from "deck.gl";
@@ -19,6 +20,7 @@ import useWindowDimensions, {
 } from "../utils/constants";
 import { Link } from "react-router-dom";
 import { MdDownload, MdPeople } from "react-icons/md";
+import { BiSolidChevronsDown } from "react-icons/bi";
 
 const bounding = [-120, 15, -80, 40];
 const boundingBox = {
@@ -55,9 +57,9 @@ const Map = ({ year }) => {
   const { data } = useFetch(MANCHA_URBANA_URL);
   const { data: dataPoblacionSuperficieConst } = useFetch(
     POBLACION_SUPERFICIE_CONST_URL
-    );
+  );
   const [densidad1990, setDensidad1990] = useState(0);
-  
+
   const tileLayerURL =
     "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
   const multiplier =
@@ -66,24 +68,23 @@ const Map = ({ year }) => {
       (width - minWidth);
   const image = SATELLITE_IMAGES_URL(year || 1990);
 
-
   useEffect(() => {
-    if(dataPoblacionSuperficieConst){
-      const densidad = 
-      dataPoblacionSuperficieConst[0].population /
-      (dataPoblacionSuperficieConst[0].mts_built / 1000000);
+    if (dataPoblacionSuperficieConst) {
+      const densidad =
+        dataPoblacionSuperficieConst[0].population /
+        (dataPoblacionSuperficieConst[0].mts_built / 1000000);
       setDensidad1990(densidad);
     }
   }, [dataPoblacionSuperficieConst]);
 
   function calculoDensidadReducida(year) {
-    const index = (year-1990)/5;
+    const index = (year - 1990) / 5;
     const densidad2 =
-    dataPoblacionSuperficieConst[index].population /
-    (dataPoblacionSuperficieConst[index].mts_built / 1000000);
-  const porcentajeReducido =
-    ((densidad1990 - densidad2) / densidad1990).toFixed(2) * 100;
-  return porcentajeReducido;
+      dataPoblacionSuperficieConst[index].population /
+      (dataPoblacionSuperficieConst[index].mts_built / 1000000);
+    const porcentajeReducido =
+      ((densidad1990 - densidad2) / densidad1990).toFixed(2) * 100;
+    return porcentajeReducido;
   }
 
   const initialViewState = {
@@ -192,7 +193,7 @@ const Map = ({ year }) => {
         <div style={{ height: "100%" }}>
           {year && dataPoblacionSuperficieConst ? (
             <>
-              {dataPoblacionSuperficieConst ? ( 
+              {dataPoblacionSuperficieConst ? (
                 <>
                   <Text style={{ color: "white", fontSize: "1.2dvw" }}>
                     <b>
@@ -229,13 +230,25 @@ const Map = ({ year }) => {
                 fontFamily="Poppins"
                 fontSize="3.5dvw"
                 mb="1"
-                style={{ color: "#783CB4", lineHeight: 1 }}
+                style={{
+                  color: "#783CB4",
+                  lineHeight: 1,
+                  "-webkit-text-stroke-width": "0.1px",
+                  "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
+                }}
               >
                 <b>{year}</b>
               </Text>
               {dataPoblacionSuperficieConst ? (
                 <>
-                  <Text style={{ color: "#783CB4", fontSize: "1.2dvw" }}>
+                  <Text
+                    style={{
+                      color: "#783CB4",
+                      fontSize: "1.2dvw",
+                      "-webkit-text-stroke-width": "0.1px",
+                      "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
+                    }}
+                  >
                     <b>
                       {`${(
                         dataPoblacionSuperficieConst[(year - 1990) / 5]
@@ -244,7 +257,14 @@ const Map = ({ year }) => {
                       <sup>2</sup>
                     </b>
                   </Text>
-                  <Text style={{ color: "#783CB4", fontSize: "1.2dvw" }}>
+                  <Text
+                    style={{
+                      color: "#783CB4",
+                      fontSize: "1.2dvw",
+                      "-webkit-text-stroke-width": "0.1px",
+                      "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
+                    }}
+                  >
                     <b>
                       {`${(
                         dataPoblacionSuperficieConst[(year - 1990) / 5]
@@ -252,11 +272,25 @@ const Map = ({ year }) => {
                       ).toFixed(1)} millones de personas`}
                     </b>
                   </Text>
-                  <Text
-                    style={{ color: "rgb(26, 87, 255)", fontSize: "1.2dvw" }}
-                  >
-                    <b>
-                      {`La densidad disminuyó un ${calculoDensidadReducida(year)}%`}
+                  {/* add drop shadow */}
+                  <Text>
+                    <Icon
+                      as={BiSolidChevronsDown}
+                      color="red.600"
+                      boxSize="1dvw"
+                      mx="2"
+                    />
+                    <b
+                      style={{
+                        color: "#783CB4",
+                        fontSize: "1.2dvw",
+                        "-webkit-text-stroke-width": "0.1px",
+                        "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
+                      }}
+                    >
+                      {`${calculoDensidadReducida(
+                        year
+                      )}% menos densidad`}
                     </b>
                   </Text>
                 </>
