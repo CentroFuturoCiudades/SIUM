@@ -60,9 +60,9 @@ export const EmpleoControls = () => {
         />
         <PopupButton 
           videoId="Z5yubfNSwCU?si=wAY3jOd8scsgJNAt"
-          title="Lorem Ipsum" 
-          subtitle="Lorem Ipsum" 
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam." 
+          title="Javier Leal" 
+          subtitle="Director del Instituto de Planeación Urbana (IMPLANG)." 
+          text="Beneficios de un menor tiempo de traslado." 
         />
       </CustomMap>
       <Slider />

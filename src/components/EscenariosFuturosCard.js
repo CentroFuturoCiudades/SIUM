@@ -110,9 +110,9 @@ export const EscenariosFuturosControls = () => {
         />
         <PopupButton 
           videoId="2eRmyQBQ5aA"
-          title="Lorem Ipsum" 
-          subtitle="Lorem Ipsum" 
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam." 
+          title="José Antonio Torre" 
+          subtitle="CFC." 
+          text="Escenarios a futuro." 
         />
       </CustomMap>
       <CustomLegend

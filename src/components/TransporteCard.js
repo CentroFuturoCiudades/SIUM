@@ -176,9 +176,9 @@ export const TransporteControls = () => {
         />
         <PopupButton 
           videoId="2eRmyQBQ5aA?si=krgUsYc8Z88oMbLq"
-          title="Lorem Ipsum" 
-          subtitle="Lorem Ipsum" 
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam." 
+          title="Luisa Pérez Barbosa" 
+          subtitle="Movimiento activación ciudadana (MOVAC)." 
+          text="Cultura vial más allá de la infraestructura." 
         />        
       </CustomMap>
       <CustomLegend

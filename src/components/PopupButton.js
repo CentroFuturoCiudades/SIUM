@@ -27,20 +27,22 @@ const PopupButton = ({ videoId, title, subtitle, text }) => {
       <Modal isOpen={isOpen} onClose={onClose}  motionPreset='slideInRight'>
         <ModalOverlay />
         <ModalContent 
-          bg={`${color}.400`}
-          colorScheme={color}
+          bg="white"
+          color={`${color}.500`} // Modificar color del texto
+          borderColor={`${color}.500`} // Color del borde
+          borderWidth="3px" // Ancho del borde
           maxW={{ base: "calc(60vw - 40px)", md: "calc(60vw - 60px)" }}
           maxH={{ base: "calc(100vh - 40px)", md: "calc(100vh - 60px)" }}
           m={4}
           mr={7}
           mt={{ base: "4%", md: "4%" }}
           ml="auto"
-          overflowY="auto">  {/* Aplicar color al modal*/}
-            <ModalHeader className="modal-header" >{title}</ModalHeader>
+          overflowY="auto">
+            <ModalHeader className="modal-header" style={{ fontSize: '1.5em' }}>{title}</ModalHeader>
             <ModalCloseButton />
-            <ModalBody p={6}> 
+            <ModalBody p={6} style={{ fontSize: '1.3em' }}> 
               <h3 className="subtitle">{subtitle}</h3>
-              <p className="description" mb={3}>{text}</p>
+              <p className="description" mb={3} style={{ fontSize: '0.9em' }}>{text}</p>
               <div className="video-container" style={{ margin: '10px 0' }}>
                 <iframe
                   src={`https://www.youtube.com/embed/${videoId}?rel=0`}

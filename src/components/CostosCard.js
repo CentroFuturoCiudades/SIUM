@@ -14,6 +14,7 @@ import ButtonControls from "./ButtonControls";
 import { useCardContext } from "../views/Problematica";
 import { sectionsInfo } from "../utils/constants";
 import { useMediaQuery } from "@chakra-ui/react";
+import PopupButton from "./PopupButton";
 
 export const CostosControls = () => {
   const { color } = useCardContext();
@@ -135,6 +136,12 @@ export const CostosControls = () => {
             name: "Gastos en obras publicas por área construida",
           },
         ]}
+      />
+      <PopupButton 
+        videoId="_h7bXZyN2po?si=fhz7F9Wv9jnT-kig"
+        title="Ana Fernanda Hierro" 
+        subtitle="Consejo de Nuevo León." 
+        text="Eficiencia y aprovechamiento del espacio." 
       />
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart

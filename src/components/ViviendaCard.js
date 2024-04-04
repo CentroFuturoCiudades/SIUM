@@ -78,9 +78,9 @@ export const ViviendaControls = () => {
         /> 
         <PopupButton 
           videoId="OsVuAKg3G0U?si=lgWZXJSOss-RFvqo"
-          title="Lorem Ipsum" 
-          subtitle="Lorem Ipsum" 
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam." 
+          title="Lucía Elizondo" 
+          subtitle="Tecnológico de Monterrey | ITESM · Campus Monterrey - Arch, MDesS, PhD" 
+          text="Regulación de la vivienda." 
         />
       </CustomMap>
       <Legend

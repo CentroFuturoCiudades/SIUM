@@ -123,9 +123,9 @@ export const IslasCalorControls = () => {
         />
         <PopupButton 
           videoId="awKx7yDA6k8?si=C_doMgtFy68xD2CE"
-          title="Lorem Ipsum" 
-          subtitle="Lorem Ipsum" 
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam." 
+          title="Fabián Lozano" 
+          subtitle="Investigador adjunto, Gobierno y emprendimiento público, Escuela de Ciencias Sociales y Gobierno." 
+          text="Bienestar climático inclusivo." 
         />
       </CustomMap>
       [legendItems &&{" "}
