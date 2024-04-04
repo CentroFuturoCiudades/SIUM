@@ -55,14 +55,36 @@ const Map = ({ year }) => {
   const { data } = useFetch(MANCHA_URBANA_URL);
   const { data: dataPoblacionSuperficieConst } = useFetch(
     POBLACION_SUPERFICIE_CONST_URL
-  );
-
+    );
+  const [densidad1990, setDensidad1990] = useState(0);
+  
   const tileLayerURL =
     "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
   const multiplier =
     minMultiplier +
     ((maxMultiplier - minMultiplier) / (maxWidth - minWidth)) *
       (width - minWidth);
+  const image = SATELLITE_IMAGES_URL(year || 1990);
+
+
+  useEffect(() => {
+    if(dataPoblacionSuperficieConst){
+      const densidad = 
+      dataPoblacionSuperficieConst[0].population /
+      (dataPoblacionSuperficieConst[0].mts_built / 1000000);
+      setDensidad1990(densidad);
+    }
+  }, [dataPoblacionSuperficieConst]);
+
+  function calculoDensidadReducida(year) {
+    const index = (year-1990)/5;
+    const densidad2 =
+    dataPoblacionSuperficieConst[index].population /
+    (dataPoblacionSuperficieConst[index].mts_built / 1000000);
+  const porcentajeReducido =
+    ((densidad1990 - densidad2) / densidad1990).toFixed(2) * 100;
+  return porcentajeReducido;
+  }
 
   const initialViewState = {
     latitude: 25.68,
@@ -168,7 +190,7 @@ const Map = ({ year }) => {
         <div style={{ height: "100%" }}>
           {year && dataPoblacionSuperficieConst ? (
             <>
-              {dataPoblacionSuperficieConst ? (
+              {dataPoblacionSuperficieConst ? ( 
                 <>
                   <Text style={{ color: "white", fontSize: "1.2dvw" }}>
                     <b>
@@ -230,6 +252,13 @@ const Map = ({ year }) => {
                         dataPoblacionSuperficieConst[(year - 1990) / 5]
                           .population / 1000000
                       ).toFixed(1)} millones de personas`}
+                    </b>
+                  </Text>
+                  <Text
+                    style={{ color: "rgb(26, 87, 255)", fontSize: "1.2dvw" }}
+                  >
+                    <b>
+                      {`La densidad disminuyó un ${calculoDensidadReducida(year)}%`}
                     </b>
                   </Text>
                 </>
