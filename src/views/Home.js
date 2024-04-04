@@ -7,6 +7,7 @@ import {
   Flex,
   Box,
   Button,
+  Heading,
 } from "@chakra-ui/react";
 import Cards from "./Cards";
 import { BitmapLayer, DeckGL, GeoJsonLayer, TileLayer } from "deck.gl";
@@ -424,9 +425,12 @@ const Home = () => {
                 fontSize={isMobile ? "sm" : "1.5dvw"}
                 style={textStyle}
               >
-                <b>
-                  <u>Los recursos de la metropolis son limitados</u>
-                </b>
+                <Heading
+                  color="orange.500"
+                  fontSize={isMobile ? "lg" : "2.5dvw"}
+                >
+                  Los recursos de la metropolis son limitados
+                </Heading>
                 <br></br>
                 En las últimas tres décadas, la mancha urbana de Monterrey ha
                 experimentado un <b>
@@ -443,9 +447,12 @@ const Home = () => {
                 fontSize={isMobile ? "sm" : "1.5dvw"}
                 style={textStyle}
               >
-                <b>
-                  <u>Crecimiento sin planeación</u>
-                </b>
+                <Heading
+                  color="orange.500"
+                  fontSize={isMobile ? "lg" : "2.5dvw"}
+                >
+                  Crecimiento sin planeación
+                </Heading>
                 <br></br>
                 <b>La 'mancha urbana'</b> se refiere a la expansión continua de
                 la ciudad en términos de construcción y desarrollo. En este
@@ -457,9 +464,12 @@ const Home = () => {
                 fontSize={isMobile ? "sm" : "1.5dvw"}
                 style={textStyle}
               >
-                <b>
-                  <u>Visibilización, propuestas y acción colectiva</u>
-                </b>
+                <Heading
+                  color="orange.500"
+                  fontSize={isMobile ? "lg" : "2.5dvw"}
+                >
+                  Visibilización, propuestas y acción colectiva
+                </Heading>
                 <br></br>
                 La <b>finitud de los recursos</b> urbanos, ambientales y la
                 expansión <b>aparentemente 'infinita'</b> de la ciudad, nos hace

@@ -98,7 +98,7 @@ const filtering = (x, activeButton) =>
 export const TransporteControls = () => {
   const { color, setSharedProps } = useCardContext();
   const [startColor] = useToken("colors", [`${color}.600`]);
-  const endColor = "#9904fd";
+  const endColor = "#6a2eab";
   const { data } = useFetch(TRANSPORTE_URL);
   const [activeButton, setActiveButton] = useState("TPUB");
   const { time, isPlaying, handleSliderChange, togglePlay } =
@@ -166,9 +166,9 @@ export const TransporteControls = () => {
             const item = data.features[i.index].properties;
             const isTrabajo =
               item.Motivo == "Regreso A Casa" || item.Motivo == "Trabajo";
-            return isTrabajo ? [26, 87, 255] : [126, 96, 62];
+            return isTrabajo ? [106, 46, 171] : [126, 96, 62];
           }}
-          opacity={0.3}
+          opacity={0.8}
           widthMinPixels={3}
           rounded={true}
           trailLength={10}

@@ -6,14 +6,15 @@ const ButtonControls = ({ activeButton, setActiveButton, mapping, color }) => {
       style={{
         position: "absolute",
         top: "10px",
-        width: "100%",
+        width: "50%",
         alignItems: "center",
         justifyContent: "center",
         zIndex: 1,
+        transform: "translateX(50%)"
       }}
     >
       <Select
-        width="50%"
+        width="100%"
         variant="outline"
         bg={`${color}.400`}
         borderColor={`${color}.500`}
@@ -23,7 +24,6 @@ const ButtonControls = ({ activeButton, setActiveButton, mapping, color }) => {
         focusBorderColor={`${color}.500`}
         onChange={(e) => setActiveButton(e.target.value)}
         value={activeButton}
-        margin="auto"
       >
         {mapping.map((button) => (
           <option value={button.id} key={`button-${button.id}`} style={{color: "gray"}}>

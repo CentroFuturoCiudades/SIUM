@@ -28,7 +28,7 @@ import { IconLayer } from "deck.gl";
 import PopupButton from "./PopupButton";
 
 //const INFANCIAS_QUANTILES = [0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.2, 0.3, 0.4];
-const INFANCIAS_QUANTILES = [0, 0.1, 0.2, 0.3, 0.4];
+const INFANCIAS_QUANTILES = [0.05, 0.1, 0.15, 0.2, 0.4];
 
 export const InfanciasControls = () => {
   const { color } = useCardContext();
@@ -147,7 +147,7 @@ export const InfanciasControls = () => {
             colorInterpolate(
               d.properties["ratio_pob05"],
               //[0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.2, 0.3, 0.4],
-              [0, 0.1, 0.2, 0.3, 0.4],
+              INFANCIAS_QUANTILES,
               INFANCIA_COLORS,
               1
             )
@@ -177,6 +177,7 @@ export const InfanciasControls = () => {
           getLineColor={[255, 113, 48]}
           getLineWidth={30}
           brushingEnabled={true}
+          visible={!!circlePayload}
           brushingRadius={brushingRadius}
           extensions={[new BrushingExtension()]}
         />
@@ -192,6 +193,7 @@ export const InfanciasControls = () => {
           getPosition={d => d.geometry.coordinates}
           sizeUnits={'meters'}
           sizeScale={100}
+          visible={!!circlePayload}
           sizeMinPixels={6}
           brushingEnabled={true}
           brushingRadius={brushingRadius}
