@@ -279,10 +279,12 @@ const CategoriaItem = ({ title, description, onDownload, selected }) => (
         _expanded={{ bg: selected ? "blue.100" : "white" }}
         onClick={onDownload}
       >
-        <Box flex="1" textAlign="left">
+        <Box flex="1" textAlign="left" zIndex="1">
           {title}
         </Box>
-        <Checkbox isChecked={selected} />
+        <Box pointerEvents="none">
+            <Checkbox isChecked={selected} />
+          </Box>
       </AccordionButton>
     </h2>
     <AccordionPanel pb={4}>{description}</AccordionPanel>
