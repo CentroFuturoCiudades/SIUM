@@ -276,7 +276,7 @@ const CategoriaItem = ({ title, description, onDownload, selected }) => (
   <AccordionItem>
     <h2>
       <AccordionButton
-        _expanded={{ bg: selected ? "blue.100" : "white" }}
+        _expanded={{ bg: selected ? "blue.100" : "white" }} 
         onClick={onDownload}
       >
         <Box flex="1" textAlign="left" zIndex="1">
