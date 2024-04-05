@@ -197,19 +197,19 @@ export function DelincuenciaCard() {
         {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
-        Entre más aumenta la mancha urbana, más aumenta la inseguridad: cuando
-        la mancha urbana aumenta un kilómetro, el robo a casa habitación
-        incrementa en un 0.04%.
+        Entre más crece la mancha urbana, más aumenta la inseguridad: cuando se
+        expande un kilómetro, el robo a casa habitación incrementa en un 0.04%.
       </p>
       <p>
-        Las incidencias delictivas como robos a transeúntes o a viviendas, así
-        como violencia familiar se concentran en regiones segregadas. Estar
-        alejado de actividades económicas aumenta la incidencia delictiva. Estar
-        cercano a centros con comercio al por menor, la disminuyen.
+        Además, las incidencias delictivas como robos a transeúntes o a
+        viviendas, así como la violencia familiar se concentran en regiones
+        segregadas. Es claro que estar alejado de actividades económicas aumenta
+        la incidencia delictiva, mientras que estar cercano a centros con
+        comercio al por menor, la disminuyen.
       </p>
       <ContextTitle color={color}>
         Las ciudades compactas y multifuncionales incentivan una vida pública
-        activa, lo que podría disminuir los indices delictivos en la Zona
+        activa, lo que podría disminuir los índices delictivos en la Zona
         Metropolitana de Monterrey.
       </ContextTitle>
       <Chart

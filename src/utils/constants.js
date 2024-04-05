@@ -17,7 +17,6 @@ import { BsHouseFill } from "react-icons/bs";
 import { IoMdSubway } from "react-icons/io";
 import { VscTriangleLeft } from "react-icons/vsc";
 
-
 import {
   ExpansionUrbanaCard,
   ExpansionUrbanaControls,
@@ -524,7 +523,7 @@ export const useFetch = (url, initialData = undefined) => {
 export const sectionsInfo = {
   "expansion-urbana": {
     title: "¿Hacia dónde nos expandimos?",
-    answer: "Hacia las Periferias, lejos unos de otros",
+    answer: "Hacia las periferias, lejos unos de otros",
     color: "brown",
     icon: FaPeopleArrows,
     component: ExpansionUrbanaCard,
@@ -548,7 +547,7 @@ export const sectionsInfo = {
   },
   transporte: {
     title: "¿Cómo nos movemos?",
-    answer: "Demasiados de nosotros en auto.",
+    answer: "En auto, demasiados de nosotros.",
     color: "yellow",
     icon: IoMdSubway,
     component: TransporteCard,
@@ -565,7 +564,7 @@ export const sectionsInfo = {
   },
   segregacion: {
     title: "¿Por qué segrega?",
-    answer: "Porque expulsa a los más vulnerables a la periferia",
+    answer: "Porque expulsa a los más vulnerables hacia la periferia",
     color: "green1",
     icon: GiInjustice,
     component: SegregacionCard,
@@ -574,14 +573,14 @@ export const sectionsInfo = {
   delincuencia: {
     title: "¿Por qué aumenta la inseguridad?",
     answer:
-      "Porque al estar alejados, no nos podemos cuidar los unos a los otros",
+      "Porque al estar alejados, no podemos cuidarnos los unos a los otros",
     color: "green2",
     icon: GiRobber,
     component: DelincuenciaCard,
     controls: DelincuenciaControls,
   },
   costos: {
-    title: "¿Por qué nos cuenta tanto dinero?",
+    title: "¿Por qué nos cuesta tanto dinero?",
     answer: "Hay que llevar servicios públicos más lejos",
     color: "green3",
     icon: MdOutlineAttachMoney,
@@ -590,7 +589,8 @@ export const sectionsInfo = {
   },
   islasCalor: {
     title: "¿Por qué sentimos tanto calor?",
-    answer: "Porque el 25% del área de la zona urbana son vialidades, hemos construido una ciudad de asfalto.",
+    answer:
+      "Porque el 25% del área de la zona urbana son vialidades, hemos construido una ciudad de asfalto.",
     color: "teal1",
     icon: MdDeviceThermostat,
     component: IslasCalorCard,
@@ -599,7 +599,7 @@ export const sectionsInfo = {
   escenariosFuturos: {
     title: "¿Qué pasaría si no cambiamos?",
     answer:
-      "Vamos a tener una ciudad más dispersa, fragmentada social y territorialmente con centralidades desconectadas",
+      "Tendremos una ciudad más dispersa, con centralidades desconectadas y social y territorialmente fragmentada",
     color: "teal2",
     icon: MdOutlineAccessTime,
     component: EscenariosFuturosCard,

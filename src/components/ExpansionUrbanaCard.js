@@ -145,22 +145,20 @@ export function ExpansionUrbanaCard() {
       </ResponseTitle>
       <p>
         <b>En 1990</b>, las familias jóvenes residían mayormente en zonas
-        centrales como Monterrey, Guadalupe, San Pedro y San Nicolás.
+        centrales como Monterrey, Guadalupe, San Pedro y San Nicolás. Pero{" "}
+        <b>para 2020</b>, migraron a la periferia: Juárez, García, Apodaca,
+        Santa Catarina y General Zuazua; mientras que los adultos mayores
+        permanecieron en el área central.
       </p>
       <p>
-        <b>Para 2020</b>, migraron a la periferia: Juárez, García, Apodaca,
-        Santa Catarina y General Zuazua. Mientras que los adultos mayores
-        permanecieron en las zonas centrales.
-      </p>
-      <p>
-        Recientemente, cambios demográficos demandan ajustes en políticas y
-        servicios urbanos. La migración de hogares jóvenes hacia la periferia se
-        debe, en gran medida, a la escasez de viviendas adecuadas en el centro
-        urbano para sus ingresos y preferencias de vida.
+        Recientemente, los cambios demográficos han demandado ajustes en
+        políticas y servicios urbanos. La migración de hogares jóvenes se debe,
+        en gran medida, a la escasez en el centro de viviendas adecuadas a sus
+        ingresos y preferencias de vida.
       </p>
       <ContextTitle color={color}>
-        Promover la densificación y optar por soluciones habitacionales
-        asequibles, fomentará la permanencia de una demografía diversa en las
+        Optar por soluciones habitacionales asequibles y promover la
+        densificación, fomentará la permanencia de una demografía diversa en las
         centralidades.
       </ContextTitle>
       <Chart

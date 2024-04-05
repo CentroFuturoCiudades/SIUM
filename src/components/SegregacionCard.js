@@ -219,20 +219,21 @@ export function SegregacionCard() {
         {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
-        Al expandirnos en estos niveles es innevitable que ciertos grupos
-        poblacionales, incluyendo las familias jóvenes o con primeras infancias,
-        queden alejados de las áreas con oportunidades y servicios.
+        Al expandirnos de esta manera y en tales niveles, inevitablemente
+        ciertos grupos poblacionales, incluyendo a las familias jóvenes o con
+        primeras infancias, quedan alejados de las áreas con oportunidades y
+        servicios.
       </p>
       <p>
-        La expansión provoca una segregación espacial que divide zonas
-        abruptamente. Las zonas de mayor ingreso como San Pedro o el Sur de
-        Monterrey y las de menor ingreso, que cuentan con costos de suelo más
-        bajos, como sucede en Céntrika y Loma Larga, y en Estanzuela Fomerrey y
-        los límites de la colonia Independencia con Loma Larga.
+        Esto provoca una segregación espacial que divide las zonas abruptamente.
+        Las de mayor ingreso como San Pedro o el Sur de Monterrey contra las de
+        menor ingreso, que cuentan con costos de suelo más bajos, como sucede en
+        Céntrika y Loma Larga, en Estanzuela Fomerrey y en los límites de la
+        colonia Independencia con Loma Larga.
       </p>
       <ContextTitle color={color}>
-        Integrar la Zona Metropolitana de Monterrey por medio de transporte
-        colectivo, disminuirá la segregación económica que la expansión provoca.
+        Integrar la Zona Metropolitana por medio de transporte colectivo,
+        disminuirá la segregación económica que la expansión provoca.
         Simultáneamente, se deben de generar políticas de vivienda asequible
         menos desconectadas de las zonas funcionales de la ciudad.
       </ContextTitle>

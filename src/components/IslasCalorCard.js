@@ -178,18 +178,18 @@ export function IslasCalorCard() {
         {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
-        La Zona Metropolitana de Monterrey enfrenta un fenómeno creciente
-        llamado efecto isla de calor. Se presenta cuando las áreas urbanas
-        tienen temperaturas más altas que las rurales debido a la presencia de
+        La Zona Metropolitana de Monterrey enfrenta un creciente fenómeno
+        llamado 'efecto isla de calor' que se presenta cuando las áreas urbanas
+        tienen temperaturas más altas que las rurales, debido a la presencia de
         edificios, asfalto y concreto.
       </p>
       <p>
-        En el centro de Monterrey, la alta densidad de edificios y la falta de
-        áreas verdes aumentan las temperaturas, hasta en XXXXX°, en comparación
-        a las áreas con mayor arbolado. Las infraestructuras urbanas,
-        principalmente de asfalto y concreto, retienen calor y lo liberan
-        gradualmente, intensificando el efecto isla de calor. Esto afecta
-        negativamente la salud y la calidad de vida, especialmente en verano.
+        La infraestructura, principalmente la de estos dos materiales, retiene
+        calor y lo libera gradualmente, intensificando este efecto. En el centro
+        de Monterrey, la alta densidad de edificios y la falta de áreas verdes
+        aumentan las temperaturas, hasta en XXXXX°, en comparación con las zonas
+        que cuentan con mayor arbolado. Esto afecta negativamente la salud y la
+        calidad de vida, especialmente en verano.
       </p>
       <ContextTitle color={color}>
         El rápido crecimiento urbano, sumado a la escasez de infraestructura
@@ -331,7 +331,11 @@ export const IslasCalorChart = ({
               {index === 2 && (
                 <LabelList
                   content={
-                    <CustomBarLabel columnKey={columnKey} data={filteredData} inverse />
+                    <CustomBarLabel
+                      columnKey={columnKey}
+                      data={filteredData}
+                      inverse
+                    />
                   }
                 />
               )}

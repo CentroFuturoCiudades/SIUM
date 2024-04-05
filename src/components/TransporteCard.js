@@ -27,7 +27,7 @@ import {
   Tbody,
   Td,
   Thead,
-  Tooltip, 
+  Tooltip,
   Tr,
   useToken,
 } from "@chakra-ui/react";
@@ -174,12 +174,12 @@ export const TransporteControls = () => {
           trailLength={10}
           currentTime={time}
         />
-        <PopupButton 
+        <PopupButton
           videoId="2eRmyQBQ5aA?si=krgUsYc8Z88oMbLq"
-          title="Lorem Ipsum" 
-          subtitle="Lorem Ipsum" 
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam." 
-        />        
+          title="Lorem Ipsum"
+          subtitle="Lorem Ipsum"
+          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam."
+        />
       </CustomMap>
       <CustomLegend
         color={color}
@@ -235,30 +235,27 @@ export function TransporteCard() {
       </ResponseTitle>
       <p>
         <b>El 45% de los desplazamientos</b> en Monterrey son viajes al trabajo,
-        casi la mitad en automóvil, con la particularidad de que la mitad se
-        hace con una sola persona. Los residentes{" "}
-        <b>
-          invierten en promedio 50 minutos por viaje redondo en auto,
-          equivalente a doce días al año
-        </b>
-        . El transporte público requiere mejoras; las personas pasan en promedio
-        70 minutos al día en él, con un tercio experimentando viajes de 3 horas
-        diarias.
+        casi la mitad de ellos en automóvil y con la particularidad, de que la
+        mitad se hace con una sola persona. Los residentes invierten en promedio
+        50 minutos por viaje redondo en auto, equivalente a doce días al año.
+        Por su parte, el transporte público requiere mejoras: las personas pasan
+        en promedio 70 minutos al día en él, con un tercio de ellas
+        experimentando viajes de 3 horas diarias.
       </p>
       <p>
-        <b>El 40% de los traslados vienen de la periferia</b>, como Apodaca,
-        Escobedo, García y Juárez, mientras que el 26% se dirige a Monterrey.
-        Solo el 21% utiliza transporte público y un 19% se traslada caminando.
-        Es esencial expandir el acceso al transporte público y mejorar la
-        infraestructura para contrarrestar el impacto negativo en la salud
-        pública y el medio ambiente por el elevado número de viajes en
-        automóvil.
+        Además, <b>el 40% de los traslados vienen de la periferia</b>, como
+        Apodaca, Escobedo, García y Juárez; mientras que el 26% se dirige a
+        Monterrey. Es esencial expandir el acceso al transporte público y
+        mejorar la infraestructura, puesto que tan solo el 21% lo utiliza (otro
+        19% se traslada caminando). Solo así se podrá contrarrestar el impacto
+        negativo en la salud pública y en el medio ambiente que genera el
+        elevado número de viajes en automóvil.
       </p>
 
       <ContextTitle color={color}>
         Los Sistemas Integrados de Transporte brindan una ciudad conectada,
-        ordenada, de calidad, rápida y segura. Son importantes para la seguridad
-        de las personas al hacer viajes intermodales.
+        ordenada, de calidad, rápida y segura. Además son clave para la
+        seguridad de las personas que necesitan realizar viajes intermodales.
       </ContextTitle>
       <Chart
         title={`Tiempo de traslado regreso a casa en ${currentTransporte}`}

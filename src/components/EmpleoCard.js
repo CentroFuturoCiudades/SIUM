@@ -114,28 +114,22 @@ export function EmpleoCard() {
         {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
-        La migración de familias jóvenes a la periferia reduce población en
-        centros urbanos, aumentando desplazamientos al trabajo.
+        La migración de familias jóvenes a la periferia, reduce la población en
+        centros urbanos, aumentando los desplazamientos al trabajo. Por otro
+        lado, aunque los empleos continúan a diez kilómetros alrededor de la
+        Macroplaza, existen ya nuevas centralidades. En 2010, el 53% de empleos
+        estaba en la Macroplaza; en 2020, bajó al 47%.
       </p>
       <p>
-        <b>
-          Los empleos continúan a diez kilómetros alrededor de la Macroplaza
-          pero existen nuevas centralidades.
-        </b>{" "}
-        En 2010, el 53% de empleos estaba en la Macroplaza; en 2020, bajó al
-        47%.{" "}
-        <b>
-          El crecimiento de los centros de empleo se mantienen constantes ante
-          la migración hacia la periferia.
-        </b>
-      </p>
-      <p>
-        La población de Monterrey duplicó de 1990 a 2020, y la expansión urbana
-        creció 2.8 veces, <b>incrementando el tiempo de traslado</b>.
+        Sin embargo, el crecimiento de los centros de empleo se mantiene
+        constante ante la migración hacia la periferia. Mientras que la
+        población de Monterrey se duplicó de 1990 a 2020, la expansión urbana
+        fue de 2.8 veces, incrementando el tiempo de traslado.
       </p>
       <ContextTitle color={color}>
-        Replantear los centros y subcentros económicos como promotores
-        vocacionales de diversidad de usos para disminuir el tiempo de traslado.
+        Se necesitan replantear los centros y subcentros económicos como
+        promotores vocacionales de diversidad de usos, para combatir ese aumento
+        en el desplazamiento.
       </ContextTitle>
 
       <Chart

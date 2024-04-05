@@ -163,14 +163,14 @@ export function ViviendaCard() {
         La zona central de Monterrey se ha convertido en un área comercial sin
         residentes. Los hogares se mudan mientras los comercios permanecen.
         Durante décadas, se ha invertido en infraestructura de transporte para
-        conectar el empleo en el centro con las zonas residenciales. Esto le
-        otorga un alto valor comercial al centro y hace inviable la producción
-        de vivienda asequible. La vivienda económica, a la que las familias
-        jóvenes tienen acceso, se construye en las periferias urbanas.
+        conectar el empleo en el centro con las zonas residenciales, otorgándole
+        un alto valor comercial y haciendo inviable la producción de vivienda
+        asequible. La vivienda económica, a la que las familias jóvenes tienen
+        acceso, termina por construirse en las periferias urbanas.
       </p>
       <ContextTitle color={color}>
         Aunque los costos de la vivienda sean menores en las periferias, otros
-        costos como traslado o servicios se elevan.
+        costos como el de traslado o los servicios, se elevan.
       </ContextTitle>
       <Chart
         title={`Número de Creditos acumulados en ${sharedProps.time}`}

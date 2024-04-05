@@ -41,7 +41,7 @@ const SCENARIOS_NAMES = ["acelerada", "inercial", "controlada"];
 
 export const EscenariosFuturosControls = () => {
   const { color } = useCardContext();
-  const startColor =  useToken("colors", `${color}.600`);
+  const startColor = useToken("colors", `${color}.600`);
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const [activeButton, setActiveButton] = useState("acelerada");
   const currentColor =
@@ -151,19 +151,20 @@ export function EscenariosFuturosCard() {
         {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
-        El patrón de urbanización de Monterrey en las últimas tres décadas
+        El patrón de urbanización de Monterrey en las últimas tres décadas,
         muestra una expansión de baja densidad hacia las periferias. Utilizando
         datos históricos, simulamos y proyectamos que, de continuar así, en 2040
-        la superficie urbanizada crecería un XXXX%, fragmentando la ciudad y
-        aumentando la integración de centralidades lejanas como Santigago,
+        la superficie urbanizada crecerá un XXXX%, fragmentando la ciudad y
+        aumentando la integración de centralidades lejanas como Santiago,
         Saltillo y Ramos Arizpe a la metrópoli.
       </p>
       <p>
-        Planteamos dos alternativas: crecimiento compacto (XXXX km² urbanizados)
-        y acelerado (XXXX km² urbanizados). Alcanzar uno u otro escenario
-        dependerá de las políticas actuales para regular el crecimiento,
-        enfocándose en regenerar y densificar, asegurando vivienda asequible en
-        municipios centrales como San Nicolás, Guadalupe y Monterrey.
+        Planteamos dos alternativas de crecimiento: compacto (XXXX km²
+        urbanizados) o acelerado (XXXX km² urbanizados). Alcanzar uno u otro
+        escenario dependerá de las políticas actuales para regularlo, y de si
+        consiguen enfocarse en regenerar y densificar, asegurando, por ejemplo,
+        vivienda asequible en municipios centrales como San Nicolás, Guadalupe y
+        Monterrey.
       </p>
       <AreaChartChart
         title="Proyección de superficie urbanizada 2020-2050"
@@ -172,7 +173,9 @@ export function EscenariosFuturosCard() {
         lines={["acelerada", "inercial", "controlada"]}
         lineColors={COLORS}
         columnKey="year"
-        formatter={(d) => d.toLocaleString("en-US", { maximumFractionDigits: 0 }) + " km²"}
+        formatter={(d) =>
+          d.toLocaleString("en-US", { maximumFractionDigits: 0 }) + " km²"
+        }
       ></AreaChartChart>
     </>
   );

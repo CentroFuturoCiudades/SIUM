@@ -55,12 +55,12 @@ export const InfanciasControls = () => {
 
   function getIconByCodigoAct(sector) {
     switch (sector) {
-      case 'guarderia':
-        return 'marker-guarderia';
-      case 'preescolar':
-        return 'marker-preescolar';
-      case 'salud':
-        return 'marker-salud';
+      case "guarderia":
+        return "marker-guarderia";
+      case "preescolar":
+        return "marker-preescolar";
+      case "salud":
+        return "marker-salud";
     }
   }
 
@@ -172,7 +172,9 @@ export const InfanciasControls = () => {
         <GeoJsonLayer
           id="comercios_layer"
           //data={cleanedGeoData(dataServ.features, "codigo_act")}
-          data={dataServ.features.filter(d => d.properties.sector === "comercio al por menor")}
+          data={dataServ.features.filter(
+            (d) => d.properties.sector === "comercio al por menor"
+          )}
           getFillColor={"#ff7130"}
           getLineColor={[255, 113, 48]}
           getLineWidth={30}
@@ -183,15 +185,20 @@ export const InfanciasControls = () => {
         />
         <IconLayer
           id="servicios_tachas"
-          data={dataServ.features.filter(d => d.properties.sector === "guarderia" || d.properties.sector === "preescolar" || d.properties.sector === "salud")}
+          data={dataServ.features.filter(
+            (d) =>
+              d.properties.sector === "guarderia" ||
+              d.properties.sector === "preescolar" ||
+              d.properties.sector === "salud"
+          )}
           //iconAtlas="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png"
           iconAtlas="https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/images/icon-atlas2.png"
           //iconMapping="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.json"
           iconMapping="https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/images/icon-atlas2.json"
           //getIcon={d => 'marker'}
-          getIcon={d => getIconByCodigoAct(d.properties.sector)}
-          getPosition={d => d.geometry.coordinates}
-          sizeUnits={'meters'}
+          getIcon={(d) => getIconByCodigoAct(d.properties.sector)}
+          getPosition={(d) => d.geometry.coordinates}
+          sizeUnits={"meters"}
           sizeScale={100}
           visible={!!circlePayload}
           sizeMinPixels={6}
@@ -199,12 +206,12 @@ export const InfanciasControls = () => {
           brushingRadius={brushingRadius}
           extensions={[new BrushingExtension()]}
         />
-        <PopupButton 
+        <PopupButton
           videoId="ROtsJ6c4dIo?si=HAPfOj40Rip_XPPl"
-          title="Lorem Ipsum" 
-          subtitle="Lorem Ipsum" 
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam." 
-        /> 
+          title="Lorem Ipsum"
+          subtitle="Lorem Ipsum"
+          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam."
+        />
       </CustomMap>
       <CustomLegend
         color={color}
@@ -261,23 +268,23 @@ export function InfanciasCard() {
         {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
-        Las familias jóvenes con primeras infancias, de 0 a 5 años de edad, han
-        migrado hacia las periferias, en donde existe una cobertura reducida de
-        servicios de proximidad: educativos, de salud y comercial; así como
-        falta de espacios públicos. En contraste, en las zonas centrales en
+        Las familias jóvenes con primeras infancias (de 0 a 5 años), han migrado
+        hacia las periferias, en donde existe una cobertura reducida de
+        servicios de proximidad: educativos, de salud y comerciales; así como
+        una falta de espacios públicos. En contraste, en las zonas centrales en
         donde hay una mayor oferta de servicios, la población infantil es menor.
       </p>
       <p>
-        Si sumamos a este desequilibrio, condiciones de asentamientos
-        autoproducidos como en el polígono de la Iniciativa Campana-Altamira,
-        los rezagos de acceso a servicios son más evidentes. Por esto es clave
-        promover políticas que permitan una ciudad conectada, accesible y de
-        proximidad.
+        Si sumamos a este desequilibrio condiciones de asentamientos
+        autoproducidos, como en el polígono de la Iniciativa Campana-Altamira,
+        los rezagos de acceso a servicios son más evidentes. Por esto es
+        fundamental promover políticas que permitan una ciudad conectada,
+        accesible y de proximidad.
       </p>
       <ContextTitle color={color}>
-        De acuerdo con la UNICEF, las necesidades de la primera infancia deben
-        garantizarse a través de servicios de salud, nutrición, aprendizaje,
-        protección y seguridad.
+        Las necesidades de la primera infancia deben garantizarse a través de
+        servicios de salud, nutrición, aprendizaje, protección y seguridad, como
+        lo plantea la UNICEF.
       </ContextTitle>
       <Chart
         title="Porcentage de población entre 0 a 5 años"

@@ -186,21 +186,20 @@ export function CostosCard() {
         La expansión urbana no solo tiene altos costos sociales y ambientales,
         implica un gasto público mayor, en comparación con modelos de ciudades
         compactas. En 1995, se gastaban alrededor de tres mil millones en obras
-        públicas de infrastructura para llevar servicios a las zonas urbananas.
-      </p>
-      <p>
+        públicas de infraestructura para llevar servicios a las zonas urbanas.
         En 2020 se gastaron casi treinta y seis mil millones, un aumento del
-        1,200%. Aún con este aumento, el gasto no ha sido suficiente ya que el
-        gasto per cápita ha disminuido en un 88% en el mismo periodo.
+        1,200%.
       </p>
       <p>
-        Los municipios ahora gastan más por metro cuadrado de la mancha urbana,
-        de $223/m2 en 1990 a $2,000/m2 en 2020.
+        Aún con este aumento no ha sido suficiente, ya que el gasto per cápita
+        ha disminuido en un 88% en el mismo periodo. Los municipios ahora gastan
+        más por metro cuadrado de la mancha urbana: pasando de $223/m2 en 1990 a
+        $2,000/m2 en 2020.
       </p>
       <ContextTitle color={color}>
         Intensificar el uso del suelo urbano existente y mejorar las políticas
-        regulatorias para la expansión mitigarían el gasto público excesivo en
-        servicios urbanos e infrastructura.
+        regulatorias contra la expansión, mitigarían el gasto público excesivo
+        en servicios urbanos e infraestructura.
       </ContextTitle>
     </>
   );
