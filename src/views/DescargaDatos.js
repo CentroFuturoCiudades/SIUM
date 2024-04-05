@@ -62,6 +62,12 @@ const datosMapas = [
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte.geojson",
     column: "Regreso A Casa",
   },
+  {
+    name: "Mancha urbana",
+    description: "Capa de mancha urbana", 
+    url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/mancha_urbana.geojson",
+    column: "year"
+  }
 ];
 
 const INITIAL_VIEW_STATE = {

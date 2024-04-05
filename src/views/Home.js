@@ -317,6 +317,7 @@ const Home = () => {
     <div
       style={{
         height: isMobile ? "100%" : "100dvh",
+        width: isMobile ? "100%" : "98dvw",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
