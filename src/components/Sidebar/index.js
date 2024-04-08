@@ -143,6 +143,24 @@ export const BarMobile = ({ section, setSection }) => {
   return (
     <Box className="sidebarMobile" bgColor="blackAlpha.400">
       <div className="sidebarContainerMobile">
+        <Link to="/">
+          <Button
+            className="sidebarItem"
+            variant="solid"
+            colorScheme="blackAlpha"
+            bgColor="blackAlpha.400"
+            style={{ height: "40px" }}
+          >
+            <Icon
+              as={VscTriangleLeft}
+              color="white"
+              style={{
+                height: "10px",
+                width: "10px"
+              }}
+            />
+          </Button>
+        </Link>
         {Object.keys(sectionsInfo).map((k) => (
           <Button
             key={k}

@@ -127,6 +127,12 @@ export const IslasCalorControls = () => {
           subtitle="Lorem Ipsum"
           text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam."
         />
+        <PopupButton 
+          videoId="awKx7yDA6k8?si=C_doMgtFy68xD2CE"
+          title="Fabián Lozano" 
+          subtitle="Investigador adjunto, Gobierno y emprendimiento público, Escuela de Ciencias Sociales y Gobierno." 
+          text="Bienestar climático inclusivo." 
+        />
       </CustomMap>
       [legendItems &&{" "}
       <CustomLegend
@@ -147,7 +153,7 @@ export const IslasCalorControls = () => {
           </>
         }
       >
-        <LegendItem color="black" label="Vialidades Principales" />
+        <LegendItem color="#647896" label="Vialidades Principales" />
         <LegendItem color="gray" label="Zonas Industriales" />
         <LegendItem color="rgb(92, 178, 112)" label="Parques" />
         <div style={{ height: "10px" }} />

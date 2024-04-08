@@ -21,13 +21,13 @@ import Tooltip from "./Tooltip";
 import PopupButton from "./PopupButton";
 import { Slider, useToken } from "@chakra-ui/react";
 
-const EMPLEO_QUANTILES = [0, 50, 200, 400, 800, 1000, 2000, 8400];
+const EMPLEO_QUANTILES = [0, 200, 400, 600, 800, 1000, 2500, 8400];
 
 export const EmpleoControls = () => {
   const { color } = useCardContext();
-  const [startColor] = useToken("colors", [`${color}.200`]);
+  const [startColor] = useToken("colors", [`${color}.400`]);
   const endColor = "#6a2eab";
-  const EMPLEO_COLORS = generateQuantileColors(startColor, endColor, 8);
+  const EMPLEO_COLORS = generateGradientColors(startColor, endColor, 8);
   const { data } = useFetch(EMPLEO_URL);
   const [hoverInfo, setHoverInfo] = useState();
   const [legendItems, setLegendItems] = useState([]);
@@ -59,11 +59,11 @@ export const EmpleoControls = () => {
           autoHighlight={true}
           getPosition={(d) => d.position}
         />
-        <PopupButton
+        <PopupButton 
           videoId="Z5yubfNSwCU?si=wAY3jOd8scsgJNAt"
-          title="Lorem Ipsum"
-          subtitle="Lorem Ipsum"
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam."
+          title="Javier Leal" 
+          subtitle="Director del Instituto de Planeación Urbana (IMPLANG)." 
+          text="Beneficios de un menor tiempo de traslado." 
         />
       </CustomMap>
       <Slider />

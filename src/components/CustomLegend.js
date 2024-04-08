@@ -134,10 +134,12 @@ export const LegendItem = ({ color, label }) => {
             </div>
           ) : (
             <div
-              className="legend-color"
+              // className="legend-color"
               style={{
                 backgroundColor: color,
                 borderRadius: label === "Comercio al por menor" ? "50%" : "0%",
+                height: isMobile ? "16px" : "min(1.6dvh, 0.8dvw)",
+                width: isMobile ? "16px" : "min(1.6dvh, 0.8dvw)",
               }}
             />
           )}
