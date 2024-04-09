@@ -37,13 +37,14 @@ import * as d3 from "d3";
 import PopupButton from "./PopupButton";
 
 const ISLAS_CALOR_COLORS = [
-  "#C32B21",
-  "#FF4945",
-  "#FEBDBC",
-  "#46A59C",
-  "#528EAA",
-  "#6A60C6",
-  "#8132E1",
+  "#F4711F",
+  "#E7613F",
+  "#DA525E",
+  "#CD427E",
+  "#C0339E",
+  "#B323BE",
+  "#A614DD",
+  "#9904FD", 
 ];
 const ISLAS_CALOR_LEGEND_DATA = [
   "Muy frío",
