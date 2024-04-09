@@ -11,6 +11,7 @@ body {
   height: 100dvh;
   scroll-snap-type: y mandatory;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .cardsContainer p {
