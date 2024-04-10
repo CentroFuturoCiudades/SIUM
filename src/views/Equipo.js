@@ -1,5 +1,17 @@
 import React from "react";
-import { useMediaQuery, Box, Button } from "@chakra-ui/react";
+import { 
+  useMediaQuery,
+  Box, 
+  Button, 
+  Wrap, 
+  WrapItem,   
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  IconButton,
+
+} from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import {
   Popover,
@@ -9,14 +21,94 @@ import {
   PopoverArrow,
   Heading,
 } from "@chakra-ui/react";
+import { HamburgerIcon, AddIcon, ExternalLinkIcon, RepeatIcon, EditIcon } from '@chakra-ui/icons';
 import { sectionsInfo } from "../utils/constants";
 
+const principiosInfo = {
+  discusion: {
+    label: "DISCUSIÓN",
+    colorScheme: sectionsInfo.vivienda.color,
+    description: "Para la toma de decisiones",
+  },
+  transparencia: {
+    label: "TRANSPARENCIA",
+    colorScheme: sectionsInfo["expansion-urbana"].color,
+    description: "Acceso a la información",
+  },
+  colectividad: {
+    label: "COLECTIVIDAD",
+    colorScheme: sectionsInfo.empleo.color,
+    description: "Participación ciudadana",
+  },
+  accion: {
+    label: "ACCIÓN",
+    colorScheme: sectionsInfo.transporte.color,
+    description: "Diversidad de opiniones",
+  },
+  innovacion: {
+    label: "INNOVACIÓN",
+    colorScheme: sectionsInfo.infancias.color,
+    description: "Nuevo Modelo Urbano",
+  },
+};
+
+const infoEquipo = {
+  coordinacionGeneral: {
+    title: "COORDINACIÓN GENERAL",
+    organization: "Centro para el Futuro de las Ciudades, Tecnológico de Monterrey",
+    members: ["José Antonio Torre", "Roberto Ponce", "Uriel Salazar"],
+    contact: "rpl@tec.mx",
+  },
+  direccionCreativa: {
+    title: "DIRECCIÓN CREATIVA",
+    members: ["Andrea Martínez", "Alberto Meouchi"],
+  },
+  analiticaYModelos: {
+    title: "ANALÍTICA Y MODELOS",
+    members: [
+      "Gonzalo Peraza",
+      "Rodolfo Figueroa",
+      "Nélida Escobedo",
+      "Claudia Ledezma",
+      "Fabián Lozano",
+    ],
+  },
+  disenoWeb: {
+    title: "DISEÑO WEB",
+    members: [
+      "Jeannette Arjona",
+      "Tadeo Barrera",
+      "Diego Michel",
+      "Erick Schiller",
+    ],
+  },
+  agradecimientos: {
+    title: "AGRADECIMIENTOS",
+    members: [
+      "Luis Ávila",
+      "Rebecca Bell",
+      "Ana Fernanda",
+      "Carlos Hurtado",
+      "Lucía Elizondo",
+      "Sindy González",
+      "Javiel Leal",
+      "Martha Montemayor",
+      "Luisa Pérez",
+      "Carlos Placencia",
+    ],
+  },
+};
+
+
+
 const Equipo = () => {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
+
   return (
     <section id="equipo">
       <Box
         bg="#FEF5E7"
-        w="100%"
+        w="100dvw"
         h="20dvh"
         marginY="8dvh"
         color="#04511B"
@@ -27,100 +119,65 @@ const Equipo = () => {
           alignItems: "center",
         }}
       >
-        <Heading as="h1" size="xl">
+        <Heading as="h1" size={isMobile ? "4xl" : "xl"}>
           Equipo
         </Heading>
       </Box>
       <Box
         w="100%"
-        h="40dvh"
+        h="auto"
         color="#04511B"
         style={{
           display: "flex",
+          flexDirection: isMobile ? "column" : "row",
           justifyContent: "space-around",
+          padding: "0dvw 3dvw 0dvw 3dvw"
+          // alignItems: isMobile ? "center" : "start",
         }}
       >
-        <Box style={{ marginLeft: "2dvw", marginRight: "2dvw" }}>
-          <div style={{ fontSize: "1.5dvw" }}>
-            <b>COORDINACIÓN GENERAL</b>
-          </div>
-          <div style={{ fontSize: "0.8dvw", marginBottom: "2dvw" }}>
-            <b>
-              Centro para el Futuro de las Ciudades, Tecnológico de Monterrey
-            </b>
-          </div>
-          <p style={{ fontSize: "1dvw" }}>José Antonio Torre</p>
-          <p style={{ fontSize: "1dvw" }}>Roberto Ponce</p>
-          <p style={{ fontSize: "1dvw" }}>Uriel Salazar</p>
-          <br />
-          <p style={{ fontSize: "1dvw" }}>
-            <b>Contacto:</b> rpl@tec.mx
-          </p>
-        </Box>
+        {Object.values(infoEquipo).map((area) => (
+          <Box style={{ margin: "0dvw 2dvh 10dvw 2dvh" }}>
+            <div style={{ fontSize: isMobile ? "5dvw" : "1rem" }}>
+              <b>{area.title}</b>
+            </div>
+            {area.organization && (
+              <div style={{ fontSize: isMobile ? "3dvw" : "0.7rem", marginBottom: "2dvw" }}>
+                <b>
+                  {area.organization}
+                </b>
+              </div>
+            )}
 
-        <Box style={{ marginLeft: "2dvw", marginRight: "2dvw" }}>
-          <div style={{ marginBottom: "2dvw", fontSize: "1.5dvw" }}>
-            <b>DIRECCIÓN CREATIVA</b>
-          </div>
-
-          <p style={{ fontSize: "1dvw" }}>Andrea Martínez</p>
-          <p style={{ fontSize: "1dvw" }}>Alberto Meouchi</p>
-        </Box>
-
-        <Box style={{ marginLeft: "2dvw", marginRight: "2dvw" }}>
-          <div style={{ marginBottom: "2dvw", fontSize: "1.5dvw" }}>
-            <b>ANALÍTICA Y MODELOS</b>
-          </div>
-
-          <p style={{ fontSize: "1dvw" }}>Gonzalo Gaudencio Peraza</p>
-          <p style={{ fontSize: "1dvw" }}>Rodolfo Figueroa</p>
-          <p style={{ fontSize: "1dvw" }}>Nélida Escobedo</p>
-          <p style={{ fontSize: "1dvw" }}>Claudia Ledezma</p>
-          <p style={{ fontSize: "1dvw" }}>Fabián Lozano</p>
-        </Box>
-
-        <Box style={{ marginLeft: "2dvw", marginRight: "2dvw" }}>
-          <div style={{ marginBottom: "2dvw", fontSize: "1.5dvw" }}>
-            <b>DISEÑO WEB</b>
-          </div>
-
-          <p style={{ fontSize: "1dvw" }}>Jeannette Arjona</p>
-          <p style={{ fontSize: "1dvw" }}>Adrian Tadeo Barrera</p>
-          <p style={{ fontSize: "1dvw" }}>Diego Alejandro Michel</p>
-          <p style={{ fontSize: "1dvw" }}>Erick Schiller</p>
-        </Box>
-
-        <Box style={{ marginLeft: "2dvw", marginRight: "2dvw" }}>
-          <div style={{ marginBottom: "2dvw", fontSize: "1.5dvw" }}>
-            <b>AGRADECIMIENTOS</b>
-          </div>
-
-          <p style={{ fontSize: "1dvw" }}>Luis Ávila</p>
-          <p style={{ fontSize: "1dvw" }}>Rebecca Bell</p>
-          <p style={{ fontSize: "1dvw" }}>Ana Fernanda</p>
-          <p style={{ fontSize: "1dvw" }}>Carlos Hurtado</p>
-          <p style={{ fontSize: "1dvw" }}>Lucía Elizondo</p>
-          <p style={{ fontSize: "1dvw" }}>Sindy González</p>
-          <p style={{ fontSize: "1dvw" }}>Javiel Leal</p>
-          <p style={{ fontSize: "1dvw" }}>Martha Montemayor</p>
-          <p style={{ fontSize: "1dvw" }}>Luisa Pérez</p>
-          <p style={{ fontSize: "1dvw" }}>Carlos Placencia</p>
-        </Box>
+            {area.members.map((miembro) => (
+              <p style={{ fontSize: isMobile ? "4dvw" : "0.9rem" }}>
+                {miembro}
+              </p>
+            ))}
+            {area.contact && (
+              <>
+                <br />
+                <p style={{ fontSize: isMobile ? "4dvw" : "0.7rem" }}>
+                  <b>Contacto:</b> {area.contact}
+                </p>
+              </>
+            )}
+          </Box>
+        ))}
       </Box>
       <Box
         width="100%"
-        h="10dvh"
+        h={isMobile ? "25dvh" : "10dvh"}
         style={{
           marginLeft: "2dvw",
           fontSize: "1dvw",
-          paddingTop: "2dvw",
+          paddingTop: isMobile ? "4dvh" : "1dvh",
         }}
       >
-        <p style={{ fontSize: "0.9dvw" }}>
+        <p style={{ fontSize: isMobile ? "3dvw" : "0.7rem" }}>
           Este proyecto ha sido fondeado generosamente por fundación FEMSA desde
           2019.
         </p>
-        <p style={{ fontSize: "0.9dvw" }}>
+        <p style={{ fontSize: isMobile ? "3dvw" : "0.7rem" }}>
           El SIUM, Sistema de Información Urabano Metropolitano, es un proyecto
           del Centro para el Futuro de las Ciudades del Tecnológico de
           Monterrey.
@@ -131,14 +188,59 @@ const Equipo = () => {
 };
 
 const Objetivo = () => {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
+
   return (
     <section id="objetivo" style={{ width: "100%" }}>
-      <Box h="100%" w="100%">
-        {/* Imagen y objetivo */}
+        {/* Imagen y texto  */}
+        <Box
+        h={"100%"}
+        w={isMobile ? "100%" : "50%"}
+          // height={"90%"}
+          style={{
+            // position: "absolute",
+            position: isMobile ? "static" : "absolute",
+            display: "flex",
+            flexDirection: "column",
+            // justifyContent: "space-around",
+            alignItems: "center",
+            marginTop: "0dvw",
+            paddingLeft: isMobile ? "5dvw" : "0",
+            paddingRight: isMobile ? "5dvw" : "0",
+            // backgroundColor: "lightblue",
+          }}
+        >
+          <img
+            className="headerImage"
+            src="aspectos.png"
+            alt="SIUM"
+            style={{
+              height: isMobile ? "40dvh" : "70dvh",
+              objectFit: "contain",
+              marginTop: "3dvh",
+              // backgroundColor: "brown",
+            }}
+          />
+          <p
+            style={{
+              marginTop: "3dvw",
+              fontSize: isMobile ? "5dvw" : "1.5dvw",
+              textAlign: "center",
+              color: "#665232",
+            }}
+          >
+            Y mucho más...
+          </p>
+        </Box>
+      <Box 
+        h={isMobile ? "175dvh" : "100%"} 
+        w="100%"
+        // style={{backgroundColor: "lightblue"}}
+        >
         <Box
           bg="#FEF5E7"
           w="100%"
-          h="35dvh"
+          h={isMobile ? "50dvh" : "100%"}
           p={4}
           color="#04511B"
           style={{
@@ -150,48 +252,13 @@ const Objetivo = () => {
           }}
         >
           <Box
-            w="26%"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
+            width= {isMobile ? "0" : "26%"}
           >
-            {/* Imagen y texto  */}
-            <Box
-              height={"90%"}
-              style={{
-                position: "absolute",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                marginTop: "25dvw",
-              }}
-            >
-              <img
-                className="headerImage"
-                src="aspectos.png"
-                alt="SIUM"
-                style={{
-                  height: "70%",
-                  objectFit: "contain",
-                }}
-              />
-              <p
-                style={{
-                  marginTop: "3dvw",
-                  fontSize: "1.5dvw",
-                  textAlign: "center",
-                  color: "#665232",
-                }}
-              >
-                Y mucho más...
-              </p>
-            </Box>
+            {/* Box vacío  */}
           </Box>
           <Box
-            width="26%"
+            width={isMobile ? "100%" : "26%"}
+            // height={isMobile  ? "100dvh" : "100%"}
             style={{
               display: "flex",
               flexDirection: "column",
@@ -200,14 +267,14 @@ const Objetivo = () => {
               color: "#665232",
             }}
           >
-            <p style={{ fontSize: "1.5dvw" }}>
+            <p style={{ fontSize: isMobile ? "5dvw" : "1.5rem" }}>
               <b>Objetivo General</b>
             </p>
-            <p style={{ fontSize: "1dvw", marginTop: "1dvw" }}>
+            <p style={{ fontSize: isMobile ? "4dvw" : "1rem", marginTop: "1dvw" }}>
               El SIUM tiene como finalidad mostrar el impacto de la expansión
               urbana en la Zona Metropolitana de Monterrey.
             </p>
-            <p style={{ fontSize: "1dvw", marginTop: "1dvw" }}>
+            <p style={{ fontSize: isMobile ? "4dvw" : "1rem", marginTop: "1dvw" }}>
               Generar una discusión colectiva que lleve a un nuevo modelo
               urbano.
             </p>
@@ -219,161 +286,62 @@ const Objetivo = () => {
           h="50dvh"
           style={{ display: "flex", backgroundColor: "white" }}
         >
-          <Box w="50%" h="100%"></Box>
+          <Box w={isMobile ? "0" : "50%"} h="100%"></Box>
 
           {/* Tarjetas */}
           <Box
-            w="50%"
-            h="100%"
+            w={isMobile ? "100%" : "50%"}
+            h={isMobile ? "135dvh" : "100%"}
             style={{
               display: "flex",
               flexDirection: "column",
-              justifyContent: "space-around",
+              justifyContent: "space-evenly",
+              paddingBottom: "5dvh",
+              // backgroundColor: "orange"
             }}
           >
             <p
               style={{
                 textAlign: "center",
-                fontSize: "1.5dvw",
+                fontSize: isMobile ? "8dvw" : "1.5dvw",
                 color: "#665232",
+                marginBottom: "2dvh",
               }}
             >
               <b>Principios</b>
             </p>
 
-            <Box style={{ display: "flex", justifyContent: "space-around" }}>
-              <Popover trigger="hover" placement="top">
-                <PopoverTrigger>
-                  <Button
-                    w={"13dvw"}
-                    h={"8dvw"}
-                    colorScheme={sectionsInfo.vivienda.color}
-                    variant="outline"
-                    style={{ borderRadius: "4dvw", fontSize: "1.2dvw" }}
-                  >
-                    DISCUSIÓN
-                  </Button>
-                </PopoverTrigger>
+            <Wrap spacingX='2dvw' spacingY='10dvh' justify='center' p={'2dvh'}>
+            {Object.values(principiosInfo).map((principio) => (
+              <WrapItem>
+                <Popover trigger="hover" placement="top">
+                    <PopoverTrigger>
+                      <Button
+                        w={isMobile ? "70dvw" : "13dvw"}
+                        h={isMobile ? "15dvh" : "15dvh"}
+                        colorScheme={principio.colorScheme}
+                        variant="outline"
+                        style={{ borderRadius: "4dvw", fontSize: isMobile ? "4dvw" : "1.5dvw" }}
+                      >
+                        {principio.label}
+                      </Button>
+                    </PopoverTrigger>
 
-                <PopoverContent
-                  w={"auto"}
-                  color="white"
-                  bg="#2C3147"
-                  borderColor="#2C3147"
-                >
-                  <PopoverArrow bg="#2C3147" />
-                  <PopoverBody style={{ textAlign: "center" }}>
-                    Para la toma de decisiones
-                  </PopoverBody>
-                </PopoverContent>
-              </Popover>
-
-              <Popover trigger="hover" placement="top">
-                <PopoverTrigger>
-                  <Button
-                    w={"13dvw"}
-                    h={"8dvw"}
-                    colorScheme={sectionsInfo["expansion-urbana"].color}
-                    variant="outline"
-                    style={{ borderRadius: "4dvw", fontSize: "1.2dvw" }}
-                  >
-                    TRANSPARENCIA
-                  </Button>
-                </PopoverTrigger>
-
-                <PopoverContent
-                  w={"auto"}
-                  color="white"
-                  bg="#2C3147"
-                  borderColor="#2C3147"
-                >
-                  <PopoverArrow bg="#2C3147" />
-                  <PopoverBody style={{ textAlign: "center" }}>
-                    Acceso a la información
-                  </PopoverBody>
-                </PopoverContent>
-              </Popover>
-
-              <Popover trigger="hover" placement="top">
-                <PopoverTrigger>
-                  <Button
-                    w={"13dvw"}
-                    h={"8dvw"}
-                    colorScheme={sectionsInfo.empleo.color}
-                    variant="outline"
-                    style={{ borderRadius: "4dvw", fontSize: "1.2dvw" }}
-                  >
-                    COLECTIVIDAD
-                  </Button>
-                </PopoverTrigger>
-
-                <PopoverContent
-                  w={"auto"}
-                  color="white"
-                  bg="#2C3147"
-                  borderColor="#2C3147"
-                >
-                  <PopoverArrow bg="#2C3147" />
-                  <PopoverBody style={{ textAlign: "center" }}>
-                    Participación ciudadana
-                  </PopoverBody>
-                </PopoverContent>
-              </Popover>
-            </Box>
-
-            <Box style={{ display: "flex", justifyContent: "space-evenly" }}>
-              <Popover trigger="hover" placement="top">
-                <PopoverTrigger>
-                  <Button
-                    w={"13dvw"}
-                    h={"8dvw"}
-                    colorScheme={sectionsInfo.transporte.color}
-                    variant="outline"
-                    style={{ borderRadius: "4dvw", fontSize: "1.2dvw" }}
-                  >
-                    ACCIÓN
-                  </Button>
-                </PopoverTrigger>
-
-                <PopoverContent
-                  w={"auto"}
-                  color="white"
-                  bg="#2C3147"
-                  borderColor="#2C3147"
-                >
-                  <PopoverArrow bg="#2C3147" />
-                  <PopoverBody style={{ textAlign: "center" }}>
-                    Diversidad de opiniones
-                  </PopoverBody>
-                </PopoverContent>
-              </Popover>
-
-              <Popover trigger="hover" placement="top">
-                <PopoverTrigger>
-                  <Button
-                    w={"13dvw"}
-                    h={"8dvw"}
-                    colorScheme={sectionsInfo.infancias.color}
-                    variant="outline"
-                    style={{ borderRadius: "4dvw", fontSize: "1.2dvw" }}
-                  >
-                    INNOVACIÓN
-                  </Button>
-                </PopoverTrigger>
-
-                <PopoverContent
-                  w={"auto"}
-                  color="white"
-                  bg="#2C3147"
-                  borderColor="#2C3147"
-                >
-                  <PopoverArrow bg="#2C3147" />
-                  <PopoverBody style={{ textAlign: "center" }}>
-                    Nuevo Modelo Urbano
-                  </PopoverBody>
-                </PopoverContent>
-              </Popover>
-            </Box>
+                    <PopoverContent
+                      w={"auto"}
+                      color="white"
+                      bg="#2C3147"
+                      borderColor="#2C3147"
+                    >
+                      <PopoverArrow bg="#2C3147" />
+                      <PopoverBody style={{ textAlign: "center", fontSize: isMobile ? "4dvw" : "1.5dvw" }}>
+                        {principio.description}
+                      </PopoverBody>
+                    </PopoverContent>
+                  </Popover>
+              </WrapItem>
+            ))}
+            </Wrap>
           </Box>
         </Box>
       </Box>
@@ -382,6 +350,8 @@ const Objetivo = () => {
 };
 
 const Navbar = () => {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
+
   return (
     <Box h="10dvh" style={{ position: "sticky", top: 0, zIndex: 1 }}>
       {/* Header */}
@@ -413,28 +383,60 @@ const Navbar = () => {
 
         {/* Botones */}
         <Box
-          w="40%"
+          w="50%"
           style={{
             display: "flex",
-            justifyContent: "space-around",
+            // justifyContent: "space-around",
+            justifyContent: isMobile ? "end" : "space-around",
             alignItems: "center",
+            padding: isMobile ? "2dvh" : 0,
           }}
         >
+      {isMobile ? (
+        <Menu>
+          <MenuButton
+            as={IconButton}
+            aria-label='Options'
+            icon={<HamburgerIcon />}
+            variant='outline'
+            color={"white"}
+          />
+          <MenuList>
+            <MenuItem style={{color: "black"}} icon={<AddIcon />} >
+              New Tab
+            </MenuItem>
+            <MenuItem style={{color: "black"}} icon={<ExternalLinkIcon />} >
+              New Window
+            </MenuItem>
+            <MenuItem style={{color: "black"}} icon={<RepeatIcon />}>
+              Open Closed Tab
+            </MenuItem>
+            <MenuItem style={{color: "black"}} icon={<EditIcon />} >
+              Open File...
+            </MenuItem>
+          </MenuList>
+        </Menu>
+      ) : (
+        <>
           <Link to="/">
-            <Button variant={"text"} style={{ fontSize: "1.5dvw" }}>
+            <Button variant="text" fontSize="1.5vw">
               Inicio
             </Button>
           </Link>
           <a href="#objetivo">
-            <Button variant={"text"} style={{ fontSize: "1.5dvw" }}>
+            <Button variant="text" fontSize="1.5vw">
               Objetivo
             </Button>
           </a>
           <a href="#equipo">
-            <Button variant={"text"} style={{ fontSize: "1.5dvw" }}>
+            <Button variant="text" fontSize="1.5vw">
               Equipo
             </Button>
           </a>
+        </>
+      )}
+
+
         </Box>
       </Box>
     </Box>
