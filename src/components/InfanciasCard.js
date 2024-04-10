@@ -206,12 +206,12 @@ export const InfanciasControls = () => {
           brushingRadius={brushingRadius}
           extensions={[new BrushingExtension()]}
         />
-        <PopupButton
+        <PopupButton 
           videoId="ROtsJ6c4dIo?si=HAPfOj40Rip_XPPl"
-          title="Lorem Ipsum"
-          subtitle="Lorem Ipsum"
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam."
-        />
+          title="Sindy González Tijerina" 
+          subtitle="FEMSA." 
+          text="Importancia de la integración de una perspectiva de la primera infrancia en la planeación." 
+        /> 
       </CustomMap>
       <CustomLegend
         color={color}

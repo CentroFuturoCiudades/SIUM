@@ -63,6 +63,26 @@ const datosMapas = [
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte.geojson",
     column: "Regreso A Casa",
   },
+  ,
+  {
+    name: "Mancha urbana",
+    description: "Capa de mancha urbana", 
+    url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/mancha_urbana.geojson",
+    column: "year"
+  },
+  {
+    name: "Islas de calor",
+    description: "Las islas de calor se calculan a partir de la banda que determinan los satelites LANDSAT, se toma el promedio de la temperatura pixel por un año y se comparan la zona rural con cobertura vegetal circundaria. A partir de la temperatura de la desviacion estandar de la temperatura rural. Las zonas más calientes son aquellas que están más de 3 desviaciones estándar arriba de la temperatura rural.",
+    url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/div-municipal.geojson",
+    column: "muy_caliente",
+  },
+  {
+    name: "Escenarios de futuro",
+    description: "El patrón de urbanización de Monterrey en las últimas tres décadas, muestra una expansión de baja densidad hacia las periferias. Utilizando datos históricos, simulamos y proyectamos que, de continuar así, en 2040 la superficie urbanizada crecerá un XXXX%, fragmentando la ciudad y aumentando la integración de centralidades lejanas como Santiago, Saltillo y Ramos Arizpe a la metrópoli.",
+    url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/escenario_inercial.geojson",
+    column: "coordinates",
+  },
+  
 ];
 
 const INITIAL_VIEW_STATE = {
@@ -276,13 +296,15 @@ const CategoriaItem = ({ title, description, onDownload, selected }) => (
   <AccordionItem>
     <h2>
       <AccordionButton
-        _expanded={{ bg: selected ? "blue.100" : "white" }}
+        _expanded={{ bg: selected ? "blue.100" : "white" }} 
         onClick={onDownload}
       >
-        <Box flex="1" textAlign="left">
+        <Box flex="1" textAlign="left" zIndex="1">
           {title}
         </Box>
-        <Checkbox isChecked={selected} />
+        <Box pointerEvents="none">
+            <Checkbox isChecked={selected} />
+          </Box>
       </AccordionButton>
     </h2>
     <AccordionPanel pb={4}>{description}</AccordionPanel>

@@ -95,7 +95,13 @@ export const LegendMobile = ({ title, legendItems, formatting }) => {
   );
 };
 
-export const Legend = ({ title, legendItems, color, description, formatter }) => {
+export const Legend = ({
+  title,
+  legendItems,
+  color,
+  description,
+  formatter,
+}) => {
   const formatting = formatter || d3.format(",.0f");
   const [isMobile] = useMediaQuery("(max-width: 800px)");
   if (isMobile)
@@ -125,12 +131,7 @@ export const Legend = ({ title, legendItems, color, description, formatter }) =>
           marginTop: "5px",
         }}
       >
-        <Tooltip
-          label={description}
-          placement="top"
-          hasArrow
-          gutter={12}
-        >
+        <Tooltip label={description} placement="top" hasArrow gutter={12}>
           <Heading color="gray.700" fontSize="min(1.8dvh, 0.9dvw)">
             <InfoIcon
               boxSize="min(1.4dvh, 0.7dvw)"

@@ -195,14 +195,14 @@ const Map = ({ year }) => {
             <>
               {dataPoblacionSuperficieConst ? (
                 <>
-                  <Text style={{ color: "white", fontSize: "1.2dvw" }}>
+                  <Text style={{ color: "white", fontSize: isMobile ? "10px" : "1.2dvw" }}>
                     <b>
                       {`${(
                         dataPoblacionSuperficieConst[0].population / 1000000
                       ).toFixed(1)} millones de personas`}
                     </b>
                   </Text>
-                  <Text style={{ color: "white", fontSize: "1.2dvw" }}>
+                  <Text style={{ color: "white", fontSize: isMobile ? "10px" : "1.2dvw" }}>
                     <b>
                       {`${(
                         dataPoblacionSuperficieConst[0].mts_built / 1000000
@@ -217,7 +217,7 @@ const Map = ({ year }) => {
               <Text
                 style={{ color: "white", lineHeight: 1 }}
                 fontFamily="Poppins"
-                fontSize="3.5dvw"
+                fontSize={isMobile ? "30px" : "3.5dvw"}
                 mt="1"
               >
                 <b>1990</b>
@@ -228,7 +228,7 @@ const Map = ({ year }) => {
             <>
               <Text
                 fontFamily="Poppins"
-                fontSize="3.5dvw"
+                fontSize={isMobile ? "30px" : "3.5dvw"}
                 mb="1"
                 style={{
                   color: "#783CB4",
@@ -244,7 +244,7 @@ const Map = ({ year }) => {
                   <Text
                     style={{
                       color: "#783CB4",
-                      fontSize: "1.2dvw",
+                      fontSize: isMobile ? "10px" : "1.2dvw",
                       "-webkit-text-stroke-width": "0.1px",
                       "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
                     }}
@@ -260,7 +260,7 @@ const Map = ({ year }) => {
                   <Text
                     style={{
                       color: "#783CB4",
-                      fontSize: "1.2dvw",
+                      fontSize: isMobile ? "10px" : "1.2dvw",
                       "-webkit-text-stroke-width": "0.1px",
                       "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
                     }}
@@ -277,13 +277,13 @@ const Map = ({ year }) => {
                     <Icon
                       as={BiSolidChevronsDown}
                       color="red.600"
-                      boxSize="1dvw"
+                      boxSize={isMobile ? "8px" : "1dvw"}
                       mx="2"
                     />
                     <b
                       style={{
                         color: "#783CB4",
-                        fontSize: "1.2dvw",
+                        fontSize: isMobile ? "10px" : "1.2dvw",
                         "-webkit-text-stroke-width": "0.1px",
                         "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
                       }}
@@ -439,8 +439,8 @@ const Home = () => {
 
           {/* Botones */}
           <Flex
-            w="20%"
-            justify="space-around"
+            w="40%"
+            justify="end"
             align="center"
             style={{ marginRight: "10px" }}
           >
@@ -490,9 +490,9 @@ const Home = () => {
               >
                 <Heading
                   color="orange.500"
-                  fontSize={isMobile ? "lg" : "2.5dvw"}
+                  fontSize={isMobile ? "lg" : "1.7dvw"}
                 >
-                  Los recursos de la metropolis son limitados
+                  Los recursos de la metrópolis son limitados
                 </Heading>
                 <br></br>
                 En las últimas tres décadas, la mancha urbana de Monterrey ha
@@ -512,7 +512,7 @@ const Home = () => {
               >
                 <Heading
                   color="orange.500"
-                  fontSize={isMobile ? "lg" : "2.5dvw"}
+                  fontSize={isMobile ? "lg" : "1.7dvw"}
                 >
                   Crecimiento sin planeación
                 </Heading>
@@ -524,12 +524,12 @@ const Home = () => {
               </Text>
               <Text
                 color="gray.100"
-                fontSize={isMobile ? "sm" : "1.5dvw"}
+                fontSize={isMobile ? "sm" : "1.7dvw"}
                 style={textStyle}
               >
                 <Heading
                   color="orange.500"
-                  fontSize={isMobile ? "lg" : "2.5dvw"}
+                  fontSize={isMobile ? "lg" : "1.7dvw"}
                 >
                   Visibilización, propuestas y acción colectiva
                 </Heading>

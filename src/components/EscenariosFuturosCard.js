@@ -11,7 +11,7 @@ import {
   useFetch,
 } from "../utils/constants";
 import { AreaChartChart } from "./AreaChart";
-import {
+import { 
   CustomLegend,
   CustomLegendMobile,
   LegendItem,
@@ -36,7 +36,7 @@ const ESCENARIOS_FUTUROS_CONTROLADA_URL =
 const ESCENARIOS_FUTUROS_CHART_URL =
   "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/escenarios.json"; // Chart
 
-const COLORS = ["#3EA5A3", "#407E9F", "#6D4F90"];
+const COLORS = ["#6D4F90", "#3EA5A3", "#407E9F"];
 const SCENARIOS_NAMES = ["acelerada", "inercial", "controlada"];
 
 export const EscenariosFuturosControls = () => {
@@ -98,16 +98,16 @@ export const EscenariosFuturosControls = () => {
           activeButton={activeButton}
           setActiveButton={setActiveButton}
           mapping={[
-            { id: "acelerada", name: "Acelerada" },
             { id: "controlada", name: "Controlada" },
             { id: "inercial", name: "Inercial" },
+            { id: "acelerada", name: "Acelerada" },
           ]}
         />
-        <PopupButton
+        <PopupButton 
           videoId="2eRmyQBQ5aA"
-          title="Lorem Ipsum"
-          subtitle="Lorem Ipsum"
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam."
+          title="José Antonio Torre" 
+          subtitle="CFC." 
+          text="Escenarios a futuro." 
         />
       </CustomMap>
       <CustomLegend
@@ -170,7 +170,7 @@ export function EscenariosFuturosCard() {
         title="Proyección de superficie urbanizada 2020-2050"
         data={chartData}
         domain={[2020, 2030, 2040, 2050, 2060, 2070]}
-        lines={["acelerada", "inercial", "controlada"]}
+        lines={SCENARIOS_NAMES}
         lineColors={COLORS}
         columnKey="year"
         formatter={(d) =>

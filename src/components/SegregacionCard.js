@@ -27,6 +27,7 @@ import * as d3 from "d3";
 import { IconLayer } from "deck.gl";
 import { Checkbox, Heading } from "@chakra-ui/react";
 
+
 const legendMapping = {
   income_pc: {
     title: "Ingreso mensual per capita en 2020",
@@ -105,16 +106,16 @@ export const SegregacionControls = () => {
           <GeoJsonLayer
             id="asentamientos_layer"
             data={data_asentamientos.features}
-            getFillColor={[200, 80, 80, 255]}
+            getFillColor={[210, 160, 103]}
             autoHighlight={true}
             getPosition={(d) => d.position}
           />
         )}
-        <PopupButton
+        <PopupButton 
           videoId="0iY7lM81XiQ?si=UBJTuAb7Vo30TAck"
-          title="Lorem Ipsum"
-          subtitle="Lorem Ipsum"
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam."
+          title="Carlos Placencia" 
+          subtitle="Gobierno del Estado de Nuevo León." 
+          text="Relación entre segregación y expansión." 
         />
       </CustomMap>
       <ButtonControls
@@ -167,7 +168,7 @@ export const SegregacionControls = () => {
         width="2dvw"
         style={{ bottom: isMobile ? "60px" : "70px" }}
       >
-        <Heading fontSize={isMobile ? "12px" : "1dvw"} color="red.700">
+        <Heading fontSize={isMobile ? "12px" : "1dvw"} color="#d2a067">
           Asentamientos autoproducidos
         </Heading>
       </Checkbox>

@@ -122,11 +122,11 @@ export const DelincuenciaControls = () => {
           autoHighlight={true}
           getPosition={(d) => d.position}
         />
-        <PopupButton
-          videoId="_h7bXZyN2po?si=7bjy87ZtKRCb49Zi"
-          title="Lorem Ipsum"
-          subtitle="Lorem Ipsum"
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam."
+        <PopupButton 
+          videoId="0iY7lM81XiQ?si=UBJTuAb7Vo30TAck"
+          title="Rebecca Bell" 
+          subtitle="Profesora/ Investigadora en el Tecnológico de Monterrey, Campus Monterrey." 
+          text="Confianza e involucramiento en la seguridad pública." 
         />
       </CustomMap>
       <ButtonControls

@@ -27,7 +27,7 @@ import {
   Tbody,
   Td,
   Thead,
-  Tooltip,
+  Tooltip, 
   Tr,
   useToken,
 } from "@chakra-ui/react";
@@ -168,18 +168,18 @@ export const TransporteControls = () => {
               item.Motivo == "Regreso A Casa" || item.Motivo == "Trabajo";
             return isTrabajo ? [106, 46, 171] : [126, 96, 62];
           }}
-          opacity={0.8}
+          opacity={0.5}
           widthMinPixels={3}
           rounded={true}
           trailLength={10}
           currentTime={time}
         />
-        <PopupButton
+        <PopupButton 
           videoId="2eRmyQBQ5aA?si=krgUsYc8Z88oMbLq"
-          title="Lorem Ipsum"
-          subtitle="Lorem Ipsum"
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam."
-        />
+          title="Luisa Pérez Barbosa" 
+          subtitle="Movimiento activación ciudadana (MOVAC)." 
+          text="Cultura vial más allá de la infraestructura." 
+        />        
       </CustomMap>
       <CustomLegend
         color={color}
@@ -196,6 +196,8 @@ export const TransporteControls = () => {
       >
         <LegendItem color={endColor} label="Trabajo y Regreso a Casa" />
         <LegendItem color={startColor} label="Otros motivos" />
+        <LegendItem color="lightgreen" label="Metro" />
+        <LegendItem color="red" label="Ciclovias" />
       </CustomLegend>
       <ButtonControls
         color={color}
