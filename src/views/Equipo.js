@@ -21,7 +21,7 @@ import {
   PopoverArrow,
   Heading,
 } from "@chakra-ui/react";
-import { HamburgerIcon, AddIcon, ExternalLinkIcon, RepeatIcon, EditIcon } from '@chakra-ui/icons';
+import { HamburgerIcon } from '@chakra-ui/icons';
 import { sectionsInfo } from "../utils/constants";
 
 const principiosInfo = {
@@ -87,7 +87,7 @@ const infoEquipo = {
     members: [
       "Luis Ávila",
       "Rebecca Bell",
-      "Ana Fernanda",
+      "Ana Hierro",
       "Carlos Hurtado",
       "Lucía Elizondo",
       "Sindy González",
@@ -106,6 +106,8 @@ const Equipo = () => {
 
   return (
     <section id="equipo">
+
+      {/* Header Equipo START  */}
       <Box
         bg="#FEF5E7"
         w="100dvw"
@@ -118,30 +120,36 @@ const Equipo = () => {
           display: "grid",
           alignItems: "center",
         }}
-      >
+        >
         <Heading as="h1" size={isMobile ? "4xl" : "xl"}>
           Equipo
         </Heading>
       </Box>
+      {/* Header Equipo END */}
+
+      {/* Integrantes Equipo START  */}
       <Box
         w="100%"
         h="auto"
         color="#04511B"
+        paddingX={"2dvw"}
         style={{
           display: "flex",
           flexDirection: isMobile ? "column" : "row",
           justifyContent: "space-around",
-          padding: "0dvw 3dvw 0dvw 3dvw"
-          // alignItems: isMobile ? "center" : "start",
         }}
       >
         {Object.values(infoEquipo).map((area) => (
-          <Box style={{ margin: "0dvw 2dvh 10dvw 2dvh" }}>
+          <Box
+          marginBottom={"2dvh"}
+          paddingX={"2dvw"}
+          w={isMobile ? "auto" : "17dvw"}
+          >
             <div style={{ fontSize: isMobile ? "5dvw" : "1rem" }}>
               <b>{area.title}</b>
             </div>
             {area.organization && (
-              <div style={{ fontSize: isMobile ? "3dvw" : "0.7rem", marginBottom: "2dvw" }}>
+              <div style={{ fontSize: isMobile ? "3dvw" : "0.7rem" }}>
                 <b>
                   {area.organization}
                 </b>
@@ -164,13 +172,16 @@ const Equipo = () => {
           </Box>
         ))}
       </Box>
+      {/* Integrantes Equipo END  */}
+
+      {/* Nota START  */}
       <Box
         width="100%"
-        h={isMobile ? "25dvh" : "10dvh"}
+        paddingX="3dvw"
+        marginTop={isMobile ? "8dvh" : "2dvh"}
+        marginBottom={isMobile ? "2dvh" : "2dvh"}
         style={{
-          marginLeft: "2dvw",
           fontSize: "1dvw",
-          paddingTop: isMobile ? "4dvh" : "1dvh",
         }}
       >
         <p style={{ fontSize: isMobile ? "3dvw" : "0.7rem" }}>
@@ -183,6 +194,8 @@ const Equipo = () => {
           Monterrey.
         </p>
       </Box>
+      {/* Nota END  */}
+
     </section>
   );
 };
@@ -192,56 +205,54 @@ const Objetivo = () => {
 
   return (
     <section id="objetivo" style={{ width: "100%" }}>
-        {/* Imagen y texto  */}
-        <Box
-        h={"100%"}
-        w={isMobile ? "100%" : "50%"}
-          // height={"90%"}
+      {/* Imagen: ¿Qué es ciudad?  y texto START  */}
+      <Box
+      h={"100%"}
+      w={isMobile ? "100%" : "50%"}
+        style={{
+          position: isMobile ? "static" : "absolute",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          marginTop: "0dvw",
+          paddingLeft: isMobile ? "5dvw" : "0",
+          paddingRight: isMobile ? "5dvw" : "0",
+        }}
+      >
+        <img
+          className="headerImage"
+          src="aspectos.png"
+          alt="SIUM"
           style={{
-            // position: "absolute",
-            position: isMobile ? "static" : "absolute",
-            display: "flex",
-            flexDirection: "column",
-            // justifyContent: "space-around",
-            alignItems: "center",
-            marginTop: "0dvw",
-            paddingLeft: isMobile ? "5dvw" : "0",
-            paddingRight: isMobile ? "5dvw" : "0",
-            // backgroundColor: "lightblue",
+            height: isMobile ? "auto" : "70dvh",
+            objectFit: "contain",
+            marginTop: "3dvh",
+          }}
+        />
+        <p
+          style={{
+            marginTop: "3dvw",
+            fontSize: isMobile ? "5dvw" : "1.5dvw",
+            textAlign: "center",
+            color: "#665232",
           }}
         >
-          <img
-            className="headerImage"
-            src="aspectos.png"
-            alt="SIUM"
-            style={{
-              height: isMobile ? "40dvh" : "70dvh",
-              objectFit: "contain",
-              marginTop: "3dvh",
-              // backgroundColor: "brown",
-            }}
-          />
-          <p
-            style={{
-              marginTop: "3dvw",
-              fontSize: isMobile ? "5dvw" : "1.5dvw",
-              textAlign: "center",
-              color: "#665232",
-            }}
-          >
-            Y mucho más...
-          </p>
-        </Box>
+          Y mucho más...
+        </p>
+      </Box>
+      {/* Imagen: ¿Qué es ciudad?  y texto END  */}
+
+      {/* Lado derecho objetivo START  */}
       <Box 
-        h={isMobile ? "175dvh" : "100%"} 
+        h={isMobile ? "150dvh" : "100%"} 
         w="100%"
-        // style={{backgroundColor: "lightblue"}}
         >
+
         <Box
           bg="#FEF5E7"
           w="100%"
-          h={isMobile ? "50dvh" : "100%"}
-          p={4}
+          h={isMobile ? "auto" : "100%"}
+          p={"4dvh"}
           color="#04511B"
           style={{
             display: "flex",
@@ -256,9 +267,9 @@ const Objetivo = () => {
           >
             {/* Box vacío  */}
           </Box>
+          {/* Texto objetivo START  */}
           <Box
             width={isMobile ? "100%" : "26%"}
-            // height={isMobile  ? "100dvh" : "100%"}
             style={{
               display: "flex",
               flexDirection: "column",
@@ -270,15 +281,19 @@ const Objetivo = () => {
             <p style={{ fontSize: isMobile ? "5dvw" : "1.5rem" }}>
               <b>Objetivo General</b>
             </p>
+            {isMobile && <br/>}
             <p style={{ fontSize: isMobile ? "4dvw" : "1rem", marginTop: "1dvw" }}>
               El SIUM tiene como finalidad mostrar el impacto de la expansión
               urbana en la Zona Metropolitana de Monterrey.
             </p>
+            {isMobile && <br/>}
             <p style={{ fontSize: isMobile ? "4dvw" : "1rem", marginTop: "1dvw" }}>
               Generar una discusión colectiva que lleve a un nuevo modelo
               urbano.
             </p>
           </Box>
+          {/* Texto objetivo END */}
+
         </Box>
 
         <Box
@@ -288,16 +303,16 @@ const Objetivo = () => {
         >
           <Box w={isMobile ? "0" : "50%"} h="100%"></Box>
 
-          {/* Tarjetas */}
+          {/* Tarjetas principios START */}
           <Box
             w={isMobile ? "100%" : "50%"}
             h={isMobile ? "135dvh" : "100%"}
+            paddingY={isMobile ? "5dvh" : "2dvh"}
             style={{
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-evenly",
               paddingBottom: "5dvh",
-              // backgroundColor: "orange"
             }}
           >
             <p
@@ -311,7 +326,7 @@ const Objetivo = () => {
               <b>Principios</b>
             </p>
 
-            <Wrap spacingX='2dvw' spacingY='10dvh' justify='center' p={'2dvh'}>
+            <Wrap spacingX='2dvw' spacingY='5dvh' justify='center' p={'2dvh'}>
             {Object.values(principiosInfo).map((principio) => (
               <WrapItem>
                 <Popover trigger="hover" placement="top">
@@ -343,8 +358,12 @@ const Objetivo = () => {
             ))}
             </Wrap>
           </Box>
+          {/* Tarjetas START */}
+
         </Box>
       </Box>
+      {/* Lado derecho objetivo START  */}
+
     </section>
   );
 };
@@ -366,8 +385,8 @@ const Navbar = () => {
           justifyContent: "space-between",
         }}
       >
-        {/* Logos */}
-        <Box w="50%" style={{ display: "flex", alignItems: "center" }}>
+        {/* Logos START */}
+        <Box w={isMobile ? "75%" : "50%"} style={{ display: "flex", alignItems: "center" }}>
           <img
             className="headerImage"
             src="logos_SIUM.png"
@@ -380,13 +399,13 @@ const Navbar = () => {
             }}
           />
         </Box>
+        {/* Logos END */}
 
-        {/* Botones */}
+        {/* Botones START */}
         <Box
-          w="50%"
+          w={isMobile ? "25%" : "50%"}
           style={{
             display: "flex",
-            // justifyContent: "space-around",
             justifyContent: isMobile ? "end" : "space-around",
             alignItems: "center",
             padding: isMobile ? "2dvh" : 0,
@@ -400,19 +419,30 @@ const Navbar = () => {
             icon={<HamburgerIcon />}
             variant='outline'
             color={"white"}
+            bg={"black"}
+            _hover={{ bg: 'gray.700' }}
           />
           <MenuList>
-            <MenuItem style={{color: "black"}} icon={<AddIcon />} >
-              New Tab
+            <MenuItem style={{color: "black"}}>
+              <Link to="/">
+                <Button variant="text">
+                  Inicio
+                </Button>
+              </Link>
             </MenuItem>
-            <MenuItem style={{color: "black"}} icon={<ExternalLinkIcon />} >
-              New Window
+            <MenuItem style={{color: "black"}}>
+              <a href="#objetivo">
+                <Button variant="text">
+                  Objetivo
+                </Button>
+              </a>
             </MenuItem>
-            <MenuItem style={{color: "black"}} icon={<RepeatIcon />}>
-              Open Closed Tab
-            </MenuItem>
-            <MenuItem style={{color: "black"}} icon={<EditIcon />} >
-              Open File...
+            <MenuItem style={{color: "black"}}>
+              <a href="#equipo">
+                <Button variant="text">
+                  Equipo
+                </Button>
+              </a>
             </MenuItem>
           </MenuList>
         </Menu>
@@ -435,9 +465,9 @@ const Navbar = () => {
           </a>
         </>
       )}
-
-
         </Box>
+        {/* Botones END */}
+
       </Box>
     </Box>
   );
