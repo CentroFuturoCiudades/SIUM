@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/SIUM/static/css/main.4f2e740f.css",
-    "main.js": "/SIUM/static/js/main.1a506c40.js",
-    "static/js/787.c787b993.chunk.js": "/SIUM/static/js/787.c787b993.chunk.js",
-    "static/js/mapbox-gl-csp-worker.91fba117.worker.js": "/SIUM/static/js/mapbox-gl-csp-worker.91fba117.worker.js",
-    "index.html": "/SIUM/index.html",
-    "main.4f2e740f.css.map": "/SIUM/static/css/main.4f2e740f.css.map",
-    "main.1a506c40.js.map": "/SIUM/static/js/main.1a506c40.js.map",
-    "787.c787b993.chunk.js.map": "/SIUM/static/js/787.c787b993.chunk.js.map"
+    "main.css": "/static/css/main.4f2e740f.css",
+    "main.js": "/static/js/main.8491b8cb.js",
+    "static/js/787.c787b993.chunk.js": "/static/js/787.c787b993.chunk.js",
+    "static/js/mapbox-gl-csp-worker.e67685d0.worker.js": "/static/js/mapbox-gl-csp-worker.e67685d0.worker.js",
+    "index.html": "/index.html",
+    "main.4f2e740f.css.map": "/static/css/main.4f2e740f.css.map",
+    "main.8491b8cb.js.map": "/static/js/main.8491b8cb.js.map",
+    "787.c787b993.chunk.js.map": "/static/js/787.c787b993.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.4f2e740f.css",
-    "static/js/main.1a506c40.js"
+    "static/js/main.8491b8cb.js"
   ]
 }
