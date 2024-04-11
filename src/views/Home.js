@@ -490,9 +490,9 @@ const Home = () => {
               >
                 <Heading
                   color="orange.500"
-                  fontSize={isMobile ? "lg" : "2.5dvw"}
+                  fontSize={isMobile ? "lg" : "1.7dvw"}
                 >
-                  Los recursos de la metropolis son limitados
+                  Los recursos de la metrópolis son limitados
                 </Heading>
                 <br></br>
                 En las últimas tres décadas, la mancha urbana de Monterrey ha
@@ -512,7 +512,7 @@ const Home = () => {
               >
                 <Heading
                   color="orange.500"
-                  fontSize={isMobile ? "lg" : "2.5dvw"}
+                  fontSize={isMobile ? "lg" : "1.7dvw"}
                 >
                   Crecimiento sin planeación
                 </Heading>
@@ -524,12 +524,12 @@ const Home = () => {
               </Text>
               <Text
                 color="gray.100"
-                fontSize={isMobile ? "sm" : "1.5dvw"}
+                fontSize={isMobile ? "sm" : "1.7dvw"}
                 style={textStyle}
               >
                 <Heading
                   color="orange.500"
-                  fontSize={isMobile ? "lg" : "2.5dvw"}
+                  fontSize={isMobile ? "lg" : "1.7dvw"}
                 >
                   Visibilización, propuestas y acción colectiva
                 </Heading>

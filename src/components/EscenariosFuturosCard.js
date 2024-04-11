@@ -90,7 +90,7 @@ export const EscenariosFuturosControls = () => {
         <GeoJsonLayer
           id="escenarios_actuales_layer"
           data={expansion_actual_data}
-          getFillColor={hexToRgb(startColor)}
+          getFillColor={[168, 174, 193]}
           opacity={1}
         />
         <ButtonControls
@@ -135,7 +135,7 @@ export const EscenariosFuturosControls = () => {
           </>
         }
       >
-        <LegendItem color={startColor} label="Expansión actual" />
+        <LegendItem color={'#A8AEC1'} label="Expansión actual" />
         <LegendItem color={currentColor} label={`Expansión ${activeButton}`} />
       </CustomLegend>
     </>
