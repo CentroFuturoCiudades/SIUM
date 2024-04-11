@@ -6,7 +6,7 @@ import Equipo from "./views/Equipo";
 
 function App() {
   return (
-    <BrowserRouter basename={"/SIUM"}>
+    <BrowserRouter basename={"/"}>
       <Routes>
         <Route path="/" exact element={<Home />} />
         <Route path="/problematica" element={<Problematica />} />

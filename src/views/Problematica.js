@@ -12,7 +12,7 @@ import { Header, HeaderMobile } from "../components/Header";
 import "../index.css";
 import { Card } from "../components/Card";
 import { sectionsInfo } from "../utils/constants";
-import SwipeableBottomSheet from "react-swipeable-bottom-sheet";
+import Sheet from "react-modal-sheet";
 
 const CardContext = createContext();
 
@@ -64,35 +64,59 @@ export const CardsContainer = () => {
 export const CardsContainerMobile = () => {
   const { currentSection, color } = useCardContext();
   const [open, setOpen] = useState(true);
+  const [currentSnap, setCurrentSnap] = useState(1);
   const CurrentCardContent = sectionsInfo[currentSection].component;
   const title = sectionsInfo[currentSection].title;
+  const ref = useRef();
+  const snapTo = (i: number) => ref.current?.snapTo(i);
 
   useEffect(() => {
     setOpen(true);
+    setCurrentSnap(1);
   }, [currentSection]);
 
   return (
-    <SwipeableBottomSheet
-      open={open}
-      onChange={setOpen}
-      overflowHeight={50}
-      shadowTip={false}
-      overlay={false}
-      topShadow={false}
-      style={{ zIndex: 2 }}
-      bodyStyle={{ borderRadius: "1.2rem 1.2rem 0 0" }}
-      overlayStyle={{ borderRadius: "1.2rem 1.2rem 0 0", zIndex: 2 }}
+    <Sheet
+      ref={ref}
+      isOpen={true}
+      onClose={() => {
+        snapTo(1);
+        setCurrentSnap(1);
+        setOpen(true);
+      }}
+      snapPoints={[1, 0.55, 80]}
+      initialSnap={currentSnap}
+      detent="full-height"
+      tweenConfig={{ ease: "easeOut", duration: 0.1 }}
+      onSnap={(i) => setCurrentSnap(i)}
     >
-      <HeaderMobile color={color} title={title} open={open} setOpen={setOpen} />
-      <Box
-        bg="white"
-        borderColor={`${color}.500`}
-        margin="4"
-        style={{ height: "30dvh", marginTop: "60px" }}
-      >
-        <CurrentCardContent />
-      </Box>
-    </SwipeableBottomSheet>
+      <Sheet.Container>
+        <Sheet.Header>
+          <HeaderMobile
+            color={color}
+            title={title}
+            open={open}
+            setOpen={() => {
+              snapTo(currentSnap === 2 ? 1 : 2);
+              setCurrentSnap(currentSnap === 2 ? 1 : 2);
+            }}
+          />
+        </Sheet.Header>
+        <Sheet.Content disableDrag style={{ paddingBottom: ref.current?.y }}>
+          <Sheet.Scroller draggableAt="both">
+            <Box
+              bg="white"
+              borderColor={`${color}.500`}
+              margin="4"
+              style={{ height: "30dvh", marginTop: "60px" }}
+            >
+              <CurrentCardContent />
+            </Box>
+          </Sheet.Scroller>
+        </Sheet.Content>
+      </Sheet.Container>
+      <Sheet.Backdrop />
+    </Sheet>
   );
 };
 

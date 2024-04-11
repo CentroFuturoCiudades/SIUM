@@ -423,7 +423,7 @@ const Home = () => {
               <img
                 key={index}
                 className="headerImage"
-                src={`/SIUM/${imagen}`}
+                src={`/${imagen}`}
                 alt="SIUM"
                 style={{
                   padding: "5px",
