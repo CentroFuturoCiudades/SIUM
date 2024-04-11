@@ -128,11 +128,11 @@ export const TransporteControls = () => {
             const nombrePropiedad = feature.properties.NOMBRE;
             const colorMapping = {
               // Change color based on type of transport
-              ECOVIA: [0, 200, 0, 255], // Rojo
-              "Linea 1 - Metro": [0, 200, 0, 255],
-              "Linea 2 - Metro": [0, 200, 0, 255],
-              "Linea 3 - Metro": [0, 200, 0, 255],
-              Transmetro: [0, 200, 0, 255],
+              ECOVIA: [255, 56, 100], // Rojo
+              "Linea 1 - Metro": [255, 56, 100],
+              "Linea 2 - Metro": [255, 56, 100],
+              "Linea 3 - Metro": [255, 56, 100],
+              Transmetro: [255, 56, 100],
             };
             return colorMapping[nombrePropiedad] || [64, 224, 208, 128];
           }}
@@ -145,7 +145,7 @@ export const TransporteControls = () => {
           lineWidthScale={10}
           lineWidthMinPixels={2}
           getLineWidth={10}
-          getLineColor={[200, 0, 0]}
+          getLineColor={[16, 37, 66]}
         />
         <GeoJsonLayer
           id="primary_routes"
@@ -196,8 +196,8 @@ export const TransporteControls = () => {
       >
         <LegendItem color={endColor} label="Trabajo y Regreso a Casa" />
         <LegendItem color={startColor} label="Otros motivos" />
-        <LegendItem color="lightgreen" label="Metro" />
-        <LegendItem color="red" label="Ciclovias" />
+        <LegendItem color="#FF3864" label="Metro" />
+        <LegendItem color="#102542" label="Ciclovias" />
       </CustomLegend>
       <ButtonControls
         color={color}
