@@ -24,7 +24,7 @@ export const CostosControls = () => {
 
   useEffect(() => {
     fetch(
-      "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/costos_municipality.json"
+      "https://sium.blob.core.windows.net/sium/datos/costos_municipality.json"
     )
       .then((response) => response.json())
       .then((data) => {

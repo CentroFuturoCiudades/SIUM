@@ -38,7 +38,7 @@ export const ViviendaControls = () => {
   const { color, setSharedProps } = useCardContext();
   const [startColor] = useToken("colors", [`${color}.600`]);
   const endColor = "#6a2eab";
-  const VIVIENDA_COLORS = generateGradientColors(startColor, endColor, 8);
+  const VIVIENDA_COLORS = generateGradientColors(endColor, startColor, 8);
   const { data } = useFetch(VIVIENDA_URL);
   const [legendItems, setLegendItems] = useState([]);
   const [hoverInfo, setHoverInfo] = useState();
@@ -77,7 +77,7 @@ export const ViviendaControls = () => {
           getPosition={(d) => d.position}
         /> 
         <PopupButton 
-          videoId="OsVuAKg3G0U?si=lgWZXJSOss-RFvqo"
+          videoId="OsVuAKg3G0U?si=C_qwpjAT5kRGir-t"
           title="Lucía Elizondo" 
           subtitle="Tecnológico de Monterrey | ITESM · Campus Monterrey - Arch, MDesS, PhD" 
           text="Regulación de la vivienda." 

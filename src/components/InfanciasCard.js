@@ -192,9 +192,9 @@ export const InfanciasControls = () => {
               d.properties.sector === "salud"
           )}
           //iconAtlas="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png"
-          iconAtlas="https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/images/icon-atlas2.png"
+          iconAtlas="https://sium.blob.core.windows.net/sium/images/icon-atlas2.png"
           //iconMapping="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.json"
-          iconMapping="https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/images/icon-atlas2.json"
+          iconMapping="https://sium.blob.core.windows.net/sium/images/icon-atlas2.json"
           //getIcon={d => 'marker'}
           getIcon={(d) => getIconByCodigoAct(d.properties.sector)}
           getPosition={(d) => d.geometry.coordinates}
@@ -207,7 +207,7 @@ export const InfanciasControls = () => {
           extensions={[new BrushingExtension()]}
         />
         <PopupButton 
-          videoId="ROtsJ6c4dIo?si=HAPfOj40Rip_XPPl"
+          videoId="ROtsJ6c4dIo?si=rVyjLfugJicIi_fJ"
           title="Sindy González Tijerina" 
           subtitle="FEMSA." 
           text="Importancia de la integración de una perspectiva de la primera infrancia en la planeación." 
@@ -215,7 +215,7 @@ export const InfanciasControls = () => {
       </CustomMap>
       <CustomLegend
         color={color}
-        title={"Porcentaje de población entre 0 a 5 años"}
+        title={"Porcentaje de la población total entre 0 a 5 años"}
         description={
           <>
             <b>Censo INEGI 2020</b>

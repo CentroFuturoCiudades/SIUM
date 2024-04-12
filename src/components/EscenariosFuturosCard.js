@@ -25,16 +25,16 @@ import { useToken } from "@chakra-ui/react";
 import PopupButton from "./PopupButton";
 
 const EXPANSION_ACTUAL_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/mancha_urbana_2020.geojson";
+  "https://sium.blob.core.windows.net/sium/datos/mancha_urbana_2020.geojson";
 const ESCENARIOS_FUTUROS_ACELERADA_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/escenario_acelerado.geojson"; // Acelerado
+  "https://sium.blob.core.windows.net/sium/datos/escenario_acelerado.geojson"; // Acelerado
 const ESCENARIOS_FUTUROS_INERCIAL_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/escenario_inercial.geojson"; // Inercial
+  "https://sium.blob.core.windows.net/sium/datos/escenario_inercial.geojson"; // Inercial
 const ESCENARIOS_FUTUROS_CONTROLADA_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/escenario_controlado.geojson"; // Controlado
+  "https://sium.blob.core.windows.net/sium/datos/escenario_controlado.geojson"; // Controlado
 
 const ESCENARIOS_FUTUROS_CHART_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/escenarios.json"; // Chart
+  "https://sium.blob.core.windows.net/sium/datos/escenarios.json"; // Chart
 
 const COLORS = ["#6D4F90", "#3EA5A3", "#407E9F"];
 const SCENARIOS_NAMES = ["acelerada", "inercial", "controlada"];

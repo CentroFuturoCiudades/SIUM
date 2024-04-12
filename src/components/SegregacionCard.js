@@ -49,9 +49,9 @@ const legendMapping = {
 export const SegregacionControls = () => {
   const { color } = useCardContext();
   const [isMobile] = useMediaQuery("(max-width: 800px)");
-  const [startColor] = useToken("colors", [`${color}.100`]);
+  const [startColor] = useToken("colors", [`${color}.700`]);
   const endColor = "#6a2eab";
-  const SEGREGACION_COLORS = generateQuantileColors(startColor, endColor, 8);
+  const SEGREGACION_COLORS = generateGradientColors(endColor, startColor, 8);
   const { data } = useFetch(SEGREGATION_URL);
   const { data: data_asentamientos } = useFetch(ASENTAMIENTOSINF_URL);
   const [legendItems, setLegendItems] = useState([]);
