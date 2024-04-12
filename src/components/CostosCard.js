@@ -15,12 +15,41 @@ import { useCardContext } from "../views/Problematica";
 import { sectionsInfo } from "../utils/constants";
 import { useMediaQuery } from "@chakra-ui/react";
 import PopupButton from "./PopupButton";
+import { 
+  CustomLegend,
+  CustomLegendMobile,
+  LegendItem,
+} from "./CustomLegend.js";
 
 export const CostosControls = () => {
   const { color } = useCardContext();
   const [isMobile] = useMediaQuery("(max-width: 800px)");
   const [chartData, setChartData] = useState([]);
   const [activeButton, setActiveButton] = useState("obras");
+  const [clickedIndex, setClickedIndex] = useState(null);
+
+
+  const [activeIndex, setActiveIndex] = useState(-1); // State to track the active (hovered) area
+
+  const legendData = [
+    { name: "Municipios Periféricos", color: "rgb(153, 4, 253)" },
+    { name: "Municipios Centrales", color: "rgb(147, 176, 154)" }
+  ];
+
+  const handleMouseEnter = (data, index) => {
+    setActiveIndex(index);
+  };
+  
+  const handleMouseLeave = () => {
+    if (clickedIndex === null) { // Clear hover only if no tooltip is pinned
+      setActiveIndex(-1);
+    }
+  };
+  
+  const handleClick = (index) => {
+    setClickedIndex(clickedIndex === index ? null : index); // Toggle pinning of tooltip
+  };
+  
 
   useEffect(() => {
     fetch(
@@ -67,25 +96,42 @@ export const CostosControls = () => {
     return chartData;
   };
 
+  const CustomTooltip = ({ active, payload, label, activeIndex }) => {
+    if (active && payload && payload.length > 0) {
+      return (
+        <div className="custom-tooltip" style={{ backgroundColor: '#fff', padding: '10px', border: '1px solid #ccc' }}>
+          <p className="label" style={{ fontWeight: 'bold', fontSize: '14px' }}>{`Año ${label}`}</p>
+          {payload.map((entry, index) => (
+            <p key={index} style={{ color: entry.color, textDecoration: index === activeIndex ? 'underline' : 'none', opacity: index !== activeIndex ? '0.3' : '1', fontSize: '16px' }}>
+              <span style={{ fontWeight: 'bold' }}>{entry.name}</span>: ${entry.value.toLocaleString()}
+            </p>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
+  
+
   const municipioColorMap = {
     // blues
-    Monterrey: "rgb(0, 0, 250)",
-    "San Nicolás de los Garza": "rgb(40, 20, 210)",
-    Guadalupe: "rgb(60, 30, 190)",
-    "San Pedro Garza García": "rgb(20, 10, 230)",
-    "Santa Catarina": "rgb(80, 40, 210)",
+    Monterrey: "rgb(147, 176, 154)",
+    "San Nicolás de los Garza": "rgb(147, 176, 154)",
+    Guadalupe: "rgb(147, 176, 154)",
+    "San Pedro Garza García": "rgb(147, 176, 154)",
+    "Santa Catarina": "rgb(153, 4, 253)",
     // reds
-    Apodaca: "rgb(250, 0, 0)",
-    "General Escobedo": "rgb(230, 10, 20)",
-    García: "rgb(210, 20, 40)",
-    "Cadereyta Jiménez": "rgb(190, 30, 60)",
-    Juárez: "rgb(210, 40, 80)",
-    "Salinas Victoria": "rgb(230, 50, 100)",
-    "General Zuazua": "rgb(250, 60, 120)",
-    Pesquería: "rgb(250, 70, 140)",
-    Hidalgo: "rgb(250, 80, 160)",
-    "Ciénega de Flores": "rgb(250, 90, 180)",
-    Abasolo: "rgb(250, 100, 200)",
+    Apodaca: "rgb(147, 176, 154)",
+    "General Escobedo": "rgb(147, 176, 154)",
+    García: "rgb(147, 176, 154)",
+    "Cadereyta Jiménez": "rgb(153, 4, 253)",
+    Juárez: "rgb(147, 176, 154)",
+    "Salinas Victoria": "rgb(153, 4, 253)",
+    "General Zuazua": "rgb(153, 4, 253)",
+    Pesquería: "rgb(153, 4, 253)",
+    Hidalgo: "rgb(153, 4, 253)",
+    "Ciénega de Flores": "rgb(153, 4, 253)",
+    Abasolo: "rgb(147, 176, 154)",
   };
 
   // Esta función busca el color del municipio en el objeto de arriba.
@@ -121,6 +167,15 @@ export const CostosControls = () => {
 
   return (
     <>
+     <CustomLegend
+        title={"Costos de expansión"}
+        color={color}
+        description={"Legend description here"}
+      >
+        {legendData.map((item, index) => (
+          <LegendItem key={index} color={item.color} label={item.name} />
+        ))}
+      </CustomLegend>
       <ButtonControls
         color={color}
         activeButton={activeButton}
@@ -137,18 +192,27 @@ export const CostosControls = () => {
           },
         ]}
       />
-      <PopupButton 
+      <PopupButton
         videoId="_h7bXZyN2po?si=fhz7F9Wv9jnT-kig"
-        title="Ana Fernanda Hierro" 
-        subtitle="Consejo de Nuevo León." 
-        text="Eficiencia y aprovechamiento del espacio." 
+        title="Ana Fernanda Hierro"
+        subtitle="Consejo de Nuevo León."
+        text="Eficiencia y aprovechamiento del espacio."
       />
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={chartData}
           margin={{ top: 100, right: 30, left: 30, bottom: 0 }}
+          onMouseLeave={() => setActiveIndex(-1)}
         >
-          <CartesianGrid strokeDasharray="3 3" />
+          <defs>
+            {municipios.map((municipio, index) => (
+              <linearGradient key={index} id={`colorU${index}`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor={getColorForMunicipio(municipio)} stopOpacity={0.8} />
+                <stop offset="95%" stopColor={getColorForMunicipio(municipio)} stopOpacity={0.2} />
+              </linearGradient>
+            ))}
+          </defs>
+
           <XAxis
             dataKey="fecha"
             style={{ fontSize: isMobile ? "12px" : "1dvw" }}
@@ -157,23 +221,25 @@ export const CostosControls = () => {
             tickFormatter={labelMoney}
             style={{ fontSize: isMobile ? "12px" : "1dvw" }}
           />
-          <Tooltip
-            formatter={(value) => `$${value.toLocaleString()}`}
-            labelFormatter={(value) => `Año ${value}`}
-            itemStyle={{ fontSize: "1dvw" }}
-            labelStyle={{ fontSize: "1.2dvw", fontWeight: "bold" }}
-          />
+<Tooltip content={<CustomTooltip activeIndex={activeIndex} />} />
 
-          <Legend wrapperStyle={{ fontSize: isMobile ? "10px" : "1dvw" }} />
+
+
+
+          {/* <Legend wrapperStyle={{ fontSize: isMobile ? "10px" : "1dvw" }} /> */}
           {chartData.length > 0 &&
             municipios.map((municipio, index) => (
               <Area
                 key={index}
-                type="monotone"
+                type="natural"
                 dataKey={municipio}
                 stackId="1"
-                stroke={getColorForMunicipio(municipio)} // Necesitarás crear una función que asigne un color a cada municipio
-                fill={getColorForMunicipio(municipio)} // o que los mapee de alguna manera para que sean consistentes
+                stroke={getColorForMunicipio(municipio)}
+                fill={`url(#colorU${index})`}
+                onMouseEnter={() => handleMouseEnter(municipio, index)}
+                onMouseLeave={handleMouseLeave}
+                strokeOpacity={(index === activeIndex || index === clickedIndex) ? 1 : 0.5}
+                fillOpacity={(index === clickedIndex) ? 0.8 : (index === activeIndex ? 0.8 : 0.5)}
               />
             ))}
         </AreaChart>
@@ -181,6 +247,8 @@ export const CostosControls = () => {
     </>
   );
 };
+
+
 
 export function CostosCard() {
   const { color, currentSection } = useCardContext();
