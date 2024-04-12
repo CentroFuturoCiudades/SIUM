@@ -107,14 +107,18 @@ const DescargaDatos = () => {
 
   // This function interpolates between blue and red based on the normalized value.
   function colorInterpolate(value, alpha = 1) {
-    // Assuming value is normalized (0 to 1)
-    const red = Math.round(255 * value);
-    const blue = 255 - red;
-    const green = 0; // No green component
+    // Colores en componentes RGB
+    const purple = { r: 106, g: 46, b: 171 }; // #6a2eab
+    const brown = { r: 116, g: 110, b: 86 };   // #8b4513
 
-    // Return as RGBA
-    return [red, green, blue, 255 * alpha];
-  }
+    // Interpolación de cada componente del color
+    const r = Math.round(purple.r * (1 - value) + brown.r * value);
+    const g = Math.round(purple.g * (1 - value) + brown.g * value);
+    const b = Math.round(purple.b * (1 - value) + brown.b * value);
+
+    // Retorno del color interpolado en formato RGBA
+    return [r, g, b, 255 * alpha];
+}
 
   useEffect(() => {
     // Iterate over selectedMaps array and fetch data for each map
