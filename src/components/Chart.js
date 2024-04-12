@@ -80,7 +80,7 @@ export const CustomBarLabel = memo((props) => {
       key={`label-${index}`}
       x={width <= 0 ? x + 5 : fitsInside ? insideX : outsideX}
       y={y + height / 2}
-      fill={fitsInside && !props.inverse ? "white" : "grey"}
+      fill={fitsInside && !props.inverse ? "white" : "#363636"}
       textAnchor={fitsInside ? "end" : "start"}
       dominantBaseline="middle"
       style={{
