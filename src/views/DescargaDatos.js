@@ -18,7 +18,8 @@ import DeckGL from "@deck.gl/react";
 import { Map } from "react-map-gl";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import FileSaver from "file-saver";
-import { cleanedGeoData } from "../utils/constants";
+import { cleanedGeoData, separateLegendItems, generateQuantileColors, generateGradientColors } from "../utils/constants";
+import { Legend } from "../components/Legend";
 
 const datosMapas = [
   {
@@ -26,61 +27,189 @@ const datosMapas = [
     description: "Entre más aumenta la mancha urbana, más aumenta la inseguridad: cuando la mancha urbana aumenta un kilómetro, el robo a casa habitación incrementa en un 0.04%. Las incidencias delictivas como robos a transeúntes o a viviendas, así como violencia familiar se concentran en regiones segregadas. Estar alejado de actividades económicas aumenta la incidencia delictiva. Estar cercano a centros con comercio al por menor, la disminuyen.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson",
     column: "num_crimen",
+    titleLegend: "Incidencia delictiva 2017-2020",
+    itemsLegend: separateLegendItems([0, 20, 50, 100, 150, 200, 300, 400, 520],generateQuantileColors('#ccd1c7', '#6a2eab', 8)),
+    colorLegend: "green2",
+    descriptionLegend: 
+    <>
+      <b>
+        Reportes y datos anonimizados del Secretario Ejecutivo de
+        Seguridad Pública
+      </b>
+      <p>
+        Los datos se muestran para 4 tipos de delitos violencia familiar,
+        robo a transeúnte, negocio y casa habitación. Se reporta la
+        incidencia delictiva acumulada de 2017 al 2020 del número de
+        delitos por cada diez mil personas.
+      </p>
+    </>
   },
   {
     name: "Empleo",
     description: "La migración de familias jóvenes a la periferia reduce población en centros urbanos, aumentando desplazamientos al trabajo. Los empleos continúan a diez kilómetros alrededor de la Macroplaza pero existen nuevas centralidades. En 2010, el 53% de empleos estaba en la Macroplaza; en 2020, bajó al 47%. El crecimiento de los centros de empleo se mantienen constantes ante la migración hacia la periferia. La población de Monterrey duplicó de 1990 a 2020, y la expansión urbana creció 2.8 veces, incrementando el tiempo de traslado.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2020_Municipios_Geo.json",
     column: "Empleos",
+    titleLegend: "Número de Empleos en 2020",
+    itemsLegend: separateLegendItems([0, 200, 400, 600, 800, 1000, 2500, 8400],generateQuantileColors('#dbb385', '#6a2eab', 8)),
+    colorLegend: "green2",
+    descriptionLegend: 
+    <>
+      <b>
+        Directorio Estadístico Nacional de Unidades Económicas (DENUE)
+      </b>
+      <p>
+        El número de empleos de cada unidad económica se aproxima con la
+        mayoría de las categorías intermedias de empleo. Agregados por
+        hexágono.
+      </p>
+    </>,
   },
   {
     name: "Crecimiento",
     description: "La zona central de Monterrey se ha convertido en un área comercial sin residentes. Los hogares se mudan mientras los comercios permanecen. Durante décadas, se ha invertido en infraestructura de transporte para conectar el empleo en el centro con las zonas residenciales. Esto le otorga un alto valor comercial al centro y hace inviable la producción de vivienda asequible. La vivienda económica, a la que las familias jóvenes tienen acceso, se construye en las periferias urbanas.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob.geojson",
     column: "1990",
+    titleLegend: "Leyenda crecimiento",
+    itemsLegend: separateLegendItems([-5100, -2000, -1000, 0, 2000, 4000, 6000, 11100],generateGradientColors('#4c4527', '#6a2eab', 8)),
+    colorLegend: "green2",
+    descriptionLegend: 
+    <>
+      <b>Censos de población INEGI 1990, 2010, 2020</b>
+      <p>Malla geostadística de unidades comparables.</p>
+      <p>Esta visualización proyecta diferentes censos por AGEB.</p>
+    </>,
   },
   {
     name: "Segregación",
     description: "Al expandirnos en estos niveles es innevitable que ciertos grupos poblacionales, incluyendo las familias jóvenes o con primeras infancias, queden alejados de las áreas con oportunidades y servicios. La expansión provoca una segregación espacial que divide zonas abruptamente. Las zonas de mayor ingreso como San Pedro o el Sur de Monterrey y las de menor ingreso, que cuentan con costos de suelo más bajos, como sucede en Céntrika y Loma Larga, y en Estanzuela Fomerrey y los límites de la colonia Independencia con Loma Larga.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income2.geojson",
     column: "income_pc",
+    titleLegend: "Leyenda segregación",
+    itemsLegend: separateLegendItems([4000, 7000, 10000, 13000, 18000, 25000, 35000, 50000, 74000],generateQuantileColors('#ebede8', '#6a2eab', 8)),
+    colorLegend: "green2",
+    descriptionLegend: 
+    <>
+      <b>
+        Censo de 2020 la encuesta nacional de ingreso en los hogares del
+        2018
+      </b>
+      <p>
+        A través del metodo Iterative Proportional Fitting (IPF), se
+        proporcionaron datos sintetivos de ingreso por AGEB.
+      </p>
+      <p>
+        Peraza-Mues, G., Ponce-Lopez, R., Muñoz Sanchez, J. A., Cavazos
+        Alanis, F., Olivera Martínez, G., & Brambila Paz, C. (2023).
+        Income Segregation Analysis in Limited-Data Contexts: A
+        Methodology Based on Iterative Proportional Fitting. Geographical
+        Analysis.
+      </p>
+    </>,
   },
   {
     name: "Vivienda",
     description: "Mapa de vivienda",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda-hex.geojson",
     column: "IM_PRECIO_VENTA",
+    titleLegend: "Precio de Venta 2000-2020",
+    itemsLegend: separateLegendItems([160000, 400000, 500000, 600000, 800000, 1000000, 1200000, 1800000],generateGradientColors('#7a724a', '#6a2eab', 8)),
+    colorLegend: "green2",
+    descriptionLegend: 
+    <>
+      <b>Créditos de INFONAVIT activos en 2020</b>
+      <p>Las viviendas adquiridas a través de un crédito de INFONAVIT.</p>
+      <p>
+        Datos actualizados por inflación presentados en precios de 2020.
+      </p>
+    </>,
   },
   {
     name: "Costos",
     description: "La expansión urbana no solo tiene altos costos sociales y ambientales, implica un gasto público mayor, en comparación con modelos de ciudades compactas. En 1995, se gastaban alrededor de tres mil millones en obras públicas de infrastructura para llevar servicios a las zonas urbananas. En 2020 se gastaron casi treinta y seis mil millones, un aumento del 1,200%. Aún con este aumento, el gasto no ha sido suficiente ya que el gasto per cápita ha disminuido en un 88% en el mismo periodo. Los municipios ahora gastan más por metro cuadrado de la mancha urbana, de $223/m2 en 1990 a $2,000/m2 en 2020.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income.geojson",
     column: "local_centralization_q_5_k_100",
+    titleLegend: "Leyenda costos",
+    itemsLegend: [],
+    colorLegend: "green2",
+    descriptionLegend: "Descripcion de leyenda de costos",
   },
   {
     name: "Transporte",
     description: "El 45% de los desplazamientos en Monterrey son viajes al trabajo, casi la mitad en automóvil, con la particularidad de que la mitad se hace con una sola persona. Los residentes invierten en promedio 50 minutos por viaje redondo en auto, equivalente a doce días al año. El transporte público requiere mejoras; las personas pasan en promedio 70 minutos al día en él, con un tercio experimentando viajes de 3 horas diarias. El 40% de los traslados vienen de la periferia, como Apodaca, Escobedo, García y Juárez, mientras que el 26% se dirige a Monterrey. Solo el 21% utiliza transporte público y un 19% se traslada caminando. Es esencial expandir el acceso al transporte público y mejorar la infraestructura para contrarrestar el impacto negativo en la salud pública y el medio ambiente por el elevado número de viajes en automóvil.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte.geojson",
     column: "Regreso A Casa",
+    titleLegend: "Traslados por motivo de viaje",
+    itemsLegend: [],
+    colorLegend: "green2",
+    descriptionLegend: 
+    <>
+      <b>
+        Encuesta origen destino del Programa Integral de Movilidad Urbana
+        Sustentable (PIMUS) 2019
+      </b>
+    </>,
   },
   ,
   {
     name: "Mancha urbana",
     description: "Capa de mancha urbana", 
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/mancha_urbana.geojson",
-    column: "year"
+    column: "year",
+    titleLegend: "Leyenda mancha urbana",
+    itemsLegend: [],
+    colorLegend: "green2",
+    descriptionLegend: "Descripcion de leyenda de mancha urbana",
   },
   {
     name: "Islas de calor",
     description: "Las islas de calor se calculan a partir de la banda que determinan los satelites LANDSAT, se toma el promedio de la temperatura pixel por un año y se comparan la zona rural con cobertura vegetal circundaria. A partir de la temperatura de la desviacion estandar de la temperatura rural. Las zonas más calientes son aquellas que están más de 3 desviaciones estándar arriba de la temperatura rural.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/div-municipal.geojson",
     column: "muy_caliente",
+    titleLegend: "Islas de calor",
+    itemsLegend: [],
+    colorLegend: "green2",
+    descriptionLegend: 
+    <>
+      <b>Urban reporting based on satellite analysis (URSA)</b>
+      <p>
+        Las islas de calor se calculan a partir de la banda que determinan
+        los satelites LANDSAT, se toma el promedio de la temperatura pixel
+        por un año y se comparan la zona rural con cobertura vegetal
+        circundaria. A partir de la temperatura de la desviacion estandar
+        de la temperatura rural. Las zonas más calientes son aquellas que
+        están más de 3 desviaciones estándar arriba de la temperatura
+        rural.
+      </p>
+    </>,
   },
   {
     name: "Escenarios de futuro",
     description: "El patrón de urbanización de Monterrey en las últimas tres décadas, muestra una expansión de baja densidad hacia las periferias. Utilizando datos históricos, simulamos y proyectamos que, de continuar así, en 2040 la superficie urbanizada crecerá un XXXX%, fragmentando la ciudad y aumentando la integración de centralidades lejanas como Santiago, Saltillo y Ramos Arizpe a la metrópoli.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/escenario_inercial.geojson",
     column: "coordinates",
+    titleLegend: "Escenarios a futuro",
+    itemsLegend: [],
+    colorLegend: "green2",
+    descriptionLegend: 
+    <>
+      <b>
+        SLEUTH (Slope-Land
+        use-Elevation-Urbanization-Transportation-Hillshade)
+      </b>
+      <p>
+        Modelo de simulacion urbana de monterrey se construyó a partir de
+        este modelo.
+      </p>
+      <p>
+        El modelo tuvo un proceso de calibracion para simular procesos de
+        expansion a partir de la informaicon histórica de Monterrey.
+      </p>
+      <p>
+        Clarke, K. C., & Johnson, J. M. (2020). Calibrating SLEUTH with
+        big data: Projecting California's land use to 2100. Computers,
+        Environment and Urban Systems, 83, 101525.
+      </p>
+    </>,
   },
   
 ];
@@ -100,6 +229,11 @@ const DescargaDatos = () => {
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [originalData, setOriginalData] = useState(null);
   const [layers, setLayers] = useState([]);
+  const [legendMapping, setLegendMapping] = useState({}); // Estado para almacenar la leyenda activa
+  const [mapTitleLegend, setMapTitleLegend] = useState([]);
+  const [content, setContent] = useState([]);
+  let primerElemento;
+
 
   const mapContainerRef = useRef();
   const deckRef = useRef();
@@ -178,6 +312,18 @@ const DescargaDatos = () => {
         return [...prevSelectedMaps, map];
       }
     });
+
+    setMapTitleLegend((prevMapTitleLegend) => ({
+      ...prevMapTitleLegend,
+      [map.title]: map.titleLegend,
+      [map.description]: map.descriptionLegend,
+      //[map.itemsLegend]: [{ color: map.itemsLegend.color, item1: map.itemsLegend.item1, item2: map.itemsLegend.item2 }]
+      //[map.itemsLegend]: map.itemsLegend
+      [map.itemsLegend]: map.itemsLegend
+    }));
+
+    console.log(map.itemsLegend);
+
   };
 
   const handleDownloadAll = async () => {
@@ -199,6 +345,8 @@ const DescargaDatos = () => {
       }
     }
   };
+
+  
 
   /* 
   const handleDownloadImage = useCallback(() => {
@@ -286,6 +434,13 @@ const togglePanel = (name) => {
           />
         </DeckGL>
         <Spacer />
+        <Legend
+        title={mapTitleLegend[selectedMaps[selectedMaps.length - 1]?.title]}
+        //legendItems={mapTitleLegend[selectedMaps[selectedMaps.length - 1]?.itemsLegend] || []}
+        legendItems={mapTitleLegend[selectedMaps[selectedMaps.length - 1]?.itemsLegend] || []}
+        description={mapTitleLegend[selectedMaps[selectedMaps.length - 1]?.description]}
+        color={'green'}
+      />
         <Text mb="5">Mapa de: {selectedMaps.name}</Text>
       </Box>
     </Flex>
