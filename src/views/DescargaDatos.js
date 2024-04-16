@@ -13,52 +13,60 @@ import {
   Spacer,
   Text,
   Checkbox,
+  useToken,
 } from "@chakra-ui/react";
 import DeckGL from "@deck.gl/react";
 import { Map } from "react-map-gl";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import FileSaver from "file-saver";
-import { cleanedGeoData } from "../utils/constants";
+import { cleanedGeoData, hexToRgb } from "../utils/constants";
 
 const datosMapas = [
   {
     name: "Delincuencia",
+    color: "green2",
     description: "Entre más aumenta la mancha urbana, más aumenta la inseguridad: cuando la mancha urbana aumenta un kilómetro, el robo a casa habitación incrementa en un 0.04%. Las incidencias delictivas como robos a transeúntes o a viviendas, así como violencia familiar se concentran en regiones segregadas. Estar alejado de actividades económicas aumenta la incidencia delictiva. Estar cercano a centros con comercio al por menor, la disminuyen.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson",
     column: "num_crimen",
   },
   {
     name: "Empleo",
+    color: "orange",
     description: "La migración de familias jóvenes a la periferia reduce población en centros urbanos, aumentando desplazamientos al trabajo. Los empleos continúan a diez kilómetros alrededor de la Macroplaza pero existen nuevas centralidades. En 2010, el 53% de empleos estaba en la Macroplaza; en 2020, bajó al 47%. El crecimiento de los centros de empleo se mantienen constantes ante la migración hacia la periferia. La población de Monterrey duplicó de 1990 a 2020, y la expansión urbana creció 2.8 veces, incrementando el tiempo de traslado.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2020_Municipios_Geo.json",
     column: "Empleos",
   },
   {
     name: "Crecimiento",
+    color: "brown",
     description: "La zona central de Monterrey se ha convertido en un área comercial sin residentes. Los hogares se mudan mientras los comercios permanecen. Durante décadas, se ha invertido en infraestructura de transporte para conectar el empleo en el centro con las zonas residenciales. Esto le otorga un alto valor comercial al centro y hace inviable la producción de vivienda asequible. La vivienda económica, a la que las familias jóvenes tienen acceso, se construye en las periferias urbanas.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob.geojson",
     column: "1990",
   },
   {
     name: "Segregación",
+    color: "green1",
     description: "Al expandirnos en estos niveles es innevitable que ciertos grupos poblacionales, incluyendo las familias jóvenes o con primeras infancias, queden alejados de las áreas con oportunidades y servicios. La expansión provoca una segregación espacial que divide zonas abruptamente. Las zonas de mayor ingreso como San Pedro o el Sur de Monterrey y las de menor ingreso, que cuentan con costos de suelo más bajos, como sucede en Céntrika y Loma Larga, y en Estanzuela Fomerrey y los límites de la colonia Independencia con Loma Larga.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income2.geojson",
     column: "income_pc",
   },
   {
     name: "Vivienda",
+    color: "brown2",
     description: "Mapa de vivienda",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda-hex.geojson",
     column: "IM_PRECIO_VENTA",
   },
   {
     name: "Costos",
+    color: "green3",
     description: "La expansión urbana no solo tiene altos costos sociales y ambientales, implica un gasto público mayor, en comparación con modelos de ciudades compactas. En 1995, se gastaban alrededor de tres mil millones en obras públicas de infrastructura para llevar servicios a las zonas urbananas. En 2020 se gastaron casi treinta y seis mil millones, un aumento del 1,200%. Aún con este aumento, el gasto no ha sido suficiente ya que el gasto per cápita ha disminuido en un 88% en el mismo periodo. Los municipios ahora gastan más por metro cuadrado de la mancha urbana, de $223/m2 en 1990 a $2,000/m2 en 2020.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income.geojson",
     column: "local_centralization_q_5_k_100",
   },
   {
     name: "Transporte",
+    color: "yellow",
     description: "El 45% de los desplazamientos en Monterrey son viajes al trabajo, casi la mitad en automóvil, con la particularidad de que la mitad se hace con una sola persona. Los residentes invierten en promedio 50 minutos por viaje redondo en auto, equivalente a doce días al año. El transporte público requiere mejoras; las personas pasan en promedio 70 minutos al día en él, con un tercio experimentando viajes de 3 horas diarias. El 40% de los traslados vienen de la periferia, como Apodaca, Escobedo, García y Juárez, mientras que el 26% se dirige a Monterrey. Solo el 21% utiliza transporte público y un 19% se traslada caminando. Es esencial expandir el acceso al transporte público y mejorar la infraestructura para contrarrestar el impacto negativo en la salud pública y el medio ambiente por el elevado número de viajes en automóvil.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte.geojson",
     column: "Regreso A Casa",
@@ -66,18 +74,21 @@ const datosMapas = [
   ,
   {
     name: "Mancha urbana",
+    color: "orange",
     description: "Capa de mancha urbana", 
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/mancha_urbana.geojson",
     column: "year"
   },
   {
     name: "Islas de calor",
+    color: "teal1",
     description: "Las islas de calor se calculan a partir de la banda que determinan los satelites LANDSAT, se toma el promedio de la temperatura pixel por un año y se comparan la zona rural con cobertura vegetal circundaria. A partir de la temperatura de la desviacion estandar de la temperatura rural. Las zonas más calientes son aquellas que están más de 3 desviaciones estándar arriba de la temperatura rural.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/div-municipal.geojson",
     column: "muy_caliente",
   },
   {
     name: "Escenarios de futuro",
+    color: "teal2",
     description: "El patrón de urbanización de Monterrey en las últimas tres décadas, muestra una expansión de baja densidad hacia las periferias. Utilizando datos históricos, simulamos y proyectamos que, de continuar así, en 2040 la superficie urbanizada crecerá un XXXX%, fragmentando la ciudad y aumentando la integración de centralidades lejanas como Santiago, Saltillo y Ramos Arizpe a la metrópoli.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/escenario_inercial.geojson",
     column: "coordinates",
@@ -95,21 +106,25 @@ const INITIAL_VIEW_STATE = {
 
 const DescargaDatos = () => {
   const [selectedMaps, setSelectedMaps] = useState([]);
-  const [expandedPanels, setExpandedPanels] = useState([]);
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [originalData, setOriginalData] = useState(null);
   const [layers, setLayers] = useState([]);
+  const [mapColors, setMapColors] = useState({});
 
   const mapContainerRef = useRef();
   const deckRef = useRef();
   const mapRef = useRef();
 
+  const colorTokens = datosMapas.map(map => `${map.color}.500`); // Asume una propiedad 'color' en cada mapa
+  const colors = useToken("colors", colorTokens);
+
   // This function interpolates between blue and red based on the normalized value.
-  function colorInterpolate(value, alpha = 1) {
+  function colorInterpolate(value, r1, g1, b1) {
+    const alpha = 1
     // Colores en componentes RGB
-    const purple = { r: 106, g: 46, b: 171 }; // #6a2eab
-    const brown = { r: 116, g: 110, b: 86 };   // #8b4513
+    const purple = { r: r1, g: g1, b: b1 }; // #6a2eab
+    const brown = { r: 106, g: 46, b: 171 };   // #8b4513
 
     // Interpolación de cada componente del color
     const r = Math.round(purple.r * (1 - value) + brown.r * value);
@@ -143,6 +158,9 @@ const DescargaDatos = () => {
       .map((map) => {
         const data = originalData && originalData[map.name];
         if (!data) return null;
+        const colorIndex = datosMapas.findIndex(m => m.name === map.name);
+        const fillColor = colors[colorIndex] || '#0000ff'; // Default blue
+
 
         // Calculate min and max values for normalization
         const values = data.features.map((d) => d.properties[map.column]);
@@ -161,7 +179,9 @@ const DescargaDatos = () => {
             // Normalize the value
             const normalizedValue =
               (d.properties[map.column] - minVal) / (maxVal - minVal);
-            return colorInterpolate(normalizedValue); // Apply your color interpolation function here
+              const rgb=hexToRgb(fillColor)
+
+            return colorInterpolate(normalizedValue,rgb[0], rgb[1], rgb[2] ); // Apply your color interpolation function here
           },
           getLineColor: [255, 255, 255, 255],
           getLineWidth: 10,
@@ -204,35 +224,6 @@ const DescargaDatos = () => {
     }
   };
 
-  /* 
-  const handleDownloadImage = useCallback(() => {
-    if (isMapLoaded && deckRef.current && mapRef.current) {
-      const mapboxCanvas = mapRef.current.getMap().getCanvas();
-      const deckCanvas = deckRef.current.deck.canvas;
-
-      let mergeCanvas = document.createElement("canvas");
-      mergeCanvas.width = mapboxCanvas.width;
-      mergeCanvas.height = mapboxCanvas.height;
-
-      const context = mergeCanvas.getContext("2d");
-      context.drawImage(mapboxCanvas, 0, 0);
-      context.drawImage(deckCanvas, 0, 0);
-
-      mergeCanvas.toBlob((blob) => {
-        FileSaver.saveAs(blob, `${selectedMap.name}.png`);
-      });
-    }
-  }, [isMapLoaded, selectedMap.name]);
-*/
-const togglePanel = (name) => {
-  setExpandedPanels((prev) => {
-    if (prev.includes(name)) {
-      return prev.filter((panel) => panel !== name);
-    } else {
-      return [...prev, name];
-    }
-  });
-};
   return (
     <Flex h="100vh" direction={{ base: "column", md: "row" }}>
       {/* Contenedor de categorías a la izquierda */}
@@ -316,3 +307,6 @@ const CategoriaItem = ({ title, description, onDownload, selected }) => (
 );
 
 export default DescargaDatos;
+
+
+  //useToken("colors", [${color}.600]);
