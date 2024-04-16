@@ -45,7 +45,6 @@
   background-color: white;
   text-align: center;
   line-height: 1.6rem;
-  margin-bottom: 0.3rem;
   font-weight: 700;
   max-height: 50px;
   min-height: 50px;
@@ -56,10 +55,10 @@
 }
 
 .react-modal-sheet-container {
-  position: relative !important;
-  height: 100% !important;
+  height: max(50px, calc(100% - env(safe-area-inset-top))) !important;
 }
 
-.react-modal-sheet-content {
-  padding-bottom: 0px !important;
+.react-modal-sheet-scroller {
+  padding-bottom: 50px !important;
+  height: calc(100% - env(safe-area-inset-top)) !important;
 }

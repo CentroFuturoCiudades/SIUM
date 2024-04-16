@@ -72,12 +72,11 @@ export const CardsContainerMobile = () => {
 
   useEffect(() => {
     setOpen(true);
-    setCurrentSnap(1);
+    setCurrentSnap(2);
   }, [currentSection]);
 
   return (
     <Sheet
-      // mountPoint={document.getElementById("mapId")}
       ref={ref}
       isOpen={true}
       onClose={() => {
@@ -85,14 +84,14 @@ export const CardsContainerMobile = () => {
         snapTo(2);
         setCurrentSnap(2);
       }}
-      snapPoints={[1, 0.55, 50]}
+      snapPoints={[1, 0.5, 50]}
       initialSnap={currentSnap}
       detent="full-height"
       tweenConfig={{ ease: "easeOut", duration: 0.2 }}
       onSnap={(i) => setCurrentSnap(i)}
     >
       <Sheet.Container>
-        <Sheet.Header style={{ position: 'fixed !important' }}>
+        <Sheet.Header>
           <HeaderMobile
             color={color}
             title={title}
