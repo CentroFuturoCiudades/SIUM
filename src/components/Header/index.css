@@ -36,7 +36,6 @@
 }
 
 .titleMobile {
-  position: absolute;
   transition: background-color 0.2s linear;
   padding: 1rem;
   border-radius: 0.4rem 0.4rem 0 0;
@@ -48,11 +47,19 @@
   line-height: 1.6rem;
   margin-bottom: 0.3rem;
   font-weight: 700;
-  top: 0;
   max-height: 50px;
   min-height: 50px;
   height: 50px;
   width: 100%;
   cursor: pointer;
   z-index: 2;
+}
+
+.react-modal-sheet-container {
+  position: relative !important;
+  height: 100% !important;
+}
+
+.react-modal-sheet-content {
+  padding-bottom: 0px !important;
 }

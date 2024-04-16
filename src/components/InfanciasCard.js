@@ -206,12 +206,12 @@ export const InfanciasControls = () => {
           brushingRadius={brushingRadius}
           extensions={[new BrushingExtension()]}
         />
-        <PopupButton 
+        <PopupButton
           videoId="ROtsJ6c4dIo?si=rVyjLfugJicIi_fJ"
-          title="Sindy González Tijerina" 
-          subtitle="FEMSA." 
-          text="Importancia de la integración de una perspectiva de la primera infrancia en la planeación." 
-        /> 
+          title="Sindy González Tijerina"
+          subtitle="FEMSA."
+          text="Importancia de la integración de una perspectiva de la primera infrancia en la planeación."
+        />
       </CustomMap>
       <CustomLegend
         color={color}
@@ -268,23 +268,32 @@ export function InfanciasCard() {
         {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
-        Las familias jóvenes con primeras infancias (de 0 a 5 años), han migrado
-        hacia las periferias, en donde existe una cobertura reducida de
-        servicios de proximidad: educativos, de salud y comerciales; así como
-        una falta de espacios públicos. En contraste, en las zonas centrales en
-        donde hay una mayor oferta de servicios, la población infantil es menor.
+        En el modelo de ciudad expansivo y de baja de densidad que tenemos
+        actualmente, las familias jóvenes con primeras infancias (bebés, niñas y
+        niños de 0 a 5 años) han migrado hacia las periferias, debido a que
+        existe una mayor oferta de viviendas de bajo costo. Sin embargo, estos
+        entornos tienen una cobertura reducida de servicios de proximidad
+        necesarios para un desarrollo temprano adecuado: educativos, de salud,
+        comercial y espacios públicos (Arup & Van Leer Foundation, 2023). En
+        contraste, en las zonas centrales en donde hay una mayor oferta de
+        servicios, debido al despoblamiento, el grupo etario infantil es menor.
       </p>
       <p>
-        Si sumamos a este desequilibrio condiciones de asentamientos
-        autoproducidos, como en el polígono de la Iniciativa Campana-Altamira,
-        los rezagos de acceso a servicios son más evidentes. Por esto es
-        fundamental promover políticas que permitan una ciudad conectada,
-        accesible y de proximidad.
+        Un ejemplo de este desbalance es evidente en el caso de los
+        equipamientos de salud (consultorios y hospitales generales). El
+        municipio central de Monterrey, con un 6.7% de población de primera
+        infancia, tiene una proporción de equipamientos de salud de 1 por cada
+        42 infancias tempranas. Por el contrario, un municipio periférico como
+        El Carmen, con el 14.3% de población de primera infancia, cuenta con 1
+        equipamiento de salud por cada 2,468 infancias. Esto significa que para
+        obtener estos servicios, las familias deben desplazarse hasta otros
+        puntos de la metrópoli, lo que representa un mayor gasto en tiempo,
+        dinero y desgaste personal para acceder a la atención médica.
       </p>
       <ContextTitle color={color}>
-        Las necesidades de la primera infancia deben garantizarse a través de
-        servicios de salud, nutrición, aprendizaje, protección y seguridad, como
-        lo plantea la UNICEF.
+        De acuerdo con la UNICEF, las necesidades de la primera infancia deben
+        garantizarse a través de servicios de salud, nutrición, aprendizaje,
+        protección y seguridad.
       </ContextTitle>
       <Chart
         title="Porcentage de población entre 0 a 5 años"

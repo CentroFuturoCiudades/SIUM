@@ -43,8 +43,8 @@ export const Header = ({ section, color, title }) => (
       />
       <img
         className="headerImage"
-        src="femsa.png"
-        alt="FEMSA"
+        src="fundacion_femsa.png"
+        alt="Fundacion FEMSA"
         style={{
           padding: "5px",
           maxWidth: "33%",

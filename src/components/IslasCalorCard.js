@@ -193,7 +193,7 @@ export function IslasCalorCard() {
         La infraestructura, principalmente la de estos dos materiales, retiene
         calor y lo libera gradualmente, intensificando este efecto. En el centro
         de Monterrey, la alta densidad de edificios y la falta de áreas verdes
-        aumentan las temperaturas, hasta en XXXXX°, en comparación con las zonas
+        aumentan las temperaturas, hasta en 9°, en comparación con las zonas
         que cuentan con mayor arbolado. Esto afecta negativamente la salud y la
         calidad de vida, especialmente en verano.
       </p>

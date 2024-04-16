@@ -1,19 +1,19 @@
 import React from "react";
-import { 
+import {
   useMediaQuery,
-  Box, 
-  Button, 
-  Wrap, 
-  WrapItem,   
+  Box,
+  Button,
+  Wrap,
+  WrapItem,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
   IconButton,
-
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import {
+  Flex,
   Popover,
   PopoverTrigger,
   PopoverContent,
@@ -21,7 +21,7 @@ import {
   PopoverArrow,
   Heading,
 } from "@chakra-ui/react";
-import { HamburgerIcon } from '@chakra-ui/icons';
+import { HamburgerIcon } from "@chakra-ui/icons";
 import { sectionsInfo } from "../utils/constants";
 
 const principiosInfo = {
@@ -55,7 +55,8 @@ const principiosInfo = {
 const infoEquipo = {
   coordinacionGeneral: {
     title: "COORDINACIÓN GENERAL",
-    organization: "Centro para el Futuro de las Ciudades, Tecnológico de Monterrey",
+    organization:
+      "Centro para el Futuro de las Ciudades, Tecnológico de Monterrey",
     members: ["José Antonio Torre", "Roberto Ponce", "Uriel Salazar"],
     contact: "rpl@tec.mx",
   },
@@ -99,14 +100,11 @@ const infoEquipo = {
   },
 };
 
-
-
 const Equipo = () => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
 
   return (
     <section id="equipo">
-
       {/* Header Equipo START  */}
       <Box
         bg="#FEF5E7"
@@ -120,7 +118,7 @@ const Equipo = () => {
           display: "grid",
           alignItems: "center",
         }}
-        >
+      >
         <Heading as="h1" size={isMobile ? "4xl" : "xl"}>
           Equipo
         </Heading>
@@ -141,18 +139,16 @@ const Equipo = () => {
       >
         {Object.values(infoEquipo).map((area) => (
           <Box
-          marginBottom={"2dvh"}
-          paddingX={"2dvw"}
-          w={isMobile ? "auto" : "17dvw"}
+            marginBottom={"2dvh"}
+            paddingX={"2dvw"}
+            w={isMobile ? "auto" : "17dvw"}
           >
             <div style={{ fontSize: isMobile ? "5dvw" : "1rem" }}>
               <b>{area.title}</b>
             </div>
             {area.organization && (
               <div style={{ fontSize: isMobile ? "3dvw" : "0.7rem" }}>
-                <b>
-                  {area.organization}
-                </b>
+                <b>{area.organization}</b>
               </div>
             )}
 
@@ -195,7 +191,6 @@ const Equipo = () => {
         </p>
       </Box>
       {/* Nota END  */}
-
     </section>
   );
 };
@@ -207,8 +202,8 @@ const Objetivo = () => {
     <section id="objetivo" style={{ width: "100%" }}>
       {/* Imagen: ¿Qué es ciudad?  y texto START  */}
       <Box
-      h={"100%"}
-      w={isMobile ? "100%" : "50%"}
+        h={"100%"}
+        w={isMobile ? "100%" : "50%"}
         style={{
           position: isMobile ? "static" : "absolute",
           display: "flex",
@@ -243,11 +238,7 @@ const Objetivo = () => {
       {/* Imagen: ¿Qué es ciudad?  y texto END  */}
 
       {/* Lado derecho objetivo START  */}
-      <Box 
-        h={isMobile ? "150dvh" : "100%"} 
-        w="100%"
-        >
-
+      <Box h={isMobile ? "150dvh" : "100%"} w="100%">
         <Box
           bg="#FEF5E7"
           w="100%"
@@ -262,11 +253,7 @@ const Objetivo = () => {
             fontSize: "2dvw",
           }}
         >
-          <Box
-            width= {isMobile ? "0" : "26%"}
-          >
-            {/* Box vacío  */}
-          </Box>
+          <Box width={isMobile ? "0" : "26%"}>{/* Box vacío  */}</Box>
           {/* Texto objetivo START  */}
           <Box
             width={isMobile ? "100%" : "26%"}
@@ -281,19 +268,28 @@ const Objetivo = () => {
             <p style={{ fontSize: isMobile ? "5dvw" : "1.5rem" }}>
               <b>Objetivo General</b>
             </p>
-            {isMobile && <br/>}
-            <p style={{ fontSize: isMobile ? "4dvw" : "1rem", marginTop: "1dvw" }}>
+            {isMobile && <br />}
+            <p
+              style={{
+                fontSize: isMobile ? "4dvw" : "1rem",
+                marginTop: "1dvw",
+              }}
+            >
               El SIUM tiene como finalidad mostrar el impacto de la expansión
               urbana en la Zona Metropolitana de Monterrey.
             </p>
-            {isMobile && <br/>}
-            <p style={{ fontSize: isMobile ? "4dvw" : "1rem", marginTop: "1dvw" }}>
+            {isMobile && <br />}
+            <p
+              style={{
+                fontSize: isMobile ? "4dvw" : "1rem",
+                marginTop: "1dvw",
+              }}
+            >
               Generar una discusión colectiva que lleve a un nuevo modelo
               urbano.
             </p>
           </Box>
           {/* Texto objetivo END */}
-
         </Box>
 
         <Box
@@ -326,17 +322,20 @@ const Objetivo = () => {
               <b>Principios</b>
             </p>
 
-            <Wrap spacingX='2dvw' spacingY='5dvh' justify='center' p={'2dvh'}>
-            {Object.values(principiosInfo).map((principio) => (
-              <WrapItem>
-                <Popover trigger="hover" placement="top">
+            <Wrap spacingX="2dvw" spacingY="5dvh" justify="center" p={"2dvh"}>
+              {Object.values(principiosInfo).map((principio) => (
+                <WrapItem>
+                  <Popover trigger="hover" placement="top">
                     <PopoverTrigger>
                       <Button
                         w={isMobile ? "70dvw" : "13dvw"}
                         h={isMobile ? "15dvh" : "15dvh"}
                         colorScheme={principio.colorScheme}
                         variant="outline"
-                        style={{ borderRadius: "4dvw", fontSize: isMobile ? "4dvw" : "1.5dvw" }}
+                        style={{
+                          borderRadius: "4dvw",
+                          fontSize: isMobile ? "4dvw" : "1.5dvw",
+                        }}
                       >
                         {principio.label}
                       </Button>
@@ -349,21 +348,24 @@ const Objetivo = () => {
                       borderColor="#2C3147"
                     >
                       <PopoverArrow bg="#2C3147" />
-                      <PopoverBody style={{ textAlign: "center", fontSize: isMobile ? "4dvw" : "1.5dvw" }}>
+                      <PopoverBody
+                        style={{
+                          textAlign: "center",
+                          fontSize: isMobile ? "4dvw" : "1.5dvw",
+                        }}
+                      >
                         {principio.description}
                       </PopoverBody>
                     </PopoverContent>
                   </Popover>
-              </WrapItem>
-            ))}
+                </WrapItem>
+              ))}
             </Wrap>
           </Box>
           {/* Tarjetas START */}
-
         </Box>
       </Box>
       {/* Lado derecho objetivo START  */}
-
     </section>
   );
 };
@@ -374,7 +376,7 @@ const Navbar = () => {
   return (
     <Box h="10dvh" style={{ position: "sticky", top: 0, zIndex: 1 }}>
       {/* Header */}
-      <Box
+      {/* <Box
         bg="black"
         w="100%"
         h="100%"
@@ -384,26 +386,47 @@ const Navbar = () => {
           display: "flex",
           justifyContent: "space-between",
         }}
+      > */}
+      <Box
+        align="center"
+        bg="black"
+        w="100dvw"
+        p={2}
+        justify="space-between"
+        display="flex"
+        style={{
+          marginTop: "0",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
       >
         {/* Logos START */}
-        <Box w={isMobile ? "75%" : "50%"} style={{ display: "flex", alignItems: "center" }}>
-          <img
-            className="headerImage"
-            src="logos_SIUM.png"
-            alt="SIUM"
-            style={{
-              padding: "5px",
-              height: "auto",
-              width: "auto",
-              objectFit: "contain",
-            }}
-          />
-        </Box>
+        <Flex w="70%" style={{ display: "flex", alignItems: "center" }}>
+          {["SIUM.png", "femsa.png", "tec.png", "fundacion_femsa.png"].map(
+            (imagen, index) => (
+              <img
+                key={index}
+                className="headerImage"
+                src={`/${imagen}`}
+                alt="SIUM"
+                style={{
+                  padding: "5px",
+                  height: "10dvh",
+                  width: "25%",
+                  //maxWidth: "200px",
+                  maxWidth: isMobile ? "100%" : "200px",
+                  objectFit: "contain",
+                }}
+              />
+            )
+          )}
+        </Flex>
         {/* Logos END */}
 
         {/* Botones START */}
         <Box
-          w={isMobile ? "25%" : "50%"}
+          w={isMobile ? "25%" : "25%"}
+          color="white"
           style={{
             display: "flex",
             justifyContent: isMobile ? "end" : "space-around",
@@ -411,63 +434,56 @@ const Navbar = () => {
             padding: isMobile ? "2dvh" : 0,
           }}
         >
-      {isMobile ? (
-        <Menu>
-          <MenuButton
-            as={IconButton}
-            aria-label='Options'
-            icon={<HamburgerIcon />}
-            variant='outline'
-            color={"white"}
-            bg={"black"}
-            _hover={{ bg: 'gray.700' }}
-          />
-          <MenuList>
-            <MenuItem style={{color: "black"}}>
+          {isMobile ? (
+            <Menu>
+              <MenuButton
+                as={IconButton}
+                aria-label="Options"
+                icon={<HamburgerIcon />}
+                variant="outline"
+                color={"white"}
+                bg={"black"}
+                _hover={{ bg: "gray.700" }}
+              />
+              <MenuList>
+                <MenuItem style={{ color: "black" }}>
+                  <Link to="/">
+                    <Button variant="text">Inicio</Button>
+                  </Link>
+                </MenuItem>
+                <MenuItem style={{ color: "black" }}>
+                  <a href="#objetivo">
+                    <Button variant="text">Objetivo</Button>
+                  </a>
+                </MenuItem>
+                <MenuItem style={{ color: "black" }}>
+                  <a href="#equipo">
+                    <Button variant="text">Equipo</Button>
+                  </a>
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          ) : (
+            <>
               <Link to="/">
-                <Button variant="text">
+                <Button variant="text" fontSize="1.5vw">
                   Inicio
                 </Button>
               </Link>
-            </MenuItem>
-            <MenuItem style={{color: "black"}}>
               <a href="#objetivo">
-                <Button variant="text">
+                <Button variant="text" fontSize="1.5vw">
                   Objetivo
                 </Button>
               </a>
-            </MenuItem>
-            <MenuItem style={{color: "black"}}>
               <a href="#equipo">
-                <Button variant="text">
+                <Button variant="text" fontSize="1.5vw">
                   Equipo
                 </Button>
               </a>
-            </MenuItem>
-          </MenuList>
-        </Menu>
-      ) : (
-        <>
-          <Link to="/">
-            <Button variant="text" fontSize="1.5vw">
-              Inicio
-            </Button>
-          </Link>
-          <a href="#objetivo">
-            <Button variant="text" fontSize="1.5vw">
-              Objetivo
-            </Button>
-          </a>
-          <a href="#equipo">
-            <Button variant="text" fontSize="1.5vw">
-              Equipo
-            </Button>
-          </a>
-        </>
-      )}
+            </>
+          )}
         </Box>
         {/* Botones END */}
-
       </Box>
     </Box>
   );

@@ -9,6 +9,10 @@ import {
   Button,
   Heading,
   Icon,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
 } from "@chakra-ui/react";
 import Cards from "./Cards";
 import { BitmapLayer, DeckGL, GeoJsonLayer, TileLayer } from "deck.gl";
@@ -21,6 +25,7 @@ import useWindowDimensions, {
 import { Link } from "react-router-dom";
 import { MdDownload, MdPeople } from "react-icons/md";
 import { BiSolidChevronsDown } from "react-icons/bi";
+import { HamburgerIcon } from "@chakra-ui/icons";
 
 const bounding = [-120, 15, -80, 40];
 const boundingBox = {
@@ -195,14 +200,24 @@ const Map = ({ year }) => {
             <>
               {dataPoblacionSuperficieConst ? (
                 <>
-                  <Text style={{ color: "white", fontSize: isMobile ? "10px" : "1.2dvw" }}>
+                  <Text
+                    style={{
+                      color: "white",
+                      fontSize: isMobile ? "10px" : "min(2.4dvh, 1.2dvw)",
+                    }}
+                  >
                     <b>
                       {`${(
                         dataPoblacionSuperficieConst[0].population / 1000000
                       ).toFixed(1)} millones de personas`}
                     </b>
                   </Text>
-                  <Text style={{ color: "white", fontSize: isMobile ? "10px" : "1.2dvw" }}>
+                  <Text
+                    style={{
+                      color: "white",
+                      fontSize: isMobile ? "10px" : "min(2.4dvh, 1.2dvw)",
+                    }}
+                  >
                     <b>
                       {`${(
                         dataPoblacionSuperficieConst[0].mts_built / 1000000
@@ -217,7 +232,7 @@ const Map = ({ year }) => {
               <Text
                 style={{ color: "white", lineHeight: 1 }}
                 fontFamily="Poppins"
-                fontSize={isMobile ? "30px" : "3.5dvw"}
+                fontSize={isMobile ? "30px" : "min(7dvh, 3.5dvw)"}
                 mt="1"
               >
                 <b>1990</b>
@@ -228,7 +243,7 @@ const Map = ({ year }) => {
             <>
               <Text
                 fontFamily="Poppins"
-                fontSize={isMobile ? "30px" : "3.5dvw"}
+                fontSize={isMobile ? "30px" : "min(7dvh, 3.5dvw)"}
                 mb="1"
                 style={{
                   color: "#783CB4",
@@ -244,7 +259,7 @@ const Map = ({ year }) => {
                   <Text
                     style={{
                       color: "#783CB4",
-                      fontSize: isMobile ? "10px" : "1.2dvw",
+                      fontSize: isMobile ? "10px" : "min(2.4dvh, 1.2dvw)",
                       "-webkit-text-stroke-width": "0.1px",
                       "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
                     }}
@@ -260,7 +275,7 @@ const Map = ({ year }) => {
                   <Text
                     style={{
                       color: "#783CB4",
-                      fontSize: isMobile ? "10px" : "1.2dvw",
+                      fontSize: isMobile ? "10px" : "min(2.4dvh, 1.2dvw)",
                       "-webkit-text-stroke-width": "0.1px",
                       "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
                     }}
@@ -277,20 +292,18 @@ const Map = ({ year }) => {
                     <Icon
                       as={BiSolidChevronsDown}
                       color="red.600"
-                      boxSize={isMobile ? "8px" : "1dvw"}
+                      boxSize={isMobile ? "8px" : "min(2dvh, 1dvw)"}
                       mx="2"
                     />
                     <b
                       style={{
                         color: "#783CB4",
-                        fontSize: isMobile ? "10px" : "1.2dvw",
+                        fontSize: isMobile ? "10px" : "min(2.4dvh, 1.2dvw)",
                         "-webkit-text-stroke-width": "0.1px",
                         "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
                       }}
                     >
-                      {`${calculoDensidadReducida(
-                        year
-                      )}% menos densidad`}
+                      {`${calculoDensidadReducida(year)}% menos densidad`}
                     </b>
                   </Text>
                 </>
@@ -373,14 +386,14 @@ const Home = () => {
   };
 
   const titleStyle = {
-    fontSize: "13dvw", // Ajusta el tamaño del texto según tus preferencias
+    fontSize: "min(26dvh, 13dvw)", // Ajusta el tamaño del texto según tus preferencias
     color: "antiquewhite", // Ajusta el color del texto
     textAlign: "left", // Alinea el texto a la izquierda
     marginLeft: "1rem", // Elimina el margen predeterminado
     fontWeight: 900,
   };
   const subTitleStyle = {
-    fontSize: "3dvw", // Ajusta el tamaño del texto según tus preferencias
+    fontSize: "min(6dvh, 3dvw)", // Ajusta el tamaño del texto según tus preferencias
     lineHeight: "1.1",
     textAlign: "left", // Alinea el texto a la izquierda
     marginLeft: "2rem", // Elimina el margen predeterminado
@@ -412,56 +425,93 @@ const Home = () => {
           p={2}
           position="absolute"
           bg="transparent"
-          w="100%"
+          w="100dvw"
           justify="space-between"
           display="flex"
           //overflowX= "hidden"
         >
           {/* Logos */}
-          <Flex w="20%" style={{ display: "flex", alignItems: "center" }}>
-            {["SIUM.png", "tec.png", "femsa.png"].map((imagen, index) => (
-              <img
-                key={index}
-                className="headerImage"
-                src={`/${imagen}`}
-                alt="SIUM"
-                style={{
-                  padding: "5px",
-                  height: "10dvh",
-                  width: "auto",
-                  //maxWidth: "200px",
-                  maxWidth: isMobile ? "100%" : "200px",
-                  objectFit: "contain",
-                }}
-              />
-            ))}
+          <Flex w="70%" style={{ display: "flex", alignItems: "center" }}>
+            {["SIUM.png", "femsa.png", "tec.png", "fundacion_femsa.png"].map(
+              (imagen, index) => (
+                <img
+                  key={index}
+                  className="headerImage"
+                  src={`/${imagen}`}
+                  alt="SIUM"
+                  style={{
+                    padding: "5px",
+                    height: "10dvh",
+                    width: "25%",
+                    //maxWidth: "200px",
+                    maxWidth: isMobile ? "100%" : "200px",
+                    objectFit: "contain",
+                  }}
+                />
+              )
+            )}
           </Flex>
 
           {/* Botones */}
-          <Flex
-            w="40%"
-            justify="end"
-            align="center"
-            style={{ marginRight: "10px" }}
-          >
-            <Link to="/acerca#objetivo">
-              <Button
-                variant="text"
-                color="white"
-                style={{ fontSize: "1.5dvw" }}
-              >
-                Objetivo
-              </Button>
-            </Link>
-            <Link to="/acerca#equipo">
-              <Button
-                variant="text"
-                color="white"
-                style={{ fontSize: "1.5dvw" }}
-              >
-                Equipo
-              </Button>
-            </Link>
+          <Flex w="25%" justify="end" align="center">
+            {isMobile ? (
+              <Menu>
+                <MenuButton
+                  as={IconButton}
+                  aria-label="Options"
+                  icon={<HamburgerIcon />}
+                  variant="outline"
+                  colorScheme="whiteAlpha"
+                />
+                <MenuList>
+                  <MenuItem color="black">
+                    <Link to="/acerca#objetivo">
+                      <Button variant="text">Objetivo</Button>
+                    </Link>
+                  </MenuItem>
+                  <MenuItem color="black">
+                    <Link to="/acerca#equipo">
+                      <Button variant="text">Equipo</Button>
+                    </Link>
+                  </MenuItem>
+                  <MenuItem color="black">
+                    <Link to="/descargas">
+                      <Button variant="text">Descargas</Button>
+                    </Link>
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            ) : (
+              <>
+                <Link to="/acerca#objetivo">
+                  <Button
+                    variant="text"
+                    color="white"
+                    fontSize="min(2.4dvh, 1.2dvw)"
+                  >
+                    Objetivo
+                  </Button>
+                </Link>
+                <Link to="/acerca#equipo">
+                  <Button
+                    variant="text"
+                    color="white"
+                    fontSize="min(2.4dvh, 1.2dvw)"
+                  >
+                    Equipo
+                  </Button>
+                </Link>
+                <Link to="/descargas">
+                  <Button
+                    variant="text"
+                    color="white"
+                    fontSize="min(2.4dvh, 1.2dvw)"
+                  >
+                    Descargas
+                  </Button>
+                </Link>
+              </>
+            )}
           </Flex>
         </Flex>
 
@@ -485,12 +535,12 @@ const Home = () => {
             <div ref={containerRef}>
               <Text
                 color="gray.100"
-                fontSize={isMobile ? "sm" : "1.5dvw"}
+                fontSize={isMobile ? "sm" : "min(3dvh, 1.5dvw)"}
                 style={textStyle}
               >
                 <Heading
                   color="orange.500"
-                  fontSize={isMobile ? "lg" : "1.7dvw"}
+                  fontSize={isMobile ? "lg" : "min(3.4dvh, 1.7dvw)"}
                 >
                   Los recursos de la metrópolis son limitados
                 </Heading>
@@ -507,12 +557,12 @@ const Home = () => {
               </Text>
               <Text
                 color="gray.100"
-                fontSize={isMobile ? "sm" : "1.5dvw"}
+                fontSize={isMobile ? "sm" : "min(3dvh, 1.5dvw)"}
                 style={textStyle}
               >
                 <Heading
                   color="orange.500"
-                  fontSize={isMobile ? "lg" : "1.7dvw"}
+                  fontSize={isMobile ? "lg" : "min(3.4dvh, 1.7dvw)"}
                 >
                   Crecimiento sin planeación
                 </Heading>
@@ -524,12 +574,12 @@ const Home = () => {
               </Text>
               <Text
                 color="gray.100"
-                fontSize={isMobile ? "sm" : "1.7dvw"}
+                fontSize={isMobile ? "sm" : "min(3dvh, 1.5dvw)"}
                 style={textStyle}
               >
                 <Heading
                   color="orange.500"
-                  fontSize={isMobile ? "lg" : "1.7dvw"}
+                  fontSize={isMobile ? "lg" : "min(3.4dvh, 1.7dvw)"}
                 >
                   Visibilización, propuestas y acción colectiva
                 </Heading>
@@ -545,56 +595,6 @@ const Home = () => {
               </Text>
             </div>
           </div>
-        </div>
-        <div
-          style={{
-            position: "fixed",
-            bottom: "0",
-            right: "0",
-            margin: "10px",
-            display: "grid",
-          }}
-        >
-          <Tooltip
-            label="Acerca del Equipo"
-            hasArrow
-            padding="0.5rem"
-            bg="gray.700"
-            fontSize="xs"
-            borderRadius="md"
-            placement="right"
-          >
-            <Link to="/acerca">
-              <IconButton
-                size="sm"
-                isRound={true}
-                icon={<MdPeople />}
-                variant="solid"
-                style={{ marginBottom: "5px" }}
-                colorScheme="blackAlpha"
-              />
-            </Link>
-          </Tooltip>
-          <Tooltip
-            label="Descarga de Datos"
-            hasArrow
-            padding="0.5rem"
-            bg="gray.700"
-            fontSize="xs"
-            borderRadius="md"
-            placement="right"
-          >
-            <Link to="/descargas">
-              <IconButton
-                size="sm"
-                isRound={true}
-                icon={<MdDownload />}
-                variant="solid"
-                style={{ marginBottom: "5px" }}
-                colorScheme="blackAlpha"
-              />
-            </Link>
-          </Tooltip>
         </div>
         <Cards />
       </div>
