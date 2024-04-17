@@ -129,7 +129,6 @@ const Map = ({ year }) => {
     display: "flex",
     flexDirection: "column",
     justifyContent: "end",
-    margin: "1dvw",
   };
 
   return (
@@ -201,10 +200,8 @@ const Map = ({ year }) => {
               {dataPoblacionSuperficieConst ? (
                 <>
                   <Text
-                    style={{
-                      color: "white",
-                      fontSize: isMobile ? "10px" : "min(2.4dvh, 1.2dvw)",
-                    }}
+                    fontSize={isMobile ? "8px" : "min(2.4dvh, 1.2dvw)"}
+                    color="white"
                   >
                     <b>
                       {`${(
@@ -213,10 +210,8 @@ const Map = ({ year }) => {
                     </b>
                   </Text>
                   <Text
-                    style={{
-                      color: "white",
-                      fontSize: isMobile ? "10px" : "min(2.4dvh, 1.2dvw)",
-                    }}
+                    fontSize={isMobile ? "8px" : "min(2.4dvh, 1.2dvw)"}
+                    color="white"
                   >
                     <b>
                       {`${(
@@ -230,10 +225,11 @@ const Map = ({ year }) => {
                 ""
               )}
               <Text
-                style={{ color: "white", lineHeight: 1 }}
                 fontFamily="Poppins"
-                fontSize={isMobile ? "30px" : "min(7dvh, 3.5dvw)"}
+                fontSize={isMobile ? "25px" : "min(7dvh, 3.5dvw)"}
+                color="white"
                 mt="1"
+                style={{ lineHeight: 1 }}
               >
                 <b>1990</b>
               </Text>
@@ -243,10 +239,10 @@ const Map = ({ year }) => {
             <>
               <Text
                 fontFamily="Poppins"
-                fontSize={isMobile ? "30px" : "min(7dvh, 3.5dvw)"}
+                fontSize={isMobile ? "25px" : "min(7dvh, 3.5dvw)"}
+                color="#783CB4"
                 mb="1"
                 style={{
-                  color: "#783CB4",
                   lineHeight: 1,
                   "-webkit-text-stroke-width": "0.1px",
                   "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
@@ -257,9 +253,9 @@ const Map = ({ year }) => {
               {dataPoblacionSuperficieConst ? (
                 <>
                   <Text
+                    fontSize={isMobile ? "8px" : "min(2.4dvh, 1.2dvw)"}
+                    color="#783CB4"
                     style={{
-                      color: "#783CB4",
-                      fontSize: isMobile ? "10px" : "min(2.4dvh, 1.2dvw)",
                       "-webkit-text-stroke-width": "0.1px",
                       "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
                     }}
@@ -273,9 +269,9 @@ const Map = ({ year }) => {
                     </b>
                   </Text>
                   <Text
+                    fontSize={isMobile ? "8px" : "min(2.4dvh, 1.2dvw)"}
+                    color="#783CB4"
                     style={{
-                      color: "#783CB4",
-                      fontSize: isMobile ? "10px" : "min(2.4dvh, 1.2dvw)",
                       "-webkit-text-stroke-width": "0.1px",
                       "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
                     }}
@@ -288,7 +284,10 @@ const Map = ({ year }) => {
                     </b>
                   </Text>
                   {/* add drop shadow */}
-                  <Text>
+                  <Text
+                    fontSize={isMobile ? "8px" : "min(2.4dvh, 1.2dvw)"}
+                    color="#783CB4"
+                  >
                     <Icon
                       as={BiSolidChevronsDown}
                       color="red.600"
@@ -297,8 +296,6 @@ const Map = ({ year }) => {
                     />
                     <b
                       style={{
-                        color: "#783CB4",
-                        fontSize: isMobile ? "10px" : "min(2.4dvh, 1.2dvw)",
                         "-webkit-text-stroke-width": "0.1px",
                         "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
                       }}
@@ -317,7 +314,10 @@ const Map = ({ year }) => {
         {year ? (
           <>
             <div style={noteStyle}>
-              <Text style={{ color: "white", alignItems: "end" }}>
+              <Text
+                fontSize={isMobile ? "6px" : "xs"}
+                style={{ color: "white", alignItems: "end" }}
+              >
                 *Superficie construida con techo
               </Text>
             </div>
@@ -386,14 +386,11 @@ const Home = () => {
   };
 
   const titleStyle = {
-    fontSize: "min(26dvh, 13dvw)", // Ajusta el tamaño del texto según tus preferencias
     color: "antiquewhite", // Ajusta el color del texto
     textAlign: "left", // Alinea el texto a la izquierda
     marginLeft: "1rem", // Elimina el margen predeterminado
-    fontWeight: 900,
   };
   const subTitleStyle = {
-    fontSize: "min(6dvh, 3dvw)", // Ajusta el tamaño del texto según tus preferencias
     lineHeight: "1.1",
     textAlign: "left", // Alinea el texto a la izquierda
     marginLeft: "2rem", // Elimina el margen predeterminado
@@ -422,16 +419,19 @@ const Home = () => {
       >
         <Flex
           align="center"
-          p={2}
           position="absolute"
           bg="transparent"
           w="100dvw"
           justify="space-between"
           display="flex"
-          //overflowX= "hidden"
+          h="10dvh"
+          p={2}
         >
           {/* Logos */}
-          <Flex w="70%" style={{ display: "flex", alignItems: "center" }}>
+          <Flex
+            w={isMobile ? "calc(100dvw - 40px)" : "70%"}
+            style={{ display: "flex", alignItems: "center" }}
+          >
             {["SIUM.png", "femsa.png", "tec.png", "fundacion_femsa.png"].map(
               (imagen, index) => (
                 <img
@@ -443,7 +443,6 @@ const Home = () => {
                     padding: "5px",
                     height: "10dvh",
                     width: "25%",
-                    //maxWidth: "200px",
                     maxWidth: isMobile ? "100%" : "200px",
                     objectFit: "contain",
                   }}
@@ -453,7 +452,7 @@ const Home = () => {
           </Flex>
 
           {/* Botones */}
-          <Flex w="25%" justify="end" align="center">
+          <Flex w={isMobile ? "40px" : "25%"} justify="end" align="center">
             {isMobile ? (
               <Menu>
                 <MenuButton
@@ -461,55 +460,50 @@ const Home = () => {
                   aria-label="Options"
                   icon={<HamburgerIcon />}
                   variant="outline"
+                  size="sm"
                   colorScheme="whiteAlpha"
                 />
                 <MenuList>
-                  <MenuItem color="black">
-                    <Link to="/acerca#objetivo">
-                      <Button variant="text">Objetivo</Button>
-                    </Link>
+                  <MenuItem as="a" href="/acerca#objetivo" minH="50px">
+                    Objetivo
                   </MenuItem>
-                  <MenuItem color="black">
-                    <Link to="/acerca#equipo">
-                      <Button variant="text">Equipo</Button>
-                    </Link>
+                  <MenuItem as="a" href="/acerca#equipo" minH="50px">
+                    Equipo
                   </MenuItem>
-                  <MenuItem color="black">
-                    <Link to="/descargas">
-                      <Button variant="text">Descargas</Button>
-                    </Link>
+                  <MenuItem as="a" href="/descargas" minH="50px">
+                    Descargas
                   </MenuItem>
                 </MenuList>
               </Menu>
             ) : (
               <>
-                <Link to="/acerca#objetivo">
-                  <Button
-                    variant="text"
-                    color="white"
-                    fontSize="min(2.4dvh, 1.2dvw)"
-                  >
-                    Objetivo
-                  </Button>
-                </Link>
-                <Link to="/acerca#equipo">
-                  <Button
-                    variant="text"
-                    color="white"
-                    fontSize="min(2.4dvh, 1.2dvw)"
-                  >
-                    Equipo
-                  </Button>
-                </Link>
-                <Link to="/descargas">
-                  <Button
-                    variant="text"
-                    color="white"
-                    fontSize="min(2.4dvh, 1.2dvw)"
-                  >
-                    Descargas
-                  </Button>
-                </Link>
+                <Button
+                  as="a"
+                  href="/acerca#objetivo"
+                  variant="text"
+                  color="white"
+                  fontSize="min(2.4dvh, 1.2dvw)"
+                >
+                  Objetivo
+                </Button>
+                <Button
+                  as="a"
+                  href="/acerca#equipo"
+                  variant="text"
+                  color="white"
+                  fontSize="min(2.4dvh, 1.2dvw)"
+                >
+                  Equipo
+                </Button>
+                <Button
+                  as="a"
+                  href="/descargas"
+                  variant="text"
+                  color="white"
+                  fontSize="min(2.4dvh, 1.2dvw)"
+                >
+                  Descargas
+                </Button>
               </>
             )}
           </Flex>
@@ -520,14 +514,35 @@ const Home = () => {
           <div style={{ display: "grid" }}>
             <div style={containerStyle}>
               <div>
-                <h1 style={titleStyle}>CIUDAD FINITA</h1>
-                <Text style={subTitleStyle} color="aliceblue" m="0">
+                <Heading
+                  style={titleStyle}
+                  fontWeight="500"
+                  fontSize={isMobile ? "12dvw" : "min(26dvh, 13dvw)"}
+                >
+                  CIUDAD FINITA
+                </Heading>
+                <Text
+                  style={subTitleStyle}
+                  fontSize={isMobile ? "4dvw" : "min(6dvh, 3dvw)"}
+                  color="aliceblue"
+                  m="0"
+                >
                   Expansión urbana en la
                 </Text>
-                <Text style={subTitleStyle} color="aliceblue" m="0">
+                <Text
+                  style={subTitleStyle}
+                  fontSize={isMobile ? "4dvw" : "min(6dvh, 3dvw)"}
+                  color="aliceblue"
+                  m="0"
+                >
                   Zona Metropolitana de
                 </Text>
-                <Text style={subTitleStyle} color="orange.500" m="0">
+                <Text
+                  style={subTitleStyle}
+                  fontSize={isMobile ? "4dvw" : "min(6dvh, 3dvw)"}
+                  color="orange.500"
+                  m="0"
+                >
                   <b>Monterrey</b>
                 </Text>
               </div>
@@ -535,7 +550,7 @@ const Home = () => {
             <div ref={containerRef}>
               <Text
                 color="gray.100"
-                fontSize={isMobile ? "sm" : "min(3dvh, 1.5dvw)"}
+                fontSize={isMobile ? "xs" : "min(3dvh, 1.5dvw)"}
                 style={textStyle}
               >
                 <Heading
@@ -557,7 +572,7 @@ const Home = () => {
               </Text>
               <Text
                 color="gray.100"
-                fontSize={isMobile ? "sm" : "min(3dvh, 1.5dvw)"}
+                fontSize={isMobile ? "xs" : "min(3dvh, 1.5dvw)"}
                 style={textStyle}
               >
                 <Heading
@@ -574,7 +589,7 @@ const Home = () => {
               </Text>
               <Text
                 color="gray.100"
-                fontSize={isMobile ? "sm" : "min(3dvh, 1.5dvw)"}
+                fontSize={isMobile ? "xs" : "min(3dvh, 1.5dvw)"}
                 style={textStyle}
               >
                 <Heading

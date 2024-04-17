@@ -64,7 +64,6 @@ export const CustomBarLabel = memo((props) => {
   const { x, y, width, height, index, data, columnKey } = props;
   const dataObject = data[index];
   const text = mappingNames[dataObject[columnKey]] || dataObject[columnKey];
-  console.log(props.inverse)
 
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d");

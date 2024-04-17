@@ -81,8 +81,11 @@ export const AreaChartChart = ({
             tickFormatter={formatter}
           />
           <Tooltip
-            labelStyle={{ fontSize: "0.9dvw" }}
-            itemStyle={{ fontSize: "0.9dvw", padding: "0px" }}
+            labelStyle={{ fontSize: isMobile ? "10px" : "0.9dvw" }}
+            itemStyle={{
+              fontSize: isMobile ? "10px" : "0.9dvw",
+              padding: "0px",
+            }}
             formatter={(value) => formatter(value)}
             content={<CustomTooltip />}
           />

@@ -89,6 +89,7 @@ export const CardsContainerMobile = () => {
       detent="full-height"
       tweenConfig={{ ease: "easeOut", duration: 0.2 }}
       onSnap={(i) => setCurrentSnap(i)}
+      style={{ zIndex: 2 }}
     >
       <Sheet.Container>
         <Sheet.Header>

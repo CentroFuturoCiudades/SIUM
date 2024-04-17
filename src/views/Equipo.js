@@ -374,118 +374,99 @@ const Navbar = () => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
 
   return (
-    <Box h="10dvh" style={{ position: "sticky", top: 0, zIndex: 1 }}>
-      {/* Header */}
-      {/* <Box
-        bg="black"
-        w="100%"
-        h="100%"
-        color="white"
-        style={{
-          marginTop: "0",
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      > */}
-      <Box
-        align="center"
-        bg="black"
-        w="100dvw"
-        p={2}
-        justify="space-between"
-        display="flex"
-        style={{
-          marginTop: "0",
-          display: "flex",
-          justifyContent: "space-between",
-        }}
+    <Flex
+      align="center"
+      bg="black"
+      w="100dvw"
+      justify="space-between"
+      display="flex"
+      h="10dvh"
+      p={2}
+      position="sticky"
+      top={0}
+      zIndex={2}
+    >
+      {/* Logos */}
+      <Flex
+        w={isMobile ? "calc(100dvw - 40px)" : "70%"}
+        style={{ display: "flex", alignItems: "center" }}
       >
-        {/* Logos START */}
-        <Flex w="70%" style={{ display: "flex", alignItems: "center" }}>
-          {["SIUM.png", "femsa.png", "tec.png", "fundacion_femsa.png"].map(
-            (imagen, index) => (
-              <img
-                key={index}
-                className="headerImage"
-                src={`/${imagen}`}
-                alt="SIUM"
-                style={{
-                  padding: "5px",
-                  height: "10dvh",
-                  width: "25%",
-                  //maxWidth: "200px",
-                  maxWidth: isMobile ? "100%" : "200px",
-                  objectFit: "contain",
-                }}
-              />
-            )
-          )}
-        </Flex>
-        {/* Logos END */}
+        {["SIUM.png", "femsa.png", "tec.png", "fundacion_femsa.png"].map(
+          (imagen, index) => (
+            <img
+              key={index}
+              className="headerImage"
+              src={`/${imagen}`}
+              alt="SIUM"
+              style={{
+                padding: "5px",
+                height: "10dvh",
+                width: "25%",
+                maxWidth: isMobile ? "100%" : "200px",
+                objectFit: "contain",
+              }}
+            />
+          )
+        )}
+      </Flex>
 
-        {/* Botones START */}
-        <Box
-          w={isMobile ? "25%" : "25%"}
-          color="white"
-          style={{
-            display: "flex",
-            justifyContent: isMobile ? "end" : "space-around",
-            alignItems: "center",
-            padding: isMobile ? "2dvh" : 0,
-          }}
-        >
-          {isMobile ? (
-            <Menu>
-              <MenuButton
-                as={IconButton}
-                aria-label="Options"
-                icon={<HamburgerIcon />}
-                variant="outline"
-                color={"white"}
-                bg={"black"}
-                _hover={{ bg: "gray.700" }}
-              />
-              <MenuList>
-                <MenuItem style={{ color: "black" }}>
-                  <Link to="/">
-                    <Button variant="text">Inicio</Button>
-                  </Link>
-                </MenuItem>
-                <MenuItem style={{ color: "black" }}>
-                  <a href="#objetivo">
-                    <Button variant="text">Objetivo</Button>
-                  </a>
-                </MenuItem>
-                <MenuItem style={{ color: "black" }}>
-                  <a href="#equipo">
-                    <Button variant="text">Equipo</Button>
-                  </a>
-                </MenuItem>
-              </MenuList>
-            </Menu>
-          ) : (
-            <>
-              <Link to="/">
-                <Button variant="text" fontSize="1.5vw">
-                  Inicio
-                </Button>
-              </Link>
-              <a href="#objetivo">
-                <Button variant="text" fontSize="1.5vw">
-                  Objetivo
-                </Button>
-              </a>
-              <a href="#equipo">
-                <Button variant="text" fontSize="1.5vw">
-                  Equipo
-                </Button>
-              </a>
-            </>
-          )}
-        </Box>
-        {/* Botones END */}
-      </Box>
-    </Box>
+      {/* Botones */}
+      <Flex w={isMobile ? "40px" : "25%"} justify="end" align="center">
+        {isMobile ? (
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              aria-label="Options"
+              icon={<HamburgerIcon />}
+              variant="outline"
+              size="sm"
+              colorScheme="whiteAlpha"
+            />
+            <MenuList>
+              <MenuItem as="a" href="/" minH="50px">
+                Inicio
+              </MenuItem>
+              <MenuItem as="a" href="/acerca/#objetivo" minH="50px">
+                Objetivo
+              </MenuItem>
+              <MenuItem as="a" href="/acerca/#equipo" minH="50px">
+                Equipo
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        ) : (
+          <>
+            <Button
+              as="a"
+              href="/"
+              variant="text"
+              color="white"
+              fontSize="min(2.4dvh, 1.2dvw)"
+            >
+              Inicio
+            </Button>
+            <Button
+              as="a"
+              href="/acerca#objetivo"
+              variant="text"
+              color="white"
+              fontSize="min(2.4dvh, 1.2dvw)"
+            >
+              Objetivo
+            </Button>
+            <Button
+              as="a"
+              href="/acerca#equipo"
+              variant="text"
+              color="white"
+              fontSize="min(2.4dvh, 1.2dvw)"
+            >
+              Equipo
+            </Button>
+          </>
+        )}
+      </Flex>
+    </Flex>
   );
 };
 
