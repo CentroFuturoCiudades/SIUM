@@ -13,6 +13,7 @@ import {
   Tooltip,
   Tr,
   useMediaQuery,
+  Text,
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
@@ -77,19 +78,7 @@ export const LegendMobile = ({ title, legendItems, formatting }) => {
         width={110}
       ></svg>
       <div style={{ display: "flex", marginLeft: "10px" }}>
-        <p style={{ width: "30dvw" }}>{title}</p>
-        <Tooltip
-          label="Datos obtenidos de blah blah blah"
-          placement="top"
-          hasArrow
-          gutter={12}
-        >
-          <InfoIcon
-            boxSize={3}
-            color="gray.400"
-            style={{ cursor: "pointer" }}
-          />
-        </Tooltip>
+        <Text style={{ width: "30dvw" }}>{title}</Text>
       </div>
     </div>
   );
@@ -133,12 +122,6 @@ export const Legend = ({
       >
         <Tooltip label={description} placement="top" hasArrow gutter={12}>
           <Heading color="gray.700" fontSize="min(1.8dvh, 0.9dvw)">
-            <InfoIcon
-              boxSize="min(1.4dvh, 0.7dvw)"
-              color="gray.400"
-              style={{ cursor: "pointer" }}
-              mr="0.3dvw"
-            />
             {title}
           </Heading>
         </Tooltip>

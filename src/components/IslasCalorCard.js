@@ -88,11 +88,11 @@ export const IslasCalorControls = () => {
           getWeight={1}
           // use grey color to indicate intensity
           colorRange={[
-            [0, 0, 0, 100],
+            [0, 0, 0, 50],
             [0, 0, 0, 255],
           ]}
-          radiusPixels={20}
-          intensity={5}
+          radiusPixels={viewState.zoom * 5}
+          intensity={2}
         />
         <GeoJsonLayer
           id="islas_calor_layer"
@@ -102,7 +102,7 @@ export const IslasCalorControls = () => {
               d.properties["Value"],
               [7, 6, 5, 4, 3, 2, 1],
               ISLAS_CALOR_COLORS,
-              0.8
+              0.5
             )
           }
           getLineWidth={0}
@@ -365,7 +365,7 @@ export const IslasCalorChart = ({
         color="gray.600"
         style={{
           textAlign: "center",
-          fontSize: isMobile ? "0.9rem" : "min(1dvw, 1.4dvh)",
+          fontSize: isMobile ? "8px" : "min(1dvw, 1.4dvh)",
           marginTop: "-15px",
         }}
       >

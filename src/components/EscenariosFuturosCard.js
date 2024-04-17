@@ -36,7 +36,8 @@ const ESCENARIOS_FUTUROS_CONTROLADA_URL =
 const ESCENARIOS_FUTUROS_CHART_URL =
   "https://sium.blob.core.windows.net/sium/datos/escenarios.json"; // Chart
 
-const COLORS = ["#6D4F90", "#3EA5A3", "#407E9F"];
+// const COLORS = ["rgb(109, 79, 144)", "rgb(98, 99, 133)", "rgb(88, 119, 122)"];
+const COLORS = ["#6D4F90", "#4A6985", "#58777A"];
 const SCENARIOS_NAMES = ["acelerada", "inercial", "controlada"];
 
 export const EscenariosFuturosControls = () => {
@@ -91,7 +92,7 @@ export const EscenariosFuturosControls = () => {
           id="escenarios_actuales_layer"
           data={expansion_actual_data}
           getFillColor={[168, 174, 193]}
-          opacity={1}
+          opacity={0.8}
         />
         <ButtonControls
           color={color}
@@ -135,7 +136,7 @@ export const EscenariosFuturosControls = () => {
           </>
         }
       >
-        <LegendItem color={'#A8AEC1'} label="Expansión actual" />
+        <LegendItem color={'#A8AEC1'} label="Suelo urbanizado" />
         <LegendItem color={currentColor} label={`Expansión ${activeButton}`} />
       </CustomLegend>
     </>

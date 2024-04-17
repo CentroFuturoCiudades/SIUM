@@ -60,22 +60,22 @@ export const AreaChartChart = ({
             type="number"
             dataKey={columnKey}
             domain={domain}
-            fontSize="min(1dvw, 1.2dvh)"
             tickCount={6}
+            fontSize={isMobile ? "0.6rem" : "min(1dvh, 0.6dvw)"}
           >
             <Label
               value={title}
               position="insideBottom"
               style={{
                 fontWeight: "bold",
-                fontSize: isMobile ? "0.9rem" : "min(0.8dvw, 1.4dvh)",
+                fontSize: isMobile ? "8px" : "min(1.4dvh, 0.8dvw)",
                 transform: "translateY(min(0.4dvw, 0.7dvh))",
               }}
             />
           </XAxis>
           <YAxis
             type="number"
-            fontSize="min(1dvw, 1.2dvh)"
+            fontSize={isMobile ? "0.6rem" : "min(1dvh, 0.8dvw)"}
             width={32}
             tickCount={5}
             tickFormatter={formatter}
