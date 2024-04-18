@@ -36,7 +36,6 @@ const ESCENARIOS_FUTUROS_CONTROLADA_URL =
 const ESCENARIOS_FUTUROS_CHART_URL =
   "https://sium.blob.core.windows.net/sium/datos/escenarios.json"; // Chart
 
-// const COLORS = ["rgb(109, 79, 144)", "rgb(98, 99, 133)", "rgb(88, 119, 122)"];
 const COLORS = ["#6D4F90", "#4A6985", "#58777A"];
 const SCENARIOS_NAMES = ["acelerada", "inercial", "controlada"];
 

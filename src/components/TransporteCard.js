@@ -174,12 +174,12 @@ export const TransporteControls = () => {
           trailLength={10}
           currentTime={time}
         />
-        <PopupButton 
+        <PopupButton
           videoId="2eRmyQBQ5aA?si=CPf1057J6Vk-5qa_"
-          title="Luisa Pérez Barbosa" 
-          subtitle="Movimiento activación ciudadana (MOVAC)." 
-          text="Cultura vial más allá de la infraestructura." 
-        />        
+          title="Luisa Pérez Barbosa"
+          subtitle="Movimiento activación ciudadana (MOVAC)."
+          text="Cultura vial más allá de la infraestructura."
+        />
       </CustomMap>
       <CustomLegend
         color={color}

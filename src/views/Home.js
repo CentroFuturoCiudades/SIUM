@@ -55,6 +55,7 @@ const minWidth = 400;
 const minMultiplier = 0.88;
 const maxWidth = 1400;
 const maxMultiplier = 1;
+const mapOpacity = 0.25;
 
 const Map = ({ year }) => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
@@ -151,7 +152,28 @@ const Map = ({ year }) => {
             .replace("{z}", props.index.z);
           return fetch(url)
             .then((response) => response.blob())
-            .then((blob) => createImageBitmap(blob));
+            .then((blob) => createImageBitmap(blob))
+            .then((imageBitmap) => {
+              let canvas = document.createElement("canvas");
+              canvas.width = imageBitmap.width;
+              canvas.height = imageBitmap.height;
+              let ctx = canvas.getContext("2d");
+              ctx.drawImage(imageBitmap, 0, 0);
+              let imageData = ctx.getImageData(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+              );
+              let data = imageData.data;
+              for (let i = 0; i < data.length; i += 4) {
+                data[i] *= mapOpacity; // Red
+                data[i + 1] *= mapOpacity; // Green
+                data[i + 2] *= mapOpacity; // Blue
+              }
+              ctx.putImageData(imageData, 0, 0);
+              return createImageBitmap(canvas);
+            });
         }}
         renderSubLayers={(props) => {
           const {
@@ -164,15 +186,6 @@ const Map = ({ year }) => {
             bounds: [west, south, east, north],
           });
         }}
-      />
-      <GeoJsonLayer
-        id="mask-layer"
-        data={boundingBox}
-        pickable={true}
-        stroked={false}
-        filled={true}
-        lineWidthMinPixels={2}
-        getFillColor={[5, 5, 5, 200]}
       />
       <GeoJsonLayer
         id="mancha-urbana-layer"

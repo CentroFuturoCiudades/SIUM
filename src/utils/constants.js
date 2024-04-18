@@ -554,8 +554,7 @@ export const sectionsInfo = {
   },
   infancias: {
     title: "¿Por qué limita el desarrollo infantil?",
-    answer:
-      "La oferta de servicios de proximidad (centros de salud, escuelas, comercios y espacios públicos) no corresponde con las zonas donde viven las infancias tempranas.",
+    answer: "Porque los servicios no están en donde se requieren.",
     color: "sage",
     icon: MdOutlineFamilyRestroom,
     component: InfanciasCard,

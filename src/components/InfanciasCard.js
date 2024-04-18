@@ -268,32 +268,25 @@ export function InfanciasCard() {
         {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
-        En el modelo de ciudad expansivo y de baja de densidad que tenemos
-        actualmente, las familias jóvenes con primeras infancias (bebés, niñas y
-        niños de 0 a 5 años) han migrado hacia las periferias, debido a que
-        existe una mayor oferta de viviendas de bajo costo. Sin embargo, estos
-        entornos tienen una cobertura reducida de servicios de proximidad
-        necesarios para un desarrollo temprano adecuado: educativos, de salud,
-        comercial y espacios públicos (Arup & Van Leer Foundation, 2023). En
-        contraste, en las zonas centrales en donde hay una mayor oferta de
-        servicios, debido al despoblamiento, el grupo etario infantil es menor.
+        Las familias jóvenes con bebés, niñas y niños menores de 5 años han
+        migrado hacia las periferias; en donde existe una cobertura reducida de
+        servicios de proximidad: educativos, de salud, comerciales y espacios
+        públicos. En contraste, en las zonas centrales en donde hay una mayor
+        oferta de servicios, la población infantil es menor.
       </p>
       <p>
-        Un ejemplo de este desbalance es evidente en el caso de los
-        equipamientos de salud (consultorios y hospitales generales). El
-        municipio central de Monterrey, con un 6.7% de población de primera
-        infancia, tiene una proporción de equipamientos de salud de 1 por cada
-        42 infancias tempranas. Por el contrario, un municipio periférico como
-        El Carmen, con el 14.3% de población de primera infancia, cuenta con 1
-        equipamiento de salud por cada 2,468 infancias. Esto significa que para
-        obtener estos servicios, las familias deben desplazarse hasta otros
-        puntos de la metrópoli, lo que representa un mayor gasto en tiempo,
-        dinero y desgaste personal para acceder a la atención médica.
+        Este desbalance se ilustra en los equipamientos de salud (consultorios y
+        hospitales generales). En un municipio central como Monterrey con un 7%
+        de población infantil, la proporción de equipamientos es 1 por cada 42
+        infancias. Por el contrario en la periferia, El Carmen con un 14% de la
+        población infantil, cuenta con 1 equipamiento cada 2,468 niños. Esto
+        obliga a las familias a desplazarse largas distancias para recibir
+        atención médica, lo que implica mayores costos y esfuerzo.
       </p>
       <ContextTitle color={color}>
-        De acuerdo con la UNICEF, las necesidades de la primera infancia deben
-        garantizarse a través de servicios de salud, nutrición, aprendizaje,
-        protección y seguridad.
+        UNICEF indica que los derechos de las infancias deben garantizarse a
+        través de servicios de salud, nutrición, aprendizaje, protección y
+        seguridad.
       </ContextTitle>
       <Chart
         title="Porcentage de población entre 0 a 5 años"

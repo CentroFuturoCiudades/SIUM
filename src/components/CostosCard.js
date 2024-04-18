@@ -81,9 +81,8 @@ export const CostosControls = () => {
     "Cadereyta Jiménez": "rgb(99, 43, 165)",
     "General Zuazua": "rgb(92, 40, 159)",
     "Salinas Victoria": "rgb(85, 37, 153)",
-    Hidalgo: "rgb(78, 34, 147)",
-    "Ciénega de Flores": "rgb(71, 31, 141)",
-    Abasolo: "rgb(64, 28, 135)", // Darker purple
+    Hidalgo: "rgb(71, 31, 141)",
+    "Ciénega de Flores": "rgb(64, 28, 135)",
   };
 
   // Esta función busca el color del municipio en el objeto de arriba.
@@ -107,7 +106,6 @@ export const CostosControls = () => {
     "Salinas Victoria",
     "Hidalgo",
     "Ciénega de Flores",
-    "Abasolo",
   ];
   function labelMoney(value) {
     if (value > 1000000000) {
