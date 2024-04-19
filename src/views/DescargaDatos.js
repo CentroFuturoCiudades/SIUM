@@ -13,12 +13,27 @@ import {
   Spacer,
   Text,
   Checkbox,
+  Tbody,
+  Td,
+  Tooltip,
+  Tr,
 } from "@chakra-ui/react";
+import {
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderMark,
+} from '@chakra-ui/react'
 import DeckGL from "@deck.gl/react";
 import { Map } from "react-map-gl";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import FileSaver from "file-saver";
 import { cleanedGeoData } from "../utils/constants";
+import { 
+  LegendSlider,
+  LegendSliderItem,
+} from "../components/LegendSlider.js";
 
 const datosMapas = [
   {
@@ -100,6 +115,7 @@ const DescargaDatos = () => {
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [originalData, setOriginalData] = useState(null);
   const [layers, setLayers] = useState([]);
+  const [opacities, setOpacities] = useState({});
 
   const mapContainerRef = useRef();
   const deckRef = useRef();
@@ -136,28 +152,34 @@ const DescargaDatos = () => {
 
   useEffect(() => {
     const newLayers = selectedMaps
-      .map((map) => {
-        const data = originalData && originalData[map.name];
-        if (!data) return null;
-
-        // Calculate min and max values for normalization
-        const values = data.features.map((d) => d.properties[map.column]);
-        const minVal = Math.min(...values);
-        const maxVal = Math.max(...values);
-
-        // Ensure minVal and maxVal are not equal to avoid division by zero
-        const isDiverse = minVal !== maxVal;
-
-        return new GeoJsonLayer({
-          id: `${map.name}-layer`,
-          data,
-          getFillColor: (d) => {
-            if (!isDiverse) return [0, 0, 255, 255]; // Default color if all values are the same
-
+    .map((map) => {
+      const data = originalData && originalData[map.name];
+      if (!data) return null;
+      
+      // Calculate min and max values for normalization
+      const values = data.features.map((d) => d.properties[map.column]);
+      const minVal = Math.min(...values);
+      const maxVal = Math.max(...values);
+      
+      // Ensure minVal and maxVal are not equal to avoid division by zero
+      const isDiverse = minVal !== maxVal;
+      console.log(opacities);
+      // handleOpacityChange(`${map.name}-layer`, 100);
+      
+      return new GeoJsonLayer({
+        id: `${map.name}-layer`,
+        opacity: opacities[`${map.name}-layer`]/100 || 1,
+        data,
+        getFillColor: (d) => {
+          console.log(`${map.name}-layer`);
+          if (!isDiverse) return [0, 0, 255, 255]; // Default color if all values are the same
+          
             // Normalize the value
             const normalizedValue =
               (d.properties[map.column] - minVal) / (maxVal - minVal);
-            return colorInterpolate(normalizedValue); // Apply your color interpolation function here
+              let normalizedColor = colorInterpolate(normalizedValue);
+            return normalizedColor; // Apply your color interpolation function here
+            // return colorInterpolate(normalizedValue); // Apply your color interpolation function here
           },
           getLineColor: [255, 255, 255, 255],
           getLineWidth: 10,
@@ -166,7 +188,9 @@ const DescargaDatos = () => {
       .filter((layer) => layer); // Filter out any undefined layers
 
     setLayers(newLayers);
-  }, [originalData, selectedMaps]);
+    console.log(layers);
+    
+  }, [originalData, selectedMaps, opacities]);
 
   const handleMapSelection = (map) => {
     setSelectedMaps((prevSelectedMaps) => {
@@ -198,6 +222,13 @@ const DescargaDatos = () => {
         console.error("No se pudo descargar el archivo GeoJSON para", map.name);
       }
     }
+  };
+
+  const handleOpacityChange = (layerId, opacity) => {
+    setOpacities((prevOpacities) => ({
+      ...prevOpacities,
+      [layerId]: opacity,
+    }));
   };
 
   /* 
@@ -284,6 +315,22 @@ const togglePanel = (name) => {
             mapStyle="mapbox://styles/lameouchi/cls55h898029301pfb1t07mtc"
             mapboxAccessToken="pk.eyJ1IjoidXJpZWxzYTk2IiwiYSI6ImNsbnV2MzBkZDBlajYya211bWk2eTNuc2MifQ.ZnhFC3SyhckuIQBLO59HxA"
           />
+
+          { layers.length && (
+            <LegendSlider
+              title={"Opacidad"}
+              color={'#A8AEC1'}
+            >
+              {layers.map((layer) => (
+                <LegendSliderItem
+                  key={layer.id}
+                  layerId={layer.id}
+                  opacity={opacities[layer.id]}
+                  onChange={handleOpacityChange}
+                />
+              ))}
+            </LegendSlider> 
+          )}
         </DeckGL>
         <Spacer />
         <Text mb="5">Mapa de: {selectedMaps.name}</Text>
