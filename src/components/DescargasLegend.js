@@ -19,7 +19,7 @@ export const DescargasLegend = ({
           borderRadius="md"
           borderWidth="0.08rem"
           className="legend-container"
-          style={{ width: "min-content", maxHeight: "200px", overflowY: "auto" }}
+          style={{ width: "min-content", maxHeight: "200px", overflowY: "auto", marginLeft: "55dvw"}}
         >
           <div
             style={{

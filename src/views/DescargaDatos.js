@@ -351,7 +351,7 @@ const togglePanel = (name) => {
       </VStack>
 
       {/* Área de contenido a la derecha */}
-      <Box className="mapContainer" flex="1" p="5" ref={mapContainerRef}>
+      <Box className="mapContainer" flex="1" p="5" ref={mapContainerRef} style={{ position: "relative"}}>
         <DeckGL
           ref={deckRef}
           viewState={viewState}
@@ -384,12 +384,14 @@ const togglePanel = (name) => {
               ))}
             </LegendSlider> 
           )}
+          
+          {mapLegends.length && (
+            <DescargasLegend legends={mapLegends} />
+          )}
         </DeckGL>
         <Spacer />
 
-        <DescargasLegend
-          legends={mapLegends}
-        />
+
         <Text mb="5">Mapa de: {selectedMaps.name}</Text>
       </Box>
 
