@@ -91,12 +91,6 @@ export const CustomLegend = ({ title, color, description, children, note="" }) =
       >
         <Tooltip label={description} placement="top" hasArrow gutter={12}>
           <Heading color="gray.700" fontSize="0.9dvw">
-            <InfoIcon
-              boxSize={2.5}
-              color="gray.400"
-              style={{ cursor: "pointer" }}
-              mr="1"
-            />
             {title}
           </Heading>
         </Tooltip>

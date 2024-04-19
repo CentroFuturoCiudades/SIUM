@@ -72,7 +72,7 @@ export const CardsContainerMobile = () => {
 
   useEffect(() => {
     setOpen(true);
-    setCurrentSnap(1);
+    setCurrentSnap(2);
   }, [currentSection]);
 
   return (
@@ -80,15 +80,16 @@ export const CardsContainerMobile = () => {
       ref={ref}
       isOpen={true}
       onClose={() => {
-        snapTo(1);
-        setCurrentSnap(1);
         setOpen(true);
+        snapTo(2);
+        setCurrentSnap(2);
       }}
-      snapPoints={[1, 0.55, 80]}
+      snapPoints={[1, 0.5, 50]}
       initialSnap={currentSnap}
       detent="full-height"
-      tweenConfig={{ ease: "easeOut", duration: 0.1 }}
+      tweenConfig={{ ease: "easeOut", duration: 0.2 }}
       onSnap={(i) => setCurrentSnap(i)}
+      style={{ zIndex: 2 }}
     >
       <Sheet.Container>
         <Sheet.Header>
@@ -103,19 +104,18 @@ export const CardsContainerMobile = () => {
           />
         </Sheet.Header>
         <Sheet.Content disableDrag style={{ paddingBottom: ref.current?.y }}>
-          <Sheet.Scroller draggableAt="both">
+          <Sheet.Scroller draggableAt="top">
             <Box
               bg="white"
               borderColor={`${color}.500`}
               margin="4"
-              style={{ height: "30dvh", marginTop: "60px" }}
+              style={{ height: "30dvh" }}
             >
               <CurrentCardContent />
             </Box>
           </Sheet.Scroller>
         </Sheet.Content>
       </Sheet.Container>
-      <Sheet.Backdrop />
     </Sheet>
   );
 };

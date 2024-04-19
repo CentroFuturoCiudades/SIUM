@@ -27,7 +27,7 @@ import {
   Tbody,
   Td,
   Thead,
-  Tooltip, 
+  Tooltip,
   Tr,
   useToken,
 } from "@chakra-ui/react";
@@ -90,7 +90,7 @@ const transformDataForTrips = (data) => {
 };
 
 const filtering = (x, activeButton) =>
-  activeButton === "General" ||
+  (activeButton === "General" && (x === "TPUB" || x === "Autómovil")) ||
   x === activeButton ||
   ((x === "Bicicleta" || x === "Caminando") &&
     activeButton === "transporteActivo");
@@ -100,7 +100,7 @@ export const TransporteControls = () => {
   const [startColor] = useToken("colors", [`${color}.600`]);
   const endColor = "#6a2eab";
   const { data } = useFetch(TRANSPORTE_URL);
-  const [activeButton, setActiveButton] = useState("TPUB");
+  const [activeButton, setActiveButton] = useState("General");
   const { time, isPlaying, handleSliderChange, togglePlay } =
     TimeComponentClean(300, 1320, 0.005, 0.1, true, 1020);
   const currentTransporte = labelsMapping.find(
@@ -169,17 +169,17 @@ export const TransporteControls = () => {
             return isTrabajo ? [106, 46, 171] : [126, 96, 62];
           }}
           opacity={0.5}
-          widthMinPixels={3}
-          rounded={true}
+          widthMinPixels={2}
           trailLength={10}
           currentTime={time}
         />
-        <PopupButton 
+        <PopupButton
           videoId="2eRmyQBQ5aA?si=CPf1057J6Vk-5qa_"
-          title="Luisa Pérez Barbosa" 
-          subtitle="Movimiento activación ciudadana (MOVAC)." 
-          text="Cultura vial más allá de la infraestructura." 
-        />        
+          title="Luisa Pérez Barbosa"
+          subtitle="Movimiento activación ciudadana (MOVAC)."
+          text="Cultura vial más allá de la infraestructura."
+          onClick={() => isPlaying && togglePlay()}
+        />
       </CustomMap>
       <CustomLegend
         color={color}
@@ -204,6 +204,7 @@ export const TransporteControls = () => {
         activeButton={activeButton}
         setActiveButton={setActiveButton}
         mapping={labelsMapping}
+        onClick={() => isPlaying && togglePlay()}
       />
       <SliderHTML
         time={time}

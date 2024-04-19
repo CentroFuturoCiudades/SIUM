@@ -20,7 +20,7 @@ export const CostosControls = () => {
   const { color } = useCardContext();
   const [isMobile] = useMediaQuery("(max-width: 800px)");
   const [chartData, setChartData] = useState([]);
-  const [activeButton, setActiveButton] = useState("obras");
+  const [activeButton, setActiveButton] = useState("obras_ajustado");
 
   useEffect(() => {
     fetch(
@@ -68,24 +68,21 @@ export const CostosControls = () => {
   };
 
   const municipioColorMap = {
-    // blues
-    Monterrey: "rgb(0, 0, 250)",
-    "San Nicolás de los Garza": "rgb(40, 20, 210)",
-    Guadalupe: "rgb(60, 30, 190)",
-    "San Pedro Garza García": "rgb(20, 10, 230)",
-    "Santa Catarina": "rgb(80, 40, 210)",
-    // reds
-    Apodaca: "rgb(250, 0, 0)",
-    "General Escobedo": "rgb(230, 10, 20)",
-    García: "rgb(210, 20, 40)",
-    "Cadereyta Jiménez": "rgb(190, 30, 60)",
-    Juárez: "rgb(210, 40, 80)",
-    "Salinas Victoria": "rgb(230, 50, 100)",
-    "General Zuazua": "rgb(250, 60, 120)",
-    Pesquería: "rgb(250, 70, 140)",
-    Hidalgo: "rgb(250, 80, 160)",
-    "Ciénega de Flores": "rgb(250, 90, 180)",
-    Abasolo: "rgb(250, 100, 200)",
+    Monterrey: "rgb(40, 60, 40)", // Lighter
+    "San Pedro Garza García": "rgb(60, 90, 60)",
+    "San Nicolás de los Garza": "rgb(90, 110, 90)", // Midpoint
+    Guadalupe: "rgb(120, 140, 120)",
+    "Santa Catarina": "rgb(140, 140, 140)", // Darker
+    Apodaca: "rgb(130, 90, 160)", // Starting with a more pronounced purple-greenish
+    "General Escobedo": "rgb(125, 78, 165)",
+    García: "rgb(120, 66, 170)",
+    Juárez: "rgb(113, 56, 174)", // Closer to midpoint
+    Pesquería: "rgb(106, 46, 171)", // Midpoint purple
+    "Cadereyta Jiménez": "rgb(99, 43, 165)",
+    "General Zuazua": "rgb(92, 40, 159)",
+    "Salinas Victoria": "rgb(85, 37, 153)",
+    Hidalgo: "rgb(71, 31, 141)",
+    "Ciénega de Flores": "rgb(64, 28, 135)",
   };
 
   // Esta función busca el color del municipio en el objeto de arriba.
@@ -95,21 +92,20 @@ export const CostosControls = () => {
   };
   const municipios = [
     "Monterrey",
+    "San Pedro Garza García",
     "San Nicolás de los Garza",
     "Guadalupe",
-    "San Pedro Garza García",
     "Santa Catarina",
     "Apodaca",
     "General Escobedo",
     "García",
-    "Cadereyta Jiménez",
     "Juárez",
-    "Salinas Victoria",
-    "General Zuazua",
     "Pesquería",
+    "Cadereyta Jiménez",
+    "General Zuazua",
+    "Salinas Victoria",
     "Hidalgo",
     "Ciénega de Flores",
-    "Abasolo",
   ];
   function labelMoney(value) {
     if (value > 1000000000) {
@@ -126,7 +122,7 @@ export const CostosControls = () => {
         activeButton={activeButton}
         setActiveButton={setActiveButton}
         mapping={[
-          { id: "obras", name: "Gastos en obras publicas" },
+          { id: "obras_ajustado", name: "Gastos en obras publicas" },
           {
             id: "obras_percapita",
             name: "Gastos en obras publicas por persona",
@@ -137,11 +133,11 @@ export const CostosControls = () => {
           },
         ]}
       />
-      <PopupButton 
+      <PopupButton
         videoId="_h7bXZyN2po?si=fhz7F9Wv9jnT-kig"
-        title="Ana Fernanda Hierro" 
-        subtitle="Consejo de Nuevo León." 
-        text="Eficiencia y aprovechamiento del espacio." 
+        title="Ana Fernanda Hierro"
+        subtitle="Consejo de Nuevo León."
+        text="Eficiencia y aprovechamiento del espacio."
       />
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
@@ -151,20 +147,34 @@ export const CostosControls = () => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="fecha"
-            style={{ fontSize: isMobile ? "12px" : "1dvw" }}
+            style={{ fontSize: isMobile ? "12px" : "min(1.8dvh, 0.9dvw)" }}
           />
           <YAxis
             tickFormatter={labelMoney}
-            style={{ fontSize: isMobile ? "12px" : "1dvw" }}
+            style={{ fontSize: isMobile ? "12px" : "min(1.4dvh, 0.7dvw)" }}
           />
           <Tooltip
-            formatter={(value) => `$${value.toLocaleString()}`}
+            itemSorter={(item) => -item.value}
+            formatter={(value) =>
+              `$${
+                value > 1_000_000_000
+                  ? (value / 1_000_000_000).toFixed(2) + " mil millones"
+                  : value > 1_000_000
+                  ? (value / 1_000_000).toFixed(0) + " millones"
+                  : value < 1
+                  ? value.toFixed(2)
+                  : value.toFixed(0)
+              }`
+            }
             labelFormatter={(value) => `Año ${value}`}
-            itemStyle={{ fontSize: "1dvw" }}
-            labelStyle={{ fontSize: "1.2dvw", fontWeight: "bold" }}
+            itemStyle={{ fontSize: isMobile ? "10px" : "min(2dvh, 1dvw)" }}
+            labelStyle={{
+              fontSize: isMobile ? "12px" : "min(2.4dvh, 1.2dvw)",
+              fontWeight: "bold",
+            }}
           />
 
-          <Legend wrapperStyle={{ fontSize: isMobile ? "10px" : "1dvw" }} />
+          <Legend wrapperStyle={{ fontSize: isMobile ? "10px" : "min(2dvh, 1dvw)" }} />
           {chartData.length > 0 &&
             municipios.map((municipio, index) => (
               <Area

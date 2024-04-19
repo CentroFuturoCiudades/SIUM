@@ -75,12 +75,13 @@ export const ViviendaControls = () => {
           pickable={true}
           autoHighlight={true}
           getPosition={(d) => d.position}
-        /> 
-        <PopupButton 
+        />
+        <PopupButton
           videoId="OsVuAKg3G0U?si=C_qwpjAT5kRGir-t"
-          title="Lucía Elizondo" 
-          subtitle="Tecnológico de Monterrey | ITESM · Campus Monterrey - Arch, MDesS, PhD" 
-          text="Regulación de la vivienda." 
+          title="Lucía Elizondo"
+          subtitle="Tecnológico de Monterrey | ITESM · Campus Monterrey - Arch, MDesS, PhD"
+          text="Regulación de la vivienda."
+          onClick={() => isPlaying && togglePlay()}
         />
       </CustomMap>
       <Legend
