@@ -23,6 +23,8 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { sectionsInfo } from "../utils/constants";
+import { Tooltip } from "@chakra-ui/react";
+import { MdMail } from "react-icons/md";
 
 const principiosInfo = {
   discusion: {
@@ -195,6 +197,27 @@ const Equipo = () => {
         </p>
       </Box>
       {/* Nota END  */}
+      <Box position="fixed" bottom="1rem" right="1rem" zIndex="10">
+        <Tooltip
+          label="Enviar comentario"
+          hasArrow
+          padding="0.5rem"
+          bg="gray.700"
+          fontSize="xs"
+          borderRadius="md"
+          placement="right"
+        >
+          <a href="https://forms.office.com/r/HtvBBujdAe">
+            <IconButton
+              size="sm"
+              isRound={true}
+              icon={<MdMail />}
+              variant="solid"
+              colorScheme="blackAlpha"
+            />
+          </a>
+        </Tooltip>
+      </Box>
     </section>
   );
 };

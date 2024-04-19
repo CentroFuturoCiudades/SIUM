@@ -115,7 +115,7 @@ export const InfanciasControls = () => {
       const promedio = (sumPob05 / sumPob) * 100;
 
       setCirclePayload({
-        ...servicesCount,
+        ...servicesCount, 
         pob_ratio: Math.round(promedio * 100) / 100,
         area_parques: _.sumBy(filteredDataParques, (f) => f.properties.area),
       });
