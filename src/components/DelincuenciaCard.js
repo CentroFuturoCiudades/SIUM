@@ -214,7 +214,7 @@ export function DelincuenciaCard() {
       </ContextTitle>
       <Chart
         title={`Acumulado ${
-          mappingTipoDelitos.find((x) => x.id == sharedProps.activeButton)?.name
+          mappingTipoDelitos.find((x) => x.id == sharedProps.activeButton)?.name.toLocaleLowerCase()
         } por 10 mil personas (2017-2020)`}
         data={chartData}
         domain={[0, 10500]}

@@ -174,7 +174,7 @@ export function ViviendaCard() {
         costos como el de traslado o los servicios, se elevan.
       </ContextTitle>
       <Chart
-        title={`Número de Creditos acumulados en ${sharedProps.time}`}
+        title={`Número de créditos acumulados en ${sharedProps.time}`}
         data={chartData}
         setOutline={setOutline}
         domain={[0, 42000]}
