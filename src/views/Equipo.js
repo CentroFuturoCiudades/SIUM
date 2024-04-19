@@ -294,7 +294,7 @@ const Objetivo = () => {
 
         <Box
           w="100%"
-          h="50dvh"
+          h="auto"
           style={{ display: "flex", backgroundColor: "white" }}
         >
           <Box w={isMobile ? "0" : "50%"} h="100%"></Box>
@@ -302,13 +302,12 @@ const Objetivo = () => {
           {/* Tarjetas principios START */}
           <Box
             w={isMobile ? "100%" : "50%"}
-            h={isMobile ? "135dvh" : "100%"}
+            h={isMobile ? "auto" : "100%"}
             paddingY={isMobile ? "5dvh" : "2dvh"}
             style={{
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-evenly",
-              paddingBottom: "5dvh",
             }}
           >
             <p
