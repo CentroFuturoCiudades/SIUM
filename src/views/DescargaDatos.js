@@ -25,66 +25,65 @@ const datosMapas = [
   {
     name: "Delincuencia",
     color: "green2",
-    description: "Entre más aumenta la mancha urbana, más aumenta la inseguridad: cuando la mancha urbana aumenta un kilómetro, el robo a casa habitación incrementa en un 0.04%. Las incidencias delictivas como robos a transeúntes o a viviendas, así como violencia familiar se concentran en regiones segregadas. Estar alejado de actividades económicas aumenta la incidencia delictiva. Estar cercano a centros con comercio al por menor, la disminuyen.",
+    description: "Los datos presentados corresponden a cuatro tipos de delitos del fuero común: violencia familiar, robo a transeúnte, robo a negocio y robo a casa habitación. La información fue recolectada del 1 de enero del 2017 al 31 de diciembre del 2020. Los casos en la base de datos corresponden a llamadas reportadas al 911.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/crimen-hex.geojson",
     column: "num_crimen",
   },
   {
     name: "Empleo",
     color: "orange",
-    description: "La migración de familias jóvenes a la periferia reduce población en centros urbanos, aumentando desplazamientos al trabajo. Los empleos continúan a diez kilómetros alrededor de la Macroplaza pero existen nuevas centralidades. En 2010, el 53% de empleos estaba en la Macroplaza; en 2020, bajó al 47%. El crecimiento de los centros de empleo se mantienen constantes ante la migración hacia la periferia. La población de Monterrey duplicó de 1990 a 2020, y la expansión urbana creció 2.8 veces, incrementando el tiempo de traslado.",
+    description: "Los datos de empleo proceden del Directorio Estadístico Nacional de Unidades Económicas (DENUE) del Instituto Nacional de Estadística y Geografía (INEGI) del año 2010 y de diciembre del 2019 (antes de la pandemia de COVID19). El DENUE reporta un aproximado del número de empleos a través de categorías que describen el número de personas trabajando en el establecimiento. Se tomó el valor intermedio de cada categoría.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2020_Municipios_Geo.json",
     column: "Empleos",
   },
   {
     name: "Crecimiento",
     color: "brown",
-    description: "La zona central de Monterrey se ha convertido en un área comercial sin residentes. Los hogares se mudan mientras los comercios permanecen. Durante décadas, se ha invertido en infraestructura de transporte para conectar el empleo en el centro con las zonas residenciales. Esto le otorga un alto valor comercial al centro y hace inviable la producción de vivienda asequible. La vivienda económica, a la que las familias jóvenes tienen acceso, se construye en las periferias urbanas.",
+    description: "La información de crecimiento es un esfuerzo propio de este equipo de investigación para empatar las cartografías de los Censos del Instituto Nacional de Estadística y Geografía (INEGI) de los años 1990, 2000, 2010 y 2020.  La unidad base en que la información se muestra corresponde a las Áreas Geoestadísticas Básicas (AGEBs) del 2020. Los archivos muestran los diferenciales de población entre cada censo.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob.geojson",
     column: "1990",
   },
   {
     name: "Segregación",
     color: "green1",
-    description: "Al expandirnos en estos niveles es innevitable que ciertos grupos poblacionales, incluyendo las familias jóvenes o con primeras infancias, queden alejados de las áreas con oportunidades y servicios. La expansión provoca una segregación espacial que divide zonas abruptamente. Las zonas de mayor ingreso como San Pedro o el Sur de Monterrey y las de menor ingreso, que cuentan con costos de suelo más bajos, como sucede en Céntrika y Loma Larga, y en Estanzuela Fomerrey y los límites de la colonia Independencia con Loma Larga.",
+    description: ["Los datos de segregación e ingreso por Área Geoestadística Básica (AGEB) fueron calculados por nuestro equipo de investigación. La metodología se puede consultar en la siguiente publicación de acceso libre:","Peraza‐Mues, G., Ponce‐Lopez, R., Muñoz Sanchez, J. A., Cavazos Alanis, F., Olivera Martínez, G., & Brambila Paz, C. (2024). Income Segregation Analysis in Limited‐Data Contexts: A Methodology Based on Iterative Proportional Fitting. Geographical Analysis, 56(1), 79-96."],
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income2.geojson",
     column: "income_pc",
   },
   {
     name: "Vivienda",
     color: "brown2",
-    description: "Mapa de vivienda",
+    description: "El Tecnológico de Monterrey tiene un convenio con el Instituto del Fondo Nacional de la Vivienda para los Trabajadores (INFONAVIT). Los datos que se muestran corresponden a los créditos vigentes en 2019 de INFONAVIT que fueron otorgados por el instituto para adquirir una vivienda (parcial o totalmente) en los municipios de la Zona Metropolitana de Monterrey. Los datos se filtraron para analizar exclusivamente los créditos otorgados después del año 2000.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vivienda-hex.geojson",
     column: "IM_PRECIO_VENTA",
   },
   {
     name: "Costos",
     color: "green3",
-    description: "La expansión urbana no solo tiene altos costos sociales y ambientales, implica un gasto público mayor, en comparación con modelos de ciudades compactas. En 1995, se gastaban alrededor de tres mil millones en obras públicas de infrastructura para llevar servicios a las zonas urbananas. En 2020 se gastaron casi treinta y seis mil millones, un aumento del 1,200%. Aún con este aumento, el gasto no ha sido suficiente ya que el gasto per cápita ha disminuido en un 88% en el mismo periodo. Los municipios ahora gastan más por metro cuadrado de la mancha urbana, de $223/m2 en 1990 a $2,000/m2 en 2020.",
+    description: "La fuente de información de estos datos son las cifras del Subsistema de Información Económica a través del Programa de Finanzas Públicas Estatales y Municipales del Instituto Nacional de Estadística y Geografía (INEGI). Los datos fueron generados y consultados del sitio de INEGI en diciembre del 2023.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income.geojson",
     column: "local_centralization_q_5_k_100",
   },
   {
     name: "Transporte",
     color: "yellow",
-    description: "El 45% de los desplazamientos en Monterrey son viajes al trabajo, casi la mitad en automóvil, con la particularidad de que la mitad se hace con una sola persona. Los residentes invierten en promedio 50 minutos por viaje redondo en auto, equivalente a doce días al año. El transporte público requiere mejoras; las personas pasan en promedio 70 minutos al día en él, con un tercio experimentando viajes de 3 horas diarias. El 40% de los traslados vienen de la periferia, como Apodaca, Escobedo, García y Juárez, mientras que el 26% se dirige a Monterrey. Solo el 21% utiliza transporte público y un 19% se traslada caminando. Es esencial expandir el acceso al transporte público y mejorar la infraestructura para contrarrestar el impacto negativo en la salud pública y el medio ambiente por el elevado número de viajes en automóvil.",
+    description: "La información de transporte proviene de la encuesta origen-destino del 2019 que el gobierno del estado de Nuevo León realizó como parte del Programa Integral de Movilidad Urbana Sustentable (PIMUS) del Área Metropolitana de Monterrey. Transconsult fue la empresa consultora responsable del levantamiento de la encuesta.",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte.geojson",
     column: "Regreso A Casa",
   },
-  ,
   {
     name: "Mancha urbana",
     color: "orange",
-    description: "Capa de mancha urbana", 
+    description: ["Los datos de expansión urbana proceden de la capa del Global Human Settlement Layer (GHSL), un proyecto fondeado por la Unión Europea: https://human-settlement.emergency.copernicus.eu/", "El GHSL identifica superficies con techo, que se denomina superficie construida. Las capas que se pueden descargar y que alimentan la visualización corresponden a la superficie con techo que se agrega de forma quinquenal. Nuestro procesamiento de la información considera una celda de 30x30 metros como construida si al menos el 20% de su superficie tiene un techo. La superficie construida no es equivalente a la superficie urbanizada. Superficie construida, que es la que se reporta en este sitio, no incluye vialidades ni espacio público, sino exclusivamente la superficie con un techo. "], 
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/mancha_urbana.geojson",
     column: "year"
   },
   {
     name: "Islas de calor",
     color: "teal1",
-    description: "Las islas de calor se calculan a partir de la banda que determinan los satelites LANDSAT, se toma el promedio de la temperatura pixel por un año y se comparan la zona rural con cobertura vegetal circundaria. A partir de la temperatura de la desviacion estandar de la temperatura rural. Las zonas más calientes son aquellas que están más de 3 desviaciones estándar arriba de la temperatura rural.",
+    description: "El equipo de investigación del Centro para el Futuro de las Ciudades generó los datos de islas de calor. La metodología se desarrolló como parte del proyecto titulado “Urban Reporting Base don Satellite Analysis (URSA)” con el equipo de Vivienda y Desarrollo Urbano del Banco Interamericano de Desarrollo (BID). Los datos en crudo proceden de las bandas térmicas de las imágenes Landsat y de la cobertura de suelo de World Dynamic.  La información de la visualización se reporta en dos formatos: 1) una categoría de calor que va de muy frío a muy caliente, estos datos proceden del diferencial entre la zona rural de análisis y cada píxel urbano (cada celda mide 30x30 metross); 2) la temperatura en grados centígrados en crudo. La nota y repositorio a continuación aportan información adicional sobre la metodología que se empleó para generar los datos que alimentan la visualización de islas de calor: https://blogs.iadb.org/ciudades-sostenibles/es/como-identificar-islas-de-calor-urbanas-descubre-ursa-el-nuevo-software-inteligente-del-bid/  y https://github.com/EL-BID/URSA",
     url: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/div-municipal.geojson",
-    column: "muy_caliente",
+    column: "features",
   },
   {
     name: "Escenarios de futuro",
@@ -118,7 +117,7 @@ const DescargaDatos = () => {
 
   const colorTokens = datosMapas.map(map => `${map.color}.500`); // Asume una propiedad 'color' en cada mapa
   const colors = useToken("colors", colorTokens);
-
+console.log(colorTokens)
   // This function interpolates between blue and red based on the normalized value.
   function colorInterpolate(value, r1, g1, b1) {
     const alpha = 1
@@ -159,6 +158,7 @@ const DescargaDatos = () => {
         const data = originalData && originalData[map.name];
         if (!data) return null;
         const colorIndex = datosMapas.findIndex(m => m.name === map.name);
+        console.log(map)
         const fillColor = colors[colorIndex] || '#0000ff'; // Default blue
 
 
@@ -183,8 +183,8 @@ const DescargaDatos = () => {
 
             return colorInterpolate(normalizedValue,rgb[0], rgb[1], rgb[2] ); // Apply your color interpolation function here
           },
-          getLineColor: [255, 255, 255, 255],
-          getLineWidth: 10,
+          getLineColor: [118, 124, 130],
+          getLineWidth: 1,
         });
       })
       .filter((layer) => layer); // Filter out any undefined layers
@@ -287,6 +287,13 @@ const DescargaDatos = () => {
   );
 };
 
+const parseDescription = (description) => {
+  const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+  return description.replace(urlRegex, (match) => {
+    return `<a href="${match}" style="color: blue; text-decoration: underline;" target="_blank" rel="noopener noreferrer">${match}</a>`;
+  });
+};
+
 const CategoriaItem = ({ title, description, onDownload, selected }) => (
   <AccordionItem>
     <h2>
@@ -302,11 +309,16 @@ const CategoriaItem = ({ title, description, onDownload, selected }) => (
           </Box>
       </AccordionButton>
     </h2>
-    <AccordionPanel pb={4}>{description}</AccordionPanel>
+    <AccordionPanel pb={4}>
+    {Array.isArray(description)
+        ? description.map((para, index) => (
+            <Text key={index} mb={index === description.length - 1 ? 0 : 4} dangerouslySetInnerHTML={{ __html: parseDescription(para) }} />
+          ))
+        : <Text dangerouslySetInnerHTML={{ __html: parseDescription(description) }} />
+      }
+    </AccordionPanel>
   </AccordionItem>
 );
 
 export default DescargaDatos;
 
-
-  //useToken("colors", [${color}.600]);
