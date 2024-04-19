@@ -11,7 +11,7 @@ import {
   useFetch,
 } from "../utils/constants";
 import { AreaChartChart } from "./AreaChart";
-import { 
+import {
   CustomLegend,
   CustomLegendMobile,
   LegendItem,
@@ -23,6 +23,7 @@ import ButtonControls from "./ButtonControls.js";
 import { Area, XAxis, YAxis } from "recharts";
 import { useToken } from "@chakra-ui/react";
 import PopupButton from "./PopupButton";
+import axios from "axios";
 
 const EXPANSION_ACTUAL_URL =
   "https://sium.blob.core.windows.net/sium/datos/mancha_urbana_2020.geojson";
@@ -46,50 +47,36 @@ export const EscenariosFuturosControls = () => {
   const [activeButton, setActiveButton] = useState("acelerada");
   const currentColor =
     COLORS[SCENARIOS_NAMES.findIndex((t) => t === activeButton)];
-  var { data: expansion_futura_acelerada_data } = useFetch(
-    ESCENARIOS_FUTUROS_ACELERADA_URL
-  );
-  var { data: expansion_futura_inercial_data } = useFetch(
-    ESCENARIOS_FUTUROS_INERCIAL_URL
-  );
-  var { data: expansion_futura_controlada_data } = useFetch(
-    ESCENARIOS_FUTUROS_CONTROLADA_URL
-  );
   const [data, setData] = useState([]);
-  const { data: expansion_actual_data } = useFetch(EXPANSION_ACTUAL_URL);
+  const { data: dataActual } = useFetch(EXPANSION_ACTUAL_URL);
 
   useEffect(() => {
-    switch (activeButton) {
-      case "acelerada":
-        setData(expansion_futura_acelerada_data);
-        break;
-      case "inercial":
-        setData(expansion_futura_inercial_data);
-        break;
-      case "controlada":
-        setData(expansion_futura_controlada_data);
-        break;
-      default:
-        console.log('error: no hay "active_button"');
-    }
+    const switchData = async () => {
+      const mapping = {
+        acelerada: ESCENARIOS_FUTUROS_ACELERADA_URL,
+        inercial: ESCENARIOS_FUTUROS_INERCIAL_URL,
+        controlada: ESCENARIOS_FUTUROS_CONTROLADA_URL,
+      };
+      const data = await axios.get(mapping[activeButton]);
+      setData(data.data);
+    };
+    switchData();
+  }, [dataActual, activeButton]);
 
-    if (!expansion_actual_data || !data) return;
-  }, [expansion_actual_data, activeButton]);
-
-  if (!expansion_actual_data || !data) return <Loading />;
+  if (!dataActual || !data) return <Loading />;
 
   return (
     <>
       <CustomMap viewState={viewState} setViewState={setViewState}>
         <GeoJsonLayer
           id={`escenarios_futuros_layer`}
-          data={cleanedGeoData(data.features, "index")}
+          data={data}
           getFillColor={hexToRgb(currentColor)}
           opacity={0.6}
         />
         <GeoJsonLayer
           id="escenarios_actuales_layer"
-          data={expansion_actual_data}
+          data={dataActual}
           getFillColor={[168, 174, 193]}
           opacity={0.6}
         />
@@ -103,11 +90,11 @@ export const EscenariosFuturosControls = () => {
             { id: "acelerada", name: "Acelerada" },
           ]}
         />
-        <PopupButton 
+        <PopupButton
           videoId="2eRmyQBQ5aA"
-          title="José Antonio Torre" 
-          subtitle="CFC." 
-          text="Escenarios a futuro." 
+          title="José Antonio Torre"
+          subtitle="CFC."
+          text="Escenarios a futuro."
         />
       </CustomMap>
       <CustomLegend
@@ -135,7 +122,7 @@ export const EscenariosFuturosControls = () => {
           </>
         }
       >
-        <LegendItem color={'#A8AEC1'} label="Suelo urbanizado" />
+        <LegendItem color={"#A8AEC1"} label="Suelo urbanizado" />
         <LegendItem color={currentColor} label={`Expansión ${activeButton}`} />
       </CustomLegend>
     </>
@@ -160,11 +147,11 @@ export function EscenariosFuturosCard() {
       </p>
       <p>
         Planteamos dos alternativas de crecimiento: controlado (mil km²
-        urbanizados) o acelerado (casi 2 mil km² urbanizados). Alcanzar uno u otro
-        escenario dependerá de las políticas actuales para regularlo, y de si
-        consiguen enfocarse en regenerar y densificar, asegurando, por ejemplo,
-        vivienda asequible en municipios centrales como San Nicolás, Guadalupe y
-        Monterrey.
+        urbanizados) o acelerado (casi 2 mil km² urbanizados). Alcanzar uno u
+        otro escenario dependerá de las políticas actuales para regularlo, y de
+        si consiguen enfocarse en regenerar y densificar, asegurando, por
+        ejemplo, vivienda asequible en municipios centrales como San Nicolás,
+        Guadalupe y Monterrey.
       </p>
       <AreaChartChart
         title="Proyección de superficie urbanizada 2020-2070"

@@ -122,11 +122,13 @@ export const CardsContainerMobile = () => {
 
 const Problematica = () => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
-  const [currentSection, setCurrentSection] = useState("expansion-urbana");
+  const [currentSection, setCurrentSection] = useState(undefined);
   const [outline, setOutline] = useState();
   const [sharedProps, setSharedProps] = useState({});
-  const currentInfo = sectionsInfo[currentSection];
-  const CurrentControls = sectionsInfo[currentSection].controls;
+  const currentInfo = currentSection ? sectionsInfo[currentSection] : {};
+  const CurrentControls = currentSection
+    ? sectionsInfo[currentSection].controls
+    : null;
   const Bar = isMobile ? BarMobile : Sidebar;
   const CurrentCardContainer = isMobile ? CardsContainerMobile : CardsContainer;
 
@@ -150,14 +152,17 @@ const Problematica = () => {
 
   useEffect(() => {
     const sectionFromURL = getSectionFromURL();
-    if (sectionFromURL) {
-      const el = document.getElementById(sectionFromURL);
+    setCurrentSection(sectionFromURL || "expansion-urbana");
+  }, []);
+  useEffect(() => {
+    if (!currentSection) return;
+    if (!isMobile) {
+      const el = document.getElementById(currentSection);
       if (el) {
-        setCurrentSection(sectionFromURL);
         el.scrollIntoView();
       }
     }
-  }, []);
+  }, [currentSection]);
   function updateSection(section) {
     if (!isMobile) {
       const el = document.getElementById(section);
@@ -181,13 +186,17 @@ const Problematica = () => {
           setSharedProps,
         }}
       >
-        <CurrentCardContainer />
-        <Box
-          className={isMobile ? "mapContainerMobile" : "mapContainer"}
-          borderColor={`${sectionsInfo[currentSection].color}.500`}
-        >
-          <CurrentControls />
-        </Box>
+        {currentSection && (
+          <>
+            <CurrentCardContainer />
+            <Box
+              className={isMobile ? "mapContainerMobile" : "mapContainer"}
+              borderColor={`${sectionsInfo[currentSection].color}.500`}
+            >
+              <CurrentControls />
+            </Box>
+          </>
+        )}
       </CardContext.Provider>
     </div>
   );

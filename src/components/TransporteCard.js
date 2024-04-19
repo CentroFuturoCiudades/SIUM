@@ -147,12 +147,6 @@ export const TransporteControls = () => {
           getLineWidth={10}
           getLineColor={[16, 37, 66]}
         />
-        <GeoJsonLayer
-          id="primary_routes"
-          data={VIAS_URL}
-          getLineColor={[180, 180, 180, 255]}
-          getLineWidth={50}
-        />
         <TripsLayer
           id="transporte_layer"
           data={transformDataForTrips(
@@ -261,7 +255,7 @@ export function TransporteCard() {
         seguridad de las personas que necesitan realizar viajes intermodales.
       </ContextTitle>
       <Chart
-        title={`Tiempo de traslado regreso a casa en ${currentTransporte.toLocaleLowerCase()}`}
+        title={`Tiempo de traslado regreso a casa en ${currentTransporte?.toLocaleLowerCase()}`}
         data={filteredChartData}
         column="TiempoTraslado"
         columnKey="MunDest"

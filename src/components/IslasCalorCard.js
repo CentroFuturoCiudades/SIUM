@@ -115,12 +115,6 @@ export const IslasCalorControls = () => {
           getLineColor={[118, 124, 130]}
           getLineWidth={0}
         />
-        <GeoJsonLayer
-          id="primary_routes"
-          data={VIAS_URL}
-          getLineColor={[0, 0, 0, 255]}
-          getLineWidth={70}
-        />
         <PopupButton
           videoId="awKx7yDA6k8?si=C_doMgtFy68xD2CE"
           title="Lorem Ipsum"
@@ -159,6 +153,7 @@ export const IslasCalorControls = () => {
         <div style={{ height: "10px" }} />
         {legendItems.map((item, index) => (
           <LegendItem
+            key={item.item}
             color={item.color}
             label={ISLAS_CALOR_LEGEND_DATA[item.item - 1]}
           />

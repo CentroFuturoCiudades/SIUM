@@ -90,16 +90,15 @@ export const AreaChartChart = ({
             content={<CustomTooltip />}
           />
           {lines.map((lineName, index) => (
-            <>
-              <Area
-                style={{ cursor: "pointer", pointerEvents: "none" }}
-                type="monotone"
-                dataKey={lineName}
-                stroke={lineColors[index]}
-                fillOpacity={1}
-                fill={lineColors[index]}
-              />
-            </>
+            <Area
+              key={lineName}
+              style={{ cursor: "pointer", pointerEvents: "none" }}
+              type="monotone"
+              dataKey={lineName}
+              stroke={lineColors[index]}
+              fillOpacity={1}
+              fill={lineColors[index]}
+            />
           ))}
         </AreaChart>
       </ResponsiveContainer>

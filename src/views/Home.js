@@ -257,8 +257,8 @@ const Map = ({ year }) => {
                 mb="1"
                 style={{
                   lineHeight: 1,
-                  "-webkit-text-stroke-width": "0.1px",
-                  "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
+                  WebkitTextStrokeWidth: "0.1px",
+                  WebkitTextStrokeColor: "rgba(255, 255, 255, 0.5)",
                 }}
               >
                 <b>{year}</b>
@@ -269,8 +269,8 @@ const Map = ({ year }) => {
                     fontSize={isMobile ? "8px" : "min(2.4dvh, 1.2dvw)"}
                     color="#783CB4"
                     style={{
-                      "-webkit-text-stroke-width": "0.1px",
-                      "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
+                      WebkitTextStrokeWidth: "0.1px",
+                      WebkitTextStrokeColor: "rgba(255, 255, 255, 0.5)",
                     }}
                   >
                     <b>
@@ -285,8 +285,8 @@ const Map = ({ year }) => {
                     fontSize={isMobile ? "8px" : "min(2.4dvh, 1.2dvw)"}
                     color="#783CB4"
                     style={{
-                      "-webkit-text-stroke-width": "0.1px",
-                      "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
+                      WebkitTextStrokeWidth: "0.1px",
+                      WebkitTextStrokeColor: "rgba(255, 255, 255, 0.5)",
                     }}
                   >
                     <b>
@@ -309,8 +309,8 @@ const Map = ({ year }) => {
                     />
                     <b
                       style={{
-                        "-webkit-text-stroke-width": "0.1px",
-                        "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
+                        WebkitTextStrokeWidth: "0.1px",
+                        WebkitTextStrokeColor: "rgba(255, 255, 255, 0.5)",
                       }}
                     >
                       {`${calculoDensidadReducida(year)}% menos densidad`}
@@ -561,11 +561,7 @@ const Home = () => {
               </div>
             </div>
             <div ref={containerRef}>
-              <Text
-                color="gray.100"
-                fontSize={isMobile ? "xs" : "min(3dvh, 1.5dvw)"}
-                style={textStyle}
-              >
+              <div style={textStyle}>
                 <Heading
                   color="orange.500"
                   fontSize={isMobile ? "lg" : "min(3.4dvh, 1.7dvw)"}
@@ -573,21 +569,20 @@ const Home = () => {
                   Los recursos de la metrópolis son limitados
                 </Heading>
                 <br></br>
-                En las últimas tres décadas, la mancha urbana de Monterrey ha
-                experimentado un <b>
-                  crecimiento exponencial, triplicándose
-                </b>{" "}
-                en tamaño. Este desarrollo, si bien evidencia el dinamismo de la
-                ciudad, también conlleva riesgos ambientales, económicos y
-                sociales. Los recursos urbanos y ambientales, que son esenciales
-                para el bienestar de la comunidad, <b>son finitos</b> y deben
-                manejarse con responsabilidad.
-              </Text>
-              <Text
-                color="gray.100"
-                fontSize={isMobile ? "xs" : "min(3dvh, 1.5dvw)"}
-                style={textStyle}
-              >
+                <Text
+                  color="gray.100"
+                  fontSize={isMobile ? "xs" : "min(3dvh, 1.5dvw)"}
+                >
+                  En las últimas tres décadas, la mancha urbana de Monterrey ha
+                  experimentado un <b>crecimiento exponencial, triplicándose</b>{" "}
+                  en tamaño. Este desarrollo, si bien evidencia el dinamismo de
+                  la ciudad, también conlleva riesgos ambientales, económicos y
+                  sociales. Los recursos urbanos y ambientales, que son
+                  esenciales para el bienestar de la comunidad,{" "}
+                  <b>son finitos</b> y deben manejarse con responsabilidad.
+                </Text>
+              </div>
+              <div style={textStyle}>
                 <Heading
                   color="orange.500"
                   fontSize={isMobile ? "lg" : "min(3.4dvh, 1.7dvw)"}
@@ -595,16 +590,18 @@ const Home = () => {
                   Crecimiento sin planeación
                 </Heading>
                 <br></br>
-                <b>La 'mancha urbana'</b> se refiere a la expansión continua de
-                la ciudad en términos de construcción y desarrollo. En este
-                contexto, es crucial destacar que esta expansión no planificada
-                y descontrolada requiere una <b>reconsideración urgente.</b>
-              </Text>
-              <Text
-                color="gray.100"
-                fontSize={isMobile ? "xs" : "min(3dvh, 1.5dvw)"}
-                style={textStyle}
-              >
+                <Text
+                  color="gray.100"
+                  fontSize={isMobile ? "xs" : "min(3dvh, 1.5dvw)"}
+                >
+                  <b>La 'mancha urbana'</b> se refiere a la expansión continua
+                  de la ciudad en términos de construcción y desarrollo. En este
+                  contexto, es crucial destacar que esta expansión no
+                  planificada y descontrolada requiere una{" "}
+                  <b>reconsideración urgente.</b>
+                </Text>
+              </div>
+              <div style={textStyle}>
                 <Heading
                   color="orange.500"
                   fontSize={isMobile ? "lg" : "min(3.4dvh, 1.7dvw)"}
@@ -612,15 +609,20 @@ const Home = () => {
                   Visibilización, propuestas y acción colectiva
                 </Heading>
                 <br></br>
-                La <b>finitud de los recursos</b> urbanos, ambientales y la
-                expansión <b>aparentemente 'infinita'</b> de la ciudad, nos hace
-                plantearnos diversas preguntas fundamentales sobre la
-                sostenibilidad y la gestión responsable de nuestro entorno.
-                Enfrentar estos desafíos requiere un{" "}
-                <b>enfoque reflexivo y acciones concertadas</b> para garantizar
-                un futuro sostenible para la comunidad y el entorno en la Zona
-                Metropolitana de Monterrey.
-              </Text>
+                <Text
+                  color="gray.100"
+                  fontSize={isMobile ? "xs" : "min(3dvh, 1.5dvw)"}
+                >
+                  La <b>finitud de los recursos</b> urbanos, ambientales y la
+                  expansión <b>aparentemente 'infinita'</b> de la ciudad, nos
+                  hace plantearnos diversas preguntas fundamentales sobre la
+                  sostenibilidad y la gestión responsable de nuestro entorno.
+                  Enfrentar estos desafíos requiere un{" "}
+                  <b>enfoque reflexivo y acciones concertadas</b> para
+                  garantizar un futuro sostenible para la comunidad y el entorno
+                  en la Zona Metropolitana de Monterrey.
+                </Text>
+              </div>
             </div>
           </div>
         </div>

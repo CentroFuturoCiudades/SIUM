@@ -19,7 +19,7 @@ export const CustomLegendMobile = ({ title, color, description, children }) => {
       style={{
         display: "flex",
         flexDirection: "column",
-        justifyContent: "flex-start;",
+        justifyContent: "flex-start",
         position: "absolute",
         bottom: "80px",
         left: "20px",
@@ -36,17 +36,9 @@ export const CustomLegendMobile = ({ title, color, description, children }) => {
           marginTop: "5px",
         }}
       >
-        <Tooltip label={description} placement="top" hasArrow gutter={12}>
-          <Heading color="gray.700" fontSize="12px">
-            <InfoIcon
-              boxSize={2.5}
-              color="gray.400"
-              style={{ cursor: "pointer" }}
-              mr="1"
-            />
-            {title}
-          </Heading>
-        </Tooltip>
+        <Heading color="gray.700" fontSize="12px">
+          {title}
+        </Heading>
       </div>
       <TableContainer>
         <Table size="xs" variant="unstyled">
@@ -57,9 +49,14 @@ export const CustomLegendMobile = ({ title, color, description, children }) => {
   );
 };
 
-export const CustomLegend = ({ title, color, description, children, note="" }) => {
+export const CustomLegend = ({
+  title,
+  color,
+  description,
+  children,
+  note = "",
+}) => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
-
 
   if (isMobile) {
     return (
@@ -100,43 +97,45 @@ export const CustomLegend = ({ title, color, description, children, note="" }) =
           <Tbody>{children}</Tbody>
         </Table>
       </TableContainer>
-      <b><p style={{fontSize:"0.6dvw"}}>
-        {note}
-        </p></b>
+      <b>
+        <p style={{ fontSize: "0.6dvw" }}>{note}</p>
+      </b>
     </Box>
   );
 };
 
 export const LegendItem = ({ color, label }) => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
-  
+
   return (
     <Tr fontSize="0.7dvw">
       <Td>
-        {label === "Preescolar" || label === "Guardería" || label === "Equipamiento de Salud" ? (
-            <div
-              className="legend-symbol"
-              style={{
-                color: color,
-                fontSize: "2.3em",
-                lineHeight: "0.8em",
-                marginRight: "5px",
-                fontWeight: "bold"
-              }}
-            >
-              X
-            </div>
-          ) : (
-            <div
-              // className="legend-color"
-              style={{
-                backgroundColor: color,
-                borderRadius: label === "Comercio al por menor" ? "50%" : "0%",
-                height: isMobile ? "16px" : "min(1.6dvh, 0.8dvw)",
-                width: isMobile ? "16px" : "min(1.6dvh, 0.8dvw)",
-              }}
-            />
-          )}
+        {label === "Preescolar" ||
+        label === "Guardería" ||
+        label === "Equipamiento de Salud" ? (
+          <div
+            className="legend-symbol"
+            style={{
+              color: color,
+              fontSize: "2.3em",
+              lineHeight: "0.8em",
+              marginRight: "5px",
+              fontWeight: "bold",
+            }}
+          >
+            X
+          </div>
+        ) : (
+          <div
+            // className="legend-color"
+            style={{
+              backgroundColor: color,
+              borderRadius: label === "Comercio al por menor" ? "50%" : "0%",
+              height: isMobile ? "16px" : "min(1.6dvh, 0.8dvw)",
+              width: isMobile ? "16px" : "min(1.6dvh, 0.8dvw)",
+            }}
+          />
+        )}
       </Td>
       <Td>
         <div className="legend-numbers">

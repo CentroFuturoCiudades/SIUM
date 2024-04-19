@@ -78,7 +78,9 @@ export const LegendMobile = ({ title, legendItems, formatting }) => {
         width={110}
       ></svg>
       <div style={{ display: "flex", marginLeft: "10px" }}>
-        <Text style={{ width: "30dvw" }}>{title}</Text>
+        <Heading color="gray.700" fontSize="12px" style={{ width: "30dvw" }}>
+          {title}
+        </Heading>
       </div>
     </div>
   );

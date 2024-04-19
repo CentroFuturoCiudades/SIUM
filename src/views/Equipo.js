@@ -139,6 +139,7 @@ const Equipo = () => {
       >
         {Object.values(infoEquipo).map((area) => (
           <Box
+            key={area.title}
             marginBottom={"2dvh"}
             paddingX={"2dvw"}
             w={isMobile ? "auto" : "17dvw"}
@@ -153,7 +154,10 @@ const Equipo = () => {
             )}
 
             {area.members.map((miembro) => (
-              <p style={{ fontSize: isMobile ? "4dvw" : "0.9rem" }}>
+              <p
+                key={miembro}
+                style={{ fontSize: isMobile ? "4dvw" : "0.9rem" }}
+              >
                 {miembro}
               </p>
             ))}
@@ -323,7 +327,7 @@ const Objetivo = () => {
 
             <Wrap spacingX="2dvw" spacingY="5dvh" justify="center" p={"2dvh"}>
               {Object.values(principiosInfo).map((principio) => (
-                <WrapItem>
+                <WrapItem key={principio.label}>
                   <Popover trigger="hover" placement="top">
                     <PopoverTrigger>
                       <Button
