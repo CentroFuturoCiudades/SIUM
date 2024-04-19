@@ -37,14 +37,13 @@ import * as d3 from "d3";
 import PopupButton from "./PopupButton";
 
 const ISLAS_CALOR_COLORS = [
-  "#F4711F",
-  "#E7613F",
-  "#DA525E",
-  "#CD427E",
-  "#C0339E",
-  "#B323BE",
-  "#A614DD",
-  "#9904FD", 
+  "#C32B21",
+  "#FF4945",
+  "#FEBDBC",
+  "#46A59C",
+  "#528EAA",
+  "#6A60C6",
+  "#8132E1",
 ];
 const ISLAS_CALOR_LEGEND_DATA = [
   "Muy frío",
@@ -89,11 +88,11 @@ export const IslasCalorControls = () => {
           getWeight={1}
           // use grey color to indicate intensity
           colorRange={[
-            [0, 0, 0, 100],
+            [0, 0, 0, 50],
             [0, 0, 0, 255],
           ]}
-          radiusPixels={20}
-          intensity={5}
+          radiusPixels={viewState.zoom * 5}
+          intensity={2}
         />
         <GeoJsonLayer
           id="islas_calor_layer"
@@ -103,7 +102,7 @@ export const IslasCalorControls = () => {
               d.properties["Value"],
               [7, 6, 5, 4, 3, 2, 1],
               ISLAS_CALOR_COLORS,
-              0.8
+              0.5
             )
           }
           getLineWidth={0}
@@ -115,12 +114,6 @@ export const IslasCalorControls = () => {
           getFillColor={[92, 178, 112]}
           getLineColor={[118, 124, 130]}
           getLineWidth={0}
-        />
-        <GeoJsonLayer
-          id="primary_routes"
-          data={VIAS_URL}
-          getLineColor={[0, 0, 0, 255]}
-          getLineWidth={70}
         />
         <PopupButton
           videoId="awKx7yDA6k8?si=C_doMgtFy68xD2CE"
@@ -160,6 +153,7 @@ export const IslasCalorControls = () => {
         <div style={{ height: "10px" }} />
         {legendItems.map((item, index) => (
           <LegendItem
+            key={item.item}
             color={item.color}
             label={ISLAS_CALOR_LEGEND_DATA[item.item - 1]}
           />
@@ -194,7 +188,7 @@ export function IslasCalorCard() {
         La infraestructura, principalmente la de estos dos materiales, retiene
         calor y lo libera gradualmente, intensificando este efecto. En el centro
         de Monterrey, la alta densidad de edificios y la falta de áreas verdes
-        aumentan las temperaturas, hasta en XXXXX°, en comparación con las zonas
+        aumentan las temperaturas, hasta en 9°, en comparación con las zonas
         que cuentan con mayor arbolado. Esto afecta negativamente la salud y la
         calidad de vida, especialmente en verano.
       </p>
@@ -366,7 +360,7 @@ export const IslasCalorChart = ({
         color="gray.600"
         style={{
           textAlign: "center",
-          fontSize: isMobile ? "0.9rem" : "min(1dvw, 1.4dvh)",
+          fontSize: isMobile ? "8px" : "min(1dvw, 1.4dvh)",
           marginTop: "-15px",
         }}
       >

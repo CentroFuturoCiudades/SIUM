@@ -38,7 +38,7 @@ export const ViviendaControls = () => {
   const { color, setSharedProps } = useCardContext();
   const [startColor] = useToken("colors", [`${color}.600`]);
   const endColor = "#6a2eab";
-  const VIVIENDA_COLORS = generateGradientColors(startColor, endColor, 8);
+  const VIVIENDA_COLORS = generateGradientColors(endColor, startColor, 8);
   const { data } = useFetch(VIVIENDA_URL);
   const [legendItems, setLegendItems] = useState([]);
   const [hoverInfo, setHoverInfo] = useState();
@@ -75,12 +75,13 @@ export const ViviendaControls = () => {
           pickable={true}
           autoHighlight={true}
           getPosition={(d) => d.position}
-        /> 
-        <PopupButton 
-          videoId="OsVuAKg3G0U?si=lgWZXJSOss-RFvqo"
-          title="Lucía Elizondo" 
-          subtitle="Tecnológico de Monterrey | ITESM · Campus Monterrey - Arch, MDesS, PhD" 
-          text="Regulación de la vivienda." 
+        />
+        <PopupButton
+          videoId="OsVuAKg3G0U?si=C_qwpjAT5kRGir-t"
+          title="Lucía Elizondo"
+          subtitle="Tecnológico de Monterrey | ITESM · Campus Monterrey - Arch, MDesS, PhD"
+          text="Regulación de la vivienda."
+          onClick={() => isPlaying && togglePlay()}
         />
       </CustomMap>
       <Legend
@@ -173,7 +174,7 @@ export function ViviendaCard() {
         costos como el de traslado o los servicios, se elevan.
       </ContextTitle>
       <Chart
-        title={`Número de Creditos acumulados en ${sharedProps.time}`}
+        title={`Número de créditos acumulados en ${sharedProps.time}`}
         data={chartData}
         setOutline={setOutline}
         domain={[0, 42000]}

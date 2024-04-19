@@ -115,7 +115,7 @@ export const InfanciasControls = () => {
       const promedio = (sumPob05 / sumPob) * 100;
 
       setCirclePayload({
-        ...servicesCount,
+        ...servicesCount, 
         pob_ratio: Math.round(promedio * 100) / 100,
         area_parques: _.sumBy(filteredDataParques, (f) => f.properties.area),
       });
@@ -192,9 +192,9 @@ export const InfanciasControls = () => {
               d.properties.sector === "salud"
           )}
           //iconAtlas="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png"
-          iconAtlas="https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/images/icon-atlas2.png"
+          iconAtlas="https://sium.blob.core.windows.net/sium/images/icon-atlas2.png"
           //iconMapping="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.json"
-          iconMapping="https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/images/icon-atlas2.json"
+          iconMapping="https://sium.blob.core.windows.net/sium/images/icon-atlas2.json"
           //getIcon={d => 'marker'}
           getIcon={(d) => getIconByCodigoAct(d.properties.sector)}
           getPosition={(d) => d.geometry.coordinates}
@@ -206,16 +206,16 @@ export const InfanciasControls = () => {
           brushingRadius={brushingRadius}
           extensions={[new BrushingExtension()]}
         />
-        <PopupButton 
-          videoId="ROtsJ6c4dIo?si=HAPfOj40Rip_XPPl"
-          title="Sindy González Tijerina" 
-          subtitle="FEMSA." 
-          text="Importancia de la integración de una perspectiva de la primera infrancia en la planeación." 
-        /> 
+        <PopupButton
+          videoId="ROtsJ6c4dIo?si=rVyjLfugJicIi_fJ"
+          title="Sindy González Tijerina"
+          subtitle="FEMSA."
+          text="Importancia de la integración de una perspectiva de la primera infrancia en la planeación."
+        />
       </CustomMap>
       <CustomLegend
         color={color}
-        title={"Porcentaje de población entre 0 a 5 años"}
+        title={"Porcentaje de la población total entre 0 a 5 años"}
         description={
           <>
             <b>Censo INEGI 2020</b>
@@ -268,26 +268,28 @@ export function InfanciasCard() {
         {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
-        Las familias jóvenes con primeras infancias (de 0 a 5 años), han migrado
-        hacia las periferias, en donde existe una cobertura reducida de
-        servicios de proximidad: educativos, de salud y comerciales; así como
-        una falta de espacios públicos. En contraste, en las zonas centrales en
-        donde hay una mayor oferta de servicios, la población infantil es menor.
+        Las familias jóvenes con bebés, niñas y niños menores de 5 años han
+        migrado hacia las periferias; en donde existe una cobertura reducida de
+        servicios de proximidad: educativos, de salud, comerciales y espacios
+        públicos. En contraste, en las zonas centrales en donde hay una mayor
+        oferta de servicios, la población infantil es menor.
       </p>
       <p>
-        Si sumamos a este desequilibrio condiciones de asentamientos
-        autoproducidos, como en el polígono de la Iniciativa Campana-Altamira,
-        los rezagos de acceso a servicios son más evidentes. Por esto es
-        fundamental promover políticas que permitan una ciudad conectada,
-        accesible y de proximidad.
+        Este desbalance se ilustra en los equipamientos de salud (consultorios y
+        hospitales generales). En un municipio central como Monterrey con un 7%
+        de población infantil, la proporción de equipamientos es 1 por cada 42
+        infancias. Por el contrario en la periferia, El Carmen con un 14% de la
+        población infantil, cuenta con 1 equipamiento cada 2,468 niños. Esto
+        obliga a las familias a desplazarse largas distancias para recibir
+        atención médica, lo que implica mayores costos y esfuerzo.
       </p>
       <ContextTitle color={color}>
-        Las necesidades de la primera infancia deben garantizarse a través de
-        servicios de salud, nutrición, aprendizaje, protección y seguridad, como
-        lo plantea la UNICEF.
+        UNICEF indica que los derechos de las infancias deben garantizarse a
+        través de servicios de salud, nutrición, aprendizaje, protección y
+        seguridad.
       </ContextTitle>
       <Chart
-        title="Porcentage de población entre 0 a 5 años"
+        title="Porcentaje de población entre 0 a 5 años"
         data={chartData}
         domain={[0.04, 0.15]}
         column="ratio_pob05"

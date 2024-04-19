@@ -43,8 +43,8 @@ export const Header = ({ section, color, title }) => (
       />
       <img
         className="headerImage"
-        src="femsa.png"
-        alt="FEMSA"
+        src="fundacion_femsa.png"
+        alt="Fundacion FEMSA"
         style={{
           padding: "5px",
           maxWidth: "33%",
@@ -79,27 +79,25 @@ export const Header = ({ section, color, title }) => (
 
 export const HeaderMobile = ({ color, title, open, setOpen }) => {
   return (
-    <Box className="titleContainerMobile" bgColor={`${color}.500`}>
-      <Heading
-        className="titleMobile"
-        color="white"
-        bg={`${color}.500`}
-        borderColor={`${color}.500`}
-        fontSize="0.8rem"
-        onClick={() => setOpen(!open)}
+    <Heading
+      className="titleMobile"
+      color="white"
+      bg={`${color}.500`}
+      borderColor={`${color}.500`}
+      fontSize="0.8rem"
+      onClick={setOpen}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8, y: -10 }}
+        animate={{
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          transition: { duration: 0.5 },
+        }}
       >
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8, y: -10 }}
-          animate={{
-            opacity: 1,
-            scale: 1,
-            y: 0,
-            transition: { duration: 0.5 },
-          }}
-        >
-          {title}
-        </motion.div>
-      </Heading>
-    </Box>
+        {title}
+      </motion.div>
+    </Heading>
   );
 };

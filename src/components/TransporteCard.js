@@ -27,7 +27,7 @@ import {
   Tbody,
   Td,
   Thead,
-  Tooltip, 
+  Tooltip,
   Tr,
   useToken,
 } from "@chakra-ui/react";
@@ -90,7 +90,7 @@ const transformDataForTrips = (data) => {
 };
 
 const filtering = (x, activeButton) =>
-  activeButton === "General" ||
+  (activeButton === "General" && (x === "TPUB" || x === "Autómovil")) ||
   x === activeButton ||
   ((x === "Bicicleta" || x === "Caminando") &&
     activeButton === "transporteActivo");
@@ -100,7 +100,7 @@ export const TransporteControls = () => {
   const [startColor] = useToken("colors", [`${color}.600`]);
   const endColor = "#6a2eab";
   const { data } = useFetch(TRANSPORTE_URL);
-  const [activeButton, setActiveButton] = useState("TPUB");
+  const [activeButton, setActiveButton] = useState("General");
   const { time, isPlaying, handleSliderChange, togglePlay } =
     TimeComponentClean(300, 1320, 0.005, 0.1, true, 1020);
   const currentTransporte = labelsMapping.find(
@@ -128,11 +128,11 @@ export const TransporteControls = () => {
             const nombrePropiedad = feature.properties.NOMBRE;
             const colorMapping = {
               // Change color based on type of transport
-              ECOVIA: [0, 200, 0, 255], // Rojo
-              "Linea 1 - Metro": [0, 200, 0, 255],
-              "Linea 2 - Metro": [0, 200, 0, 255],
-              "Linea 3 - Metro": [0, 200, 0, 255],
-              Transmetro: [0, 200, 0, 255],
+              ECOVIA: [255, 56, 100], // Rojo
+              "Linea 1 - Metro": [255, 56, 100],
+              "Linea 2 - Metro": [255, 56, 100],
+              "Linea 3 - Metro": [255, 56, 100],
+              Transmetro: [255, 56, 100],
             };
             return colorMapping[nombrePropiedad] || [64, 224, 208, 128];
           }}
@@ -145,13 +145,7 @@ export const TransporteControls = () => {
           lineWidthScale={10}
           lineWidthMinPixels={2}
           getLineWidth={10}
-          getLineColor={[200, 0, 0]}
-        />
-        <GeoJsonLayer
-          id="primary_routes"
-          data={VIAS_URL}
-          getLineColor={[180, 180, 180, 255]}
-          getLineWidth={50}
+          getLineColor={[16, 37, 66]}
         />
         <TripsLayer
           id="transporte_layer"
@@ -169,17 +163,17 @@ export const TransporteControls = () => {
             return isTrabajo ? [106, 46, 171] : [126, 96, 62];
           }}
           opacity={0.5}
-          widthMinPixels={3}
-          rounded={true}
+          widthMinPixels={2}
           trailLength={10}
           currentTime={time}
         />
-        <PopupButton 
-          videoId="2eRmyQBQ5aA?si=krgUsYc8Z88oMbLq"
-          title="Luisa Pérez Barbosa" 
-          subtitle="Movimiento activación ciudadana (MOVAC)." 
-          text="Cultura vial más allá de la infraestructura." 
-        />        
+        <PopupButton
+          videoId="2eRmyQBQ5aA?si=CPf1057J6Vk-5qa_"
+          title="Luisa Pérez Barbosa"
+          subtitle="Movimiento activación ciudadana (MOVAC)."
+          text="Cultura vial más allá de la infraestructura."
+          onClick={() => isPlaying && togglePlay()}
+        />
       </CustomMap>
       <CustomLegend
         color={color}
@@ -196,14 +190,15 @@ export const TransporteControls = () => {
       >
         <LegendItem color={endColor} label="Trabajo y Regreso a Casa" />
         <LegendItem color={startColor} label="Otros motivos" />
-        <LegendItem color="lightgreen" label="Metro" />
-        <LegendItem color="red" label="Ciclovias" />
+        <LegendItem color="#FF3864" label="Metro" />
+        <LegendItem color="#102542" label="Ciclovias" />
       </CustomLegend>
       <ButtonControls
         color={color}
         activeButton={activeButton}
         setActiveButton={setActiveButton}
         mapping={labelsMapping}
+        onClick={() => isPlaying && togglePlay()}
       />
       <SliderHTML
         time={time}
@@ -260,7 +255,7 @@ export function TransporteCard() {
         seguridad de las personas que necesitan realizar viajes intermodales.
       </ContextTitle>
       <Chart
-        title={`Tiempo de traslado regreso a casa en ${currentTransporte}`}
+        title={`Tiempo de traslado regreso a casa en ${currentTransporte?.toLocaleLowerCase()}`}
         data={filteredChartData}
         column="TiempoTraslado"
         columnKey="MunDest"

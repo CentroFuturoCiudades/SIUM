@@ -77,9 +77,9 @@ const mappingTipoDelitos = [
 
 export const DelincuenciaControls = () => {
   const { color, setSharedProps } = useCardContext();
-  const startColor = useToken("colors", [`${color}.200`]);
+  const [startColor] = useToken("colors", [`${color}.600`]);
   const endColor = "#6a2eab";
-  const DELINCUENCIA_COLORS = generateQuantileColors(startColor, endColor, 8);
+  const DELINCUENCIA_COLORS = generateGradientColors(startColor, endColor, 8);
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const { data } = useFetch(DELINCUENCIA_URL);
   const [legendItems, setLegendItems] = useState([]);
@@ -123,7 +123,7 @@ export const DelincuenciaControls = () => {
           getPosition={(d) => d.position}
         />
         <PopupButton 
-          videoId="0iY7lM81XiQ?si=UBJTuAb7Vo30TAck"
+          videoId="0iY7lM81XiQ?si=8VY7ccX1AFtsLOdw"
           title="Rebecca Bell" 
           subtitle="Profesora/ Investigadora en el Tecnológico de Monterrey, Campus Monterrey." 
           text="Confianza e involucramiento en la seguridad pública." 
@@ -214,7 +214,7 @@ export function DelincuenciaCard() {
       </ContextTitle>
       <Chart
         title={`Acumulado ${
-          mappingTipoDelitos.find((x) => x.id == sharedProps.activeButton)?.name
+          mappingTipoDelitos.find((x) => x.id == sharedProps.activeButton)?.name.toLocaleLowerCase()
         } por 10 mil personas (2017-2020)`}
         data={chartData}
         domain={[0, 10500]}

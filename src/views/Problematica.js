@@ -12,7 +12,7 @@ import { Header, HeaderMobile } from "../components/Header";
 import "../index.css";
 import { Card } from "../components/Card";
 import { sectionsInfo } from "../utils/constants";
-import SwipeableBottomSheet from "react-swipeable-bottom-sheet";
+import Sheet from "react-modal-sheet";
 
 const CardContext = createContext();
 
@@ -64,45 +64,71 @@ export const CardsContainer = () => {
 export const CardsContainerMobile = () => {
   const { currentSection, color } = useCardContext();
   const [open, setOpen] = useState(true);
+  const [currentSnap, setCurrentSnap] = useState(1);
   const CurrentCardContent = sectionsInfo[currentSection].component;
   const title = sectionsInfo[currentSection].title;
+  const ref = useRef();
+  const snapTo = (i: number) => ref.current?.snapTo(i);
 
   useEffect(() => {
     setOpen(true);
+    setCurrentSnap(2);
   }, [currentSection]);
 
   return (
-    <SwipeableBottomSheet
-      open={open}
-      onChange={setOpen}
-      overflowHeight={50}
-      shadowTip={false}
-      overlay={false}
-      topShadow={false}
+    <Sheet
+      ref={ref}
+      isOpen={true}
+      onClose={() => {
+        setOpen(true);
+        snapTo(2);
+        setCurrentSnap(2);
+      }}
+      snapPoints={[1, 0.5, 50]}
+      initialSnap={currentSnap}
+      detent="full-height"
+      tweenConfig={{ ease: "easeOut", duration: 0.2 }}
+      onSnap={(i) => setCurrentSnap(i)}
       style={{ zIndex: 2 }}
-      bodyStyle={{ borderRadius: "1.2rem 1.2rem 0 0" }}
-      overlayStyle={{ borderRadius: "1.2rem 1.2rem 0 0", zIndex: 2 }}
     >
-      <HeaderMobile color={color} title={title} open={open} setOpen={setOpen} />
-      <Box
-        bg="white"
-        borderColor={`${color}.500`}
-        margin="4"
-        style={{ height: "30dvh", marginTop: "60px" }}
-      >
-        <CurrentCardContent />
-      </Box>
-    </SwipeableBottomSheet>
+      <Sheet.Container>
+        <Sheet.Header>
+          <HeaderMobile
+            color={color}
+            title={title}
+            open={open}
+            setOpen={() => {
+              snapTo(currentSnap === 2 ? 1 : 2);
+              setCurrentSnap(currentSnap === 2 ? 1 : 2);
+            }}
+          />
+        </Sheet.Header>
+        <Sheet.Content disableDrag style={{ paddingBottom: ref.current?.y }}>
+          <Sheet.Scroller draggableAt="top">
+            <Box
+              bg="white"
+              borderColor={`${color}.500`}
+              margin="4"
+              style={{ height: "30dvh" }}
+            >
+              <CurrentCardContent />
+            </Box>
+          </Sheet.Scroller>
+        </Sheet.Content>
+      </Sheet.Container>
+    </Sheet>
   );
 };
 
 const Problematica = () => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
-  const [currentSection, setCurrentSection] = useState("expansion-urbana");
+  const [currentSection, setCurrentSection] = useState(undefined);
   const [outline, setOutline] = useState();
   const [sharedProps, setSharedProps] = useState({});
-  const currentInfo = sectionsInfo[currentSection];
-  const CurrentControls = sectionsInfo[currentSection].controls;
+  const currentInfo = currentSection ? sectionsInfo[currentSection] : {};
+  const CurrentControls = currentSection
+    ? sectionsInfo[currentSection].controls
+    : null;
   const Bar = isMobile ? BarMobile : Sidebar;
   const CurrentCardContainer = isMobile ? CardsContainerMobile : CardsContainer;
 
@@ -126,14 +152,17 @@ const Problematica = () => {
 
   useEffect(() => {
     const sectionFromURL = getSectionFromURL();
-    if (sectionFromURL) {
-      const el = document.getElementById(sectionFromURL);
+    setCurrentSection(sectionFromURL || "expansion-urbana");
+  }, []);
+  useEffect(() => {
+    if (!currentSection) return;
+    if (!isMobile) {
+      const el = document.getElementById(currentSection);
       if (el) {
-        setCurrentSection(sectionFromURL);
         el.scrollIntoView();
       }
     }
-  }, []);
+  }, [currentSection]);
   function updateSection(section) {
     if (!isMobile) {
       const el = document.getElementById(section);
@@ -157,13 +186,17 @@ const Problematica = () => {
           setSharedProps,
         }}
       >
-        <CurrentCardContainer />
-        <Box
-          className={isMobile ? "mapContainerMobile" : "mapContainer"}
-          borderColor={`${sectionsInfo[currentSection].color}.500`}
-        >
-          <CurrentControls />
-        </Box>
+        {currentSection && (
+          <>
+            <CurrentCardContainer />
+            <Box
+              className={isMobile ? "mapContainerMobile" : "mapContainer"}
+              borderColor={`${sectionsInfo[currentSection].color}.500`}
+            >
+              <CurrentControls />
+            </Box>
+          </>
+        )}
       </CardContext.Provider>
     </div>
   );

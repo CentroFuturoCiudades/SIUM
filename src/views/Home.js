@@ -9,6 +9,10 @@ import {
   Button,
   Heading,
   Icon,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
 } from "@chakra-ui/react";
 import Cards from "./Cards";
 import { BitmapLayer, DeckGL, GeoJsonLayer, TileLayer } from "deck.gl";
@@ -19,8 +23,9 @@ import useWindowDimensions, {
   useFetch,
 } from "../utils/constants";
 import { Link } from "react-router-dom";
-import { MdDownload, MdPeople } from "react-icons/md";
+import { MdDownload, MdPeople, MdMail } from "react-icons/md";
 import { BiSolidChevronsDown } from "react-icons/bi";
+import { HamburgerIcon } from "@chakra-ui/icons";
 
 const bounding = [-120, 15, -80, 40];
 const boundingBox = {
@@ -50,6 +55,7 @@ const minWidth = 400;
 const minMultiplier = 0.88;
 const maxWidth = 1400;
 const maxMultiplier = 1;
+const mapOpacity = 0.25;
 
 const Map = ({ year }) => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
@@ -124,7 +130,6 @@ const Map = ({ year }) => {
     display: "flex",
     flexDirection: "column",
     justifyContent: "end",
-    margin: "1dvw",
   };
 
   return (
@@ -147,7 +152,28 @@ const Map = ({ year }) => {
             .replace("{z}", props.index.z);
           return fetch(url)
             .then((response) => response.blob())
-            .then((blob) => createImageBitmap(blob));
+            .then((blob) => createImageBitmap(blob))
+            .then((imageBitmap) => {
+              let canvas = document.createElement("canvas");
+              canvas.width = imageBitmap.width;
+              canvas.height = imageBitmap.height;
+              let ctx = canvas.getContext("2d");
+              ctx.drawImage(imageBitmap, 0, 0);
+              let imageData = ctx.getImageData(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+              );
+              let data = imageData.data;
+              for (let i = 0; i < data.length; i += 4) {
+                data[i] *= mapOpacity; // Red
+                data[i + 1] *= mapOpacity; // Green
+                data[i + 2] *= mapOpacity; // Blue
+              }
+              ctx.putImageData(imageData, 0, 0);
+              return createImageBitmap(canvas);
+            });
         }}
         renderSubLayers={(props) => {
           const {
@@ -160,15 +186,6 @@ const Map = ({ year }) => {
             bounds: [west, south, east, north],
           });
         }}
-      />
-      <GeoJsonLayer
-        id="mask-layer"
-        data={boundingBox}
-        pickable={true}
-        stroked={false}
-        filled={true}
-        lineWidthMinPixels={2}
-        getFillColor={[5, 5, 5, 200]}
       />
       <GeoJsonLayer
         id="mancha-urbana-layer"
@@ -195,14 +212,20 @@ const Map = ({ year }) => {
             <>
               {dataPoblacionSuperficieConst ? (
                 <>
-                  <Text style={{ color: "white", fontSize: isMobile ? "10px" : "1.2dvw" }}>
+                  <Text
+                    fontSize={isMobile ? "8px" : "min(2.4dvh, 1.2dvw)"}
+                    color="white"
+                  >
                     <b>
                       {`${(
                         dataPoblacionSuperficieConst[0].population / 1000000
                       ).toFixed(1)} millones de personas`}
                     </b>
                   </Text>
-                  <Text style={{ color: "white", fontSize: isMobile ? "10px" : "1.2dvw" }}>
+                  <Text
+                    fontSize={isMobile ? "8px" : "min(2.4dvh, 1.2dvw)"}
+                    color="white"
+                  >
                     <b>
                       {`${(
                         dataPoblacionSuperficieConst[0].mts_built / 1000000
@@ -215,10 +238,11 @@ const Map = ({ year }) => {
                 ""
               )}
               <Text
-                style={{ color: "white", lineHeight: 1 }}
                 fontFamily="Poppins"
-                fontSize={isMobile ? "30px" : "3.5dvw"}
+                fontSize={isMobile ? "25px" : "min(7dvh, 3.5dvw)"}
+                color="white"
                 mt="1"
+                style={{ lineHeight: 1 }}
               >
                 <b>1990</b>
               </Text>
@@ -228,13 +252,13 @@ const Map = ({ year }) => {
             <>
               <Text
                 fontFamily="Poppins"
-                fontSize={isMobile ? "30px" : "3.5dvw"}
+                fontSize={isMobile ? "25px" : "min(7dvh, 3.5dvw)"}
+                color="#783CB4"
                 mb="1"
                 style={{
-                  color: "#783CB4",
                   lineHeight: 1,
-                  "-webkit-text-stroke-width": "0.1px",
-                  "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
+                  WebkitTextStrokeWidth: "0.1px",
+                  WebkitTextStrokeColor: "rgba(255, 255, 255, 0.5)",
                 }}
               >
                 <b>{year}</b>
@@ -242,11 +266,11 @@ const Map = ({ year }) => {
               {dataPoblacionSuperficieConst ? (
                 <>
                   <Text
+                    fontSize={isMobile ? "8px" : "min(2.4dvh, 1.2dvw)"}
+                    color="#783CB4"
                     style={{
-                      color: "#783CB4",
-                      fontSize: isMobile ? "10px" : "1.2dvw",
-                      "-webkit-text-stroke-width": "0.1px",
-                      "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
+                      WebkitTextStrokeWidth: "0.1px",
+                      WebkitTextStrokeColor: "rgba(255, 255, 255, 0.5)",
                     }}
                   >
                     <b>
@@ -258,11 +282,11 @@ const Map = ({ year }) => {
                     </b>
                   </Text>
                   <Text
+                    fontSize={isMobile ? "8px" : "min(2.4dvh, 1.2dvw)"}
+                    color="#783CB4"
                     style={{
-                      color: "#783CB4",
-                      fontSize: isMobile ? "10px" : "1.2dvw",
-                      "-webkit-text-stroke-width": "0.1px",
-                      "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
+                      WebkitTextStrokeWidth: "0.1px",
+                      WebkitTextStrokeColor: "rgba(255, 255, 255, 0.5)",
                     }}
                   >
                     <b>
@@ -273,24 +297,23 @@ const Map = ({ year }) => {
                     </b>
                   </Text>
                   {/* add drop shadow */}
-                  <Text>
+                  <Text
+                    fontSize={isMobile ? "8px" : "min(2.4dvh, 1.2dvw)"}
+                    color="#783CB4"
+                  >
                     <Icon
                       as={BiSolidChevronsDown}
                       color="red.600"
-                      boxSize={isMobile ? "8px" : "1dvw"}
+                      boxSize={isMobile ? "8px" : "min(2dvh, 1dvw)"}
                       mx="2"
                     />
                     <b
                       style={{
-                        color: "#783CB4",
-                        fontSize: isMobile ? "10px" : "1.2dvw",
-                        "-webkit-text-stroke-width": "0.1px",
-                        "-webkit-text-stroke-color": "rgba(255, 255, 255, 0.5)",
+                        WebkitTextStrokeWidth: "0.1px",
+                        WebkitTextStrokeColor: "rgba(255, 255, 255, 0.5)",
                       }}
                     >
-                      {`${calculoDensidadReducida(
-                        year
-                      )}% menos densidad`}
+                      {`${calculoDensidadReducida(year)}% menos densidad`}
                     </b>
                   </Text>
                 </>
@@ -304,7 +327,10 @@ const Map = ({ year }) => {
         {year ? (
           <>
             <div style={noteStyle}>
-              <Text style={{ color: "white", alignItems: "end" }}>
+              <Text
+                fontSize={isMobile ? "6px" : "xs"}
+                style={{ color: "white", alignItems: "end" }}
+              >
                 *Superficie construida con techo
               </Text>
             </div>
@@ -373,14 +399,11 @@ const Home = () => {
   };
 
   const titleStyle = {
-    fontSize: "13dvw", // Ajusta el tamaño del texto según tus preferencias
     color: "antiquewhite", // Ajusta el color del texto
     textAlign: "left", // Alinea el texto a la izquierda
     marginLeft: "1rem", // Elimina el margen predeterminado
-    fontWeight: 900,
   };
   const subTitleStyle = {
-    fontSize: "3dvw", // Ajusta el tamaño del texto según tus preferencias
     lineHeight: "1.1",
     textAlign: "left", // Alinea el texto a la izquierda
     marginLeft: "2rem", // Elimina el margen predeterminado
@@ -409,59 +432,93 @@ const Home = () => {
       >
         <Flex
           align="center"
-          p={2}
           position="absolute"
           bg="transparent"
-          w="100%"
+          w="100dvw"
           justify="space-between"
           display="flex"
-          //overflowX= "hidden"
+          h="10dvh"
+          p={2}
         >
           {/* Logos */}
-          <Flex w="20%" style={{ display: "flex", alignItems: "center" }}>
-            {["SIUM.png", "tec.png", "femsa.png"].map((imagen, index) => (
-              <img
-                key={index}
-                className="headerImage"
-                src={`/SIUM/${imagen}`}
-                alt="SIUM"
-                style={{
-                  padding: "5px",
-                  height: "10dvh",
-                  width: "auto",
-                  //maxWidth: "200px",
-                  maxWidth: isMobile ? "100%" : "200px",
-                  objectFit: "contain",
-                }}
-              />
-            ))}
+          <Flex
+            w={isMobile ? "calc(100dvw - 40px)" : "70%"}
+            style={{ display: "flex", alignItems: "center" }}
+          >
+            {["SIUM.png", "femsa.png", "tec.png", "fundacion_femsa.png"].map(
+              (imagen, index) => (
+                <img
+                  key={index}
+                  className="headerImage"
+                  src={`/${imagen}`}
+                  alt="SIUM"
+                  style={{
+                    padding: "5px",
+                    height: "10dvh",
+                    width: "25%",
+                    maxWidth: isMobile ? "100%" : "200px",
+                    objectFit: "contain",
+                  }}
+                />
+              )
+            )}
           </Flex>
 
           {/* Botones */}
-          <Flex
-            w="40%"
-            justify="end"
-            align="center"
-            style={{ marginRight: "10px" }}
-          >
-            <Link to="/acerca#objetivo">
-              <Button
-                variant="text"
-                color="white"
-                style={{ fontSize: "1.5dvw" }}
-              >
-                Objetivo
-              </Button>
-            </Link>
-            <Link to="/acerca#equipo">
-              <Button
-                variant="text"
-                color="white"
-                style={{ fontSize: "1.5dvw" }}
-              >
-                Equipo
-              </Button>
-            </Link>
+          <Flex w={isMobile ? "40px" : "25%"} justify="end" align="center">
+            {isMobile ? (
+              <Menu>
+                <MenuButton
+                  as={IconButton}
+                  aria-label="Options"
+                  icon={<HamburgerIcon />}
+                  variant="outline"
+                  size="sm"
+                  colorScheme="whiteAlpha"
+                />
+                <MenuList>
+                  <MenuItem as="a" href="/acerca#objetivo" minH="50px">
+                    Objetivo
+                  </MenuItem>
+                  <MenuItem as="a" href="/acerca#equipo" minH="50px">
+                    Equipo
+                  </MenuItem>
+                  <MenuItem as="a" href="/descargas" minH="50px">
+                    Descargas
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            ) : (
+              <>
+                <Button
+                  as="a"
+                  href="/acerca#objetivo"
+                  variant="text"
+                  color="white"
+                  fontSize="min(2.4dvh, 1.2dvw)"
+                >
+                  Objetivo
+                </Button>
+                <Button
+                  as="a"
+                  href="/acerca#equipo"
+                  variant="text"
+                  color="white"
+                  fontSize="min(2.4dvh, 1.2dvw)"
+                >
+                  Equipo
+                </Button>
+                <Button
+                  as="a"
+                  href="/descargas"
+                  variant="text"
+                  color="white"
+                  fontSize="min(2.4dvh, 1.2dvw)"
+                >
+                  Descargas
+                </Button>
+              </>
+            )}
           </Flex>
         </Flex>
 
@@ -470,79 +527,102 @@ const Home = () => {
           <div style={{ display: "grid" }}>
             <div style={containerStyle}>
               <div>
-                <h1 style={titleStyle}>CIUDAD FINITA</h1>
-                <Text style={subTitleStyle} color="aliceblue" m="0">
+                <Heading
+                  style={titleStyle}
+                  fontWeight="500"
+                  fontSize={isMobile ? "12dvw" : "min(26dvh, 13dvw)"}
+                >
+                  CIUDAD FINITA
+                </Heading>
+                <Text
+                  style={subTitleStyle}
+                  fontSize={isMobile ? "4dvw" : "min(6dvh, 3dvw)"}
+                  color="aliceblue"
+                  m="0"
+                >
                   Expansión urbana en la
                 </Text>
-                <Text style={subTitleStyle} color="aliceblue" m="0">
+                <Text
+                  style={subTitleStyle}
+                  fontSize={isMobile ? "4dvw" : "min(6dvh, 3dvw)"}
+                  color="aliceblue"
+                  m="0"
+                >
                   Zona Metropolitana de
                 </Text>
-                <Text style={subTitleStyle} color="orange.500" m="0">
+                <Text
+                  style={subTitleStyle}
+                  fontSize={isMobile ? "4dvw" : "min(6dvh, 3dvw)"}
+                  color="orange.500"
+                  m="0"
+                >
                   <b>Monterrey</b>
                 </Text>
               </div>
             </div>
             <div ref={containerRef}>
-              <Text
-                color="gray.100"
-                fontSize={isMobile ? "sm" : "1.5dvw"}
-                style={textStyle}
-              >
+              <div style={textStyle}>
                 <Heading
                   color="orange.500"
-                  fontSize={isMobile ? "lg" : "1.7dvw"}
+                  fontSize={isMobile ? "lg" : "min(3.4dvh, 1.7dvw)"}
                 >
                   Los recursos de la metrópolis son limitados
                 </Heading>
                 <br></br>
-                En las últimas tres décadas, la mancha urbana de Monterrey ha
-                experimentado un <b>
-                  crecimiento exponencial, triplicándose
-                </b>{" "}
-                en tamaño. Este desarrollo, si bien evidencia el dinamismo de la
-                ciudad, también conlleva riesgos ambientales, económicos y
-                sociales. Los recursos urbanos y ambientales, que son esenciales
-                para el bienestar de la comunidad, <b>son finitos</b> y deben
-                manejarse con responsabilidad.
-              </Text>
-              <Text
-                color="gray.100"
-                fontSize={isMobile ? "sm" : "1.5dvw"}
-                style={textStyle}
-              >
+                <Text
+                  color="gray.100"
+                  fontSize={isMobile ? "xs" : "min(3dvh, 1.5dvw)"}
+                >
+                  En las últimas tres décadas, la mancha urbana de Monterrey ha
+                  experimentado un <b>crecimiento exponencial, triplicándose</b>{" "}
+                  en tamaño. Este desarrollo, si bien evidencia el dinamismo de
+                  la ciudad, también conlleva riesgos ambientales, económicos y
+                  sociales. Los recursos urbanos y ambientales, que son
+                  esenciales para el bienestar de la comunidad,{" "}
+                  <b>son finitos</b> y deben manejarse con responsabilidad.
+                </Text>
+              </div>
+              <div style={textStyle}>
                 <Heading
                   color="orange.500"
-                  fontSize={isMobile ? "lg" : "1.7dvw"}
+                  fontSize={isMobile ? "lg" : "min(3.4dvh, 1.7dvw)"}
                 >
                   Crecimiento sin planeación
                 </Heading>
                 <br></br>
-                <b>La 'mancha urbana'</b> se refiere a la expansión continua de
-                la ciudad en términos de construcción y desarrollo. En este
-                contexto, es crucial destacar que esta expansión no planificada
-                y descontrolada requiere una <b>reconsideración urgente.</b>
-              </Text>
-              <Text
-                color="gray.100"
-                fontSize={isMobile ? "sm" : "1.7dvw"}
-                style={textStyle}
-              >
+                <Text
+                  color="gray.100"
+                  fontSize={isMobile ? "xs" : "min(3dvh, 1.5dvw)"}
+                >
+                  <b>La 'mancha urbana'</b> se refiere a la expansión continua
+                  de la ciudad en términos de construcción y desarrollo. En este
+                  contexto, es crucial destacar que esta expansión no
+                  planificada y descontrolada requiere una{" "}
+                  <b>reconsideración urgente.</b>
+                </Text>
+              </div>
+              <div style={textStyle}>
                 <Heading
                   color="orange.500"
-                  fontSize={isMobile ? "lg" : "1.7dvw"}
+                  fontSize={isMobile ? "lg" : "min(3.4dvh, 1.7dvw)"}
                 >
                   Visibilización, propuestas y acción colectiva
                 </Heading>
                 <br></br>
-                La <b>finitud de los recursos</b> urbanos, ambientales y la
-                expansión <b>aparentemente 'infinita'</b> de la ciudad, nos hace
-                plantearnos diversas preguntas fundamentales sobre la
-                sostenibilidad y la gestión responsable de nuestro entorno.
-                Enfrentar estos desafíos requiere un{" "}
-                <b>enfoque reflexivo y acciones concertadas</b> para garantizar
-                un futuro sostenible para la comunidad y el entorno en la Zona
-                Metropolitana de Monterrey.
-              </Text>
+                <Text
+                  color="gray.100"
+                  fontSize={isMobile ? "xs" : "min(3dvh, 1.5dvw)"}
+                >
+                  La <b>finitud de los recursos</b> urbanos, ambientales y la
+                  expansión <b>aparentemente 'infinita'</b> de la ciudad, nos
+                  hace plantearnos diversas preguntas fundamentales sobre la
+                  sostenibilidad y la gestión responsable de nuestro entorno.
+                  Enfrentar estos desafíos requiere un{" "}
+                  <b>enfoque reflexivo y acciones concertadas</b> para
+                  garantizar un futuro sostenible para la comunidad y el entorno
+                  en la Zona Metropolitana de Monterrey.
+                </Text>
+              </div>
             </div>
           </div>
         </div>
@@ -556,7 +636,7 @@ const Home = () => {
           }}
         >
           <Tooltip
-            label="Acerca del Equipo"
+            label="Enviar comentario"
             hasArrow
             padding="0.5rem"
             bg="gray.700"
@@ -564,36 +644,16 @@ const Home = () => {
             borderRadius="md"
             placement="right"
           >
-            <Link to="/acerca">
+            <a href="https://forms.office.com/r/HtvBBujdAe">
               <IconButton
                 size="sm"
                 isRound={true}
-                icon={<MdPeople />}
+                icon={<MdMail />}
                 variant="solid"
                 style={{ marginBottom: "5px" }}
                 colorScheme="blackAlpha"
               />
-            </Link>
-          </Tooltip>
-          <Tooltip
-            label="Descarga de Datos"
-            hasArrow
-            padding="0.5rem"
-            bg="gray.700"
-            fontSize="xs"
-            borderRadius="md"
-            placement="right"
-          >
-            <Link to="/descargas">
-              <IconButton
-                size="sm"
-                isRound={true}
-                icon={<MdDownload />}
-                variant="solid"
-                style={{ marginBottom: "5px" }}
-                colorScheme="blackAlpha"
-              />
-            </Link>
+            </a>
           </Tooltip>
         </div>
         <Cards />

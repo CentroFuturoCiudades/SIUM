@@ -13,53 +13,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-// Componente de modal para dispositivos móviles
-const MobileModal = ({
-  isOpen,
-  onClose,
-  color,
-  title,
-  subtitle,
-  text,
-  videoId,
-}) => {
-  return (
-    <Modal isOpen={isOpen} onClose={onClose} motionPreset="slideInRight">
-      <ModalOverlay />
-      <ModalContent
-        bg="white"
-        color={`${color}.500`}
-        borderColor={`${color}.500`}
-        borderWidth="3px"
-        m="5px" // Añadir un margen de 5px en todos los lados
-        maxW="calc(100% - 10px)" // Ancho máximo igual al 100% menos el margen
-        h="calc(100% - 10px)" // Altura igual al 100% menos el margen
-        overflowY="auto" // Permitir el desplazamiento vertical si el contenido es demasiado largo
-      >
-        <ModalHeader className="modal-header" style={{ fontSize: "1.5em" }}>
-          {title}
-        </ModalHeader>
-        <ModalCloseButton />
-        <ModalBody p={6} style={{ fontSize: "1.3em" }}>
-          <h3 className="subtitle">{subtitle}</h3>
-          <p className="description" mb={3} style={{ fontSize: "0.9em" }}>
-            {text}
-          </p>
-          <div className="video-container" style={{ margin: "10px 0" }}>
-            <iframe
-              src={`https://www.youtube.com/embed/${videoId}?rel=0`}
-              frameBorder="0"
-              allowFullScreen
-              style={{ width: "100%", minHeight: "300px" }} // Ajustar tamaño del video según necesites
-            ></iframe>
-          </div>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
-  );
-};
-
-const PopupButton = ({ videoId, title, subtitle, text }) => {
+const PopupButton = ({ videoId, title, subtitle, text, onClick }) => {
   const { color } = useCardContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isMobile] = useMediaQuery("(max-width: 800px)");
@@ -72,58 +26,60 @@ const PopupButton = ({ videoId, title, subtitle, text }) => {
         px="8"
         textColor="white"
         className="button-popup"
-        onClick={onOpen}
+        onClick={() => {
+          if (onClick) onClick();
+          onOpen();
+        }}
         colorScheme={color}
       >
         Video
       </Button>
-
-      {isMobile ? (
-        <MobileModal
-          isOpen={isOpen}
-          onClose={onClose}
-          color={color}
-          title={title}
-          subtitle={subtitle}
-          text={text}
-          videoId={videoId}
-        />
-      ) : (
-        <Modal isOpen={isOpen} onClose={onClose} motionPreset="slideInRight">
-          <ModalOverlay />
-          <ModalContent
-            bg="white"
-            color={`${color}.500`} // Modificar color del texto
-            borderColor={`${color}.600`} // Color del borde
-            borderWidth="1.5px" // Ancho del borde
-            maxW={{ base: "calc(60vw - 40px)", md: "calc(60vw - 60px)" }}
-            maxH={{ base: "calc(100vh - 40px)", md: "calc(100vh - 60px)" }}
-            m={4}
-            mt={{ base: "4%", md: "60px" }}
-            mr={{ base: "4%", md: "10px" }}
-            ml="auto"
-            overflowY="auto"
+      <Modal isOpen={isOpen} onClose={onClose} motionPreset="slideInRight">
+        <ModalOverlay />
+        <ModalContent
+          bg="white"
+          color={`${color}.500`} // Modificar color del texto
+          borderColor={`${color}.600`} // Color del borde
+          borderWidth="1.5px" // Ancho del borde
+          maxW={isMobile ? "calc(100% - 10px)" : "calc(60vw - 60px)"}
+          maxH={isMobile ? "calc(100% - 10px)" : "calc(100dvh - 120px)"}
+          mr={isMobile ? "10px" : "10px"}
+          ml={isMobile ? "10px" : "auto"}
+          mt={isMobile ? "100px" : "60px"}
+          overflowY="auto"
+        >
+          <ModalHeader
+            className="modal-header"
+            fontSize={isMobile ? "20px" : "min(3dvh, 6dvw)"}
           >
-            <ModalHeader className="modal-header" style={{ fontSize: "1.5em" }}>
-              {title}
-            </ModalHeader>
-            <ModalCloseButton />
-            <ModalBody p={6} style={{ fontSize: "1.3em" }}>
-              <h3 className="subtitle">{subtitle}</h3>
-              <p className="description" mb={3} style={{ fontSize: "0.9em" }}>
-                {text}
-              </p>
-              <div className="video-container" style={{ margin: "10px 0" }}>
-                <iframe
-                  src={`https://www.youtube.com/embed/${videoId}?rel=0`}
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-            </ModalBody>
-          </ModalContent>
-        </Modal>
-      )}
+            {title}
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody p={6}>
+            <h3
+              className="subtitle"
+              style={{ fontSize: isMobile ? "12px" : "min(2dvh, 4dvw)" }}
+            >
+              {subtitle}
+            </h3>
+            <p
+              className="description"
+              mb={3}
+              style={{ fontSize: isMobile ? "10px" : "min(1.6dvh, 3.2dvw)" }}
+            >
+              {text}
+            </p>
+            <div className="video-container" style={{ margin: "10px 0 0 0" }}>
+              <iframe
+                src={`https://www.youtube.com/embed/${videoId}?rel=0`}
+                frameBorder="0"
+                allowFullScreen
+                style={{ height: "100%", width: "100%" }}
+              ></iframe>
+            </div>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </>
   );
 };

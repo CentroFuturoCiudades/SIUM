@@ -30,7 +30,7 @@ import { Checkbox, Heading } from "@chakra-ui/react";
 
 const legendMapping = {
   income_pc: {
-    title: "Ingreso mensual per capita en 2020",
+    title: "Ingreso mensual per cápita en 2020",
     formatter: d3.format("$,.0f"),
     quantiles: [4000, 7000, 10000, 13000, 18000, 25000, 35000, 50000, 74000],
   },
@@ -49,9 +49,9 @@ const legendMapping = {
 export const SegregacionControls = () => {
   const { color } = useCardContext();
   const [isMobile] = useMediaQuery("(max-width: 800px)");
-  const [startColor] = useToken("colors", [`${color}.100`]);
+  const [startColor] = useToken("colors", [`${color}.700`]);
   const endColor = "#6a2eab";
-  const SEGREGACION_COLORS = generateQuantileColors(startColor, endColor, 8);
+  const SEGREGACION_COLORS = generateGradientColors(endColor, startColor, 8);
   const { data } = useFetch(SEGREGATION_URL);
   const { data: data_asentamientos } = useFetch(ASENTAMIENTOSINF_URL);
   const [legendItems, setLegendItems] = useState([]);
@@ -239,7 +239,7 @@ export function SegregacionCard() {
         menos desconectadas de las zonas funcionales de la ciudad.
       </ContextTitle>
       <Chart
-        title="Ingreso mensual per capita en 2020"
+        title="Ingreso mensual per cápita en 2020"
         data={chartData}
         domain={[5000, 35000]}
         column="income_pc"

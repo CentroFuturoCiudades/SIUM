@@ -133,8 +133,7 @@ export const filterDataAll = (
   return filteredData;
 };
 
-export const DATA_URL =
-  "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos";
+export const DATA_URL = "https://sium.blob.core.windows.net/sium/datos";
 export const MANCHA_URBANA_URL = `${DATA_URL}/mancha_urbana.geojson`;
 export const SATELLITE_IMAGES_URL = (x) => `${DATA_URL}/expansion_${x}.jpg`;
 export const MUNICIPIOS_URL = `${DATA_URL}/div-municipal.geojson`;
@@ -194,7 +193,7 @@ export const PERIPHERY_LAYER = {
   type: GeoJsonLayer,
   props: {
     id: "perfifery-layer",
-    data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/div-municipal.geojson",
+    data: "https://sium.blob.core.windows.net/sium/datos/div-municipal.geojson",
     dataTransform: (d) =>
       d.features.filter((x) => PERIPHERIES.includes(x.properties.NOMGEO)),
     getFillColor: [255, 174, 0, 10],
@@ -207,7 +206,7 @@ export const SUBCENTERS_LAYER = {
   type: GeoJsonLayer,
   props: {
     id: "subcenters-layer",
-    data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/div-municipal.geojson",
+    data: "https://sium.blob.core.windows.net/sium/datos/div-municipal.geojson",
     dataTransform: (d) =>
       d.features.filter((x) => SUBCENTERS.includes(x.properties.NOMGEO)),
     getFillColor: [7, 3, 252, 10],
@@ -220,7 +219,7 @@ export const CENTER_LAYER = {
   type: GeoJsonLayer,
   props: {
     id: "center-layer",
-    data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/div-municipal.geojson",
+    data: "https://sium.blob.core.windows.net/sium/datos/div-municipal.geojson",
     dataTransform: (d) =>
       d.features.filter((x) => CENTER.includes(x.properties.NOMGEO)),
     getFillColor: [7, 3, 252, 10],
@@ -234,7 +233,7 @@ export const MASIVE_TRANSPORT_LAYER = {
   props: {
     // New layer for public transport and its types
     id: "masive-transport-layer",
-    data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/transporte-masivo.geojson",
+    data: "https://sium.blob.core.windows.net/sium/datos/transporte-masivo.geojson",
     stroked: true,
     filled: true,
     lineWidthScale: 10,
@@ -261,7 +260,7 @@ export const PRIMARY_ROUTES_LAYER = {
   type: GeoJsonLayer,
   props: {
     id: "primary_routes",
-    data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/vias-primarias.geojson",
+    data: "https://sium.blob.core.windows.net/sium/datos/vias-primarias.geojson",
     getLineColor: [180, 180, 180, 255],
     getLineWidth: 50,
   },
@@ -271,7 +270,7 @@ export const SECCION_SEGREGACION__QUINTIL_LAYER = {
   type: GeoJsonLayer,
   props: {
     id: "seccion_segregacion_quintil_layer",
-    data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/pobres.geojson",
+    data: "https://sium.blob.core.windows.net/sium/datos/pobres.geojson",
     dataTransform: (d) => cleanedGeoData(d.features, "Ingreso"),
     getFillColor: (d) =>
       colorInterpolate(d.properties.normalized, "blue", "blue", 2),
@@ -285,7 +284,7 @@ export const SECCION_CRECIMIENTO_LAYER_1990 = {
   type: GeoJsonLayer,
   props: {
     id: "seccion_crecimiento_layer_1990",
-    data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/agebs-pob-1990-2020.geojson",
+    data: "https://sium.blob.core.windows.net/sium/datos/agebs-pob-1990-2020.geojson",
     dataTransform: (d) => cleanedGeoData(d.features, "1990"),
     getFillColor: (d) =>
       colorInterpolate(d.properties.normalized, "blue", "red", 1.5),
@@ -299,7 +298,7 @@ export const COSTOS_LAYER = {
   type: GeoJsonLayer,
   props: {
     id: "seccion_costos_layer",
-    data: "https://tec-expansion-urbana-p.s3.amazonaws.com/problematica/datos/income.geojson",
+    data: "https://sium.blob.core.windows.net/sium/datos/income.geojson",
     dataTransform: (d) =>
       cleanedGeoData(d.features, "local_centralization_q_5_k_100"),
     getFillColor: (d) =>
@@ -555,8 +554,7 @@ export const sectionsInfo = {
   },
   infancias: {
     title: "¿Por qué limita el desarrollo infantil?",
-    answer:
-      "La oferta de servicios de proximidad no corresponde con las zonas donde viven las infancias tempranas",
+    answer: "Porque los servicios no están en donde se requieren.",
     color: "sage",
     icon: MdOutlineFamilyRestroom,
     component: InfanciasCard,
