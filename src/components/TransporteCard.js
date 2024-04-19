@@ -261,7 +261,7 @@ export function TransporteCard() {
         seguridad de las personas que necesitan realizar viajes intermodales.
       </ContextTitle>
       <Chart
-        title={`Tiempo de traslado regreso a casa en ${currentTransporte}`}
+        title={`Tiempo de traslado regreso a casa en ${currentTransporte.toLocaleLowerCase()}`}
         data={filteredChartData}
         column="TiempoTraslado"
         columnKey="MunDest"

@@ -289,7 +289,7 @@ export function InfanciasCard() {
         seguridad.
       </ContextTitle>
       <Chart
-        title="Porcentage de población entre 0 a 5 años"
+        title="Porcentaje de población entre 0 a 5 años"
         data={chartData}
         domain={[0.04, 0.15]}
         column="ratio_pob05"
