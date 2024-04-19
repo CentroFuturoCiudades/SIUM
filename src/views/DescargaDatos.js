@@ -19,6 +19,9 @@ import { Map } from "react-map-gl";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import FileSaver from "file-saver";
 import { cleanedGeoData } from "../utils/constants";
+import { useMediaQuery } from "@chakra-ui/react";
+import "../index.css";
+import { Link } from "react-router-dom";
 
 const datosMapas = [
   {
@@ -86,7 +89,7 @@ const datosMapas = [
 ];
 
 const INITIAL_VIEW_STATE = {
-  latitude: 25.675,
+  latitude: 25.675, 
   longitude: -100.286419,
   zoom: 9.6,
   pitch: 0,
@@ -100,6 +103,9 @@ const DescargaDatos = () => {
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [originalData, setOriginalData] = useState(null);
   const [layers, setLayers] = useState([]);
+
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
+  const [showMobileMessage] = useState(true);
 
   const mapContainerRef = useRef();
   const deckRef = useRef();
@@ -288,6 +294,20 @@ const togglePanel = (name) => {
         <Spacer />
         <Text mb="5">Mapa de: {selectedMaps.name}</Text>
       </Box>
+
+      {isMobile && showMobileMessage && (
+        <div className="fullscreenMessage">
+          <Link to="/problematica#expanion-urbana">
+            <button className="closeButton">x</button>
+          </Link>
+          <Text color="black" fontSize="xl" textAlign="center" mt="4">
+            Esta sección no se encuentra disponible en móvil por el momento.
+            Para ver esta sección, por favor visita la página en una computadora.
+          </Text>
+        </div>
+      )}
+
+
     </Flex>
   );
 };
@@ -312,3 +332,4 @@ const CategoriaItem = ({ title, description, onDownload, selected }) => (
 );
 
 export default DescargaDatos;
+

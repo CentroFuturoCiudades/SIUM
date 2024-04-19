@@ -19,7 +19,7 @@ import useWindowDimensions, {
   useFetch,
 } from "../utils/constants";
 import { Link } from "react-router-dom";
-import { MdDownload, MdPeople } from "react-icons/md";
+import { MdDownload, MdPeople, MdMail } from "react-icons/md";
 import { BiSolidChevronsDown } from "react-icons/bi";
 
 const bounding = [-120, 15, -80, 40];
@@ -555,6 +555,26 @@ const Home = () => {
             display: "grid",
           }}
         >
+          <Tooltip
+            label="Enviar comentario"
+            hasArrow
+            padding="0.5rem"
+            bg="gray.700"
+            fontSize="xs"
+            borderRadius="md"
+            placement="right"
+          >
+            <a href="https://forms.office.com/r/HtvBBujdAe">
+              <IconButton
+                size="sm"
+                isRound={true}
+                icon={<MdMail />}
+                variant="solid"
+                style={{ marginBottom: "5px" }}
+                colorScheme="blackAlpha"
+              />
+            </a>
+          </Tooltip>
           <Tooltip
             label="Acerca del Equipo"
             hasArrow

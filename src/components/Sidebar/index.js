@@ -10,7 +10,7 @@ import {
 
 import "./index.css";
 import { sectionsInfo } from "../../utils/constants";
-import { MdDownload, MdPeople } from "react-icons/md";
+import { MdDownload, MdPeople, MdMail } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { VscTriangleLeft } from "react-icons/vsc";
 
@@ -78,6 +78,33 @@ export const Sidebar = ({ section, setSection }) => {
         ))}
       </div>
       <div style={{ flex: 1 }} />
+      <Tooltip
+        label="Enviar comentario"
+        hasArrow
+        padding="0.5rem"
+        bg="gray.700"
+        fontSize="md"
+        borderRadius="md"
+        placement="right"
+      >
+        <a href="https://forms.office.com/r/HtvBBujdAe">
+          <IconButton
+            isRound={true}
+            icon={
+              <MdMail
+                style={{ width: "min(2dvh, 1dvw)", height: "min(2dvh, 1dvw)" }}
+              />
+            }
+            variant="solid"
+            colorScheme="blackAlpha"
+            style={{
+              minWidth: "min(6dvh, 2dvw)",
+              height: "min(6dvh, 2dvw)",
+              margin: "0.2rem",
+            }}
+          />
+        </a>
+      </Tooltip>
       <Tooltip
         label="Acerca del Equipo"
         hasArrow
@@ -177,6 +204,26 @@ export const BarMobile = ({ section, setSection }) => {
           </Button>
         ))}
         <div style={{ marginLeft: "20px" }}></div>
+        <Tooltip
+          label="Enviar comentario"
+          hasArrow
+          padding="0.5rem"
+          bg="gray.700"
+          fontSize="md"
+          borderRadius="md"
+          placement="right"
+        >
+          <a href="https://forms.office.com/r/HtvBBujdAe" style={{ margin: "auto" }}>
+            <IconButton
+              size="sm"
+              isRound={true}
+              icon={<MdMail />}
+              variant="solid"
+              style={{ marginRight: "5px" }}
+              colorScheme="blackAlpha"
+            />
+          </a>
+        </Tooltip>
         <Tooltip
           label="Acerca del Equipo"
           hasArrow
