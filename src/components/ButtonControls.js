@@ -1,6 +1,6 @@
 import { Select } from "@chakra-ui/react";
 
-const ButtonControls = ({ activeButton, setActiveButton, mapping, color }) => {
+const ButtonControls = ({ activeButton, setActiveButton, mapping, color, onClick }) => {
   return (
     <div
       style={{
@@ -24,6 +24,7 @@ const ButtonControls = ({ activeButton, setActiveButton, mapping, color }) => {
         focusBorderColor={`${color}.500`}
         onChange={(e) => setActiveButton(e.target.value)}
         value={activeButton}
+        onClick={onClick}
       >
         {mapping.map((button) => (
           <option value={button.id} key={`button-${button.id}`} style={{color: "gray"}}>

@@ -426,10 +426,10 @@ const Navbar = () => {
               <MenuItem as="a" href="/" minH="50px">
                 Inicio
               </MenuItem>
-              <MenuItem as="a" href="/acerca/#objetivo" minH="50px">
+              <MenuItem as="a" href="/acerca#objetivo" minH="50px">
                 Objetivo
               </MenuItem>
-              <MenuItem as="a" href="/acerca/#equipo" minH="50px">
+              <MenuItem as="a" href="/acerca#equipo" minH="50px">
                 Equipo
               </MenuItem>
             </MenuList>

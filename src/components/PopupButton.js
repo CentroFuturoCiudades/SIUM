@@ -13,7 +13,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-const PopupButton = ({ videoId, title, subtitle, text }) => {
+const PopupButton = ({ videoId, title, subtitle, text, onClick }) => {
   const { color } = useCardContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isMobile] = useMediaQuery("(max-width: 800px)");
@@ -26,7 +26,10 @@ const PopupButton = ({ videoId, title, subtitle, text }) => {
         px="8"
         textColor="white"
         className="button-popup"
-        onClick={onOpen}
+        onClick={() => {
+          if (onClick) onClick();
+          onOpen();
+        }}
         colorScheme={color}
       >
         Video

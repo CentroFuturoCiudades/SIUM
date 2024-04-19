@@ -73,11 +73,12 @@ export const ExpansionUrbanaControls = () => {
           autoHighlight={true}
           getPosition={(d) => d.position}
         />
-        <PopupButton 
+        <PopupButton
           videoId="uoH8Are8Z-c?si=nEEUHnmObsm-UqMG"
-          title="Roberto Ponce" 
-          subtitle="Profesor y colaborador del área de Urbanismo Ciudadano en el Tecnológico de Monterrey, campus Monterrey." 
-          text="Motivos generales de la expansión urbana de Monterrey." 
+          title="Roberto Ponce"
+          subtitle="Profesor y colaborador del área de Urbanismo Ciudadano en el Tecnológico de Monterrey, campus Monterrey."
+          text="Motivos generales de la expansión urbana de Monterrey."
+          onClick={() => isPlaying && togglePlay()}
         />
       </CustomMap>
       <Legend
