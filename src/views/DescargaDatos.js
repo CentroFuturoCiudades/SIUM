@@ -14,6 +14,7 @@ import {
   Text,
   Checkbox,
   useToken,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import DeckGL from "@deck.gl/react";
 import { Map } from "react-map-gl";
@@ -110,6 +111,8 @@ const DescargaDatos = () => {
   const [originalData, setOriginalData] = useState(null);
   const [layers, setLayers] = useState([]);
   const [mapColors, setMapColors] = useState({});
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
+  const [showMobileMessage] = useState(true);
 
   const mapContainerRef = useRef();
   const deckRef = useRef();
