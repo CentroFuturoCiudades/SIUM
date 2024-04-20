@@ -397,7 +397,7 @@ const togglePanel = (name) => {
 
       {isMobile && showMobileMessage && (
         <div className="fullscreenMessage">
-          <Link to="/problematica#expanion-urbana">
+          <Link to="/problematica#expansion-urbana">
             <button className="closeButton">x</button>
           </Link>
           <Text color="black" fontSize="xl" textAlign="center" mt="4">

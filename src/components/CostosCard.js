@@ -134,9 +134,9 @@ export const CostosControls = () => {
         ]}
       />
       <PopupButton
-        videoId="_h7bXZyN2po?si=fhz7F9Wv9jnT-kig"
+        videoId="_h7bXZyN2po"
         title="Ana Fernanda Hierro"
-        subtitle="Consejo de Nuevo León."
+        subtitle="Consejo Nuevo León para la Planeación Estratégica, Secretaría Técnica."
         text="Eficiencia y aprovechamiento del espacio."
       />
       <ResponsiveContainer width="100%" height="100%">
@@ -174,7 +174,9 @@ export const CostosControls = () => {
             }}
           />
 
-          <Legend wrapperStyle={{ fontSize: isMobile ? "10px" : "min(2dvh, 1dvw)" }} />
+          <Legend
+            wrapperStyle={{ fontSize: isMobile ? "10px" : "min(2dvh, 1dvw)" }}
+          />
           {chartData.length > 0 &&
             municipios.map((municipio, index) => (
               <Area

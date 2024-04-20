@@ -59,11 +59,11 @@ export const EmpleoControls = () => {
           autoHighlight={true}
           getPosition={(d) => d.position}
         />
-        <PopupButton 
-          videoId="Z5yubfNSwCU?si=rSqLgYcPXv1WBbu5"
-          title="Javier Leal" 
-          subtitle="Director del Instituto de Planeación Urbana (IMPLANG)." 
-          text="Beneficios de un menor tiempo de traslado." 
+        <PopupButton
+          videoId="Z5yubfNSwCU"
+          title="Javier Leal"
+          subtitle="Instituto Municipal de Planeación Urbana de San Pedro Garza García (IMPLANG)."
+          text="Beneficios de un menor tiempo de traslado."
         />
       </CustomMap>
       <Slider />

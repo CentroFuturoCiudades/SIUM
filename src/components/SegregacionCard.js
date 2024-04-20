@@ -27,7 +27,6 @@ import * as d3 from "d3";
 import { IconLayer } from "deck.gl";
 import { Checkbox, Heading } from "@chakra-ui/react";
 
-
 const legendMapping = {
   income_pc: {
     title: "Ingreso mensual per cápita en 2020",
@@ -111,11 +110,11 @@ export const SegregacionControls = () => {
             getPosition={(d) => d.position}
           />
         )}
-        <PopupButton 
-          videoId="0iY7lM81XiQ?si=UBJTuAb7Vo30TAck"
-          title="Carlos Placencia" 
-          subtitle="Gobierno del Estado de Nuevo León." 
-          text="Relación entre segregación y expansión." 
+        <PopupButton
+          videoId="KZmsL1jo7mo"
+          title="Carlos Placencia"
+          subtitle="Consejo Nuevo León para la Planeación Estratégica, Comisión de Desarrollo Sustentable."
+          text="Relación entre segregación y expansión."
         />
       </CustomMap>
       <ButtonControls

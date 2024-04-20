@@ -116,16 +116,10 @@ export const IslasCalorControls = () => {
           getLineWidth={0}
         />
         <PopupButton
-          videoId="awKx7yDA6k8?si=C_doMgtFy68xD2CE"
-          title="Lorem Ipsum"
-          subtitle="Lorem Ipsum"
-          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae lorem dolor. Curabitur eu sodales diam."
-        />
-        <PopupButton 
-          videoId="awKx7yDA6k8?si=C_doMgtFy68xD2CE"
-          title="Fabián Lozano" 
-          subtitle="Investigador adjunto, Gobierno y emprendimiento público, Escuela de Ciencias Sociales y Gobierno." 
-          text="Bienestar climático inclusivo." 
+          videoId="19auBpQR8Ik"
+          title="Fabián Lozano"
+          subtitle="Tecnológico de Monterrey, Escuela de Ingeniería y Ciencias. (Emérito)"
+          text="Bienestar climático inclusivo."
         />
       </CustomMap>
       [legendItems &&{" "}
@@ -188,8 +182,8 @@ export function IslasCalorCard() {
         La infraestructura, principalmente la de estos dos materiales, retiene
         calor y lo libera gradualmente, intensificando este efecto. En el centro
         de Monterrey, la alta densidad de edificios y la falta de áreas verdes
-        aumentan las temperaturas, hasta en 9°, en comparación con las zonas
-        que cuentan con mayor arbolado. Esto afecta negativamente la salud y la
+        aumentan las temperaturas, hasta en 9°, en comparación con las zonas que
+        cuentan con mayor arbolado. Esto afecta negativamente la salud y la
         calidad de vida, especialmente en verano.
       </p>
       <ContextTitle color={color}>

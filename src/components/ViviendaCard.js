@@ -77,9 +77,9 @@ export const ViviendaControls = () => {
           getPosition={(d) => d.position}
         />
         <PopupButton
-          videoId="OsVuAKg3G0U?si=C_qwpjAT5kRGir-t"
+          videoId="OsVuAKg3G0U"
           title="Lucía Elizondo"
-          subtitle="Tecnológico de Monterrey | ITESM · Campus Monterrey - Arch, MDesS, PhD"
+          subtitle="Tecnológico de Monterrey, Escuela de Arquitectura Arte y Diseño."
           text="Regulación de la vivienda."
           onClick={() => isPlaying && togglePlay()}
         />

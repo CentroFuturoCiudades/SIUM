@@ -20,11 +20,20 @@ import {
   PopoverBody,
   PopoverArrow,
   Heading,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { sectionsInfo } from "../utils/constants";
 import { Tooltip } from "@chakra-ui/react";
 import { MdMail } from "react-icons/md";
+import { MdPlayArrow } from "react-icons/md";
+import { VideoCenter } from "../components/PopupButton";
 
 const principiosInfo = {
   discusion: {
@@ -98,6 +107,7 @@ const infoEquipo = {
       "Martha Montemayor",
       "Luisa Pérez",
       "Carlos Placencia",
+      "Marina Ramírez",
     ],
   },
 };
@@ -261,6 +271,15 @@ const Objetivo = () => {
         >
           Y mucho más...
         </p>
+        <br />
+        <br />
+        <VideoCenter
+          color="purple"
+          videoId="b3EgwpHB42s"
+          title="Carlos Hurtado"
+          subtitle="Fundación FEMSA, Seguridad Hídrica y Economía Circular."
+          text="Importancia del SIUM."
+        />
       </Box>
       {/* Imagen: ¿Qué es ciudad?  y texto END  */}
 

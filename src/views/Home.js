@@ -305,7 +305,7 @@ const Map = ({ year }) => {
                       as={BiSolidChevronsDown}
                       color="red.600"
                       boxSize={isMobile ? "8px" : "min(2dvh, 1dvw)"}
-                      mx="2"
+                      mx={isMobile ? "0.5" : "2"}
                     />
                     <b
                       style={{

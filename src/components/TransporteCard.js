@@ -168,9 +168,9 @@ export const TransporteControls = () => {
           currentTime={time}
         />
         <PopupButton
-          videoId="2eRmyQBQ5aA?si=CPf1057J6Vk-5qa_"
+          videoId="2eRmyQBQ5aA"
           title="Luisa Pérez Barbosa"
-          subtitle="Movimiento activación ciudadana (MOVAC)."
+          subtitle="Movimiento Activación Ciudadana (MOVAC)."
           text="Cultura vial más allá de la infraestructura."
           onClick={() => isPlaying && togglePlay()}
         />

@@ -91,9 +91,9 @@ export const EscenariosFuturosControls = () => {
           ]}
         />
         <PopupButton
-          videoId="2eRmyQBQ5aA"
+          videoId="ATySU6rtJ98"
           title="José Antonio Torre"
-          subtitle="CFC."
+          subtitle="Tecnológico de Monterrey, Centro para el Futuro de las Ciudades."
           text="Escenarios a futuro."
         />
       </CustomMap>
