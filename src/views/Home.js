@@ -198,8 +198,8 @@ const Map = ({ year }) => {
         }
         getFillColor={(d) =>
           +d.properties.year === 1990
-            ? [200, 200, 200, 80]
-            : [106, 46, 171, 120]
+            ? [200, 200, 200, 90]
+            : [106, 46, 171, 150]
         }
         stroked={true}
       />
@@ -253,7 +253,7 @@ const Map = ({ year }) => {
               <Text
                 fontFamily="Poppins"
                 fontSize={isMobile ? "25px" : "min(7dvh, 3.5dvw)"}
-                color="#783CB4"
+                color="purple.400"
                 mb="1"
                 style={{
                   lineHeight: 1,
@@ -267,7 +267,7 @@ const Map = ({ year }) => {
                 <>
                   <Text
                     fontSize={isMobile ? "8px" : "min(2.4dvh, 1.2dvw)"}
-                    color="#783CB4"
+                    color="purple.400"
                     style={{
                       WebkitTextStrokeWidth: "0.1px",
                       WebkitTextStrokeColor: "rgba(255, 255, 255, 0.5)",
@@ -283,7 +283,7 @@ const Map = ({ year }) => {
                   </Text>
                   <Text
                     fontSize={isMobile ? "8px" : "min(2.4dvh, 1.2dvw)"}
-                    color="#783CB4"
+                    color="purple.400"
                     style={{
                       WebkitTextStrokeWidth: "0.1px",
                       WebkitTextStrokeColor: "rgba(255, 255, 255, 0.5)",
@@ -299,7 +299,7 @@ const Map = ({ year }) => {
                   {/* add drop shadow */}
                   <Text
                     fontSize={isMobile ? "8px" : "min(2.4dvh, 1.2dvw)"}
-                    color="#783CB4"
+                    color="purple.400"
                   >
                     <Icon
                       as={BiSolidChevronsDown}

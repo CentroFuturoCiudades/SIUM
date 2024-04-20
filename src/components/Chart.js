@@ -70,7 +70,7 @@ export const CustomBarLabel = memo((props) => {
   context.font = "min(0.6dvw, 1.2dvh)";
   const textWidth = context.measureText(text).width;
 
-  const fitsInside = width > (textWidth * 2);
+  const fitsInside = width > textWidth * 2;
   const insideX = x + width - 5;
   const outsideX = x + width + 5;
 
@@ -176,7 +176,11 @@ export const Chart = ({
           <Tooltip
             content={<CustomTooltip />}
             formatter={formatter}
-            labelStyle={{ fontSize: isMobile ? "10px" : "0.9dvw" }}
+            labelStyle={{
+              fontSize: isMobile ? "10px" : "0.9dvw",
+              fontWeight: "bold",
+              color: "#363636",
+            }}
             itemStyle={{
               fontSize: isMobile ? "10px" : "0.9dvw",
               padding: "0px",

@@ -303,7 +303,11 @@ export const IslasCalorChart = ({
           <YAxis type="category" dataKey={columnKey} hide />
           <Tooltip
             formatter={formatter}
-            labelStyle={{ fontSize: isMobile ? "10px" : "0.9dvw" }}
+            labelStyle={{
+              fontSize: isMobile ? "10px" : "0.9dvw",
+              fontWeight: "bold",
+              color: "#363636",
+            }}
             itemStyle={{
               fontSize: isMobile ? "10px" : "0.9dvw",
               padding: "0px",

@@ -30,30 +30,28 @@ import {
   Tooltip,
   Tr,
   useToken,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
 import { CustomLegend, LegendItem } from "./CustomLegend.js";
 
-const marks = [
-  { value: 300, label: "5:00" },
-  { value: 360, label: "6:00" },
-  { value: 420, label: "7:00" },
-  { value: 480, label: "8:00" },
-  { value: 540, label: "9:00" },
-  { value: 600, label: "10:00" },
-  { value: 660, label: "11:00" },
-  { value: 720, label: "12:00" },
-  { value: 780, label: "13:00" },
-  { value: 840, label: "14:00" },
-  { value: 900, label: "15:00" },
-  { value: 960, label: "16:00" },
-  { value: 1020, label: "17:00" },
-  { value: 1080, label: "18:00" },
-  { value: 1140, label: "19:00" },
-  { value: 1200, label: "20:00" },
-  { value: 1260, label: "21:00" },
-  { value: 1320, label: "22:00" },
-];
+const TimeComp = ({ hour }) => {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
+  const isPm = hour >= 12;
+  const newHour = hour > 12 ? hour - 12 : hour;
+  return (
+    <span>
+      {newHour} {isMobile && <br />}
+      {isPm ? "p.m." : "a.m."}
+    </span>
+  );
+};
+
+const marks = Array.from({ length: 9 }, (_, i) => ({
+  value: (i * 2 + 5) * 60,
+  label: <TimeComp hour={i * 2 + 5} />,
+}));
+
 const labelsMapping = [
   { id: "General", name: "General" },
   { id: "Autómovil", name: "Auto" },
@@ -102,7 +100,7 @@ export const TransporteControls = () => {
   const { data } = useFetch(TRANSPORTE_URL);
   const [activeButton, setActiveButton] = useState("General");
   const { time, isPlaying, handleSliderChange, togglePlay } =
-    TimeComponentClean(300, 1320, 0.005, 0.1, true, 1020);
+    TimeComponentClean(300, 1320, 0.005, 0.1, true, 0);
   const currentTransporte = labelsMapping.find(
     (x) => x.id == activeButton
   )?.name;
