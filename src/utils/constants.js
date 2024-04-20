@@ -133,8 +133,7 @@ export const filterDataAll = (
   return filteredData;
 };
 
-export const DATA_URL =
-  "https://sium.blob.core.windows.net/sium/datos";
+export const DATA_URL = "https://sium.blob.core.windows.net/sium/datos";
 export const MANCHA_URBANA_URL = `${DATA_URL}/mancha_urbana.geojson`;
 export const SATELLITE_IMAGES_URL = (x) => `${DATA_URL}/expansion_${x}.jpg`;
 export const MUNICIPIOS_URL = `${DATA_URL}/div-municipal.geojson`;
@@ -555,8 +554,7 @@ export const sectionsInfo = {
   },
   infancias: {
     title: "¿Por qué limita el desarrollo infantil?",
-    answer:
-      "La oferta de servicios de proximidad no corresponde con las zonas donde viven las infancias tempranas",
+    answer: "Porque los servicios no están en donde se requieren.",
     color: "sage",
     icon: MdOutlineFamilyRestroom,
     component: InfanciasCard,

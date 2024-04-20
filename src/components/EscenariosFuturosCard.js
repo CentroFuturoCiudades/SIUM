@@ -11,7 +11,7 @@ import {
   useFetch,
 } from "../utils/constants";
 import { AreaChartChart } from "./AreaChart";
-import { 
+import {
   CustomLegend,
   CustomLegendMobile,
   LegendItem,
@@ -23,6 +23,7 @@ import ButtonControls from "./ButtonControls.js";
 import { Area, XAxis, YAxis } from "recharts";
 import { useToken } from "@chakra-ui/react";
 import PopupButton from "./PopupButton";
+import axios from "axios";
 
 const EXPANSION_ACTUAL_URL =
   "https://sium.blob.core.windows.net/sium/datos/mancha_urbana_2020.geojson";
@@ -36,7 +37,7 @@ const ESCENARIOS_FUTUROS_CONTROLADA_URL =
 const ESCENARIOS_FUTUROS_CHART_URL =
   "https://sium.blob.core.windows.net/sium/datos/escenarios.json"; // Chart
 
-const COLORS = ["#6D4F90", "#3EA5A3", "#407E9F"];
+const COLORS = ["#6D4F90", "#4A6985", "#58777A"];
 const SCENARIOS_NAMES = ["acelerada", "inercial", "controlada"];
 
 export const EscenariosFuturosControls = () => {
@@ -46,52 +47,38 @@ export const EscenariosFuturosControls = () => {
   const [activeButton, setActiveButton] = useState("acelerada");
   const currentColor =
     COLORS[SCENARIOS_NAMES.findIndex((t) => t === activeButton)];
-  var { data: expansion_futura_acelerada_data } = useFetch(
-    ESCENARIOS_FUTUROS_ACELERADA_URL
-  );
-  var { data: expansion_futura_inercial_data } = useFetch(
-    ESCENARIOS_FUTUROS_INERCIAL_URL
-  );
-  var { data: expansion_futura_controlada_data } = useFetch(
-    ESCENARIOS_FUTUROS_CONTROLADA_URL
-  );
   const [data, setData] = useState([]);
-  const { data: expansion_actual_data } = useFetch(EXPANSION_ACTUAL_URL);
+  const { data: dataActual } = useFetch(EXPANSION_ACTUAL_URL);
 
   useEffect(() => {
-    switch (activeButton) {
-      case "acelerada":
-        setData(expansion_futura_acelerada_data);
-        break;
-      case "inercial":
-        setData(expansion_futura_inercial_data);
-        break;
-      case "controlada":
-        setData(expansion_futura_controlada_data);
-        break;
-      default:
-        console.log('error: no hay "active_button"');
-    }
+    const switchData = async () => {
+      const mapping = {
+        acelerada: ESCENARIOS_FUTUROS_ACELERADA_URL,
+        inercial: ESCENARIOS_FUTUROS_INERCIAL_URL,
+        controlada: ESCENARIOS_FUTUROS_CONTROLADA_URL,
+      };
+      const data = await axios.get(mapping[activeButton]);
+      setData(data.data);
+    };
+    switchData();
+  }, [dataActual, activeButton]);
 
-    if (!expansion_actual_data || !data) return;
-  }, [expansion_actual_data, activeButton]);
-
-  if (!expansion_actual_data || !data) return <Loading />;
+  if (!dataActual || !data) return <Loading />;
 
   return (
     <>
       <CustomMap viewState={viewState} setViewState={setViewState}>
         <GeoJsonLayer
           id={`escenarios_futuros_layer`}
-          data={cleanedGeoData(data.features, "index")}
+          data={data}
           getFillColor={hexToRgb(currentColor)}
-          opacity={0.8}
+          opacity={0.6}
         />
         <GeoJsonLayer
           id="escenarios_actuales_layer"
-          data={expansion_actual_data}
+          data={dataActual}
           getFillColor={[168, 174, 193]}
-          opacity={1}
+          opacity={0.6}
         />
         <ButtonControls
           color={color}
@@ -103,11 +90,11 @@ export const EscenariosFuturosControls = () => {
             { id: "acelerada", name: "Acelerada" },
           ]}
         />
-        <PopupButton 
-          videoId="2eRmyQBQ5aA"
-          title="José Antonio Torre" 
-          subtitle="CFC." 
-          text="Escenarios a futuro." 
+        <PopupButton
+          videoId="ATySU6rtJ98"
+          title="José Antonio Torre"
+          subtitle="Tecnológico de Monterrey, Centro para el Futuro de las Ciudades."
+          text="Escenarios a futuro."
         />
       </CustomMap>
       <CustomLegend
@@ -135,7 +122,7 @@ export const EscenariosFuturosControls = () => {
           </>
         }
       >
-        <LegendItem color={'#A8AEC1'} label="Expansión actual" />
+        <LegendItem color={"#A8AEC1"} label="Suelo urbanizado" />
         <LegendItem color={currentColor} label={`Expansión ${activeButton}`} />
       </CustomLegend>
     </>
@@ -153,21 +140,21 @@ export function EscenariosFuturosCard() {
       <p>
         El patrón de urbanización de Monterrey en las últimas tres décadas,
         muestra una expansión de baja densidad hacia las periferias. Utilizando
-        datos históricos, simulamos y proyectamos que, de continuar así, en 2040
-        la superficie urbanizada crecerá un XXXX%, fragmentando la ciudad y
+        datos históricos, simulamos y proyectamos que, de continuar así, en 2070
+        la superficie urbanizada crecerá un 76%, fragmentando la ciudad y
         aumentando la integración de centralidades lejanas como Santiago,
         Saltillo y Ramos Arizpe a la metrópoli.
       </p>
       <p>
-        Planteamos dos alternativas de crecimiento: compacto (XXXX km²
-        urbanizados) o acelerado (XXXX km² urbanizados). Alcanzar uno u otro
-        escenario dependerá de las políticas actuales para regularlo, y de si
-        consiguen enfocarse en regenerar y densificar, asegurando, por ejemplo,
-        vivienda asequible en municipios centrales como San Nicolás, Guadalupe y
-        Monterrey.
+        Planteamos dos alternativas de crecimiento: controlado (mil km²
+        urbanizados) o acelerado (casi 2 mil km² urbanizados). Alcanzar uno u
+        otro escenario dependerá de las políticas actuales para regularlo, y de
+        si consiguen enfocarse en regenerar y densificar, asegurando, por
+        ejemplo, vivienda asequible en municipios centrales como San Nicolás,
+        Guadalupe y Monterrey.
       </p>
       <AreaChartChart
-        title="Proyección de superficie urbanizada 2020-2050"
+        title="Proyección de superficie urbanizada 2020-2070"
         data={chartData}
         domain={[2020, 2030, 2040, 2050, 2060, 2070]}
         lines={SCENARIOS_NAMES}

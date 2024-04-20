@@ -75,12 +75,13 @@ export const ViviendaControls = () => {
           pickable={true}
           autoHighlight={true}
           getPosition={(d) => d.position}
-        /> 
-        <PopupButton 
-          videoId="OsVuAKg3G0U?si=C_qwpjAT5kRGir-t"
-          title="Lucía Elizondo" 
-          subtitle="Tecnológico de Monterrey | ITESM · Campus Monterrey - Arch, MDesS, PhD" 
-          text="Regulación de la vivienda." 
+        />
+        <PopupButton
+          videoId="OsVuAKg3G0U"
+          title="Lucía Elizondo"
+          subtitle="Tecnológico de Monterrey, Escuela de Arquitectura Arte y Diseño."
+          text="Regulación de la vivienda."
+          onClick={() => isPlaying && togglePlay()}
         />
       </CustomMap>
       <Legend
@@ -173,7 +174,7 @@ export function ViviendaCard() {
         costos como el de traslado o los servicios, se elevan.
       </ContextTitle>
       <Chart
-        title={`Número de Creditos acumulados en ${sharedProps.time}`}
+        title={`Número de créditos acumulados en ${sharedProps.time}`}
         data={chartData}
         setOutline={setOutline}
         domain={[0, 42000]}

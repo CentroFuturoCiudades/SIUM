@@ -122,11 +122,11 @@ export const DelincuenciaControls = () => {
           autoHighlight={true}
           getPosition={(d) => d.position}
         />
-        <PopupButton 
-          videoId="0iY7lM81XiQ?si=8VY7ccX1AFtsLOdw"
-          title="Rebecca Bell" 
-          subtitle="Profesora/ Investigadora en el Tecnológico de Monterrey, Campus Monterrey." 
-          text="Confianza e involucramiento en la seguridad pública." 
+        <PopupButton
+          videoId="0iY7lM81XiQ"
+          title="Rebecca Bell"
+          subtitle="Tecnológico de Monterrey, Escuela de Ciencias Sociales y Gobierno."
+          text="Confianza e involucramiento en la seguridad pública."
         />
       </CustomMap>
       <ButtonControls
@@ -213,9 +213,9 @@ export function DelincuenciaCard() {
         Metropolitana de Monterrey.
       </ContextTitle>
       <Chart
-        title={`Acumulado ${
-          mappingTipoDelitos.find((x) => x.id == sharedProps.activeButton)?.name
-        } por 10 mil personas (2017-2020)`}
+        title={`Acumulado ${mappingTipoDelitos
+          .find((x) => x.id == sharedProps.activeButton)
+          ?.name.toLocaleLowerCase()} por 10 mil personas (2017-2020)`}
         data={chartData}
         domain={[0, 10500]}
         setOutline={setOutline}

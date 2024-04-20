@@ -64,14 +64,13 @@ export const CustomBarLabel = memo((props) => {
   const { x, y, width, height, index, data, columnKey } = props;
   const dataObject = data[index];
   const text = mappingNames[dataObject[columnKey]] || dataObject[columnKey];
-  console.log(props.inverse)
 
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d");
-  context.font = "0.6rem sans-serif";
+  context.font = "min(0.6dvw, 1.2dvh)";
   const textWidth = context.measureText(text).width;
 
-  const fitsInside = width > textWidth + 30;
+  const fitsInside = width > textWidth * 2;
   const insideX = x + width - 5;
   const outsideX = x + width + 5;
 
@@ -84,7 +83,7 @@ export const CustomBarLabel = memo((props) => {
       textAnchor={fitsInside ? "end" : "start"}
       dominantBaseline="middle"
       style={{
-        fontSize: isMobile ? "0.6rem" : "min(1dvw, 1.2dvh)",
+        fontSize: isMobile ? "0.6rem" : "min(0.6dvw, 1.2dvh)",
         cursor: "pointer",
         zIndex: 1,
         pointerEvents: "none",
@@ -159,14 +158,15 @@ export const Chart = ({
   );
   const containerMobile = {
     height: "200px",
-    bottom: "-10px",
+    // bottom: "-10px",
     width: "100%",
   };
   const container = {
     height: "min(50dvw, 25dvh)",
-    bottom: "-10px",
+    bottom: "0px",
     position: "absolute",
     width: "100%",
+    // paddingBottom: "2dv",
   };
 
   return (
@@ -176,7 +176,11 @@ export const Chart = ({
           <Tooltip
             content={<CustomTooltip />}
             formatter={formatter}
-            labelStyle={{ fontSize: isMobile ? "10px" : "0.9dvw" }}
+            labelStyle={{
+              fontSize: isMobile ? "10px" : "0.9dvw",
+              fontWeight: "bold",
+              color: "#363636",
+            }}
             itemStyle={{
               fontSize: isMobile ? "10px" : "0.9dvw",
               padding: "0px",
@@ -200,7 +204,7 @@ export const Chart = ({
               position="insideBottom"
               style={{
                 fontWeight: "bold",
-                fontSize: isMobile ? "0.9rem" : "min(0.8dvw, 1.4dvh)",
+                fontSize: isMobile ? "8px" : "min(0.8dvw, 1.4dvh)",
                 transform: "translateY(min(0.4dvw, 0.7dvh))",
               }}
             />

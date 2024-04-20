@@ -72,7 +72,7 @@ export const CardsContainerMobile = () => {
 
   useEffect(() => {
     setOpen(true);
-    setCurrentSnap(1);
+    setCurrentSnap(2);
   }, [currentSection]);
 
   return (
@@ -80,15 +80,16 @@ export const CardsContainerMobile = () => {
       ref={ref}
       isOpen={true}
       onClose={() => {
-        snapTo(1);
-        setCurrentSnap(1);
         setOpen(true);
+        snapTo(2);
+        setCurrentSnap(2);
       }}
-      snapPoints={[1, 0.55, 80]}
+      snapPoints={[1, 0.5, 50]}
       initialSnap={currentSnap}
       detent="full-height"
-      tweenConfig={{ ease: "easeOut", duration: 0.1 }}
+      tweenConfig={{ ease: "easeOut", duration: 0.2 }}
       onSnap={(i) => setCurrentSnap(i)}
+      style={{ zIndex: 2 }}
     >
       <Sheet.Container>
         <Sheet.Header>
@@ -103,30 +104,31 @@ export const CardsContainerMobile = () => {
           />
         </Sheet.Header>
         <Sheet.Content disableDrag style={{ paddingBottom: ref.current?.y }}>
-          <Sheet.Scroller draggableAt="both">
+          <Sheet.Scroller draggableAt="top">
             <Box
               bg="white"
               borderColor={`${color}.500`}
               margin="4"
-              style={{ height: "30dvh", marginTop: "60px" }}
+              style={{ height: "30dvh" }}
             >
               <CurrentCardContent />
             </Box>
           </Sheet.Scroller>
         </Sheet.Content>
       </Sheet.Container>
-      <Sheet.Backdrop />
     </Sheet>
   );
 };
 
 const Problematica = () => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
-  const [currentSection, setCurrentSection] = useState("expansion-urbana");
+  const [currentSection, setCurrentSection] = useState(undefined);
   const [outline, setOutline] = useState();
   const [sharedProps, setSharedProps] = useState({});
-  const currentInfo = sectionsInfo[currentSection];
-  const CurrentControls = sectionsInfo[currentSection].controls;
+  const currentInfo = currentSection ? sectionsInfo[currentSection] : {};
+  const CurrentControls = currentSection
+    ? sectionsInfo[currentSection].controls
+    : null;
   const Bar = isMobile ? BarMobile : Sidebar;
   const CurrentCardContainer = isMobile ? CardsContainerMobile : CardsContainer;
 
@@ -150,14 +152,17 @@ const Problematica = () => {
 
   useEffect(() => {
     const sectionFromURL = getSectionFromURL();
-    if (sectionFromURL) {
-      const el = document.getElementById(sectionFromURL);
+    setCurrentSection(sectionFromURL || "expansion-urbana");
+  }, []);
+  useEffect(() => {
+    if (!currentSection) return;
+    if (!isMobile) {
+      const el = document.getElementById(currentSection);
       if (el) {
-        setCurrentSection(sectionFromURL);
         el.scrollIntoView();
       }
     }
-  }, []);
+  }, [currentSection]);
   function updateSection(section) {
     if (!isMobile) {
       const el = document.getElementById(section);
@@ -181,13 +186,17 @@ const Problematica = () => {
           setSharedProps,
         }}
       >
-        <CurrentCardContainer />
-        <Box
-          className={isMobile ? "mapContainerMobile" : "mapContainer"}
-          borderColor={`${sectionsInfo[currentSection].color}.500`}
-        >
-          <CurrentControls />
-        </Box>
+        {currentSection && (
+          <>
+            <CurrentCardContainer />
+            <Box
+              className={isMobile ? "mapContainerMobile" : "mapContainer"}
+              borderColor={`${sectionsInfo[currentSection].color}.500`}
+            >
+              <CurrentControls />
+            </Box>
+          </>
+        )}
       </CardContext.Provider>
     </div>
   );

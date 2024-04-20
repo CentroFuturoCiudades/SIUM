@@ -26,6 +26,17 @@ const theme = extendTheme({
     }),
   },
   colors: {
+    purple: {
+      100: "#BFBDFF",
+      200: "#A198FF",
+      300: "#A068FF",
+      400: "#9A3DFF",
+      500: "#6a2eab",
+      600: "#51218a",
+      700: "#3a1569",
+      800: "#230a48",
+      900: "#0d0027",
+    },
     brown: {
       100: "#efeeea",
       200: "#cfccc1",
@@ -141,11 +152,9 @@ const theme = extendTheme({
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
     <ChakraProvider theme={theme}>
       <App />
     </ChakraProvider>
-  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

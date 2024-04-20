@@ -27,10 +27,9 @@ import * as d3 from "d3";
 import { IconLayer } from "deck.gl";
 import { Checkbox, Heading } from "@chakra-ui/react";
 
-
 const legendMapping = {
   income_pc: {
-    title: "Ingreso mensual per capita en 2020",
+    title: "Ingreso mensual per cápita en 2020",
     formatter: d3.format("$,.0f"),
     quantiles: [4000, 7000, 10000, 13000, 18000, 25000, 35000, 50000, 74000],
   },
@@ -111,11 +110,11 @@ export const SegregacionControls = () => {
             getPosition={(d) => d.position}
           />
         )}
-        <PopupButton 
-          videoId="0iY7lM81XiQ?si=UBJTuAb7Vo30TAck"
-          title="Carlos Placencia" 
-          subtitle="Gobierno del Estado de Nuevo León." 
-          text="Relación entre segregación y expansión." 
+        <PopupButton
+          videoId="KZmsL1jo7mo"
+          title="Carlos Placencia"
+          subtitle="Consejo Nuevo León para la Planeación Estratégica, Comisión de Desarrollo Sustentable."
+          text="Relación entre segregación y expansión."
         />
       </CustomMap>
       <ButtonControls
@@ -239,7 +238,7 @@ export function SegregacionCard() {
         menos desconectadas de las zonas funcionales de la ciudad.
       </ContextTitle>
       <Chart
-        title="Ingreso mensual per capita en 2020"
+        title="Ingreso mensual per cápita en 2020"
         data={chartData}
         domain={[5000, 35000]}
         column="income_pc"
