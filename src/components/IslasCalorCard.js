@@ -65,7 +65,6 @@ export const IslasCalorControls = () => {
 
   useEffect(() => {
     if (!data) return;
-
     const values = data.features.map((feat) => feat.properties["Value"]);
     setLegendItems(
       separateLegendItemsByCategory(
