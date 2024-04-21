@@ -37,10 +37,10 @@ export const InfanciasControls = () => {
   const endColor = "#6a2eab";
   //const INFANCIA_COLORS = generateGradientColors(startColor, endColor, 8);
   const INFANCIA_COLORS = generateQuantileColors(startColor, endColor, 4);
-  const [viewState, setViewState] = useState(SPECIAL_INFANCIAS_STATE); //para que empiece en el punto que dijo nelida
-  const { data: dataPob } = useFetch(POB05_URL);
-  const { data: dataParques } = useFetch(PARQUES_URL);
-  const { data: dataServ } = useFetch(SERVICIOS_URL);
+  const [viewState, setViewState] = useState(SPECIAL_INFANCIAS_STATE, undefined, isMobile); //para que empiece en el punto que dijo nelida
+  const { data: dataPob } = useFetch(POB05_URL, undefined, isMobile);
+  const { data: dataParques } = useFetch(PARQUES_URL, undefined, isMobile);
+  const { data: dataServ } = useFetch(SERVICIOS_URL, undefined, isMobile);
   const [brushingRadius, setBrushingRadius] = useState(1000); //radio esta en metros
   const [circlePayload, setCirclePayload] = useState();
 
@@ -161,9 +161,9 @@ export const InfanciasControls = () => {
         <GeoJsonLayer
           id="parques_layer"
           data={cleanedGeoData(dataParques.features, "area")}
-          getFillColor={[145, 186, 165, 255]}
-          getLineColor={[145, 186, 165]}
-          //getLineWidth={5}
+          getFillColor={[150, 200, 112]}
+          getLineColor={[80, 120, 20]}
+          getLineWidth={10}
           brushingEnabled={true}
           brushingRadius={brushingRadius}
           extensions={[new BrushingExtension()]}
@@ -191,11 +191,8 @@ export const InfanciasControls = () => {
               d.properties.sector === "preescolar" ||
               d.properties.sector === "salud"
           )}
-          //iconAtlas="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png"
           iconAtlas="https://sium.blob.core.windows.net/sium/images/icon-atlas2.png"
-          //iconMapping="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.json"
           iconMapping="https://sium.blob.core.windows.net/sium/images/icon-atlas2.json"
-          //getIcon={d => 'marker'}
           getIcon={(d) => getIconByCodigoAct(d.properties.sector)}
           getPosition={(d) => d.geometry.coordinates}
           sizeUnits={"meters"}
@@ -238,7 +235,7 @@ export const InfanciasControls = () => {
           />
         ))}
         <div style={{ height: "10px" }} />
-        <LegendItem color={"#91baa5"} label="Parques" />
+        <LegendItem color={"rgb(150, 200, 112)"} label="Parques" />
         <LegendItem color={"#8b0b0b"} label="Guardería" />
         <LegendItem color={"#1f562f"} label="Preescolar" />
         <LegendItem color={"#e95481"} label="Equipamiento de Salud" />

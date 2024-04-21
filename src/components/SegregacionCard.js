@@ -162,12 +162,12 @@ export const SegregacionControls = () => {
         onChange={handleCheckboxChange}
         isChecked={showAsentamientos}
         colorScheme="red"
-        borderColor="red.500"
+        borderColor="#d2a067"
         className="checkbox"
         width="2dvw"
-        style={{ bottom: isMobile ? "60px" : "70px" }}
+        pl={isMobile ? "0px" : "15px"}
       >
-        <Heading fontSize={isMobile ? "12px" : "1dvw"} color="#d2a067">
+        <Heading fontSize={isMobile ? "10px" : "1dvw"} color="#d2a067">
           Asentamientos autoproducidos
         </Heading>
       </Checkbox>

@@ -1,4 +1,4 @@
-import { Card, Icon, useMediaQuery } from "@chakra-ui/react";
+import { Card, Icon, useMediaQuery, Heading, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -15,14 +15,13 @@ const CardBody = ({ id, question, answer, icon, color }) => {
         <Card
           backgroundColor={color}
           color="white"
-          borderRadius={20}
+          borderRadius="2dvw"
+          w={isMobile ? "25dvw" : "15dvw"}
+          h={isMobile ? "25dvw" : "15dvw"}
           p="1dvw"
+          m="auto"
+          justifyContent="center"
           style={{
-            width: isMobile ? "25dvw" : "15dvw",
-            height: isMobile ? "25dvw" : "15dvw",
-            display: "flex",
-            justifyContent: "center",
-            cursor: "pointer",
             transform: isFlipped ? "rotateY(180deg)" : "rotateY(0)",
             transformStyle: "preserve-3d",
             transition: "transform 0.7s",
@@ -37,39 +36,34 @@ const CardBody = ({ id, question, answer, icon, color }) => {
             }}
           >
             {isFlipped ? (
-              <div>
-                {/* <Icon as={icon} boxSize={isMobile ? "5dvw" : "3dvw"} /> */}
-                <h1
-                  style={{
-                    fontFamily: "Inter",
-                    fontSize: isMobile ? "1.8dvw" : "1.2dvw",
-                    marginBottom: '0.8dvw',
-                  }}
+              <>
+                <Heading
+                  fontFamily="Inter"
+                  letterSpacing="-0.5px"
+                  fontSize={isMobile ? "2.5dvw" : "1.2dvw"}
                 >
                   <b>{question}</b>
-                </h1>
-                <h3
-                  style={{
-                    fontFamily: "Inter",
-                    fontSize: isMobile ? "1.6dvw" : "1dvw",
-                    textAlign: 'start'
-                  }}
+                </Heading>
+                <Text
+                  fontFamily="Inter"
+                  fontSize={isMobile ? "1.6dvw" : "1dvw"}
+                  textAlign="start"
+                  mt="1dvw"
                 >
                   {answer}
-                </h3>
-              </div>
+                </Text>
+              </>
             ) : (
-              <div>
+              <>
                 <Icon as={icon} boxSize={isMobile ? "5dvw" : "3dvw"} />
-                <h1
-                  style={{
-                    fontFamily: "Inter",
-                    fontSize: isMobile ? "1.8dvw" : "1.2dvw",
-                  }}
+                <Heading
+                  fontFamily="Inter"
+                  letterSpacing="-0.5px"
+                  fontSize={isMobile ? "2.5dvw" : "1.2dvw"}
                 >
                   <b>{question}</b>
-                </h1>
-              </div>
+                </Heading>
+              </>
             )}
           </div>
         </Card>

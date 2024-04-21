@@ -328,7 +328,7 @@ const Map = ({ year }) => {
           <>
             <div style={noteStyle}>
               <Text
-                fontSize={isMobile ? "6px" : "xs"}
+                fontSize={isMobile ? "6px" : "min(1.6dvh, 0.8dvw)"}
                 style={{ color: "white", alignItems: "end" }}
               >
                 *Superficie construida con techo
@@ -650,7 +650,7 @@ const Home = () => {
                 isRound={true}
                 icon={<MdMail />}
                 variant="solid"
-                style={{ marginBottom: "5px" }}
+                mb="2.1dvh"
                 colorScheme="blackAlpha"
               />
             </a>

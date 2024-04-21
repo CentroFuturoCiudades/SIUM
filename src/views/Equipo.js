@@ -27,6 +27,7 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
+  Text,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { sectionsInfo } from "../utils/constants";
@@ -122,7 +123,7 @@ const Equipo = () => {
         bg="#FEF5E7"
         w="100dvw"
         h="20dvh"
-        marginY="8dvh"
+        mb="8dvh"
         color="#04511B"
         style={{
           textAlign: "center",
@@ -131,13 +132,12 @@ const Equipo = () => {
           alignItems: "center",
         }}
       >
-        <Heading as="h1" size={isMobile ? "4xl" : "xl"}>
+        <Heading as="h1" fontSize={isMobile ? "4xl" : "3dvw"}>
           Equipo
         </Heading>
       </Box>
-      {/* Header Equipo END */}
 
-      {/* Integrantes Equipo START  */}
+      {/* Integrantes Equipo  */}
       <Box
         w="100%"
         h="auto"
@@ -156,51 +156,44 @@ const Equipo = () => {
             paddingX={"2dvw"}
             w={isMobile ? "auto" : "17dvw"}
           >
-            <div style={{ fontSize: isMobile ? "5dvw" : "1rem" }}>
+            <div style={{ fontSize: isMobile ? "5dvw" : "1.3dvw" }}>
               <b>{area.title}</b>
             </div>
             {area.organization && (
-              <div style={{ fontSize: isMobile ? "3dvw" : "0.7rem" }}>
+              <div style={{ fontSize: isMobile ? "3dvw" : "0.8dvw" }}>
                 <b>{area.organization}</b>
               </div>
             )}
 
             {area.members.map((miembro) => (
-              <p
-                key={miembro}
-                style={{ fontSize: isMobile ? "4dvw" : "0.9rem" }}
-              >
+              <p key={miembro} style={{ fontSize: isMobile ? "4dvw" : "1dvw" }}>
                 {miembro}
               </p>
             ))}
             {area.contact && (
               <>
-                <br />
-                <p style={{ fontSize: isMobile ? "4dvw" : "0.7rem" }}>
+                <Text fontSize={isMobile ? "3dvw" : "0.9dvw" } mt="1dvh">
                   <b>Contacto:</b> {area.contact}
-                </p>
+                </Text>
               </>
             )}
           </Box>
         ))}
       </Box>
-      {/* Integrantes Equipo END  */}
 
-      {/* Nota START  */}
+      {/* Nota */}
       <Box
         width="100%"
         paddingX="3dvw"
         marginTop={isMobile ? "8dvh" : "2dvh"}
         marginBottom={isMobile ? "2dvh" : "2dvh"}
-        style={{
-          fontSize: "1dvw",
-        }}
+        fontSize="1dvw"
       >
-        <p style={{ fontSize: isMobile ? "3dvw" : "0.7rem" }}>
+        <p style={{ fontSize: isMobile ? "3dvw" : "0.9dvw" }}>
           Este proyecto ha sido fondeado generosamente por fundación FEMSA desde
           2019.
         </p>
-        <p style={{ fontSize: isMobile ? "3dvw" : "0.7rem" }}>
+        <p style={{ fontSize: isMobile ? "3dvw" : "0.9dvw" }}>
           El SIUM, Sistema de Información Urabano Metropolitano, es un proyecto
           del Centro para el Futuro de las Ciudades del Tecnológico de
           Monterrey.
@@ -236,19 +229,20 @@ const Objetivo = () => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
 
   return (
-    <section id="objetivo" style={{ width: "100%" }}>
-      {/* Imagen: ¿Qué es ciudad?  y texto START  */}
-      <Box
-        h={"100%"}
+    <section
+      id="objetivo"
+      style={{ width: "100%", height: isMobile ? "auto" : "90dvh" }}
+    >
+      {/* Imagen: ¿Qué es ciudad?  y texto */}
+      <Flex
+        h="100%"
         w={isMobile ? "100%" : "50%"}
+        px={isMobile ? "5dvw" : "0"}
         style={{
           position: isMobile ? "static" : "absolute",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          marginTop: "0dvw",
-          paddingLeft: isMobile ? "5dvw" : "0",
-          paddingRight: isMobile ? "5dvw" : "0",
         }}
       >
         <img
@@ -256,23 +250,20 @@ const Objetivo = () => {
           src="aspectos.png"
           alt="SIUM"
           style={{
-            height: isMobile ? "auto" : "70dvh",
+            height: isMobile ? "auto" : "min(70dvh, 40dvw)",
+            padding: "4dvh",
             objectFit: "contain",
             marginTop: "3dvh",
           }}
         />
-        <p
-          style={{
-            marginTop: "3dvw",
-            fontSize: isMobile ? "5dvw" : "1.5dvw",
-            textAlign: "center",
-            color: "#665232",
-          }}
+        <Text
+          fontSize={isMobile ? "4dvw" : "min(2dvw, 3dvh)"}
+          textAlign="center"
+          color="#665232"
+          mb="5dvh"
         >
           Y mucho más...
-        </p>
-        <br />
-        <br />
+        </Text>
         <VideoCenter
           color="purple"
           videoId="b3EgwpHB42s"
@@ -280,73 +271,49 @@ const Objetivo = () => {
           subtitle="Fundación FEMSA, Seguridad Hídrica y Economía Circular."
           text="Importancia del SIUM."
         />
-      </Box>
-      {/* Imagen: ¿Qué es ciudad?  y texto END  */}
+      </Flex>
 
-      {/* Lado derecho objetivo START  */}
-      <Box h={isMobile ? "150dvh" : "100%"} w="100%">
-        <Box
+      {/* Lado derecho objetivo  */}
+      <Box h={isMobile ? "auto" : "36dvh"} w="100%">
+        <Flex
           bg="#FEF5E7"
           w="100%"
           h={isMobile ? "auto" : "100%"}
-          p={"4dvh"}
+          p="4dvh"
           color="#04511B"
-          style={{
-            display: "flex",
-            justifyContent: "space-around",
-            marginTop: "3dvw",
-            textAlign: "center",
-            fontSize: "2dvw",
-          }}
+          mt="3dvw"
+          justifyContent="space-around"
         >
-          <Box width={isMobile ? "0" : "26%"}>{/* Box vacío  */}</Box>
-          {/* Texto objetivo START  */}
           <Box
-            width={isMobile ? "100%" : "26%"}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-around",
-              textAlign: "start",
-              color: "#665232",
-            }}
+            width={isMobile ? "100%" : "30%"}
+            color="#665232"
+            ml={!isMobile && "50dvw"}
+            textAlign="start"
           >
-            <p style={{ fontSize: isMobile ? "5dvw" : "1.5rem" }}>
+            <Text fontSize={isMobile ? "6dvw" : "min(2dvw, 4dvh)"}>
               <b>Objetivo General</b>
-            </p>
-            {isMobile && <br />}
-            <p
-              style={{
-                fontSize: isMobile ? "4dvw" : "1rem",
-                marginTop: "1dvw",
-              }}
+            </Text>
+            <Text
+              fontSize={isMobile ? "3dvw" : "min(1.4dvw, 2.4dvh)"}
+              mt="1dvw"
             >
               El SIUM tiene como finalidad mostrar el impacto de la expansión
               urbana en la Zona Metropolitana de Monterrey.
-            </p>
-            {isMobile && <br />}
-            <p
-              style={{
-                fontSize: isMobile ? "4dvw" : "1rem",
-                marginTop: "1dvw",
-              }}
+            </Text>
+            <Text
+              fontSize={isMobile ? "3dvw" : "min(1.4dvw, 2.4dvh)"}
+              mt="1dvw"
             >
               Generar una discusión colectiva que lleve a un nuevo modelo
               urbano.
-            </p>
+            </Text>
           </Box>
-          {/* Texto objetivo END */}
-        </Box>
+        </Flex>
 
-        <Box
-          w="100%"
-          h="auto"
-          style={{ display: "flex", backgroundColor: "white" }}
-        >
-          <Box w={isMobile ? "0" : "50%"} h="100%"></Box>
-
-          {/* Tarjetas principios START */}
+        <Flex w="100%" h="auto">
+          {/* Tarjetas principios */}
           <Box
+            ml={isMobile ? "0" : "50dvw"}
             w={isMobile ? "100%" : "50%"}
             h={isMobile ? "auto" : "100%"}
             paddingY={isMobile ? "5dvh" : "2dvh"}
@@ -356,16 +323,14 @@ const Objetivo = () => {
               justifyContent: "space-evenly",
             }}
           >
-            <p
-              style={{
-                textAlign: "center",
-                fontSize: isMobile ? "8dvw" : "1.5dvw",
-                color: "#665232",
-                marginBottom: "2dvh",
-              }}
+            <Text
+              color="#665232"
+              fontSize={isMobile ? "6dvw" : "1.6dvw"}
+              textAlign="center"
+              my="1dvh"
             >
               <b>Principios</b>
-            </p>
+            </Text>
 
             <Wrap spacingX="2dvw" spacingY="5dvh" justify="center" p={"2dvh"}>
               {Object.values(principiosInfo).map((principio) => (
@@ -373,14 +338,12 @@ const Objetivo = () => {
                   <Popover trigger="hover" placement="top">
                     <PopoverTrigger>
                       <Button
-                        w={isMobile ? "70dvw" : "13dvw"}
-                        h={isMobile ? "15dvh" : "15dvh"}
-                        colorScheme={principio.colorScheme}
                         variant="outline"
-                        style={{
-                          borderRadius: "4dvw",
-                          fontSize: isMobile ? "4dvw" : "1.5dvw",
-                        }}
+                        colorScheme={principio.colorScheme}
+                        fontSize={isMobile ? "4dvw" : "1.5dvw"}
+                        w={isMobile ? "70dvw" : "13dvw"}
+                        h={isMobile ? "12dvh" : "12dvh"}
+                        borderRadius="min(4dvh, 4dvw)"
                       >
                         {principio.label}
                       </Button>
@@ -408,7 +371,7 @@ const Objetivo = () => {
             </Wrap>
           </Box>
           {/* Tarjetas START */}
-        </Box>
+        </Flex>
       </Box>
       {/* Lado derecho objetivo START  */}
     </section>

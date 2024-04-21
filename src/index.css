@@ -55,6 +55,8 @@ body {
 /* Estilos nuevos para leyendas iniciales */
 
 .legend-container {
+  width: min-content;
+  border-width: 0.08rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -70,15 +72,13 @@ body {
 
 .checkbox {
   display: flex;
-  
   justify-content: flex-start;
   align-items: flex-start;
   position: absolute;
   bottom: 70px;
   left: 10px;
-  padding: 5px 15px;
   z-index: 10;
-  font-size:x-small;
+  font-size: x-small;
 }
 
 .legend-item {
@@ -89,8 +89,9 @@ body {
 }
 
 .legend-color {
-  height: min(1.6dvh, 0.8dvw);
-  width: min(1.6dvh, 0.8dvw);
+  margin-right: 0.2dvw;
+  /* height: min(1.6dvh, 0.8dvw);
+  width: min(1.6dvh, 0.8dvw); */
 }
 
 .legend-numbers {
@@ -106,14 +107,18 @@ body {
   font-family: "Arial", Courier, monospace;
 }
 
-.legend-label2 {
-  text-align: left !important;
-  color: #333;
-  font-family: "Arial", Courier, monospace;
-}
-
 .legend-label:last-child {
   text-align: right;
+}
+
+.custom-legend-label {
+  flex: 1;
+  text-align: left !important;
+  line-height: normal;
+  padding: 0.2dvw;
+  font-size: min(1.6dvh, 0.8dvw);
+  color: #333;
+  font-family: "Arial", Courier, monospace;
 }
 
 .legend-dash {
@@ -187,32 +192,25 @@ td {
   padding: 5px 10px;
   box-shadow: 0 2px 8px rgba(50, 50, 50, 0.3);
   z-index: 10;
-  width: 350px; 
+  width: 350px;
   border-radius: 5px;
 }
 
 .button-popup {
   position: absolute !important;
-  top: 10px; 
-  right: 10px; 
-  border-radius: 4px;
-  width: 60px;
-  height: 30px;
   z-index: 10;
-  color: #FFF;
-  border: 1.5px solid;
+  color: #fff;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px; 
   font-weight: bold;
 }
 
 /* Estilos para el contenedor del video dentro del popup */
 .video-container {
   position: relative;
-  padding-top: 56.25%; 
+  padding-top: 56.25%;
 }
 
 .video-container iframe {
@@ -223,14 +221,14 @@ td {
   height: 100%;
 }
 
-.subtitle, .description {
-  margin-bottom: 0.2rem; 
+.subtitle,
+.description {
+  margin-bottom: 0.2rem;
 }
 
 .modal-header {
-  margin-bottom: -30px; 
+  margin-bottom: -30px;
 }
-
 
 .fullscreenMessage {
   position: fixed;
@@ -242,7 +240,7 @@ td {
   justify-content: center;
   align-items: center;
   background-color: white;
-  z-index: 999; 
+  z-index: 999;
   padding: 4%;
 }
 
@@ -259,5 +257,3 @@ td {
   font-size: 16px;
   cursor: pointer;
 }
-
-

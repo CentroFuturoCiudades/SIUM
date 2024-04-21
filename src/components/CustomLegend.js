@@ -1,4 +1,3 @@
-import { InfoIcon } from "@chakra-ui/icons";
 import {
   Box,
   Heading,
@@ -8,12 +7,13 @@ import {
   Td,
   Tooltip,
   Tr,
-  useDisclosure,
   useMediaQuery,
+  Card,
+  Text,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { ImCross } from "react-icons/im";
 
-export const CustomLegendMobile = ({ title, color, description, children }) => {
+export const CustomLegendMobile = ({ title, children }) => {
   return (
     <div
       style={{
@@ -26,7 +26,9 @@ export const CustomLegendMobile = ({ title, color, description, children }) => {
         width: "min-content",
       }}
     >
-      <div
+      <Heading
+        color="gray.700"
+        fontSize="10px"
         style={{
           width: "100%",
           display: "flex",
@@ -36,10 +38,8 @@ export const CustomLegendMobile = ({ title, color, description, children }) => {
           marginTop: "5px",
         }}
       >
-        <Heading color="gray.700" fontSize="12px">
-          {title}
-        </Heading>
-      </div>
+        {title}
+      </Heading>
       <TableContainer>
         <Table size="xs" variant="unstyled">
           <Tbody>{children}</Tbody>
@@ -59,20 +59,12 @@ export const CustomLegend = ({
   const [isMobile] = useMediaQuery("(max-width: 800px)");
 
   if (isMobile) {
-    return (
-      <CustomLegendMobile
-        title={title}
-        color={color}
-        description={description}
-        children={children}
-      />
-    );
+    return <CustomLegendMobile title={title} children={children} />;
   }
   return (
     <Box
       borderRadius="md"
       borderColor={`${color}.200`}
-      borderWidth="0.08rem"
       className="legend-container"
       style={{ width: "min-content" }}
     >
@@ -87,7 +79,7 @@ export const CustomLegend = ({
         }}
       >
         <Tooltip label={description} placement="top" hasArrow gutter={12}>
-          <Heading color="gray.700" fontSize="0.9dvw">
+          <Heading color="gray.700" fontSize="min(1.8dvh, 0.9dvw)">
             {title}
           </Heading>
         </Tooltip>
@@ -97,55 +89,36 @@ export const CustomLegend = ({
           <Tbody>{children}</Tbody>
         </Table>
       </TableContainer>
-      <b>
-        <p style={{ fontSize: "0.6dvw" }}>{note}</p>
-      </b>
+      <Text fontSize="0.6dvw" color="gray.600">
+        <i>{note}</i>
+      </Text>
     </Box>
   );
 };
 
 export const LegendItem = ({ color, label }) => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
-
+  const services = ["Preescolar", "Guardería", "Equipamiento de Salud"];
   return (
-    <Tr fontSize="0.7dvw">
+    <Tr fontSize="min(0.7dvw, 0.7dvh)">
       <Td>
-        {label === "Preescolar" ||
-        label === "Guardería" ||
-        label === "Equipamiento de Salud" ? (
-          <div
-            className="legend-symbol"
-            style={{
-              color: color,
-              fontSize: "2.3em",
-              lineHeight: "0.8em",
-              marginRight: "5px",
-              fontWeight: "bold",
-            }}
-          >
-            X
-          </div>
+        {services.includes(label) ? (
+          <ImCross color={color} fontSize="min(1.6dvh, 0.8dvw)" />
         ) : (
-          <div
-            // className="legend-color"
-            style={{
-              backgroundColor: color,
-              borderRadius: label === "Comercio al por menor" ? "50%" : "0%",
-              height: isMobile ? "16px" : "min(1.6dvh, 0.8dvw)",
-              width: isMobile ? "16px" : "min(1.6dvh, 0.8dvw)",
-            }}
+          <Card
+            className="legend-color"
+            h={isMobile ? "10px" : "min(1.6dvh, 0.8dvw)"}
+            w={isMobile ? "10px" : "min(1.6dvh, 0.8dvw)"}
+            bg={color}
+            borderRadius={label === "Comercio al por menor" ? "50%" : "15%"}
           />
         )}
       </Td>
-      <Td>
-        <div className="legend-numbers">
-          <span
-            className="legend-label2"
-            style={{ fontSize: isMobile ? "10px" : "0.7dvw" }}
-          >
-            {label}
-          </span>
-        </div>
+      <Td
+        className="custom-legend-label"
+        fontSize={isMobile ? "10px" : "min(1.6dvh, 0.8dvw)"}
+      >
+        {label}
       </Td>
     </Tr>
   );

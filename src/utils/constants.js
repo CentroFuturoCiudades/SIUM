@@ -508,14 +508,29 @@ export function countServicesLegendNOREP(data, sectors, colors) {
   return legend;
 }
 
-export const useFetch = (url, initialData = undefined) => {
+export const useFetch = (url, initialData = undefined, aborter = undefined) => {
   const [data, setData] = useState(initialData);
+  const abortController = new AbortController();
+
   useEffect(() => {
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => setData(data))
-      .catch((err) => console.log(err));
-  }, [url]);
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url, { signal: abortController.signal });
+        const data = await response.json();
+        setData(data);
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
+    };
+    fetchData();
+    if (aborter) {
+      abortController.abort();
+    }
+
+    return () => {
+      abortController.abort();
+    };
+  }, [url, aborter]);
   return { data };
 };
 

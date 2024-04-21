@@ -14,6 +14,7 @@ import {
   Tr,
   useMediaQuery,
   Text,
+  Card,
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
@@ -78,7 +79,7 @@ export const LegendMobile = ({ title, legendItems, formatting }) => {
         width={110}
       ></svg>
       <div style={{ display: "flex", marginLeft: "10px" }}>
-        <Heading color="gray.700" fontSize="12px" style={{ width: "30dvw" }}>
+        <Heading color="gray.700" fontSize="10px" style={{ width: "30dvw" }}>
           {title}
         </Heading>
       </div>
@@ -108,9 +109,7 @@ export const Legend = ({
     <Box
       borderRadius="md"
       borderColor={`${color}.200`}
-      borderWidth="0.08rem"
       className="legend-container"
-      style={{ width: "min-content" }}
     >
       <div
         style={{
@@ -132,22 +131,19 @@ export const Legend = ({
         <Table size="xs" variant="unstyled">
           <Tbody>
             {legendItems.map((item, index) => (
-              <Tr key={`legend-item-${index}`} fontSize="0.7dvw">
+              <Tr key={`legend-item-${index}`} fontSize="min(0.7dvw, 0.7dvh)">
                 <Td>
-                  <div
+                  <Card
                     className="legend-color"
-                    style={{ backgroundColor: item.color }}
+                    bg={item.color}
+                    borderRadius="15%"
+                    h={isMobile ? "10px" : "min(1.6dvh, 0.8dvw)"}
+                    w={isMobile ? "10px" : "min(1.6dvh, 0.8dvw)"}
                   />
                 </Td>
-                <Td>
-                  <span className="legend-label">{formatting(item.item1)}</span>
-                </Td>
-                <Td>
-                  <span className="legend-dash">—</span>
-                </Td>
-                <Td>
-                  <span className="legend-label">{formatting(item.item2)}</span>
-                </Td>
+                <Td className="legend-label">{formatting(item.item1)}</Td>
+                <Td className="legend-dash">—</Td>
+                <Td className="legend-label">{formatting(item.item2)}</Td>
               </Tr>
             ))}
           </Tbody>

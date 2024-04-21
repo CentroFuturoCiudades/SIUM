@@ -13,7 +13,7 @@ import {
 import { GeoJsonLayer } from "deck.gl";
 import { memo, useCallback, useMemo, useState } from "react";
 import _ from "lodash";
-import { Heading, useMediaQuery, useToken } from "@chakra-ui/react";
+import { Box, Heading, useMediaQuery, useToken } from "@chakra-ui/react";
 import { DATA_URL, useFetch } from "../utils/constants";
 import { useCardContext } from "../views/Problematica";
 
@@ -158,7 +158,6 @@ export const Chart = ({
   );
   const containerMobile = {
     height: "200px",
-    // bottom: "-10px",
     width: "100%",
   };
   const container = {
@@ -166,13 +165,17 @@ export const Chart = ({
     bottom: "0px",
     position: "absolute",
     width: "100%",
-    // paddingBottom: "2dv",
   };
 
   return (
     <div style={isMobile ? containerMobile : container}>
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart layout="vertical" data={filteredData} barCategoryGap={0}>
+        <BarChart
+          layout="vertical"
+          data={filteredData}
+          barCategoryGap={0}
+          stroke="none"
+        >
           <Tooltip
             content={<CustomTooltip />}
             formatter={formatter}
@@ -212,7 +215,7 @@ export const Chart = ({
           <YAxis type="category" dataKey={columnKey} hide />
           <Bar
             isAnimationActive={false}
-            background={{ fill: "white" }}
+            background={{ fill: "white", strokeWidth: 1, stroke: "white" }}
             dataKey={column}
             style={{ cursor: "pointer", pointerEvents: "none" }}
           >

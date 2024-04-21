@@ -100,7 +100,7 @@ export const TransporteControls = () => {
   const { data } = useFetch(TRANSPORTE_URL);
   const [activeButton, setActiveButton] = useState("General");
   const { time, isPlaying, handleSliderChange, togglePlay } =
-    TimeComponentClean(300, 1320, 0.005, 0.1, true, 0);
+    TimeComponentClean(300, 1320, 0.005, 0.1, true, 0, true);
   const currentTransporte = labelsMapping.find(
     (x) => x.id == activeButton
   )?.name;

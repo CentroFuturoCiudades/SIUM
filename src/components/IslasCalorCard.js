@@ -111,9 +111,9 @@ export const IslasCalorControls = () => {
         <GeoJsonLayer
           id="parques_layer"
           data={cleanedGeoData(dataParques.features, "area")}
-          getFillColor={[92, 178, 112]}
-          getLineColor={[118, 124, 130]}
-          getLineWidth={0}
+          getFillColor={[150, 200, 112]}
+          getLineColor={[80, 120, 20]}
+          getLineWidth={10}
         />
         <PopupButton
           videoId="19auBpQR8Ik"
@@ -143,7 +143,7 @@ export const IslasCalorControls = () => {
       >
         <LegendItem color="#647896" label="Vialidades Principales" />
         <LegendItem color="gray" label="Zonas Industriales" />
-        <LegendItem color="rgb(92, 178, 112)" label="Parques" />
+        <LegendItem color="rgb(150, 200, 112)" label="Parques" />
         <div style={{ height: "10px" }} />
         {legendItems.map((item, index) => (
           <LegendItem

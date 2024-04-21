@@ -33,7 +33,6 @@ export function SliderHTML({
         bottom: "60px",
         left: 0,
         width: "100%",
-        height: "50px",
         padding: "0 20px",
       }}
     >
@@ -44,12 +43,16 @@ export function SliderHTML({
         borderColor={`${color}.200`}
         style={{ display: "flex", width: "100%" }}
       >
-        <IconButton
+        <IconButton 
+          minW={isMobile ? "25px" : "min(3dvh, 2dvw)"}
+          minH={isMobile ? "25px" : "min(3dvh, 2dvw)"}
+          maxW={isMobile ? "25px" : "min(3dvh, 2dvw)"}
+          maxH={isMobile ? "25px" : "min(3dvh, 2dvw)"}
+          fontSize={isMobile ? "12px" : "min(1.8dvh, 0.9dvw)"}
           colorScheme={color}
           textColor="white"
           isRound={true}
           onClick={togglePlay}
-          size="xs"
           icon={isPlaying ? <MdPause /> : <MdPlayArrow />}
         />
         <Slider
@@ -71,7 +74,7 @@ export function SliderHTML({
               mt="5"
               style={{
                 textWrap: "nowrap",
-                fontSize: isMobile ? "7px" : "min(1.8dvh, 0.9dvw)",
+                fontSize: isMobile ? "8px" : "min(1.8dvh, 0.9dvw)",
                 transform: i == 0 ? "translateX(0%)" : i == marks.length - 1 ? "translateX(-90%)" : "translateX(-50%)",
                 color: "#464646",
               }}
@@ -95,10 +98,11 @@ export function TimeComponentClean(
   step,
   frameInterval = 0,
   animationType,
-  initialTime = undefined
+  initialTime = undefined,
+  initialValue = false
 ) {
   const [time, setTime] = useState(initialTime || startTime);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(initialValue);
   const lastFrameTime = useRef(performance.now());
 
   useEffect(() => {

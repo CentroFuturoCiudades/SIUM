@@ -23,8 +23,13 @@ const PopupButton = ({ videoId, title, subtitle, text, onClick }) => {
     <>
       <Button
         borderColor={`${color}.500`}
+        borderWidth="0.12rem"
         bgColor={`${color}.400`}
-        px="8"
+        w={isMobile ? "60px" : "10%"}
+        h={isMobile ? "40px" : "5dvh"}
+        fontSize={isMobile ? "14px" : "min(1.2dvw, 2.4dvh)"}
+        right={isMobile ? "10px" : "1.5dvw"}
+        top={isMobile ? "10px" : "1.5dvh"}
         textColor="white"
         className="button-popup"
         onClick={() => {
@@ -44,9 +49,9 @@ const PopupButton = ({ videoId, title, subtitle, text, onClick }) => {
           borderWidth="1.5px" // Ancho del borde
           maxW={isMobile ? "calc(100% - 10px)" : "calc(60vw - 60px)"}
           maxH={isMobile ? "calc(100% - 10px)" : "calc(100dvh - 120px)"}
-          mr={isMobile ? "10px" : "10px"}
+          mr={isMobile ? "10px" : "1.5dvw"}
           ml={isMobile ? "10px" : "auto"}
-          mt={isMobile ? "100px" : "60px"}
+          mt={isMobile ? "100px" : "8dvh"}
           overflowY="auto"
         >
           <ModalHeader
@@ -93,7 +98,7 @@ export const VideoCenter = ({ color, videoId, title, subtitle, text }) => {
       <Button
         variant="solid"
         px="2dvw"
-        py="2dvh"
+        py="15px"
         height="auto"
         width="auto"
         fontSize={isMobile ? "sm" : "min(2dvw, 2dvh)"}
@@ -114,7 +119,7 @@ export const VideoCenter = ({ color, videoId, title, subtitle, text }) => {
         <ModalOverlay />
         <ModalContent
           bg="white"
-          color={`${color}.500`}
+          color={`${color}.700`}
           borderColor={`${color}.700`}
           borderWidth="0.15dvh"
           maxW={isMobile ? "calc(100% - 20px)" : "50dvw"}

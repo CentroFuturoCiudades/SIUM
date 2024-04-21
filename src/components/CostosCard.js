@@ -13,7 +13,7 @@ import {
 import ButtonControls from "./ButtonControls";
 import { useCardContext } from "../views/Problematica";
 import { sectionsInfo } from "../utils/constants";
-import { useMediaQuery, Box, Flex, Text } from "@chakra-ui/react";
+import { Card, useMediaQuery, Box, Flex, Text } from "@chakra-ui/react";
 import PopupButton from "./PopupButton";
 
 const municipios = [
@@ -61,6 +61,60 @@ const municipioColorMap = {
   "Salinas Victoria": "rgb(120, 66, 170)",
   Hidalgo: "rgb(125, 78, 165)",
   "Ciénega de Flores": "rgb(130, 90, 160)",
+};
+
+const CustomLegend = () => {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
+  return (
+    <Flex mb="2">
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          width: "100%",
+          justifyContent: "center",
+        }}
+      >
+        <Card
+          className="legend-color"
+          h={isMobile ? "10px" : "min(1.6dvh, 0.8dvw)"}
+          w={isMobile ? "10px" : "min(1.6dvh, 0.8dvw)"}
+          bg="rgb(130, 90, 160)"
+          borderRadius="15%"
+        />
+        <Text
+          color="gray.600"
+          ml="5px"
+          fontSize={isMobile ? "10px" : "min(2dvh, 1dvw)"}
+        >
+          Municipios Periféricos
+        </Text>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          width: "100%",
+          justifyContent: "center",
+        }}
+      >
+        <Card
+          className="legend-color"
+          h={isMobile ? "10px" : "min(1.6dvh, 0.8dvw)"}
+          w={isMobile ? "10px" : "min(1.6dvh, 0.8dvw)"}
+          bg="rgb(120, 140, 120)"
+          borderRadius="15%"
+        />
+        <Text
+          color="gray.600"
+          ml="5px"
+          fontSize={isMobile ? "10px" : "min(2dvh, 1dvw)"}
+        >
+          Municipios Centrales
+        </Text>
+      </div>
+    </Flex>
+  );
 };
 
 export const CostosControls = () => {
@@ -218,7 +272,12 @@ export const CostosControls = () => {
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={chartData}
-          margin={{ top: 100, right: 30, left: 30, bottom: 0 }}
+          margin={{
+            top: 100,
+            right: isMobile ? 5 : 30,
+            left: isMobile ? 0 : 30,
+            bottom: 0,
+          }}
           onMouseLeave={() => setActiveMunicipio(undefined)}
         >
           <defs>
@@ -247,68 +306,14 @@ export const CostosControls = () => {
 
           <XAxis
             dataKey="fecha"
-            style={{ fontSize: isMobile ? "12px" : "min(1.8dvh, 0.9dvw)" }}
+            style={{ fontSize: isMobile ? "10px" : "min(1.8dvh, 0.9dvw)" }}
           />
           <YAxis
             tickFormatter={labelMoney}
-            style={{ fontSize: isMobile ? "12px" : "min(1.4dvh, 0.7dvw)" }}
+            style={{ fontSize: isMobile ? "10px" : "min(1.8dvh, 0.9dvw)" }}
           />
           <Tooltip content={<CustomTooltip activeIndex={activeMunicipio} />} />
-          <Legend
-            wrapperStyle={{ fontSize: isMobile ? "10px" : "min(2dvh, 1dvw)" }}
-            iconSize={0}
-            content={
-              <Flex mb="2">
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    width: "100%",
-                    justifyContent: "center",
-                  }}
-                >
-                  <div
-                    style={{
-                      // purple
-                      backgroundColor: "rgb(130, 90, 160)",
-                      height: isMobile ? "10px" : "min(1.6dvh, 0.8dvw)",
-                      width: isMobile ? "10px" : "min(1.6dvh, 0.8dvw)",
-                    }}
-                  />
-                  <Text
-                    color="gray.600"
-                    ml="5px"
-                    fontSize={isMobile ? "10px" : "min(2dvh, 1dvw)"}
-                  >
-                    Municipios Periféricos
-                  </Text>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    width: "100%",
-                    justifyContent: "center",
-                  }}
-                >
-                  <div
-                    style={{
-                      backgroundColor: "rgb(120, 140, 120)",
-                      height: isMobile ? "10px" : "min(1.6dvh, 0.8dvw)",
-                      width: isMobile ? "10px" : "min(1.6dvh, 0.8dvw)",
-                    }}
-                  />
-                  <Text
-                    color="gray.600"
-                    ml="5px"
-                    fontSize={isMobile ? "10px" : "min(2dvh, 1dvw)"}
-                  >
-                    Municipios Centrales
-                  </Text>
-                </div>
-              </Flex>
-            }
-          />
+          <Legend content={<CustomLegend />} />
 
           {chartData.length > 0 &&
             municipios.map((municipio, index) => (

@@ -54,9 +54,11 @@
 // export default Tooltip;
 
 import { useLayoutEffect, useRef, useState } from "react";
-import { useMediaQuery } from "@chakra-ui/react";
+import { Box, useMediaQuery } from "@chakra-ui/react";
+import { useCardContext } from "../views/Problematica";
 
 const Tooltip = ({ hoverInfo, children }) => {
+  const { color } = useCardContext();
   const tooltipRef = useRef(null);
   const [positionStyle, setPositionStyle] = useState({ opacity: 0 });
   const [isMobile] = useMediaQuery("(max-width: 800px)");
@@ -73,8 +75,8 @@ const Tooltip = ({ hoverInfo, children }) => {
         positionX = `calc(100% - ${tooltipWidth}px - 10px)`; // Ajusta la distancia desde el lado derecho de la pantalla
       } else {
         // Si no es móvil muestra el tooltip sobre del cursor
-        positionY = `calc(${hoverInfo.y}px - ${tooltipHeight}px - 10px)`; 
-        positionX = `calc(${hoverInfo.x}px - ${tooltipWidth / 2}px)`; 
+        positionY = `calc(${hoverInfo.y}px - ${tooltipHeight}px - 10px)`;
+        positionX = `calc(${hoverInfo.x}px - ${tooltipWidth / 2}px)`;
       }
 
       setPositionStyle({
@@ -89,9 +91,11 @@ const Tooltip = ({ hoverInfo, children }) => {
   }, [hoverInfo, isMobile]);
 
   return (
-    <div
+    <Box
       ref={tooltipRef}
       className={`tooltip-container${isMobile ? "-mobile" : ""}`}
+      borderColor={`${color}.300`}
+      borderWidth={1}
       style={{
         position: "absolute",
         zIndex: 1,
@@ -103,7 +107,7 @@ const Tooltip = ({ hoverInfo, children }) => {
       }}
     >
       {children}
-    </div>
+    </Box>
   );
 };
 
