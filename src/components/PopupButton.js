@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { MdPlayArrow } from "react-icons/md";
 
-const PopupButton = ({ videoId, title, subtitle, text, onClick }) => {
+const PopupButton = ({ videoId, title, subtitle, text, onClick, additionalContent  }) => {
   const { color } = useCardContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isMobile] = useMediaQuery("(max-width: 800px)");
@@ -83,6 +83,31 @@ const PopupButton = ({ videoId, title, subtitle, text, onClick }) => {
                 style={{ height: "100%", width: "100%" }}
               ></iframe>
             </div>
+
+            {/* Contenido adicional */}
+            {additionalContent && (
+              <>
+                <div style={{ marginTop: '28px' }}> {/* Espaciado entre secciones */}
+                  <ModalHeader
+                    p="0" 
+                    marginBottom="10px"
+                  >
+                    {additionalContent.title}
+                  </ModalHeader>
+                  <h3 style={{ marginBottom: '4px' }}>{additionalContent.subtitle}</h3> 
+                  <p style={{ marginBottom: '10px' }}>{additionalContent.text}</p>
+                  <div className="video-container">
+                    <iframe
+                      src={`https://www.youtube.com/embed/${additionalContent.videoId}?rel=0`}
+                      frameBorder="0"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                </div>
+              </>
+            )}
+
+
           </ModalBody>
         </ModalContent>
       </Modal>

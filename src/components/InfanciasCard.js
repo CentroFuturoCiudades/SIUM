@@ -115,7 +115,7 @@ export const InfanciasControls = () => {
       const promedio = (sumPob05 / sumPob) * 100;
 
       setCirclePayload({
-        ...servicesCount,
+        ...servicesCount, 
         pob_ratio: Math.round(promedio * 100) / 100,
         area_parques: _.sumBy(filteredDataParques, (f) => f.properties.area),
       });
@@ -203,12 +203,20 @@ export const InfanciasControls = () => {
           brushingRadius={brushingRadius}
           extensions={[new BrushingExtension()]}
         />
+
         <PopupButton
           videoId="ROtsJ6c4dIo"
           title="Sindy González Tijerina"
           subtitle="Fundación FEMSA, Inversión Social en Primera Infancia."
           text="Importancia de la integración de una perspectiva de la primera infrancia en la planeación."
+          additionalContent={{
+            videoId: "ROtsJ6c4dIo",
+            title:"Nombre de prueba",
+            subtitle: "Subtítulo de prueba",
+            text: "Texto de prueba."
+          }}
         />
+
       </CustomMap>
       <CustomLegend
         color={color}

@@ -217,7 +217,7 @@ const Equipo = () => {
               icon={<MdMail />}
               variant="solid"
               colorScheme="blackAlpha"
-            />
+            />  
           </a>
         </Tooltip>
       </Box>
