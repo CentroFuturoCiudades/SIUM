@@ -9,91 +9,92 @@ import {
   Tooltip,
   Tr,
   useMediaQuery,
+  Text,
+  SliderMark,
 } from "@chakra-ui/react";
 import {
-    Slider,
-    SliderTrack,
-    SliderFilledTrack,
-    SliderThumb,
-  } from '@chakra-ui/react'
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
+  Checkbox,
+} from "@chakra-ui/react";
+import { useState } from "react";
 
-export const LegendSlider = ({ title, color, description, children, note="" }) => {
-  const [isMobile] = useMediaQuery("(max-width: 800px)");
-
-
-//   if (isMobile) {
-//     return (
-//       <CustomLegendMobile
-//         title={title}
-//         color={color}
-//         description={description}
-//         children={children}
-//       />
-//     );
-//   }
+export const LegendSlider = ({ title, children }) => {
   return (
     <Box
       borderRadius="md"
-      borderColor={`${color}.200`}
+      borderColor="purple.100"
       borderWidth="0.08rem"
       className="legend-container"
+      right="1.5dvh !important"
+      left="auto !important"
+      top="1.5dvh !important"
+      bottom="auto !important"
+      maxH="25%"
+      style={{
+        width: "min-content",
+        overflowY: "scroll",
+        borderRadius: "0.5dvh",
+        zIndex: "100",
+      }}
     >
-      <div
-        style={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "start",
-          marginBottom: "5px",
-          marginTop: "5px",
-        }}
-      >
-        <Tooltip label={description} placement="top" hasArrow gutter={12}>
-          <Heading color="gray.700" fontSize="0.9dvw">
-            <InfoIcon
-              boxSize={2.5}
-              color="gray.400"
-              style={{ cursor: "pointer" }}
-              mr="1"
-            />
-            {title}
-          </Heading>
-        </Tooltip>
+      <div>
+        <Heading color="gray.700" fontSize="min(1.8dvh, 0.9dvw)" my="1dvh">
+          {title}
+        </Heading>
+        <TableContainer>
+          <Table size="sm" variant="unstyled">
+            <Tbody>{children}</Tbody>
+          </Table>
+        </TableContainer>
       </div>
-      <TableContainer>
-        <Table variant="unstyled">
-          <Tbody>{children}</Tbody>
-        </Table>
-      </TableContainer>
-      <b><p style={{fontSize:"0.6dvw"}}>
-        {note}
-        </p></b>
     </Box>
   );
 };
 
-export const LegendSliderItem = ({ layerId, opacity, onChange }) => {
-  const [isMobile] = useMediaQuery("(max-width: 800px)");
+export const LegendSliderItem = ({ layerId, opacity, onOpacityChange }) => {
+  const [showTooltip, setShowTooltip] = useState(false);
   const handleSliderChange = (val) => {
-    onChange(layerId, val);
+    onOpacityChange(layerId, val);
   };
-  
+
   return (
-    <Tr key={layerId} style={{ width: '35dvw', height: '10dvh' }}>
-      <Td style={{ width: '10dvw' }}>
-        <p style={{ textAlign: 'center' }}>{layerId}</p>
+    <Tr key={layerId}>
+      <Td py="0.5dvh">
+        <Text textAlign="left" fontSize="min(1.6dvh, 0.8dvw)">
+          {layerId}
+        </Text>
         <Slider
+          colorScheme="purple"
+          my="0.5dvh"
           aria-label={`slider-${layerId}`}
-          defaultValue={opacity ?? 100} // Use provided opacity or default to 100
-          min={1}
+          defaultValue={opacity ?? 100}
+          min={10}
           max={100}
+          step={10}
           onChange={handleSliderChange}
+          onMouseEnter={() => setShowTooltip(true)}
+          onMouseLeave={() => setShowTooltip(false)}
         >
           <SliderTrack>
             <SliderFilledTrack />
           </SliderTrack>
-          <SliderThumb boxSize={3} />
+          <Tooltip
+            hasArrow
+            bg="purple.300"
+            color="white"
+            placement="bottom"
+            isOpen={showTooltip}
+            label={`${opacity ?? 100}%`}
+          >
+            <SliderThumb />
+          </Tooltip>
         </Slider>
+      </Td>
+      <Td>
+        <Checkbox colorScheme="purple"></Checkbox>
       </Td>
     </Tr>
   );
