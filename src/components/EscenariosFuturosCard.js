@@ -33,8 +33,8 @@ const ESCENARIOS_FUTUROS_CHART_URL =
 
 const COLORS = ["#6D4F90", "#4A6985", "#58777A"];
 const SCENARIOS_NAMES = ["acelerada", "inercial", "controlada"];
-const COLOR_MAPPING = {
-  actual: "rgba(168, 174, 193)",
+export const ESCENARIOS_COLOR_MAPPING = {
+  actual: "#A8AEC1",
   acelerada: "#6D4F90",
   inercial: "#4A6985",
   controlada: "#58777A",
@@ -44,7 +44,7 @@ export const EscenariosFuturosControls = () => {
   const { color } = useCardContext();
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const [activeButton, setActiveButton] = useState("acelerada");
-  const currentColor = COLOR_MAPPING[activeButton];
+  const currentColor = ESCENARIOS_COLOR_MAPPING[activeButton];
   const { data } = useFetch(ESCENARIOS_URL);
 
   if (!data) return <Loading />;

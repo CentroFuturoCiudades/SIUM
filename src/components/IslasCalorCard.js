@@ -36,7 +36,7 @@ import _ from "lodash";
 import * as d3 from "d3";
 import PopupButton from "./PopupButton";
 
-const ISLAS_CALOR_COLORS = [
+export const ISLAS_CALOR_COLORS = [
   "#C32B21",
   "#FF4945",
   "#FEBDBC",
