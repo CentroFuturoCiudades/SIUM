@@ -344,18 +344,33 @@ export function CostosCard() {
         {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
-        La expansión urbana no solo tiene altos costos sociales y ambientales,
-        implica un gasto público mayor, en comparación con modelos de ciudades
-        compactas. En 1995, se gastaban alrededor de tres mil millones en obras
-        públicas de infraestructura para llevar servicios a las zonas urbanas.
-        En 2020 se gastaron casi treinta y seis mil millones, un aumento del
-        1,200%.
-      </p>
-      <p>
-        Aún con este aumento no ha sido suficiente, ya que el gasto per cápita
-        ha disminuido en un 88% en el mismo periodo. Los municipios ahora gastan
-        más por metro cuadrado de la mancha urbana: pasando de $223/m2 en 1990 a
-        $2,000/m2 en 2020.
+        1. Gasto Total en Infraestructura Pública (1995-2020): Este gráfico
+        muestra el gasto municipal en la Zona Metropolitana de Monterrey, en
+        pesos de 2022 y ajustado por inflación. Monterrey, por ejemplo, muestra
+        un gasto constante, lo que indica un estancamiento poblacional, pues las
+        participaciones federales dependen del tamaño poblacional. En contraste,
+        municipios como Apodaca y Escobedo, con altas tasas de crecimiento
+        poblacional y económico, muestran incrementos significativos en el gasto
+        total.
+        <br />
+        2. Gasto en Infraestructura Pública Per Cápita (a precios nominales):
+        San Pedro Garza García sobresale con un alto gasto per cápita en
+        infraestructura pública, reflejando ingresos mayores de impuestos
+        prediales. Este gasto aumentó cuatro veces entre 2015 y 2020. Además, en
+        municipios periféricos como Juárez, el gasto per cápita se duplicó de
+        $0.8k a $1.5k en cinco años, reflejando los desafíos de expandir
+        servicios en áreas con cobertura inicialmente baja.
+        <br />
+        3. Gasto en Obra Pública por Superficie Construida: Los patrones son
+        consistentes con el segundo gráfico. Monterrey muestra un gasto
+        constante a lo largo del tiempo, mientras que San Pedro Garza García
+        experimentó un incremento exponencial entre 2015 y 2020. En contraste,
+        municipios como San Nicolás vieron una reducción de gasto de $17 a $10
+        por metro cuadrado. En municipios de la periferia, el aumento del gasto
+        ha sido moderado, ajustándose a las necesidades de áreas recientemente
+        urbanizadas. Estos gráficos evidencian la variabilidad del gasto público
+        en infraestructura, influenciada por el crecimiento demográfico y las
+        capacidades económicas locales.
       </p>
       <ContextTitle color={color}>
         Intensificar el uso del suelo urbano existente y mejorar las políticas
