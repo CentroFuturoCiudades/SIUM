@@ -37,7 +37,11 @@ export const InfanciasControls = () => {
   const endColor = "#6a2eab";
   //const INFANCIA_COLORS = generateGradientColors(startColor, endColor, 8);
   const INFANCIA_COLORS = generateQuantileColors(startColor, endColor, 4);
-  const [viewState, setViewState] = useState(SPECIAL_INFANCIAS_STATE, undefined, isMobile); //para que empiece en el punto que dijo nelida
+  const [viewState, setViewState] = useState(
+    SPECIAL_INFANCIAS_STATE,
+    undefined,
+    isMobile
+  ); //para que empiece en el punto que dijo nelida
   const { data: dataPob } = useFetch(POB05_URL, undefined, isMobile);
   const { data: dataParques } = useFetch(PARQUES_URL, undefined, isMobile);
   const { data: dataServ } = useFetch(SERVICIOS_URL, undefined, isMobile);
@@ -115,7 +119,7 @@ export const InfanciasControls = () => {
       const promedio = (sumPob05 / sumPob) * 100;
 
       setCirclePayload({
-        ...servicesCount, 
+        ...servicesCount,
         pob_ratio: Math.round(promedio * 100) / 100,
         area_parques: _.sumBy(filteredDataParques, (f) => f.properties.area),
       });
@@ -210,13 +214,12 @@ export const InfanciasControls = () => {
           subtitle="Fundación FEMSA, Inversión Social en Primera Infancia."
           text="Importancia de la integración de una perspectiva de la primera infrancia en la planeación."
           additionalContent={{
-            videoId: "ROtsJ6c4dIo",
-            title:"Nombre de prueba",
-            subtitle: "Subtítulo de prueba",
-            text: "Texto de prueba."
+            videoId: "awKx7yDA6k8",
+            title: "Luis Ávila",
+            subtitle: "Cómo vamos NL.",
+            text: "La importancia de accesibilidad a espacio público.",
           }}
         />
-
       </CustomMap>
       <CustomLegend
         color={color}

@@ -1,5 +1,16 @@
-import { Box, Table, TableContainer, Tbody, Td, Tr } from "@chakra-ui/react";
+import {
+  Box,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Tr,
+  Heading,
+  Card,
+  useMediaQuery,
+} from "@chakra-ui/react";
 import * as d3 from "d3";
+import { ImCross } from "react-icons/im";
 
 export const LegendCustom = ({
   color,
@@ -10,17 +21,18 @@ export const LegendCustom = ({
   comercios,
   salud,
 }) => {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
   const all = [
     {
       value: pob05,
       label: "Población de 0 a 5 años",
-      color: "blue",
+      color: "#6a2eab",
       formatting: (d) => d3.format(".2f")(d) + "%",
     },
     {
       value: area,
       label: "Parques",
-      color: "#91baa5",
+      color: "#96C870",
       formatting: (d) => d3.format(".2f")(d) + " ha",
     },
     {
@@ -48,6 +60,7 @@ export const LegendCustom = ({
       formatting: d3.format(".0f"),
     },
   ];
+  const services = ["Preescolar", "Guarderías", "Equipamientos de Salud"];
   return (
     <Box
       borderRadius="md"
@@ -56,40 +69,39 @@ export const LegendCustom = ({
       className="legend-container"
       style={{ right: "20px", left: "auto" }}
     >
-      <p>Radio de 1 kilometro de distancia</p>
+      <Heading color="gray.700" fontSize="min(1.8dvh, 0.9dvw)">
+        Radio de 1 kilometro de distancia
+      </Heading>
       <TableContainer>
         <Table size="xs" variant="unstyled">
           <Tbody>
             {all.map((item, index) => (
-              <Tr key={`legend-item-${index}`} fontSize="0.7dvw">
+              <Tr key={`legend-item-${index}`} fontSize="min(0.7dvw, 0.7dvh)">
                 <Td>
-                  {item.label === "Preescolar" || item.label === "Guarderías" || item.label === "Equipamientos de Salud" ? (
-                    <div
-                      className="legend-symbol"
-                      style={{
-                        color: item.color,
-                        fontSize: "2.3em",
-                        lineHeight: "0.8em",
-                        marginRight: "5px",
-                        fontWeight: "bold"
-                      }}
-                    >
-                      X
-                    </div>
+                  {services.includes(item.label) ? (
+                    <ImCross color={item.color} fontSize="min(1.6dvh, 0.8dvw)" />
                   ) : (
-                    <div
+                    <Card
                       className="legend-color"
-                      style={{
-                        backgroundColor: item.color,
-                        borderRadius: item.label === "Comercios al por menor" ? "50%" : "0%",
-                      }}
+                      h={isMobile ? "10px" : "min(1.6dvh, 0.8dvw)"}
+                      w={isMobile ? "10px" : "min(1.6dvh, 0.8dvw)"}
+                      bg={item.color}
+                      borderRadius={
+                        item.label === "Comercios al por menor" ? "50%" : "15%"
+                      }
                     />
                   )}
                 </Td>
-                <Td className="legend-label2">
-                  <span className="legend-label2">{item.label}</span>
+                <Td
+                  className="custom-legend-label"
+                  fontSize={isMobile ? "10px" : "min(1.6dvh, 0.8dvw)"}
+                >
+                  {item.label}
                 </Td>
-                <Td>
+                <Td
+                  className="custom-legend-label"
+                  fontSize={isMobile ? "10px" : "min(1.6dvh, 0.8dvw)"}
+                >
                   <b>{item.formatting(item.value)}</b>
                 </Td>
               </Tr>

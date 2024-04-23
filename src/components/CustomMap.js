@@ -143,7 +143,7 @@ export function CustomMap({ viewState, infanciasHover, children }) {
         <Map
           width="100%"
           height="100%"
-          mapStyle="mapbox://styles/lameouchi/cls55h898029301pfb1t07mtc"
+          mapStyle="mapbox://styles/lameouchi/clvboacrd041l01pk9gyf4yve"
           mapboxAccessToken="pk.eyJ1IjoibGFtZW91Y2hpIiwiYSI6ImNsa3ZqdHZtMDBjbTQzcXBpNzRyc2ljNGsifQ.287002jl7xT9SBub-dbBbQ"
         />
         {children}

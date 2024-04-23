@@ -203,13 +203,13 @@ export function IslasCalorCard() {
 }
 
 const mappings = {
-  muy_caliente: "Clima muy caliente",
-  caliente: "Clima caliente",
-  ligeramente_calido: "Clima ligeramente cálido",
-  templado: "Clima templado",
-  frio: "Clima frío",
-  ligeramente_frio: "Clima ligeramente frío",
-  muy_frio: "Clima muy frío",
+  muy_caliente: "Suelo muy caliente",
+  caliente: "Suelo caliente",
+  ligeramente_calido: "Suelo ligeramente cálido",
+  templado: "Suelo templado",
+  frio: "Suelo frío",
+  ligeramente_frio: "Suelo ligeramente frío",
+  muy_frio: "Suelo muy frío",
 };
 
 const CustomTooltip = (props) => {

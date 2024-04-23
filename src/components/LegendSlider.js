@@ -54,7 +54,7 @@ export const LegendSlider = ({ title, children }) => {
   );
 };
 
-export const LegendSliderItem = ({ layerId, opacity, onOpacityChange }) => {
+export const LegendSliderItem = ({ layerId, title, opacity, onOpacityChange }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const handleSliderChange = (val) => {
     onOpacityChange(layerId, val);
@@ -64,7 +64,7 @@ export const LegendSliderItem = ({ layerId, opacity, onOpacityChange }) => {
     <Tr key={layerId}>
       <Td py="0.5dvh">
         <Text textAlign="left" fontSize="min(1.6dvh, 0.8dvw)">
-          {layerId}
+          {title}
         </Text>
         <Slider
           colorScheme="purple"
@@ -92,9 +92,6 @@ export const LegendSliderItem = ({ layerId, opacity, onOpacityChange }) => {
             <SliderThumb />
           </Tooltip>
         </Slider>
-      </Td>
-      <Td>
-        <Checkbox colorScheme="purple"></Checkbox>
       </Td>
     </Tr>
   );

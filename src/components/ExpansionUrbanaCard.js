@@ -22,12 +22,12 @@ import Tooltip from "./Tooltip";
 import PopupButton from "./PopupButton";
 import { useToken } from "@chakra-ui/react";
 
-const EXPANSION_QUANTILES = [-5100, -2000, -1000, 0, 2000, 4000, 6000, 11100];
+const EXPANSION_QUANTILES = [-5100, -2000, -1000, 1, 2000, 4000, 6000, 11100];
 
 const marks = [
-  { value: 1990, label: "1990-2020" },
-  { value: 2000, label: "2000-2020" },
-  { value: 2010, label: "2010-2020" },
+  { value: 1990, label: "2020-1990" },
+  { value: 2000, label: "2020-2000" },
+  { value: 2010, label: "2020-2010" },
 ];
 
 export const ExpansionUrbanaControls = () => {
@@ -82,7 +82,7 @@ export const ExpansionUrbanaControls = () => {
         />
       </CustomMap>
       <Legend
-        title={`Cambio Poblacional de ${time} a 2020`}
+        title={`Cambio Poblacional (2020 - ${time})`}
         legendItems={legendItems}
         description={
           <>

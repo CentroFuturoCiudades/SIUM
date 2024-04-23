@@ -110,6 +110,7 @@ export const Legend = ({
       borderRadius="md"
       borderColor={`${color}.200`}
       className="legend-container"
+      bottom="10dvh"
     >
       <div
         style={{

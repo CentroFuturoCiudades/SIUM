@@ -30,7 +30,7 @@ export function SliderHTML({
     <div
       style={{
         position: "relative",
-        bottom: "60px",
+        bottom: isMobile ? "60px" : "min(6dvh, 4dvw)",
         left: 0,
         width: "100%",
         padding: "0 20px",
@@ -38,12 +38,12 @@ export function SliderHTML({
     >
       <Box
         bgColor={`${color}.100`}
-        borderRadius="16px"
         borderWidth={1}
         borderColor={`${color}.200`}
         style={{ display: "flex", width: "100%" }}
+        borderRadius={isMobile ? "25px" : "min(3dvh, 2dvw)"}
       >
-        <IconButton 
+        <IconButton
           minW={isMobile ? "25px" : "min(3dvh, 2dvw)"}
           minH={isMobile ? "25px" : "min(3dvh, 2dvw)"}
           maxW={isMobile ? "25px" : "min(3dvh, 2dvw)"}
@@ -71,11 +71,16 @@ export function SliderHTML({
             <SliderMark
               key={value}
               value={value}
-              mt="5"
+              mt={isMobile ? "5" : "min(2.5dvh, 1.7dvw)"}
               style={{
                 textWrap: "nowrap",
                 fontSize: isMobile ? "8px" : "min(1.8dvh, 0.9dvw)",
-                transform: i == 0 ? "translateX(0%)" : i == marks.length - 1 ? "translateX(-90%)" : "translateX(-50%)",
+                transform:
+                  i == 0
+                    ? "translateX(0%)"
+                    : i == marks.length - 1
+                    ? "translateX(-90%)"
+                    : "translateX(-50%)",
                 color: "#464646",
               }}
             >

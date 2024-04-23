@@ -14,7 +14,14 @@ import {
 } from "@chakra-ui/react";
 import { MdPlayArrow } from "react-icons/md";
 
-const PopupButton = ({ videoId, title, subtitle, text, onClick, additionalContent  }) => {
+const PopupButton = ({
+  videoId,
+  title,
+  subtitle,
+  text,
+  onClick,
+  additionalContent,
+}) => {
   const { color } = useCardContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isMobile] = useMediaQuery("(max-width: 800px)");
@@ -23,7 +30,8 @@ const PopupButton = ({ videoId, title, subtitle, text, onClick, additionalConten
     <>
       <Button
         borderColor={`${color}.500`}
-        borderWidth="0.12rem"
+        borderWidth={isMobile ? "0.12rem" : "min(0.2dvh, 0.4dvw)"}
+        borderRadius={isMobile ? "5px" : "min(0.8dvh, 1.6dvw)"}
         bgColor={`${color}.400`}
         w={isMobile ? "60px" : "10%"}
         h={isMobile ? "40px" : "5dvh"}
@@ -87,15 +95,18 @@ const PopupButton = ({ videoId, title, subtitle, text, onClick, additionalConten
             {/* Contenido adicional */}
             {additionalContent && (
               <>
-                <div style={{ marginTop: '28px' }}> {/* Espaciado entre secciones */}
-                  <ModalHeader
-                    p="0" 
-                    marginBottom="10px"
-                  >
+                <div style={{ marginTop: "28px" }}>
+                  {" "}
+                  {/* Espaciado entre secciones */}
+                  <ModalHeader p="0" marginBottom="10px">
                     {additionalContent.title}
                   </ModalHeader>
-                  <h3 style={{ marginBottom: '4px' }}>{additionalContent.subtitle}</h3> 
-                  <p style={{ marginBottom: '10px' }}>{additionalContent.text}</p>
+                  <h3 style={{ marginBottom: "4px" }}>
+                    {additionalContent.subtitle}
+                  </h3>
+                  <p style={{ marginBottom: "10px" }}>
+                    {additionalContent.text}
+                  </p>
                   <div className="video-container">
                     <iframe
                       src={`https://www.youtube.com/embed/${additionalContent.videoId}?rel=0`}
@@ -106,8 +117,6 @@ const PopupButton = ({ videoId, title, subtitle, text, onClick, additionalConten
                 </div>
               </>
             )}
-
-
           </ModalBody>
         </ModalContent>
       </Modal>

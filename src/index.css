@@ -62,7 +62,7 @@ body {
   justify-content: flex-start;
   align-items: flex-start;
   position: absolute;
-  bottom: 80px;
+  bottom: 7dvh;
   left: 20px;
   background: rgba(255, 255, 255, 0.9);
   padding: min(0.4dvh, 0.2dvw) min(1.6dvh, 0.8dvw);
@@ -122,7 +122,7 @@ body {
 }
 
 .legend-dash {
-  margin: 0 min(1dvh, 0.5dvw);
+  padding: 0 min(1dvh, 0.5dvw);
   flex-shrink: 0;
   font-size: min(1.6dvh, 0.8dvw);
   font-family: "Arial", Courier, monospace;

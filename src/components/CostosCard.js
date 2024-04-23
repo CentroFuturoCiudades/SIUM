@@ -252,14 +252,14 @@ export const CostosControls = () => {
         activeButton={activeButton}
         setActiveButton={setActiveButton}
         mapping={[
-          { id: "obras_ajustado", name: "Gastos en obras publicas" },
+          { id: "obras_ajustado", name: "Gasto en obras pública" },
           {
             id: "obras_percapita",
-            name: "Gastos en obras publicas por persona",
+            name: "Gasto en obras pública por persona",
           },
           {
             id: "obras_perarea",
-            name: "Gastos en obras publicas por área construida",
+            name: "Gasto en obras pública por área construida",
           },
         ]}
       />

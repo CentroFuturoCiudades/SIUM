@@ -50,6 +50,7 @@ import { ArrowBackIcon } from "@chakra-ui/icons";
 import { ESCENARIOS_COLOR_MAPPING } from "../components/EscenariosFuturosCard.js";
 import { INITIAL_STATE } from "../components/CustomMap.js";
 import { filter } from "d3";
+import { ISLAS_CALOR_COLORS } from "../components/IslasCalorCard.js";
 
 const datosMapas = [
   {
@@ -80,7 +81,7 @@ const datosMapas = [
   },
   {
     name: "Crecimiento",
-    color: "brown.200",
+    color: "brown.300",
     description:
       "La información de crecimiento es un esfuerzo propio de este equipo de investigación para empatar las cartografías de los Censos del Instituto Nacional de Estadística y Geografía (INEGI) de los años 1990, 2000, 2010 y 2020.  La unidad base en que la información se muestra corresponde a las Áreas Geoestadísticas Básicas (AGEBs) del 2020. Los archivos muestran los diferenciales de población entre cada censo.",
     url: "https://sium.blob.core.windows.net/sium/datos/agebs-pob.geojson",
@@ -88,7 +89,7 @@ const datosMapas = [
     titleLegend: "Leyenda crecimiento",
     itemsLegend: separateLegendItems(
       [-5100, 0, 11100],
-      generateGradientColors("#4c4527", "#6a2eab", 8)
+      generateQuantileColors("#afab98", "#6a2eab", 3)
     ),
   },
   {
@@ -103,7 +104,7 @@ const datosMapas = [
     titleLegend: "Leyenda segregación",
     itemsLegend: separateLegendItems(
       [4000, 18000, 74000],
-      generateQuantileColors("#ebede8", "#6a2eab", 3)
+      generateQuantileColors("#c2c8bb", "#6a2eab", 3)
     ),
     inverted: true,
   },
@@ -118,7 +119,7 @@ const datosMapas = [
     filter: (d) => d.properties.year_end === 2020,
     itemsLegend: separateLegendItems(
       [160000, 800000, 1800000],
-      generateGradientColors("#7a724a", "#6a2eab", 8)
+      generateQuantileColors("#ccc7ae", "#6a2eab", 3)
     ),
     inverted: true,
   },
@@ -164,6 +165,7 @@ const datosMapas = [
     titleLegend: "",
     itemsLegend: [],
     fill: (d) => {
+      console.log(d);
       return constantColorInterpolate(
         d.properties["Value"],
         [7, 6, 5, 4, 3, 2, 1],
@@ -181,12 +183,11 @@ const datosMapas = [
       "Chaudhuri, G., & Clarke, K. (2013). The SLEUTH land use change model: A review. Environmental Resources Research, 1(1), 88-105.",
     ],
     url: "https://sium.blob.core.windows.net/sium/datos/escenarios.geojson",
-    column: "escenarios",
     titleLegend: "",
     itemsLegend: [],
     filter: (d) =>
-      d.properties.escenario !== "actual" ||
-      d.properties.escenario !== "inercial",
+      d.properties.escenario === "actual" ||
+      d.properties.escenario === "inercial",
     fill: (d) => {
       return hexToRgb(ESCENARIOS_COLOR_MAPPING[d.properties.escenario]);
     },
@@ -265,18 +266,19 @@ const DescargaDatos = () => {
             map.inverted
           );
         }
-        console.log(opacity);
         return {
           id: `${map.name}-layer`,
           opacity: 0.8,
           data: data.features
             .filter((d) => (map.filter ? map.filter(d) : true))
-            .filter((d) =>
-              map.inverted
-                ? d.properties[map.column] <
-                  opacity * (maxVal - minVal) + minVal
-                : d.properties[map.column] >
-                  (1 - opacity) * (maxVal - minVal) + minVal
+            .filter(
+              (d) =>
+                !map.column ||
+                (map.inverted
+                  ? d.properties[map.column] <
+                    opacity * (maxVal - minVal) + minVal
+                  : d.properties[map.column] >
+                    (1 - opacity) * (maxVal - minVal) + minVal)
             ),
           getFillColor: (d) =>
             map.fill ? map.fill(d) : standardFill(d, opacity),
@@ -430,8 +432,8 @@ const DescargaDatos = () => {
           <Map
             width="100%"
             height="100%"
-            mapStyle="mapbox://styles/lameouchi/cls55h898029301pfb1t07mtc"
-            mapboxAccessToken="pk.eyJ1IjoidXJpZWxzYTk2IiwiYSI6ImNsbnV2MzBkZDBlajYya211bWk2eTNuc2MifQ.ZnhFC3SyhckuIQBLO59HxA"
+            mapStyle="mapbox://styles/lameouchi/clvboacrd041l01pk9gyf4yve"
+            mapboxAccessToken="pk.eyJ1IjoibGFtZW91Y2hpIiwiYSI6ImNsa3ZqdHZtMDBjbTQzcXBpNzRyc2ljNGsifQ.287002jl7xT9SBub-dbBbQ"
           />
           {layers.map((layer) => (
             <GeoJsonLayer key={layer.id} {...layer} />
@@ -443,6 +445,9 @@ const DescargaDatos = () => {
             {layers.map((layer) => (
               <LegendSliderItem
                 key={layer.id}
+                title={
+                  datosMapas.find((m) => m.name === layer.id.split("-")[0]).name
+                }
                 layerId={layer.id}
                 opacity={opacities[layer.id]}
                 onOpacityChange={handleOpacityChange}
