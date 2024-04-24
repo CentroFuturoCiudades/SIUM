@@ -56,7 +56,7 @@ const legendMapping = {
 };
 
 const mappingTipoDelitos = [
-  { id: "num_crimen", name: "Delitos" },
+  { id: "num_crimen", name: "Total de Delitos" },
   {
     id: "violencia_familiar",
     name: "Violencia Familiar",

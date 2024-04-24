@@ -71,7 +71,7 @@ const datosMapas = [
     color: "orange.300",
     description:
       "Los datos de empleo proceden del Directorio Estadístico Nacional de Unidades Económicas (DENUE) del Instituto Nacional de Estadística y Geografía (INEGI) del año 2010 y de diciembre del 2019 (antes de la pandemia de COVID19). El DENUE reporta un aproximado del número de empleos a través de categorías que describen el número de personas trabajando en el establecimiento. Se tomó el valor intermedio de cada categoría.",
-    url: "https://tec-expansion-urbana-p.s3.amazonaws.com/contexto/json/DENUE2020_Municipios_Geo.json",
+    url: "https://sium.blob.core.windows.net/sium/datos/empleo-hex.geojson",
     column: "Empleos",
     titleLegend: "Número de Empleos en 2020",
     itemsLegend: separateLegendItems(
@@ -123,25 +123,25 @@ const datosMapas = [
     ),
     inverted: true,
   },
-  {
-    name: "Costos",
-    color: "green3.500",
-    description:
-      "La fuente de información de estos datos son las cifras del Subsistema de Información Económica a través del Programa de Finanzas Públicas Estatales y Municipales del Instituto Nacional de Estadística y Geografía (INEGI). Los datos fueron generados y consultados del sitio de INEGI en diciembre del 2023.",
-    url: "https://sium.blob.core.windows.net/sium/datos/income.geojson",
-    column: "local_centralization_q_5_k_100",
-    titleLegend: "",
-    itemsLegend: [],
-  },
+  // {
+  //   name: "Costos",
+  //   color: "green3.500",
+  //   description:
+  //     "La fuente de información de estos datos son las cifras del Subsistema de Información Económica a través del Programa de Finanzas Públicas Estatales y Municipales del Instituto Nacional de Estadística y Geografía (INEGI). Los datos fueron generados y consultados del sitio de INEGI en diciembre del 2023.",
+  //   url: "https://sium.blob.core.windows.net/sium/datos/income.geojson",
+  //   column: "local_centralization_q_5_k_100",
+  //   titleLegend: "",
+  //   itemsLegend: [],
+  // },
   {
     name: "Transporte",
     color: "yellow.500",
     description:
       "La información de transporte proviene de la encuesta origen-destino del 2019 que el gobierno del estado de Nuevo León realizó como parte del Programa Integral de Movilidad Urbana Sustentable (PIMUS) del Área Metropolitana de Monterrey. Transconsult fue la empresa consultora responsable del levantamiento de la encuesta.",
     url: "https://sium.blob.core.windows.net/sium/datos/transporte.geojson",
-    column: "Regreso A Casa",
     titleLegend: "",
     itemsLegend: [],
+    lineWidth: 2,
   },
   {
     name: "Mancha urbana",
@@ -282,7 +282,7 @@ const DescargaDatos = () => {
             ),
           getFillColor: (d) =>
             map.fill ? map.fill(d) : standardFill(d, opacity),
-          getLineWidth: 0,
+          getLineWidth: map.lineWidth || 0,
         };
       })
       .filter((layer) => layer); // Filter out any undefined layers

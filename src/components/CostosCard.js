@@ -6,15 +6,25 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
   Legend,
+  Tooltip as RechartsTooltip,
   ResponsiveContainer,
 } from "recharts";
 import ButtonControls from "./ButtonControls";
 import { useCardContext } from "../views/Problematica";
 import { sectionsInfo } from "../utils/constants";
-import { Card, useMediaQuery, Box, Flex, Text } from "@chakra-ui/react";
+import {
+  Card,
+  useMediaQuery,
+  IconButton,
+  Box,
+  Flex,
+  Text,
+  Button,
+  Tooltip,
+} from "@chakra-ui/react";
 import PopupButton from "./PopupButton";
+import { FaInfo } from "react-icons/fa";
 
 const municipios = [
   "Monterrey",
@@ -247,6 +257,45 @@ export const CostosControls = () => {
 
   return (
     <>
+      <div
+        style={{
+          position: "absolute",
+          top: isMobile ? "10px" : "1.5dvh",
+          left: isMobile ? "10px" : "1.5dvh",
+          zIndex: 1,
+        }}
+      >
+        <Tooltip
+          hasArrow
+          label={
+            <>
+              <b>
+                Finanzas Públicas Estatales y Municipales del Instituto Nacional
+                de Estadística y Geografía (2020)
+              </b>
+              <p>
+                Los datos de gasto total en obra pública están ajustados por
+                inflación y se reportan en pesos del 2022. Los datos per cápita
+                y por superficie son gasto nominal por años sin ajuste de
+                inflación.
+              </p>
+            </>
+          }
+          placement="top"
+          gutter={12}
+        >
+          <IconButton
+            variant="outline"
+            isRound
+            icon={<FaInfo />}
+            size="xs"
+            colorScheme={color}
+            fontSize={isMobile ? "10px" : "min(1.6dvh, 0.8dvw)"}
+            width={isMobile ? "20px" : "1.5dvw"}
+            height={isMobile ? "20px" : "3dvh"}
+          />
+        </Tooltip>
+      </div>
       <ButtonControls
         color={color}
         activeButton={activeButton}
@@ -312,7 +361,9 @@ export const CostosControls = () => {
             tickFormatter={labelMoney}
             style={{ fontSize: isMobile ? "10px" : "min(1.8dvh, 0.9dvw)" }}
           />
-          <Tooltip content={<CustomTooltip activeIndex={activeMunicipio} />} />
+          <RechartsTooltip
+            content={<CustomTooltip activeIndex={activeMunicipio} />}
+          />
           <Legend content={<CustomLegend />} />
 
           {chartData.length > 0 &&
@@ -344,38 +395,34 @@ export function CostosCard() {
         {sectionsInfo[currentSection].answer}
       </ResponseTitle>
       <p>
-        1. Gasto Total en Infraestructura Pública (1995-2020): Este gráfico
-        muestra el gasto municipal en la Zona Metropolitana de Monterrey, en
-        pesos de 2022 y ajustado por inflación. Monterrey, por ejemplo, muestra
-        un gasto constante, lo que indica un estancamiento poblacional, pues las
-        participaciones federales dependen del tamaño poblacional. En contraste,
-        municipios como Apodaca y Escobedo, con altas tasas de crecimiento
-        poblacional y económico, muestran incrementos significativos en el gasto
-        total.
+        Los tres gráficos a la derecha desglozan el gasto en obra pública por
+        municipio:
+      </p>
+      <p>
+        1.- Gasto Total en Obra Pública (1995-2020): Se muestra el gasto en la
+        Zona Metropolitana de Monterrey, en pesos de 2022. Monterrey exhibe un
+        gasto constante. Municipios como Apodaca y Escobedo, con crecimientos
+        poblacionales y económicos significativos, registran aumentos notables
+        en el gasto total.
         <br />
-        2. Gasto en Infraestructura Pública Per Cápita (a precios nominales):
-        San Pedro Garza García sobresale con un alto gasto per cápita en
-        infraestructura pública, reflejando ingresos mayores de impuestos
-        prediales. Este gasto aumentó cuatro veces entre 2015 y 2020. Además, en
-        municipios periféricos como Juárez, el gasto per cápita se duplicó de
-        $0.8k a $1.5k en cinco años, reflejando los desafíos de expandir
-        servicios en áreas con cobertura inicialmente baja.
+        2.- Gasto en Obra Pública Per Cápita (a precios nominales): San Pedro
+        destaca por su alto valor y por un incremento de 4 veces entre 2015 y
+        2020. Otros municipios periféricos, como Juárez, duplicaron su gasto per
+        cápita en el mismo periodo, mostrando los retos de extender servicios en
+        nuevas áreas urbanas.
         <br />
-        3. Gasto en Obra Pública por Superficie Construida: Los patrones son
-        consistentes con el segundo gráfico. Monterrey muestra un gasto
-        constante a lo largo del tiempo, mientras que San Pedro Garza García
-        experimentó un incremento exponencial entre 2015 y 2020. En contraste,
-        municipios como San Nicolás vieron una reducción de gasto de $17 a $10
-        por metro cuadrado. En municipios de la periferia, el aumento del gasto
-        ha sido moderado, ajustándose a las necesidades de áreas recientemente
-        urbanizadas. Estos gráficos evidencian la variabilidad del gasto público
-        en infraestructura, influenciada por el crecimiento demográfico y las
-        capacidades económicas locales.
+        3.- Gasto en Obra Pública por Superficie Construida: Monterrey muestra
+        un gasto constante, mientras que San Pedro Garza García experimentó un
+        aumento exponencial entre 2015 y 2020. San Nicolás redujo su gasto,
+        mientras que municipios en la periferia urbana han tenido un incremento
+        moderado para adecuarse a las necesidades que impone el crecimiento
+        territorial.
       </p>
       <ContextTitle color={color}>
         Intensificar el uso del suelo urbano existente y mejorar las políticas
-        regulatorias contra la expansión, mitigarían el gasto público excesivo
-        en servicios urbanos e infraestructura.
+        regulatorias contra la expansión mitigarían el gasto público excesivo en
+        servicios urbanos e infraestructura porque se generan economías de
+        escala.
       </ContextTitle>
     </>
   );

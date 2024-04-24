@@ -573,13 +573,14 @@ const Home = () => {
                   color="gray.100"
                   fontSize={isMobile ? "xs" : "min(3dvh, 1.5dvw)"}
                 >
-                  En las últimas tres décadas, la mancha urbana de Monterrey ha
-                  experimentado un <b>crecimiento exponencial, triplicándose</b>{" "}
-                  en tamaño. Este desarrollo, si bien evidencia el dinamismo de
-                  la ciudad, también conlleva riesgos ambientales, económicos y
-                  sociales. Los recursos urbanos y ambientales, que son
-                  esenciales para el bienestar de la comunidad,{" "}
-                  <b>son finitos</b> y deben manejarse con responsabilidad.
+                  En las últimas tres décadas, la superficie construida de la
+                  Zona Metropolitana de Monterrey crece más rapido que la
+                  población y la ciudad <b>pierde densidad</b>. Este desarrollo,
+                  si bien evidencia el dinamismo de la ciudad, también conlleva
+                  riesgos ambientales, económicos y sociales. Los recursos
+                  urbanos y ambientales, que son esenciales para el bienestar de
+                  la comunidad, <b>son finitos</b> y deben manejarse con
+                  responsabilidad.
                 </Text>
               </div>
               <div style={textStyle}>
@@ -644,7 +645,11 @@ const Home = () => {
             borderRadius="md"
             placement="right"
           >
-            <a href="https://forms.office.com/r/HtvBBujdAe">
+            <a
+              href="https://forms.office.com/r/HtvBBujdAe"
+              rel="noopener"
+              target="_blank"
+            >
               <IconButton
                 size="sm"
                 isRound={true}
