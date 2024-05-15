@@ -179,9 +179,8 @@ export const InfanciasControls = () => {
           data={dataServ.features.filter(
             (d) => d.properties.sector === "comercio al por menor"
           )}
-          getFillColor={"#ff7130"}
-          getLineColor={[255, 113, 48]}
-          getLineWidth={30}
+          getLineColor={[246, 145, 0]}
+          getLineWidth={20}
           brushingEnabled={true}
           visible={!!circlePayload}
           brushingRadius={brushingRadius}
@@ -250,7 +249,7 @@ export const InfanciasControls = () => {
         <LegendItem color={"#8b0b0b"} label="Guardería" />
         <LegendItem color={"#1f562f"} label="Preescolar" />
         <LegendItem color={"#e95481"} label="Equipamiento de Salud" />
-        <LegendItem color={"#ff7130"} label="Comercio al por menor" />
+        <LegendItem color={"#f69100"} label="Comercio al por menor" />
       </CustomLegend>
       {circlePayload && (
         <LegendCustom

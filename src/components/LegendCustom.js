@@ -56,7 +56,7 @@ export const LegendCustom = ({
     {
       value: comercios,
       label: "Comercios al por menor",
-      color: "#ff7130",
+      color: "#f69100",
       formatting: d3.format(".0f"),
     },
   ];

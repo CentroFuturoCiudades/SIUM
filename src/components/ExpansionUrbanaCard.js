@@ -147,9 +147,10 @@ export function ExpansionUrbanaCard() {
       <p>
         <b>En 1990</b>, las familias jóvenes residían mayormente en zonas
         centrales como Monterrey, Guadalupe, San Pedro y San Nicolás. Pero{" "}
-        <b>para 2020</b>, migraron a la periferia: Juárez, García, Apodaca,
-        Santa Catarina y General Zuazua; mientras que los adultos mayores
-        permanecieron en el área central.
+        <b>para 2020</b>, las familias jóvenes y los jóvenes se establecen
+        principalmente en la periferia: Juárez, García, Apodaca, Santa Catarina
+        y General Zuazua; mientras que los adultos mayores permanecieron en el
+        área central.
       </p>
       <p>
         Recientemente, los cambios demográficos han demandado ajustes en
