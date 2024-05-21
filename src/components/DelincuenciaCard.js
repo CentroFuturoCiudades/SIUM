@@ -157,9 +157,11 @@ export const DelincuenciaControls = () => {
       />
       {hoverInfo && hoverInfo.object && (
         <Tooltip hoverInfo={hoverInfo}>
-          <span className="tooltip-label">
-            <b>AGEB:</b> {hoverInfo.object.properties["CVEGEO"]}
-          </span>
+          {hoverInfo.object.properties["CVEGEO"] && (
+            <span className="tooltip-label">
+              <b>AGEB:</b> {hoverInfo.object.properties["CVEGEO"]}
+            </span>
+          )}
           {hoverInfo.object.properties["colonia"] && (
             <span className="tooltip-label">
               <b>Colonia:</b> {hoverInfo.object.properties["colonia"]}

@@ -21,7 +21,7 @@ import Tooltip from "./Tooltip";
 import PopupButton from "./PopupButton";
 import { Slider, useToken } from "@chakra-ui/react";
 
-const EMPLEO_QUANTILES = [0, 200, 400, 600, 800, 1000, 2500, 8400];
+const EMPLEO_QUANTILES = [0, 200, 400, 600, 1000, 3000, 5000, 10500];
 
 export const EmpleoControls = () => {
   const { color } = useCardContext();
@@ -31,6 +31,7 @@ export const EmpleoControls = () => {
   const { data } = useFetch(EMPLEO_URL);
   const [hoverInfo, setHoverInfo] = useState();
   const [legendItems, setLegendItems] = useState([]);
+  const column = "num_empleos_esperados";
 
   useEffect(() => {
     setLegendItems(separateLegendItems(EMPLEO_QUANTILES, EMPLEO_COLORS));
@@ -43,10 +44,10 @@ export const EmpleoControls = () => {
       <CustomMap viewState={INITIAL_STATE}>
         <GeoJsonLayer
           id="empleo_layer"
-          data={cleanedGeoData(data.features, "Empleos")}
+          data={cleanedGeoData(data.features, column)}
           getFillColor={(d) =>
             colorInterpolate(
-              d.properties["Empleos"],
+              d.properties[column],
               EMPLEO_QUANTILES,
               EMPLEO_COLORS,
               0.8
@@ -68,7 +69,7 @@ export const EmpleoControls = () => {
       </CustomMap>
       <Slider />
       <Legend
-        title="Número de Empleos en 2020"
+        title="Número de Empleos en 2023"
         legendItems={legendItems}
         description={
           <>
@@ -86,17 +87,21 @@ export const EmpleoControls = () => {
       />
       {hoverInfo && hoverInfo.object && (
         <Tooltip hoverInfo={hoverInfo}>
-          <span className="tooltip-label">
-            <b>AGEB:</b> {hoverInfo.object.properties["CVEGEO"]}
-          </span>
+          {hoverInfo.object.properties["CVEGEO"] && (
+            <span className="tooltip-label">
+              <b>AGEB:</b> {hoverInfo.object.properties["CVEGEO"]}
+            </span>
+          )}
           {hoverInfo.object.properties["colonia"] && (
             <span className="tooltip-label">
               <b>Colonia:</b> {hoverInfo.object.properties["colonia"]}
             </span>
           )}
           <span className="tooltip-label">
-            <b>Número de empleos en 2020:</b>{" "}
-            {hoverInfo.object.properties["Empleos"].toLocaleString("en-US")}
+            <b>Número de empleos en 2023:</b>{" "}
+            {hoverInfo.object.properties[column].toLocaleString("en-US", {
+              maximumFractionDigits: 0,
+            })}
           </span>
         </Tooltip>
       )}
@@ -136,8 +141,8 @@ export function EmpleoCard() {
         title="Número de empleos en 2020"
         data={chartData}
         domain={[0, 530000]}
-        column="per_ocu"
-        columnKey="nom_mun"
+        column="num_empleos_esperados"
+        columnKey="municipio"
         formatter={(d) => `${Math.round(d).toLocaleString("en-US")}`}
       />
     </>
