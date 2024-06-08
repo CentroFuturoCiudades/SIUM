@@ -46,6 +46,7 @@ import {
   EscenariosFuturosCard,
   EscenariosFuturosControls,
 } from "../components/EscenariosFuturosCard";
+import { ArroyoVivoCard, ArroyoVivoControls } from "../components/ArroyoVivoCard";
 import { BrushingExtension } from "@deck.gl/extensions";
 import { useEffect, useState } from "react";
 
@@ -618,4 +619,13 @@ export const sectionsInfo = {
     component: EscenariosFuturosCard,
     controls: EscenariosFuturosControls,
   },
+  arroyoVivo:{
+    title: "¿Qué pasaría si no cambiamos?",
+    answer:
+      "Tendremos una ciudad más dispersa, con centralidades desconectadas y social y territorialmente fragmentada",
+    color: "blue",
+    icon: MdOutlineAccessTime,
+    component: ArroyoVivoCard,
+    controls: ArroyoVivoControls,
+  }
 };

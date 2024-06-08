@@ -147,7 +147,18 @@ const theme = extendTheme({
       800: "#122224",
       900: "#091112",
     },
-  },
+    blue: {
+      100: "#D6EAF8",
+      200: "#AED6F1",
+      300: "#85C1E9",
+      400: "#5DADE2",
+      500: "#3498DB",
+      600: "#2E86C1",
+      700: "#2874A6",
+      800: "#21618C",
+      900: "#1B4F72"
+    }
+  }
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
