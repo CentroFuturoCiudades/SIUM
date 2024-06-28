@@ -48,6 +48,9 @@ import {
 } from "../components/EscenariosFuturosCard";
 import { BrushingExtension } from "@deck.gl/extensions";
 import { useEffect, useState } from "react";
+import { FlatGeobufLoader } from '@loaders.gl/flatgeobuf';
+import { load } from '@loaders.gl/core';
+import { geojson } from 'flatgeobuf';
 
 export function colorInterpolate(value, thresholds, colors, opacity = 1) {
   // Create a scale using the thresholds and colors
@@ -156,10 +159,10 @@ export const DELINCUENCIA_URL = `${DATA_URL}/crimen_hex2.geojson`;
 export const DELINCUENCIA_CHART_URL = `${DATA_URL}/crimen_municipality.json`;
 export const COSTOS_URL = `${DATA_URL}/crimen-hex.geojson`;
 export const COSTOS_MUNICIPALITY_URL = `${DATA_URL}/costos_municipality.json`;
-export const POB05_URL = `${DATA_URL}/pob_infancia.geojson`;
+export const POB05_URL = `${DATA_URL}/pob_infancia.fgb`;
 export const POB05_CHART_URL = `${DATA_URL}/pob_infancia_municipality.json`;
-export const PARQUES_URL = `${DATA_URL}/parques.geojson`;
-export const SERVICIOS_URL = `${DATA_URL}/denue_infancia.geojson`;
+export const PARQUES_URL = `${DATA_URL}/parques.fgb`;
+export const SERVICIOS_URL = `${DATA_URL}/denue_infancia.fgb`;
 export const ISLAS_CALOR_URL = `${DATA_URL}/islas_calor.geojson`;
 export const ISLAS_CALOR_CHART_URL = `${DATA_URL}/heat_island_municipality.json`;
 export const INDUSTRIA_URL = `${DATA_URL}/industria.geojson`;
@@ -533,6 +536,24 @@ export const useFetch = (url, initialData = undefined, aborter = undefined) => {
   }, [url, aborter]);
   return { data };
 };
+
+export const fetchGeo = async (url, rect = undefined) => {
+  if (!rect) {
+    return await load(url, FlatGeobufLoader);
+  }
+  let iterFeatures = await geojson.deserialize(url,
+    {
+      minX: rect[0],
+      minY: rect[1],
+      maxX: rect[2],
+      maxY: rect[3],
+    });
+  let features = [];
+  for await (const feature of iterFeatures) {
+    features.push(feature);
+  }
+  return { features };
+}
 
 export const sectionsInfo = {
   "expansion-urbana": {

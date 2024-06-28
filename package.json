@@ -7,6 +7,8 @@
     "@chakra-ui/react": "^2.8.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@loaders.gl/core": "^3.4.15",
+    "@loaders.gl/flatgeobuf": "^4.2.2",
     "@react-spring/parallax": "^9.7.3",
     "@react-spring/web": "^9.7.3",
     "@testing-library/jest-dom": "^5.17.0",

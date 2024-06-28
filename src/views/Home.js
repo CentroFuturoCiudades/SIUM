@@ -71,7 +71,7 @@ const Map = ({ year }) => {
   const multiplier =
     minMultiplier +
     ((maxMultiplier - minMultiplier) / (maxWidth - minWidth)) *
-      (width - minWidth);
+    (width - minWidth);
   const image = SATELLITE_IMAGES_URL(year || 1990);
 
   useEffect(() => {
@@ -192,8 +192,8 @@ const Map = ({ year }) => {
         data={
           data
             ? data.features
-                .filter((x) => +x.properties.year <= year)
-                .sort((a, b) => +b.properties.year - +a.properties.year)
+              .filter((x) => +x.properties.year <= year)
+              .sort((a, b) => +b.properties.year - +a.properties.year)
             : []
         }
         getFillColor={(d) =>
