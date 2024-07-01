@@ -21,10 +21,12 @@
     "d3-svg-legend": "^2.25.6",
     "deck.gl": "^8.9.30",
     "file-saver": "^2.0.5",
+    "flatgeobuf": "3.31.1",
     "framer-motion": "^10.16.4",
     "gh-pages": "^6.0.0",
     "mapbox-gl": "^2.15.0",
     "mapboxgl-legend": "^1.14.0",
+    "ol": "^9.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.12.0",
@@ -41,7 +43,7 @@
     "worker-loader": "^3.0.8"
   },
   "scripts": {
-    "predeploy": "npm run build",
+    "predeploy": "yarn run build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
