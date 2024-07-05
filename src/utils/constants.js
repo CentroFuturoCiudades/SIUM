@@ -162,6 +162,7 @@ export const COSTOS_MUNICIPALITY_URL = `${DATA_URL}/costos_municipality.json`;
 export const POB05_URL = `${DATA_URL}/pob_infancia.fgb`;
 export const POB05_CHART_URL = `${DATA_URL}/pob_infancia_municipality.json`;
 export const PARQUES_URL = `${DATA_URL}/parques.fgb`;
+export const PARQUES_URL2 = `${DATA_URL}/parques.geojson`;
 export const SERVICIOS_URL = `${DATA_URL}/denue_infancia.fgb`;
 export const ISLAS_CALOR_URL = `${DATA_URL}/islas_calor.geojson`;
 export const ISLAS_CALOR_CHART_URL = `${DATA_URL}/heat_island_municipality.json`;
