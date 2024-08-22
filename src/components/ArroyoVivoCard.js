@@ -543,9 +543,8 @@ export const ArroyoVivoControls = () => {
             id="sedimentos_layer"
             data={sedimentos}
             opacity={0.5}
-            getFillColor={[0, 0, 0, 0]}
-            getLineColor={[54, 56, 59, 50]}
-            lineWidthScale={1}
+            getFillColor={[54, 56, 59]}
+            lineWidthScale={0}
           />
 
           <TripsLayer
@@ -619,7 +618,7 @@ export const ArroyoVivoControls = () => {
             getPosition={(d) => d.geometry.coordinates}
             radiusPixels={20}
             intensity={1}
-            opacity={0.5}
+            opacity={0.35}
             aggregation={"MEAN"}
           />
         </> : <></>}
