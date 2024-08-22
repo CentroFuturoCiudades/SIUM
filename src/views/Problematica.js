@@ -125,6 +125,30 @@ const Problematica = () => {
   const [currentSection, setCurrentSection] = useState(undefined);
   const [outline, setOutline] = useState();
   const [sharedProps, setSharedProps] = useState({});
+  const [activeJornada, setActiveJornada] = useState("Información global");
+  const [activeButton, setActiveButton] = useState("arroyo");
+  const [tramo1_data, setTramo1] = useState({}) 
+  const [tramo2_data, setTramo2] = useState({})
+  const [tramo3_data, setTramo3] = useState({})
+  const [treemapData, setTreemapData] = useState({
+    "Periodo": "Julio 2022 a Abril 2024",
+    "Residuos Removidos": 21664.64,
+    "Sin clasificar": 10899.39,
+    "Volorizables": 1264.72,
+    "Planta Invasora": 2870.87,
+    "Escombro": 88906,
+    "PET": 591.52,
+    "Otros plásticos": 93.25,
+    "Fierro": 21,
+    "Vidrio": 635.1,
+    "Textil": 2404.48,
+    "Cartón": 14.8,
+    "Aluminio": 2.3,
+    "Llantas": 1072.9,
+    "Muebles": 1687.89,
+    "Electrónicos": 163.6,
+  
+    });
   const currentInfo = currentSection ? sectionsInfo[currentSection] : {};
   const CurrentControls = currentSection
     ? sectionsInfo[currentSection].controls
@@ -184,6 +208,18 @@ const Problematica = () => {
           color: currentInfo.color,
           sharedProps,
           setSharedProps,
+          treemapData,
+          setTreemapData,
+          activeJornada,
+          setActiveJornada,
+          activeButton,
+          setActiveButton,
+          tramo1_data,
+          tramo2_data,
+          tramo3_data,
+          setTramo1,
+          setTramo2,
+          setTramo3
         }}
       >
         {currentSection && (

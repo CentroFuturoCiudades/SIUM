@@ -9,7 +9,9 @@ import {
   MdOutlineFamilyRestroom,
   MdDeviceThermostat,
   MdOutlineAccessTime,
+  wav
 } from "react-icons/md";
+import { LuWaves } from "react-icons/lu";
 import { HiMiniBuildingOffice } from "react-icons/hi2";
 import { GiInjustice, GiRobber } from "react-icons/gi";
 import { FaPeopleArrows } from "react-icons/fa";
@@ -620,11 +622,11 @@ export const sectionsInfo = {
     controls: EscenariosFuturosControls,
   },
   arroyoVivo:{
-    title: "¿Qué pasaría si no cambiamos?",
+    title: "Arroyo Vivo",
     answer:
       "Tendremos una ciudad más dispersa, con centralidades desconectadas y social y territorialmente fragmentada",
     color: "blue",
-    icon: MdOutlineAccessTime,
+    icon: LuWaves,
     component: ArroyoVivoCard,
     controls: ArroyoVivoControls,
   }
