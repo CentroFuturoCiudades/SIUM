@@ -606,8 +606,8 @@ export const ArroyoVivoControls = () => {
             id="escombros"
             data={processedEscombros}
             getPosition={d => d.position}
-            iconAtlas="TestData/arroyo-vivo-icon.png"
-            iconMapping="TestData/arroyo-vivo-materiales.json"
+            iconAtlas="https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo-vivo-icon.png"
+            iconMapping="https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo-vivo-materiales.json"
             getIcon={d => `${d.color}`}
             sizeUnits={"meters"}
             sizeScale={2}
