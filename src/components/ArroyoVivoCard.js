@@ -164,19 +164,19 @@ const legend = {
 
 
 export const ArroyoVivoControls = () => {
-  const { data } = useFetch("TestData/mty_buildings_heights.geojson");
-  const { data: arroyo_anim } = useFetch("TestData/arroyo_vivo_flow.json");
-  const { data: sedimentos } = useFetch("TestData/sedimentos.geojson");
-  const { data: arroyo } = useFetch("TestData/arroyo_vivo.geojson");
-  const { data: aguas_pluviales } = useFetch("TestData/agua_pluvial_flow.json");
-  const { data: grises } = useFetch("TestData/aguas_grises_flow.json");
-  const { data: negras } = useFetch("TestData/aguas_negras_flow.json");
-  const { data: escombros } = useFetch("TestData/escombros.geojson");
-  const { data: tiraderos } = useFetch("TestData/tiraderos.geojson");
-  const { data: tramo2 } = useFetch("TestData/campana_tec.geojson");
-  const { data: tramo1 } = useFetch("TestData/altamira_tec.geojson");
-  const { data: tramo3 } = useFetch("TestData/distrito_tec.geojson");
-  const { data: marine_debris } = useFetch("TestData/marine_debris.geojson");
+  const { data } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/mty_buildings_heights.geojson");
+  const { data: arroyo_anim } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo_vivo_flow.json");
+  const { data: sedimentos } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/sedimentos.geojson");
+  const { data: arroyo } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo_vivo.geojson");
+  const { data: aguas_pluviales } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/agua_pluvial_flow.json");
+  const { data: grises } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/aguas_grises_flow.json");
+  const { data: negras } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/aguas_negras_flow.json");
+  const { data: escombros } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/escombros.geojson");
+  const { data: tiraderos } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/tiraderos.geojson");
+  const { data: tramo2 } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/campana_tec.geojson");
+  const { data: tramo1 } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/altamira_tec.geojson");
+  const { data: tramo3 } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/distrito_tec.geojson");
+  const { data: marine_debris } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/marine_debris.geojson");
   const [hoverInfo, setHoverInfo] = useState();
   const [processedTiraderos, setProcessedTiraderos] = useState([]);
   const [processedEscombros, setProcessedEscombros] = useState([]);
@@ -444,35 +444,13 @@ export const ArroyoVivoControls = () => {
         <GeoJsonLayer
           id="distrito_layer"
           data={data}
-          opacity={1}
+          opacity={0.25}
           getFillColor={[160, 160, 160]}
           getLineColor={[0, 0, 0, 0]}
           lineWidthScale={7.5}
         />
 
-{activeButton === "arroyo" ? <></> : <>
-          {clusters ?
-            <>
-              {Object.keys(colors).map(classification => {
-                const color = hex2rgb(colors[classification]);
-                return <ScatterplotLayer
-                  id={`scatterplot-${classification}`}
-                  data={clusters.filter(d => d.classification === classification)}
-                  getPosition={d => d.geometry.coordinates}
-                  getFillColor={color}
-                  getRadius={d => {
-                    const radius = d.properties.point_count ? ((d.properties.point_count)) * (zoom * 0.0075) : 1;
-                    return radius;
-                  }}
-                  pickable={true}
-                  onHover={info => setHoverInfo(info)}
-                />
-              })}
-            </>
-            : <></>
-          }
-        </>
-        }
+
         {activeButton === "tramo1" ? 
         <>
        
@@ -537,15 +515,33 @@ export const ArroyoVivoControls = () => {
            
           </>
           : <></>}
+  {activeButton === "arroyo" ? <></> : <>
+          {clusters ?
+            <>
+            {/* Filtrar por poligono */}
+              {Object.keys(colors).map(classification => {
+                const color = hex2rgb(colors[classification]);
+                return <ScatterplotLayer
+                  id={`scatterplot-${classification}`}
+                  data={clusters.filter(d => d.classification === classification)}
+                  getPosition={d => d.geometry.coordinates}
+                  getFillColor={color}
+                  getRadius={d => {
+                    const radius = d.properties.point_count ? ((d.properties.point_count)) * (zoom * 0.0075) : 1;
+                    return radius;
+                  }}
+                  pickable={true}
+                  onHover={info => setHoverInfo(info)}
+                />
+              })}
+            </>
+            : <></>
+          }
+        </>
+        }
 
         {activeButton === "arroyo" ? <>
-          <GeoJsonLayer
-            id="sedimentos_layer"
-            data={sedimentos}
-            opacity={0.5}
-            getFillColor={[54, 56, 59]}
-            lineWidthScale={0}
-          />
+          
 
           <TripsLayer
             id="flow_layer"
@@ -594,6 +590,13 @@ export const ArroyoVivoControls = () => {
             trailLength={trailLength}
             currentTime={time}
             shadowEnabled={true}
+          />
+          <GeoJsonLayer
+            id="sedimentos_layer"
+            data={sedimentos}
+            opacity={0.35}
+            getFillColor={[54, 56, 59]}
+            lineWidthScale={0}
           />
         </>
           : <></>}
@@ -843,7 +846,7 @@ const Legend = ({ hoveredPolygon }) => {
     "Tramo",
     "Tramo/zona",
     "Residuos Removidos",
-    "Escombro Removido",
+
     "Distancia lineal  (m)",
   ];
 
@@ -857,11 +860,11 @@ const Legend = ({ hoveredPolygon }) => {
   }, {});
 
   const iconMapping = {
-    'Periodo': '/TestData/arroyo/fecha.svg',
-    'Residuos Removidos': '/TestData/arroyo/residuos_recolectados.svg',
-    'Escombro Removido': '/TestData/arroyo/escombro_remvodio.svg',
-    'Distancia lineal  (m)': '/TestData/arroyo/distancia.svg',
-    "pesajeIcon": "/TestData/arroyo/pesaje.svg"
+    'Periodo': 'https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo/fecha.svg',
+    'Residuos Removidos': 'https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo/residuos_recolectados.svg',
+    'Escombro Removido': 'https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo/escombro_remvodio.svg',
+    'Distancia lineal  (m)': 'https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo/distancia.svg',
+    "pesajeIcon": "https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo/pesaje.svg"
   };
   
 
@@ -873,7 +876,7 @@ const Legend = ({ hoveredPolygon }) => {
       {Object.entries(filteredInfo).map(([key, value]) => (
         <li style={{ display: 'flex', alignItems: 'center', marginLeft: "10px" }} key={key}>
         <img src={iconMapping[key] || iconMapping["Periodo"]} alt={key} style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-        <strong>{key}:</strong> {value}
+        <p><strong>{key}:</strong> {value}</p>
       </li>
       ))}
       </ul>
