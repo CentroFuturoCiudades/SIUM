@@ -149,6 +149,7 @@ const Problematica = () => {
     "Electrónicos": 163.6,
   
     });
+  const [hoveredPolygon, setHoveredPolygon] = useState(null);
   const currentInfo = currentSection ? sectionsInfo[currentSection] : {};
   const CurrentControls = currentSection
     ? sectionsInfo[currentSection].controls
@@ -219,7 +220,9 @@ const Problematica = () => {
           tramo3_data,
           setTramo1,
           setTramo2,
-          setTramo3
+          setTramo3,
+          hoveredPolygon,
+          setHoveredPolygon
         }}
       >
         {currentSection && (

@@ -123,3 +123,50 @@ export const LegendItem = ({ color, label }) => {
     </Tr>
   );
 };
+export const TriangleLegendItem = ({ color, label }) => {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
+  return (
+  <Tr fontSize="min(0.7dvw, 0.7dvh)">
+      <Td>
+        <Box
+        className="legend-color"
+        h="0"
+        w="0"
+        borderLeft="min(0.5dvw) solid transparent"
+        borderRight="min(0.5dvw) solid transparent"
+        borderBottom={`min(1.6dvh) solid ${color}`}
+      />
+      </Td>
+      <Td
+        className="custom-legend-label"
+        fontSize={isMobile ? "10px" : "min(1.6dvh, 0.8dvw)"}
+      >
+        {label}
+      </Td>
+    </Tr>
+
+);}
+
+export const CircleLegendItem = ({ color, label }) => {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
+  return(
+    <Tr fontSize="min(0.7dvw, 0.7dvh)">
+  <Td>
+  <Box
+      className="legend-color"
+      h="min(1.6dvh, 0.8dvw)"
+      w="min(1.6dvh, 0.8dvw)"
+      bg={color}
+      borderRadius="50%"
+    />
+  </Td>
+  <Td
+    className="custom-legend-label"
+    fontSize={isMobile ? "10px" : "min(1.6dvh, 0.8dvw)"}
+  >
+    {label}
+  </Td>
+</Tr>
+
+  );
+}

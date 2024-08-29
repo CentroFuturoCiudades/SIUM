@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
 import { useCardContext } from "../views/Problematica";
-import { ResponseTitle } from "./Card";
 import {
-  sectionsInfo,
   useFetch,
 } from "../utils/constants";
 import {
   CustomLegend,
+  TriangleLegendItem,
+  CircleLegendItem,
   LegendItem,
 } from "./CustomLegend.js";
+import { useMediaQuery} from "@chakra-ui/react";
 import { GeoJsonLayer, TripsLayer, IconLayer, HeatmapLayer, DeckGL, ScatterplotLayer } from "deck.gl";
-import { Treemap, ResponsiveContainer, Tooltip} from 'recharts';
+import { Treemap, ResponsiveContainer, Tooltip, Label} from 'recharts';
 import { Map } from "react-map-gl";
 import Loading from "./Loading";
 import ButtonControls from "./ButtonControls.js";
@@ -18,7 +19,7 @@ import { animate } from "popmotion";
 import DefaultTooltip from "./Tooltip";
 import supercluster from 'supercluster';
 import { ResponsiveFunnel } from "@nivo/funnel";
-import { Tooltip as RechartsTooltip} from "recharts";
+import * as d3 from "d3";
 
 const legend = {
   arroyo: [{
@@ -171,16 +172,24 @@ export const ArroyoVivoControls = () => {
   const { data: aguas_pluviales } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/agua_pluvial_flow.json");
   const { data: grises } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/aguas_grises_flow.json");
   const { data: negras } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/aguas_negras_flow.json");
+  const { data: aguas_pluviales_point } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/agua_pluvial.geojson");
+  const { data: grises_point } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/aguas_grises.geojson");
+  const { data: negras_point } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/aguas_negras.geojson");
   const { data: escombros } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/escombros.geojson");
   const { data: tiraderos } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/tiraderos.geojson");
-  const { data: tramo2 } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/campana_tec.geojson");
+  const { data: tramo2 } = useFetch("TestData/campana_tec.geojson");
   const { data: tramo1 } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/altamira_tec.geojson");
   const { data: tramo3 } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/distrito_tec.geojson");
   const { data: marine_debris } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/marine_debris.geojson");
+  const { data: rio_la_silla } = useFetch("TestData/rio_la_silla.geojson");
+  const { data: aguas_negras } = useFetch("TestData/aguas_negras.geojson");
+  const { data: aguas_grises } = useFetch("TestData/aguas_grises.geojson");
+  const { data: agua_pluvial } = useFetch("TestData/agua_pluvial.geojson");
   const [hoverInfo, setHoverInfo] = useState();
-  const [processedTiraderos, setProcessedTiraderos] = useState([]);
-  const [processedEscombros, setProcessedEscombros] = useState([]);
-  const { color, treemapData,setTreemapData, activeJornada, setActiveJornada, activeButton, setActiveButton, tramo1_data, tramo2_data,tramo3_data, setTramo1, setTramo2, setTramo3 } = useCardContext();
+  const [processedNegras, setProcessedNegras] = useState([]);
+  const [processedGrises, setProcessedGrises] = useState([]);
+  const [processedPluviales, setProcessedPluviales] = useState([]);
+  const { color,setTreemapData, activeJornada, setActiveJornada, activeButton, setActiveButton, tramo1_data, tramo2_data,tramo3_data, setTramo1, setTramo2, setTramo3, setHoveredPolygon} = useCardContext();
   setTramo1(tramo1)
   setTramo2(tramo2)
   setTramo3(tramo3)
@@ -188,7 +197,7 @@ export const ArroyoVivoControls = () => {
   const [tramo2_Polygon, setTramo2_Polygon] = useState(tramo2)
   const [tramo3_Polygon, setTramo3_Polygon] = useState(tramo3)
   const [time, setTime] = useState(0);
-  const [hoveredPolygon, setHoveredPolygon] = useState(null);
+  const [isAnimationFinished, setIsAnimationFinished] = useState(false); // New state for tracking animation status
   const [viewState, setViewState] = useState({
     latitude: 25.6465,
     longitude: -100.295,
@@ -272,13 +281,14 @@ export const ArroyoVivoControls = () => {
       from: 0,
       to: loopLength,
       duration: (loopLength * 60) / animationSpeed,
-      repeat: Infinity,
-      onUpdate: setTime
+      repeat: 0,
+      onUpdate: setTime,
+      onComplete: () => setIsAnimationFinished(true)
     });
     return () => animation.stop();
   }, [loopLength, animationSpeed]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (escombros) {
       const esc = escombros.features.map(feature => ({
         position: feature.geometry.coordinates,
@@ -286,7 +296,37 @@ export const ArroyoVivoControls = () => {
       }));
       setProcessedEscombros(esc);
     }
-  }, [escombros]);
+  }, [escombros]); */
+
+  useEffect(() => {
+    if (aguas_pluviales_point) {
+      const esc = aguas_pluviales_point.features.map(feature => ({
+        position: feature.geometry.coordinates,
+        color: "#80533e",
+      }));
+      setProcessedPluviales(esc);
+    }
+  }, [aguas_pluviales_point]);
+
+  useEffect(() => {
+    if (negras_point) {
+      const esc = negras_point.features.map(feature => ({
+        position: feature.geometry.coordinates,
+        color: "#000000",
+      }));
+      setProcessedNegras(esc);
+    }
+  }, [negras_point]);
+
+  useEffect(() => {
+    if (grises_point) {
+      const esc = grises_point.features.map(feature => ({
+        position: feature.geometry.coordinates,
+        color: "#617183",
+      }));
+      setProcessedGrises(esc);
+    }
+  }, [grises_point]);
 
     useEffect(() => {
     if (activeJornada != "Tramo Completo" )
@@ -316,7 +356,7 @@ export const ArroyoVivoControls = () => {
     setViewState(legend[activeButton][index])
   }, [viewState, activeButton, activeJornada]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (tiraderos) {
       const finalData = tiraderos.features.map(feature => ({
         position: feature.geometry.coordinates,
@@ -324,7 +364,7 @@ export const ArroyoVivoControls = () => {
       }));
       setProcessedTiraderos(finalData);
     }
-  }, [tiraderos]);
+  }, [tiraderos]); */
 
     useEffect(() => {
     let filteredData = [{
@@ -336,7 +376,7 @@ export const ArroyoVivoControls = () => {
         "Escombro": 88906,
         "PET": 591.52,
         "Otros plásticos": 93.25,
-        "Fierro": 21,
+        "Metal": 21,
         "Vidrio": 635.1,
         "Textil": 2404.48,
         "Cartón": 14.8,
@@ -435,9 +475,17 @@ export const ArroyoVivoControls = () => {
 
         <GeoJsonLayer
           id="arroyo_layer"
+          data={rio_la_silla}
+          opacity={1}
+          getLineColor={[136,159,206]}
+          lineWidthScale={30}
+        />
+
+        <GeoJsonLayer
+          id="arroyo_layer"
           data={arroyo}
-          opacity={0.1}
-          getLineColor={[52, 152, 219]}
+          opacity={1}
+          getLineColor={[52, 152, 219,65]}//{[136,159,206]}//{[52, 152, 219]}
           lineWidthScale={30}
         />
 
@@ -466,7 +514,7 @@ export const ArroyoVivoControls = () => {
           lineWidthMinPixels={1}
           lineWidthMaxPixels={10}
         />
-         <Legend hoveredPolygon={hoveredPolygon} />
+    
         </>
          : <></>}
 
@@ -487,7 +535,7 @@ export const ArroyoVivoControls = () => {
           lineWidthMaxPixels={10}
         />
 
-         <Legend hoveredPolygon={hoveredPolygon} />
+        
 
          
 
@@ -511,7 +559,7 @@ export const ArroyoVivoControls = () => {
             lineWidthMaxPixels={10}
           />
 
-           <Legend hoveredPolygon={treemapData} />
+          
            
           </>
           : <></>}
@@ -541,8 +589,6 @@ export const ArroyoVivoControls = () => {
         }
 
         {activeButton === "arroyo" ? <>
-          
-
           <TripsLayer
             id="flow_layer"
             data={arroyo_anim}
@@ -601,20 +647,8 @@ export const ArroyoVivoControls = () => {
         </>
           : <></>}
 
-        {activeButton === "arroyo" ? <>
-{/*           <IconLayer
-            id="escombros"
-            data={processedEscombros}
-            getPosition={d => d.position}
-            iconAtlas="https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo-vivo-icon.png"
-            iconMapping="https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo-vivo-materiales.json"
-            getIcon={d => `${d.color}`}
-            sizeUnits={"meters"}
-            sizeScale={2}
-            sizeMinPixels={0.0001}
-            sizeMaxPixels={10}
-            getSize={d => 12.5}
-          /> */}
+        {/* {activeButton === "arroyo" ? 
+        <>
           <HeatmapLayer
             id="tiraderos_heatmap"
             data={tiraderos.features}
@@ -624,7 +658,95 @@ export const ArroyoVivoControls = () => {
             opacity={0.35}
             aggregation={"MEAN"}
           />
-        </> : <></>}
+          </>
+          :
+           <></>} */}
+          {(activeButton === "arroyo" && isAnimationFinished ===true) ? <>
+            <HeatmapLayer
+            id="tiraderos_heatmap"
+            data={tiraderos.features}
+            getPosition={(d) => d.geometry.coordinates}
+            radiusPixels={20}
+            intensity={1}
+            opacity={0.25}
+            aggregation={"MEAN"}
+          />
+          {/* <IconLayer
+          id="pluviales"
+          data={processedPluviales}
+          getPosition={d => d.position}
+          iconAtlas="./TestData/arroyo-vivo-icon.png"
+          iconMapping="./TestData/arroyo-vivo-materiales.json"
+          getIcon={d => `${d.color}`}
+          sizeUnits={"meters"}
+          sizeScale={2}
+          sizeMinPixels={0.0001}
+          sizeMaxPixels={70}
+          getSize={d => 40}
+        /> */}
+        {/* <IconLayer
+          id="grises"
+          data={processedGrises}
+          getPosition={d => d.position}
+          iconAtlas="./TestData/arroyo-vivo-icon.png"
+          iconMapping="./TestData/arroyo-vivo-materiales.json"
+          getIcon={d => `${d.color}`}
+          sizeUnits={"meters"}
+          sizeScale={2}
+          sizeMinPixels={0.0001}
+          sizeMaxPixels={70}
+          getSize={d => 40}
+        /> */}
+        <HeatmapLayer
+            id="pluvial"
+            data={agua_pluvial.features}
+            getPosition={(d) => d.geometry.coordinates}
+            radiusPixels={15}
+            intensity={1}
+            opacity={1}
+            colorRange={[
+              [128, 83, 62, 255],   
+              [128, 83, 62, 255],  
+              [128, 83, 62, 255],  
+              [128, 83, 62, 255],  
+              [128, 83, 62, 255],  
+            ]}
+            aggregation={"MEAN"}
+          />
+        <HeatmapLayer
+            id="grises"
+            data={aguas_grises.features}
+            getPosition={(d) => d.geometry.coordinates}
+            radiusPixels={15}
+            intensity={1}
+            opacity={1}
+            colorRange={[
+              [97, 113, 131, 255],   
+              [97, 113, 131, 255],  
+              [97, 113, 131, 255],  
+              [97, 113, 131, 255],  
+              [97, 113, 131, 255],  
+            ]}
+            aggregation={"MEAN"}
+          />
+        <HeatmapLayer
+            id="negras"
+            data={aguas_negras.features}
+            getPosition={(d) => d.geometry.coordinates}
+            radiusPixels={15}
+            intensity={1}
+            opacity={1}
+            colorRange={[
+              [0, 0, 0, 255],   
+              [0, 0, 0, 255],  
+              [0, 0, 0, 255],  
+              [0, 0, 0, 255],  
+              [0, 0, 0, 255],  
+            ]}
+            aggregation={"MEAN"}
+          />
+        
+      </> : <></>}
 
         
 
@@ -676,29 +798,41 @@ export const ArroyoVivoControls = () => {
           { id: "arroyo", name: "Arroyo Vivo" },
           { id: "tramo1", name: "Altamira" },
           { id: "tramo2", name: "Campana" },
-          { id: "tramo3", name: "Distrito Tec" },
+          { id: "tramo3", name: "Distritotec" },
         ]}
       />
       {activeButton == "arroyo" ? <>
         <CustomLegend
-          title={"Arroyo Vivo"}
+          title={"Puntos de contaminación"}
           color={color}
+          description={
+            <>
+              <b>Fuente</b>
+              <p>Explicación Visualización.</p>
+            </>
+          }
         >
-          <LegendItem color="#A2D1D3" label="Corriente" />
-          <LegendItem color="#38363B" label="Escombros y Sedimentos" />
-          <LegendItem color="#FFFFFF" label="Tiraderos establecidos" />
-          <LegendItem color="#915C439B" label="Descargas de drenaje pluvial" />
-          <LegendItem color="#6C80949B" label="Descargas de aguas grises" />
-          <LegendItem color="#000000" label="Descargas de aguas negras" />
+          <LegendItem color="#A2D1D3" label="Corriente natural" />
+          <LegendItem color="#38363B" label="Escombros y sedimentos" />
+          <LegendItem color="#FFFFFF" label="Tiraderos a cielo abierto" />
+          <TriangleLegendItem color="#80533e" label="Descargas de drenaje pluvial" />
+          <LegendItem color="#617183" label="Descargas de aguas grises" />
+          <CircleLegendItem color="#000000" label="Descargas de aguas negras" />
         </CustomLegend>
       </> : <CustomLegend
-        title={"Arroyo Vivo - Principales Residuos"}
+        title={"Principales residuos registrados - Marine Debris Tracker "}
         color={color}
+        description={
+          <>
+            <b>Marine Debris Tracker (Proyecto Tec)</b>
+            <p>Explicación Visualización.</p>
+          </>
+        }
       >
         <LegendItem color="#5a1846" label="Plásticos en general " />
         <LegendItem color="#900c3f" label="Llantas" />
         <LegendItem color="#c70239" label="Textiles (incluyendo ropa, telas, zapatos)" />
-        <LegendItem color="#e3611c" label="Residuos de construcción/materiales de construcción" />
+        <LegendItem color="#e3611c" label="Residuos / materiales de construcción"/>
         <LegendItem color="#ea8b10" label="Vidrio" />
         <LegendItem color="#fdc203" label="Aluminio y metal" />
       </CustomLegend>}
@@ -708,21 +842,22 @@ export const ArroyoVivoControls = () => {
 
 
 export function ArroyoVivoCard() {
-  const { color, currentSection,treemapData, activeJornada, setActiveJornada, activeButton } = useCardContext();
+  const { color, currentSection,treemapData, activeJornada, setActiveJornada, activeButton, hoveredPolygon } = useCardContext();
 
   const colorPalette = {
     "Planta Invasora": "#2e8b57",
     "Escombro": "#8b4513",
     "PET": "#7d4051",
     "Otros plásticos": "#a05283",
-    "Fierro": "#708090",
+    "Metal": "#708090",
     "Vidrio": "#ea8b10",
     "Textil": "#c70239",
     "Cartón": "#a52a2a",
     "Aluminio": "#fdc203",
     "Llantas": "#900c3f",
     "Muebles": "#8b4513",
-    "Electrónicos": "#1e90ff"
+    "Electrónicos": "#1e90ff",
+    "Otros": "#8884d8"
 };
 
 const CustomTooltipTreemap = ({ active, payload }) => {
@@ -735,8 +870,16 @@ const CustomTooltipTreemap = ({ active, payload }) => {
         border: '1px solid #ccc',
         borderRadius: '5px'
       }}>
-        <p><strong>{data.name}</strong></p>
-        <p><strong>KG Recolectados: {parseFloat(data.size).toFixed(2)}</strong></p>
+        {data.name != "Otros"
+        ? <p><strong>{data.name}: <br/> {new Intl.NumberFormat("es-MX", {
+                style: "unit",
+                unit: "kilogram",
+              }).format(data.size)}</strong></p>
+        : <p><strong>{data.name} Residuos: <br/> {new Intl.NumberFormat("es-MX", {
+          style: "unit",
+          unit: "kilogram",
+        }).format(data.size)}</strong></p>
+        }
       </div>
     );
   }
@@ -747,12 +890,31 @@ const CustomTooltipTreemap = ({ active, payload }) => {
     .filter(([key, value]) =>  
       (
         key !== "Periodo" 
-        && key !== "Residuos Removidos" 
+        && key !== "Residuos removidos" 
         && key != "Distancia lineal  (m)"
         && key != "Residuos Removidos "
       ) 
         && value > 0)
     .map(([name, size]) => ({ name, size, fill: colorPalette[name] || "#8884d8" }));
+
+    const THRESHOLD = 165;
+    let groupedData = [];
+    let otrosSize = 0;
+
+    treeData.forEach((item) => {
+      if (item.size < THRESHOLD) {
+        otrosSize += item.size;
+      } else {
+        groupedData.push(item);
+      }
+    });
+
+    if (otrosSize > 0) {
+      groupedData.push({
+        name: "Otros",
+        size: otrosSize,
+      });
+    }
 
   return (
     <>
@@ -766,6 +928,7 @@ const CustomTooltipTreemap = ({ active, payload }) => {
       <p>
       Gracias a las jornadas de datos se logró documentar a lo largo del Arroyo Seco más de 23,000 piezas de diversos tipos de residuos sólidos urbanos, siendo en su mayoría escombros, plásticos y textiles. 
       </p>
+      <Legend hoveredPolygon={hoveredPolygon} />
       </>
       :
       activeButton === "tramo2" ?
@@ -773,9 +936,8 @@ const CustomTooltipTreemap = ({ active, payload }) => {
       <p>
       Diversas actividades a nivel comunitario se trabajaron a la par que hacíamos las intervenciones de limpieza en el cause, una de las más relevantes fue lograr la transformación de un espacio que era tiradeo de residuos oficial en un área de juegos. Este hecho ayudó de manera considerable a la disminución de los residuos en ese tramo del arroyo, haciendo también posible comprobar que los residuos que mayoritariamente encontramos en el arroyo son de manejo especial y que hasta el día de hoy no hay alternativas o soluciones eficientes para el manejo y/o transformación de estos elementos.
       </p>
-      <p>
-      Los textiles por ejemplo son uno de los residuos de mayor presencia y de cual casi no tenemos alternativas para su recolección, reciclaje y destino final del mismo. 
-      </p>
+
+      <Legend hoveredPolygon={hoveredPolygon} />
       
       </>
       :
@@ -785,6 +947,7 @@ const CustomTooltipTreemap = ({ active, payload }) => {
       <p>
         
       </p>
+      <Legend hoveredPolygon={hoveredPolygon} />
       </>
       :
       <>
@@ -801,14 +964,16 @@ const CustomTooltipTreemap = ({ active, payload }) => {
       </>
     }
     {activeButton === "arroyo" ? <></>:<>
-      <h3> <strong>Periodo: {treemapData.Periodo}</strong></h3>
+      {/* <h3> <strong>Periodo: {treemapData.Periodo}</strong></h3> */}
+
+      
       <TimelineSelector activeJornada={activeJornada} setActiveJornada={setActiveJornada} />
-      <ResponsiveContainer width="100%" height={300} style={{"padding-bottom":"5vh"}}>
+      <ResponsiveContainer width="100%" height={250} style={{"padding-bottom":"5vh"}}>
         <Treemap
-          data={treeData}
+          data={groupedData}
           dataKey="size"
           nameKey="name"
-          ratio={4/3}
+          aspectRatio={4/4}
           stroke="#fff"
           content={<CustomTooltip />}
         >
@@ -830,7 +995,7 @@ const Legend = ({ hoveredPolygon }) => {
   "Escombro": 88906,
   "PET": 591.52,
   "Otros plásticos": 93.25,
-  "Fierro": 21,
+  "Metal": 21,
   "Vidrio": 635.1,
   "Textil": 2404.48,
   "Cartón": 14.8,
@@ -843,10 +1008,8 @@ const Legend = ({ hoveredPolygon }) => {
 
   const keysToDisplay = [
     "Periodo",
-    "Tramo",
     "Tramo/zona",
     "Residuos Removidos",
-
     "Distancia lineal  (m)",
   ];
 
@@ -870,17 +1033,38 @@ const Legend = ({ hoveredPolygon }) => {
 
 
   return (
-    <div className="legend">
-      <h3><strong>{hoveredPolygon.Periodo != "Julio 2022 a Abril 2024" ? "Análisis por Jornada" : "Datos Globales de Jornada"}</strong></h3>
-      <ul>
-      {Object.entries(filteredInfo).map(([key, value]) => (
-        <li style={{ display: 'flex', alignItems: 'center', marginLeft: "10px" }} key={key}>
-        <img src={iconMapping[key] || iconMapping["Periodo"]} alt={key} style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-        <p><strong>{key}:</strong> {value}</p>
-      </li>
-      ))}
-      </ul>
-    </div>
+    <>
+    <h3 style={{ fontSize: '24px' }}>
+      <strong>
+        {hoveredPolygon.Periodo !== "Julio 2022 a Abril 2024" ? "Residuos removidos por Jornada" : "Datos Globales de Jornada"}
+      </strong>
+    </h3>
+    <ul>
+      {Object.entries(filteredInfo).map(([key, value]) => {
+        return (
+          <>
+          <li style={{ display: 'flex', alignItems: 'center', marginLeft: "2px", fontSize: '18px' }} key={key}>
+            <img src={iconMapping[key] || iconMapping["Periodo"]} alt={key} style={{ width: '20px', height: '20px', marginRight: '0px' }} />
+            {
+              key === "Residuos Removidos" 
+              ? <p><strong>Residuos removidos: </strong> {new Intl.NumberFormat("es-MX", {
+                style: "unit",
+                unit: "kilogram",
+              }).format(value)}</p>
+              : key === "Distancia lineal  (m)" 
+              ? <p><strong>Longitud del tramo: </strong> {new Intl.NumberFormat("es-MX",
+                {
+                  style: "unit",
+                  unit: "meter",
+                }
+              ).format(value)}</p>
+              : <p><strong>{key} : </strong> {value} </p> }
+          </li>
+          </>
+        );
+      })}
+    </ul>
+    </>
   );
 };
 
@@ -905,6 +1089,7 @@ const TimelineSelector = ({ activeJornada, setActiveJornada }) => {
 const FunnelChart = () => {
   const [selectedVariable, setSelectedVariable] = useState("Total Global");
   const [sortBy, setSortBy] = useState("Fecha");
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
 
   const monthMapping = {
     "enero": 0,
@@ -927,6 +1112,7 @@ const FunnelChart = () => {
   };
   
   const formattedData = data
+    .filter(d => d[selectedVariable] > 0)  
     .map(d => ({
       id: d.Fecha,
       value: d[selectedVariable],
@@ -945,18 +1131,27 @@ const FunnelChart = () => {
         style={{
           background: "white",
           padding: "12px",
-          border: "1px solid #ccc",
-          borderRadius: "4px"        }}
+          border: "1px solid #3498DB",
+          borderRadius: "7px"        }}
       >
         <strong>Jornada:</strong> {part.data.id}<br />
         <strong>Variable:</strong> {selectedVariable}<br />
-        <strong>Cantidad:</strong> {part.data.value}
+        <strong>Cantidad:</strong> {new Intl.NumberFormat("es-MX",
+                {
+                  style: "unit",
+                  unit: "kilogram",
+                }).format(part.data.value)}
       </div>
+    };
+
+    const getLabelColor = (color) => {
+      const hsl = d3.hsl(color);
+      return hsl.l > 0.5 ? "black" : "white";
     };
 
 
   return (
-    <div style={{ height: "300PX" }}>
+    <div style={{ height: "300px", width:"100%" }}>
       <div style={{ marginBottom: "20px" }}>
         <label>
           Ordenar Por: 
@@ -983,7 +1178,7 @@ const FunnelChart = () => {
             <option value="Escombro">Escombro</option>
             <option value="PET">PET</option>
             <option value="Otros plásticos">Otros plásticos</option>
-            <option value="Fierro">Fierro</option>
+            <option value="Metal">Metal</option>
             <option value="Vidrio">Vidrio</option>
             <option value="Textil">Textil</option>
             <option value="Cartón">Cartón</option>
@@ -995,23 +1190,70 @@ const FunnelChart = () => {
         </label>
       </div>
 
-      
-
       <ResponsiveFunnel
-        data={formattedData}
-        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
-        enableLabel={true}
-        direction="horizontal"
-        valueFormat=">-.2s"
-        labelColor="black"
-        colors={{ scheme: "purples" }}
-        borderWidth={20}
-        borderColor={{ from: "color", modifiers: [["darker", 0.2]] }}
-        tooltip={CustomTooltipFunnel}
-      />
+          data={formattedData}
+          margin={{ top: 20, right: 20, bottom: 60, left: 60 }}
+          enableLabel={true}
+          direction="horizontal"
+          valueFormat={(value) => new Intl.NumberFormat("es-MX").format(value)}
+          labelColor={({ color }) => getLabelColor(color)}
+          colors={{ scheme: "purples" }}
+          borderWidth={0}
+          borderColor={{ from: "color", modifiers: [["darker", 0.2]] }}
+          tooltip={CustomTooltipFunnel}
+        />
+
+      <div style={{display: "flex", flexDirection: "column" }}>
+        
+
+        <div
+          style={{
+            display: "flex",
+            marginTop: "-7%",
+            marginLeft: "7%",
+            justifyContent: "space-around",
+            padding: "0px 20px",
+            fontSize: isMobile ? "7px" : "8px",
+            fontWeight: "bold",
+            color: "#3498DB",
+          }}
+        >
+          {formattedData.map((d) => (
+            <div 
+            style={{transform: "rotate(-90deg)",}}
+            key={d.id}>{d.fecha}</div>
+          ))}
+        </div>
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          top: "75%",
+          right: "90%",
+          transform: "rotate(-90deg)",
+          fontSize: isMobile ? "10px" : "12px",
+          fontWeight: "bold",
+          color: "#3498DB",
+        }}
+      >
+        Cantidad (kg)
+      </div>
+
+      <div
+        style={{
+          fontWeight: "bold",
+          fontSize: isMobile ? "8px" : "min(0.8dvw, 1.4dvh)",
+          textAlign: "center",
+          marginTop: "10px",
+          color: "#3498DB",
+        }}
+      >
+        Residuos removidos por Jornada (kg)
+      </div>
     </div>
   );
 };
+
 
 
 const CustomTooltip = ({ root, depth, x, y, width, height, index, payload, colors, rank, name , size, fill}) => {
@@ -1051,7 +1293,7 @@ const data = [
     "Escombro": 0, 
     "PET": 35.33, 
     "Otros plásticos": 74.25, 
-    "Fierro": 1.5, 
+    "Metal": 1.5, 
     "Vidrio": 29.65, 
     "Textil": 215.2, 
     "Cartón": 13.5, 
@@ -1068,7 +1310,7 @@ const data = [
     "Escombro": 0, 
     "PET": 22.5, 
     "Otros plásticos": 0, 
-    "Fierro": 0, 
+    "Metal": 0, 
     "Vidrio": 0, 
     "Textil": 0, 
     "Cartón": 0, 
@@ -1085,7 +1327,7 @@ const data = [
     "Escombro": 0, 
     "PET": 23, 
     "Otros plásticos": 10.5, 
-    "Fierro": 0, 
+    "Metal": 0, 
     "Vidrio": 19.5, 
     "Textil": 0, 
     "Cartón": 0, 
@@ -1102,7 +1344,7 @@ const data = [
     "Escombro": 0, 
     "PET": 103.92, 
     "Otros plásticos": 0, 
-    "Fierro": 0, 
+    "Metal": 0, 
     "Vidrio": 252.35, 
     "Textil": 260.1, 
     "Cartón": 0, 
@@ -1119,7 +1361,7 @@ const data = [
     "Escombro": 0, 
     "PET": 126.49, 
     "Otros plásticos": 0, 
-    "Fierro": 0, 
+    "Metal": 0, 
     "Vidrio": 37.2, 
     "Textil": 706.89, 
     "Cartón": 0, 
@@ -1136,7 +1378,7 @@ const data = [
     "Escombro": 0, 
     "PET": 29.38, 
     "Otros plásticos": 0, 
-    "Fierro": 0, 
+    "Metal": 0, 
     "Vidrio": 42.6, 
     "Textil": 248.48, 
     "Cartón": 0, 
@@ -1153,7 +1395,7 @@ const data = [
     "Escombro": 1798, 
     "PET": 55.5, 
     "Otros plásticos": 0, 
-    "Fierro": 0, 
+    "Metal": 0, 
     "Vidrio": 150.15, 
     "Textil": 147.95, 
     "Cartón": 0, 
@@ -1170,7 +1412,7 @@ const data = [
     "Escombro": 0, 
     "PET": 103.55, 
     "Otros plásticos": 0, 
-    "Fierro": 0, 
+    "Metal": 0, 
     "Vidrio": 35.5, 
     "Textil": 275.51, 
     "Cartón": 0, 
@@ -1184,10 +1426,10 @@ const data = [
     "Total Global": 1900, 
     "Residuos Mezclados": 1900, 
     "Planta Invasora": 814, 
-    "Escombro": 87000, 
+    "Escombro": 870, 
     "PET": 0, 
     "Otros plásticos": 0, 
-    "Fierro": 0, 
+    "Metal": 0, 
     "Vidrio": 0, 
     "Textil": 0, 
     "Cartón": 0, 
@@ -1204,7 +1446,7 @@ const data = [
     "Escombro": 108, 
     "PET": 33.5, 
     "Otros plásticos": 0, 
-    "Fierro": 0, 
+    "Metal": 0, 
     "Vidrio": 44.35, 
     "Textil": 500.65, 
     "Cartón": 0, 
@@ -1221,7 +1463,7 @@ const data = [
     "Escombro": 0, 
     "PET": 0, 
     "Otros plásticos": 0, 
-    "Fierro": 0, 
+    "Metal": 0, 
     "Vidrio": 0, 
     "Textil": 0, 
     "Cartón": 0, 
@@ -1238,7 +1480,7 @@ const data = [
     "Escombro": 0, 
     "PET": 6.1, 
     "Otros plásticos": 8.5, 
-    "Fierro": 19.5, 
+    "Metal": 19.5, 
     "Vidrio": 23.8, 
     "Textil": 49.7, 
     "Cartón": 1.3, 
