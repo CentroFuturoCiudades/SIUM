@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
 import { useCardContext } from "../views/Problematica";
+import { ResponseTitle } from "./Card";
 import {
   useFetch,
 } from "../utils/constants";
 import {
   CustomLegend,
-  TriangleLegendItem,
-  CircleLegendItem,
   LegendItem,
+  LegendTwoToneItem,
+  LegendXItem,
 } from "./CustomLegend.js";
 import { useMediaQuery} from "@chakra-ui/react";
-import { GeoJsonLayer, TripsLayer, IconLayer, HeatmapLayer, DeckGL, ScatterplotLayer } from "deck.gl";
+import { GeoJsonLayer, TripsLayer, IconLayer, HeatmapLayer, DeckGL, ScatterplotLayer, TextLayer } from "deck.gl";
 import { Treemap, ResponsiveContainer, Tooltip, Label} from 'recharts';
+import {CollisionFilterExtension} from '@deck.gl/extensions';
 import { Map } from "react-map-gl";
 import Loading from "./Loading";
 import ButtonControls from "./ButtonControls.js";
@@ -165,26 +167,24 @@ const legend = {
 
 
 export const ArroyoVivoControls = () => {
-  const { data } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/mty_buildings_heights.geojson");
-  const { data: arroyo_anim } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo_vivo_flow.json");
-  const { data: sedimentos } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/sedimentos.geojson");
-  const { data: arroyo } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo_vivo.geojson");
-  const { data: aguas_pluviales } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/agua_pluvial_flow.json");
-  const { data: grises } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/aguas_grises_flow.json");
-  const { data: negras } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/aguas_negras_flow.json");
-  const { data: aguas_pluviales_point } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/agua_pluvial.geojson");
-  const { data: grises_point } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/aguas_grises.geojson");
-  const { data: negras_point } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/aguas_negras.geojson");
-  const { data: escombros } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/escombros.geojson");
-  const { data: tiraderos } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/tiraderos.geojson");
+  const { data } = useFetch("TestData//mty_buildings_heights.geojson");
+  const { data: arroyo_anim } = useFetch("TestData//arroyo_vivo_flow.json");
+  const { data: sedimentos } = useFetch("TestData//sedimentos.geojson");
+  const { data: arroyo } = useFetch("TestData//arroyo_vivo.geojson");
+  const { data: aguas_pluviales } = useFetch("TestData//agua_pluvial_flow.json");
+  const { data: grises } = useFetch("TestData//aguas_grises_flow.json");
+  const { data: negras } = useFetch("TestData//aguas_negras_flow.json");
+  const { data: aguas_pluviales_point } = useFetch("TestData//agua_pluvial.geojson");
+  const { data: grises_point } = useFetch("TestData//aguas_grises.geojson");
+  const { data: negras_point } = useFetch("TestData//aguas_negras.geojson");
+  const { data: tiraderos } = useFetch("TestData//tiraderos.geojson");
   const { data: tramo2 } = useFetch("TestData/campana_tec.geojson");
-  const { data: tramo1 } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/altamira_tec.geojson");
-  const { data: tramo3 } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/distrito_tec.geojson");
-  const { data: marine_debris } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/marine_debris.geojson");
+  const { data: tramo1 } = useFetch("TestData//altamira_tec.geojson");
+  const { data: tramo3 } = useFetch("TestData//distrito_tec.geojson");
+  const { data: marine_debris } = useFetch("TestData//marine_debris.geojson");
   const { data: rio_la_silla } = useFetch("TestData/rio_la_silla.geojson");
-  const { data: aguas_negras } = useFetch("TestData/aguas_negras.geojson");
-  const { data: aguas_grises } = useFetch("TestData/aguas_grises.geojson");
-  const { data: agua_pluvial } = useFetch("TestData/agua_pluvial.geojson");
+  const { data: rio_la_silla_point } = useFetch("TestData/silla_point.geojson");
+  const { data: santa_catarina } = useFetch("TestData/santa_catarina_point.geojson");
   const [hoverInfo, setHoverInfo] = useState();
   const [processedNegras, setProcessedNegras] = useState([]);
   const [processedGrises, setProcessedGrises] = useState([]);
@@ -207,13 +207,18 @@ export const ArroyoVivoControls = () => {
     maxZoom: 20,
   });
 
+  const collisionFilter = new CollisionFilterExtension({ 
+    radius: 10,
+    enabled: true
+  });
+
   const colors = {
-    "Plásticos en general": "#5a1846",
-    "Llantas": "#900c3f",
-    "Textiles (incluyendo ropa, telas, zapatos)": "#c70239",
-    "Aluminio y metal": "#fdc203",
-    "Vidrio": "#ea8b10",
-    "Residuos de construcción/materiales de construcción": "#e3611c"
+    "Plásticos en general": "#650046",
+    "Llantas": "#A40034",
+    "Textiles (incluyendo ropa, telas, zapatos)": "#E3001E",
+    "Aluminio y metal": "#FFCB00",
+    "Vidrio": "#FD8A05",
+    "Residuos de construcción/materiales de construcción": "#EF5606"
   };
   const layers = [
     "Plásticos en general",
@@ -287,16 +292,6 @@ export const ArroyoVivoControls = () => {
     });
     return () => animation.stop();
   }, [loopLength, animationSpeed]);
-
-  /* useEffect(() => {
-    if (escombros) {
-      const esc = escombros.features.map(feature => ({
-        position: feature.geometry.coordinates,
-        color: "#38363B",
-      }));
-      setProcessedEscombros(esc);
-    }
-  }, [escombros]); */
 
   useEffect(() => {
     if (aguas_pluviales_point) {
@@ -474,7 +469,7 @@ export const ArroyoVivoControls = () => {
         />
 
         <GeoJsonLayer
-          id="arroyo_layer"
+          id="silla_layer"
           data={rio_la_silla}
           opacity={1}
           getLineColor={[136,159,206]}
@@ -508,11 +503,11 @@ export const ArroyoVivoControls = () => {
           data={tramo1_Polygon}
           opacity={1}
           filled={false}
-          getLineColor={[172, 211, 164, 255]}
-          lineWidthScale={10}
+          getLineColor={[56, 56, 56, 125]}
+          lineWidthScale={4}
           lineWidthUnits={"meters"}
           lineWidthMinPixels={1}
-          lineWidthMaxPixels={10}
+          lineWidthMaxPixels={4}
         />
     
         </>
@@ -528,7 +523,7 @@ export const ArroyoVivoControls = () => {
           data={tramo2_Polygon}
           opacity={1}
           filled={false}
-          getLineColor={[108, 135, 172, 255]}
+          getLineColor={[56, 56, 56, 179]}
           lineWidthScale={10}
           lineWidthUnits={"meters"}
           lineWidthMinPixels={1}
@@ -552,7 +547,7 @@ export const ArroyoVivoControls = () => {
             data={tramo3_Polygon}
             opacity={1}
             filled={false}
-            getLineColor={[210, 174, 149, 255]}
+            getLineColor={[56, 56, 56, 179]}
             lineWidthScale={10}
             lineWidthUnits={"meters"}
             lineWidthMinPixels={1}
@@ -606,7 +601,7 @@ export const ArroyoVivoControls = () => {
             data={aguas_pluviales}
             getPath={d => d.path}
             getTimestamps={d => d.timestamps}
-            getColor={[145, 92, 67, 155]}
+            getColor={[	164, 0, 52, 155]}
             opacity={0.15}
             widthMinPixels={10}
             trailLength={trailLength}
@@ -618,7 +613,7 @@ export const ArroyoVivoControls = () => {
             data={grises}
             getPath={d => d.path}
             getTimestamps={d => d.timestamps}
-            getColor={[108, 128, 148, 155]}
+            getColor={[	255, 85, 0, 155]}
             opacity={0.15}
             widthMinPixels={10}
             trailLength={trailLength}
@@ -630,61 +625,63 @@ export const ArroyoVivoControls = () => {
             data={negras}
             getPath={d => d.path}
             getTimestamps={d => d.timestamps}
-            getColor={[0, 0, 0, 155]}
+            getColor={[19, 22, 25, 155]}
             opacity={0.9}
             widthMinPixels={10}
             trailLength={trailLength}
             currentTime={time}
             shadowEnabled={true}
           />
+          
           <GeoJsonLayer
             id="sedimentos_layer"
             data={sedimentos}
             opacity={0.35}
-            getFillColor={[54, 56, 59]}
+            getFillColor={[57,53,60]}
             lineWidthScale={0}
           />
         </>
           : <></>}
 
-        {/* {activeButton === "arroyo" ? 
-        <>
-          <HeatmapLayer
-            id="tiraderos_heatmap"
-            data={tiraderos.features}
-            getPosition={(d) => d.geometry.coordinates}
-            radiusPixels={20}
-            intensity={1}
-            opacity={0.35}
-            aggregation={"MEAN"}
-          />
-          </>
-          :
-           <></>} */}
           {(activeButton === "arroyo" && isAnimationFinished ===true) ? <>
             <HeatmapLayer
             id="tiraderos_heatmap"
             data={tiraderos.features}
             getPosition={(d) => d.geometry.coordinates}
+            colorRange={[
+              [241, 234, 255, 255],  
+              [219, 201, 255, 255],    
+              [196, 168, 255, 255],    
+              [163, 128, 238, 255],  
+              [147, 104, 228, 255],
+              [131, 81, 218, 255],  
+            ]}
             radiusPixels={20}
             intensity={1}
-            opacity={0.25}
+            opacity={0.5}
             aggregation={"MEAN"}
           />
-          {/* <IconLayer
-          id="pluviales"
-          data={processedPluviales}
-          getPosition={d => d.position}
-          iconAtlas="./TestData/arroyo-vivo-icon.png"
-          iconMapping="./TestData/arroyo-vivo-materiales.json"
-          getIcon={d => `${d.color}`}
-          sizeUnits={"meters"}
-          sizeScale={2}
-          sizeMinPixels={0.0001}
-          sizeMaxPixels={70}
-          getSize={d => 40}
-        /> */}
-        {/* <IconLayer
+          <IconLayer
+            id="pluviales"
+            data={processedPluviales}
+            getPosition={d => d.position}
+            iconAtlas="./TestData/arroyo-vivo-icon.png"
+            iconMapping="./TestData/arroyo-vivo-materiales.json"
+            getIcon={d => `${d.color}`}
+            sizeUnits={"meters"}
+            sizeScale={2}
+            sizeMinPixels={0.0001}
+            sizeMaxPixels={70}
+            getSize={d => 50}
+            extensions={[new CollisionFilterExtension()]}
+            collisionGroup={'contaminacion'}
+            collisionTestProps={{radiusScale: 5}}
+            collisionEnabled={true}
+            alphaCutoff={-1}  
+            anchorY={124}
+            opacity={100}
+          />
+        <IconLayer
           id="grises"
           data={processedGrises}
           getPosition={d => d.position}
@@ -695,59 +692,75 @@ export const ArroyoVivoControls = () => {
           sizeScale={2}
           sizeMinPixels={0.0001}
           sizeMaxPixels={70}
-          getSize={d => 40}
-        /> */}
-        <HeatmapLayer
-            id="pluvial"
-            data={agua_pluvial.features}
-            getPosition={(d) => d.geometry.coordinates}
-            radiusPixels={15}
-            intensity={1}
-            opacity={1}
-            colorRange={[
-              [128, 83, 62, 255],   
-              [128, 83, 62, 255],  
-              [128, 83, 62, 255],  
-              [128, 83, 62, 255],  
-              [128, 83, 62, 255],  
-            ]}
-            aggregation={"MEAN"}
-          />
-        <HeatmapLayer
-            id="grises"
-            data={aguas_grises.features}
-            getPosition={(d) => d.geometry.coordinates}
-            radiusPixels={15}
-            intensity={1}
-            opacity={1}
-            colorRange={[
-              [97, 113, 131, 255],   
-              [97, 113, 131, 255],  
-              [97, 113, 131, 255],  
-              [97, 113, 131, 255],  
-              [97, 113, 131, 255],  
-            ]}
-            aggregation={"MEAN"}
-          />
-        <HeatmapLayer
-            id="negras"
-            data={aguas_negras.features}
-            getPosition={(d) => d.geometry.coordinates}
-            radiusPixels={15}
-            intensity={1}
-            opacity={1}
-            colorRange={[
-              [0, 0, 0, 255],   
-              [0, 0, 0, 255],  
-              [0, 0, 0, 255],  
-              [0, 0, 0, 255],  
-              [0, 0, 0, 255],  
-            ]}
-            aggregation={"MEAN"}
-          />
+          getSize={d => 50}
+          extensions={[new CollisionFilterExtension()]}
+          collisionGroup={'contaminacion'}
+          collisionTestProps={{radiusScale: 5}}
+          collisionEnabled={true}
+          alphaCutoff={-1}
+          anchorY={248}
+          opacity={100}
+        />
+        <IconLayer
+          id="negras"
+          data={processedNegras}
+          getPosition={d => d.position}
+          iconAtlas="./TestData/arroyo-vivo-icon.png"
+          iconMapping="./TestData/arroyo-vivo-materiales.json"
+          getIcon={d => `${d.color}`}
+          sizeUnits={"meters"}
+          sizeScale={2}
+          sizeMinPixels={0.0001}
+          sizeMaxPixels={70}
+          getSize={d => 50}
+          extensions={[new CollisionFilterExtension()]}
+          collisionGroup={'contaminacion'}
+          collisionTestProps={{radiusScale: 5}}
+          collisionEnabled={true}
+          alphaCutoff={-1}
+          anchorY={372}
+          opacity={100}
+          
+        />
         
       </> : <></>}
+   
+    <TextLayer
+    id="text-layer-catarina"
+    data={santa_catarina.features}
+    getPosition={d => d.geometry.coordinates}  
+    getText={d => "Río Santa Catarina"}
+    getSize={d => 15} 
+    getAngle={d => -12}
+    getColor={d => [163, 163, 164]}
+    outlineWidth={7.5}
+  outlineColor={[248,248,248, 255]}
+  fontSettings={{ sdf: true }} 
 
+    characterSet={['R', 'í', 'o', ' ', 'S', 'a', 'n', 't',"a", 'C',"a","t","a","r","i","n","a"]}
+    fontFamily="Roboto Mono"
+    getTextAnchor="middle"
+    getAlignmentBaseline="center"
+
+  />
+      <TextLayer
+    id="text-layer"
+    data={rio_la_silla_point.features}
+    getPosition={d => d.geometry.coordinates}  
+    getText={d => "Río La Silla"} 
+    getSize={d => 15} 
+    getAngle={d => -40}
+    getColor={d => [163, 163, 164]}
+    characterSet={['R', 'í', 'o', ' ', "L","a", " ", "S", "i", "l", "l","a"]}
+    fontFamily="Roboto Mono"
+    getTextAnchor="middle"
+    getAlignmentBaseline="center"
+    outlineWidth={7.5}
+  outlineColor={[248,248,248, 255]}
+  fontSettings={{ sdf: true }} 
+    
+  />
+  
         
 
         {hoverInfo && hoverInfo.object && (
@@ -808,33 +821,86 @@ export const ArroyoVivoControls = () => {
           description={
             <>
               <b>Fuente</b>
-              <p>Explicación Visualización.</p>
+              <p>Información recolectada en levantamiento de campo.</p>
             </>
           }
         >
-          <LegendItem color="#A2D1D3" label="Corriente natural" />
-          <LegendItem color="#38363B" label="Escombros y sedimentos" />
-          <LegendItem color="#FFFFFF" label="Tiraderos a cielo abierto" />
-          <TriangleLegendItem color="#80533e" label="Descargas de drenaje pluvial" />
-          <LegendItem color="#617183" label="Descargas de aguas grises" />
-          <CircleLegendItem color="#000000" label="Descargas de aguas negras" />
+          <LegendItem color="#ACCED1" label="Corriente natural" />
+          <LegendItem color="#39353C" label="Escombros y sedimentos" />
+          <LegendTwoToneItem  label="Tiraderos a cielo abierto" />
+          <LegendXItem color="#A40034" label="Descargas de drenaje pluvial" />
+          <LegendXItem color="#FF5500" label="Descargas de aguas grises" />
+          <LegendXItem color="#131619" label="Descargas de aguas negras" />
+
+          <div
+    style={{
+      
+      bottom: "10px",  
+      height: "40px",
+    }}
+  >
+    </div>
+
+          <div
+    style={{
+      position: "absolute",
+      bottom: "-20px",
+      right: "10px",
+      width: "80px", 
+      height: "80px",
+    }}
+  >
+    <img
+      src={"/TestData/arroyo/arroyo.svg"}
+      alt="SVG Icon"
+      style={{ width: "100%", height: "100%" }}
+    />
+  </div>
+          
+
         </CustomLegend>
       </> : <CustomLegend
-        title={"Principales residuos registrados - Marine Debris Tracker "}
+        title={<>Principales residuos registrados - Marine Debris Tracker</>}
         color={color}
         description={
           <>
-            <b>Marine Debris Tracker (Proyecto Tec)</b>
-            <p>Explicación Visualización.</p>
+            <b>Residuos registrados con Marine Debris Tracker</b>
+            <p>Marine Debris Tracker es una aplicación de ciencia ciudadana y datos abiertos desarrollada por la Oficina Nacional de Administración Oceánica y Atmosférica (NOAA) de los Estados Unidos con el propósito de que los ciudadanos puedan contribuir datos sobre la contaminación hídrica en sus comunidades.</p>
           </>
         }
       >
-        <LegendItem color="#5a1846" label="Plásticos en general " />
-        <LegendItem color="#900c3f" label="Llantas" />
-        <LegendItem color="#c70239" label="Textiles (incluyendo ropa, telas, zapatos)" />
-        <LegendItem color="#e3611c" label="Residuos / materiales de construcción"/>
-        <LegendItem color="#ea8b10" label="Vidrio" />
-        <LegendItem color="#fdc203" label="Aluminio y metal" />
+        <LegendItem color="#650046" label="Plásticos en general" />
+        <LegendItem color="#A40034" label="Llantas" />
+        <LegendItem color="#E3001E" label="Textiles" />
+        <LegendItem color="#EF5606" label="Escombro"/>
+        <LegendItem color="#FD8A05" label="Vidrio" />
+        <LegendItem color="#FFCB00" label="Aluminio y metal" />
+
+        <div
+    style={{
+      
+      bottom: "10px",  
+      height: "40px",
+    }}
+  >
+    </div>
+
+          <div
+    style={{
+      position: "absolute",
+      bottom: "-20px",
+      right: "10px",
+      width: "80px", 
+      height: "80px",
+    }}
+  >
+    <img
+      src={"/TestData/arroyo/arroyo.svg"}
+      alt="SVG Icon"
+      style={{ width: "100%", height: "100%" }}
+    />
+  </div>
+
       </CustomLegend>}
     </>
   );
@@ -845,19 +911,19 @@ export function ArroyoVivoCard() {
   const { color, currentSection,treemapData, activeJornada, setActiveJornada, activeButton, hoveredPolygon } = useCardContext();
 
   const colorPalette = {
-    "Planta Invasora": "#2e8b57",
-    "Escombro": "#8b4513",
-    "PET": "#7d4051",
-    "Otros plásticos": "#a05283",
-    "Metal": "#708090",
-    "Vidrio": "#ea8b10",
-    "Textil": "#c70239",
+    "Planta Invasora": "#00955B",
+    "Escombro": "#EF5606",
+    "PET": "#8F0D68",
+    "Otros plásticos": "#C50B90",
+    "Metal": "#F7DE89",
+    "Vidrio": "#FD8A05",
+    "Textil": "#E3001E",
     "Cartón": "#a52a2a",
-    "Aluminio": "#fdc203",
-    "Llantas": "#900c3f",
-    "Muebles": "#8b4513",
-    "Electrónicos": "#1e90ff",
-    "Otros": "#8884d8"
+    "Aluminio": "#DCB835",
+    "Llantas": "#A40034",
+    "Muebles": "#684E3B",
+    "Electrónicos": "#3D72D5",
+    "Otros": "#956BD9"
 };
 
 const CustomTooltipTreemap = ({ active, payload }) => {
@@ -867,7 +933,7 @@ const CustomTooltipTreemap = ({ active, payload }) => {
       <div style={{
         backgroundColor: '#fff',
         padding: '10px',
-        border: '1px solid #ccc',
+        border: `2.5px solid ${colorPalette[data.name]}`,
         borderRadius: '5px'
       }}>
         {data.name != "Otros"
@@ -895,13 +961,18 @@ const CustomTooltipTreemap = ({ active, payload }) => {
         && key != "Residuos Removidos "
       ) 
         && value > 0)
-    .map(([name, size]) => ({ name, size, fill: colorPalette[name] || "#8884d8" }));
+    .map(([name, size]) => ({ name, size, fill: colorPalette[name] || "#956BD9" }));
 
     const THRESHOLD = 165;
     let groupedData = [];
     let otrosSize = 0;
 
     treeData.forEach((item) => {
+
+      if (item.name === "Residuos Removidos") {
+        return;
+      }
+
       if (item.size < THRESHOLD) {
         otrosSize += item.size;
       } else {
@@ -918,57 +989,47 @@ const CustomTooltipTreemap = ({ active, payload }) => {
 
   return (
     <>
-     
-      {activeButton === "tramo1" ?
+    
+      {activeButton != "arroyo" ?
+
+
+
+
       <>
      
       <p>
-      La participación ciudadana ha sido clave para el desarrollo y la consolidación de este modelo de trabajo, durante el 2022 a 2024 contamos con la participación de más de 2,000 personas voluntarias que se sumaron a diversas actividades de ciencia ciudadana como las jornadas de limpieza selectiva, donde realizamos 16 intervenciones en diversos tramos del arroyo.
-      </p>
-      <p>
-      Gracias a las jornadas de datos se logró documentar a lo largo del Arroyo Seco más de 23,000 piezas de diversos tipos de residuos sólidos urbanos, siendo en su mayoría escombros, plásticos y textiles. 
-      </p>
-      <Legend hoveredPolygon={hoveredPolygon} />
-      </>
-      :
-      activeButton === "tramo2" ?
-      <>
-      <p>
-      Diversas actividades a nivel comunitario se trabajaron a la par que hacíamos las intervenciones de limpieza en el cause, una de las más relevantes fue lograr la transformación de un espacio que era tiradeo de residuos oficial en un área de juegos. Este hecho ayudó de manera considerable a la disminución de los residuos en ese tramo del arroyo, haciendo también posible comprobar que los residuos que mayoritariamente encontramos en el arroyo son de manejo especial y que hasta el día de hoy no hay alternativas o soluciones eficientes para el manejo y/o transformación de estos elementos.
+      la participación ciudadana ha sido clave para el desarrollo y la consolidación del modelo. Con el levantamiento de datos se registraron en el Arroyo Seco más de 23,000 piezas de residuos sólidos urbanos, siendo en su mayoría escombro de construcción, diversos tipos de plásticos y textiles. Esta información se recopiló con la aplicación Marine Debris Tracker, que permite georreferenciar la ubicación exacta de los residuos. 
       </p>
 
-      <Legend hoveredPolygon={hoveredPolygon} />
+      <p>
+      Durante las jornadas de limpieza se separaron y pesaron los residuos con potencial valorizable como el PET, cartón, aluminio, vidrio y metal. 
+      </p>
       
-      </>
-      :
-
-      activeButton === "tramo3" ?
-      <>
-      <p>
-        
-      </p>
       <Legend hoveredPolygon={hoveredPolygon} />
       </>
       :
       <>
+       <ResponseTitle color={color}>
+        Porque no gestionamos adecuadamente los residuos.
+      </ResponseTitle>
+      
       <p>
-      El Arroyo Seco, ubicado al sur de Monterrey, es uno de los pocos cuerpos de agua naturales que subsisten en la zona metropolitana, y por años ha sufrido contaminación al ser utilizado como tiradero a cielo abierto. De acuerdo a estimaciones oficiales, cada día se tiran ilegalmente alrededor de 800 toneladas de residuos en ríos, arroyos y riachuelos de Nuevo León.
+      El proyecto<strong> Arroyo Vivo </strong> es un modelo de regeneración ambiental, remediación y reciclaje inclusivo ubicado en el Arroyo Seco, al sur de la ciudad. Es uno de los pocos cuerpos de agua naturales que subsisten en la zona metropolitana, y por años ha sido contaminado al utilizarse como tiradero a cielo abierto. 
       </p>
       <p>
-      Ante esta problemática Arroyo Vivo consolidó una estrategia de documentación y clasificación de residuos con el objetivo de identificar las zonas con mayores problemáticas. 
+      Desde el 2022, mediante un proceso participativo de jornadas de limpieza y levantamiento de datos, <strong>Arroyo Vivo</strong> ha documentado la presencia de residuos, tiraderos domésticos y descargas ilegales de aguas grises y negras en el Arroyo Seco. Esto con el objetivo de crear una línea base de información que permita mejorar la calidad del agua y promover la salud del ecosistema.
       </p>
       <p>
-      Arroyo Vivo es un proyecto colaborativo lidereado desde el Tecnológico de Monterrey, que recibió inversión de la Oficina Nacional del Gobierno de Estados Unidos de Administración Oceánica y Atmosférica (National Oceanic and Atmospheric Administration, NOAA por sus siglas en ingles) y de Fundación FEMSA; desde el 2022 ha estado trabajando en conjunto con los cuatro socios operativos y territoriales que son WWF México, Sociedad Sostenible A.C., distritotec y la Iniciativa Campana-Altamira. 
+      En el mapa se aprecian los puntos de contaminación identificados durante el levantamiento de datos en campo y la presencia de residuos sólidos urbanos registrados con la herramienta Marine Debris Tracker.
       </p>
       <FunnelChart/>
       </>
     }
     {activeButton === "arroyo" ? <></>:<>
-      {/* <h3> <strong>Periodo: {treemapData.Periodo}</strong></h3> */}
 
       
       <TimelineSelector activeJornada={activeJornada} setActiveJornada={setActiveJornada} />
-      <ResponsiveContainer width="100%" height={250} style={{"padding-bottom":"5vh"}}>
+      <ResponsiveContainer width="100%" height={200} style={{"padding-bottom":"5vh"}}>
         <Treemap
           data={groupedData}
           dataKey="size"
@@ -1008,6 +1069,7 @@ const Legend = ({ hoveredPolygon }) => {
 
   const keysToDisplay = [
     "Periodo",
+    "Tramo",
     "Tramo/zona",
     "Residuos Removidos",
     "Distancia lineal  (m)",
@@ -1023,42 +1085,44 @@ const Legend = ({ hoveredPolygon }) => {
   }, {});
 
   const iconMapping = {
-    'Periodo': 'https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo/fecha.svg',
-    'Residuos Removidos': 'https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo/residuos_recolectados.svg',
-    'Escombro Removido': 'https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo/escombro_remvodio.svg',
-    'Distancia lineal  (m)': 'https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo/distancia.svg',
-    "pesajeIcon": "https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo/pesaje.svg"
+    'Periodo': 'TestData/arroyo/fecha.svg',
+    'Residuos Removidos': 'TestData/arroyo/residuos_recolectados.svg',
+    'Escombro Removido': 'TestData/arroyo/escombro_remvodio.svg',
+    'Distancia lineal  (m)': 'TestData/arroyo/distancia.svg',
+    "pesajeIcon": "TestData/arroyo/pesaje.svg"
   };
   
 
 
   return (
     <>
-    <h3 style={{ fontSize: '24px' }}>
+    <h3 style={{ fontSize: '20px' }}>
       <strong>
-        {hoveredPolygon.Periodo !== "Julio 2022 a Abril 2024" ? "Residuos removidos por Jornada" : "Datos Globales de Jornada"}
+        {hoveredPolygon.Periodo !== "Julio 2022 a Abril 2024" ? "Residuos removidos por jornada" : "Datos Globales de Jornada"}
       </strong>
     </h3>
     <ul>
       {Object.entries(filteredInfo).map(([key, value]) => {
         return (
           <>
-          <li style={{ display: 'flex', alignItems: 'center', marginLeft: "2px", fontSize: '18px' }} key={key}>
+          <li style={{ display: 'flex', alignItems: 'center', marginLeft: "2px", fontSize: '10px' }} key={key}>
             <img src={iconMapping[key] || iconMapping["Periodo"]} alt={key} style={{ width: '20px', height: '20px', marginRight: '0px' }} />
             {
               key === "Residuos Removidos" 
-              ? <p><strong>Residuos removidos: </strong> {new Intl.NumberFormat("es-MX", {
+              ? <p><strong>Residuos removidos:  </strong> {new Intl.NumberFormat("es-MX", {
                 style: "unit",
                 unit: "kilogram",
               }).format(value)}</p>
               : key === "Distancia lineal  (m)" 
-              ? <p><strong>Longitud del tramo: </strong> {new Intl.NumberFormat("es-MX",
+              ? <p><strong>Longitud del tramo:  </strong> {new Intl.NumberFormat("es-MX",
                 {
                   style: "unit",
                   unit: "meter",
                 }
               ).format(value)}</p>
-              : <p><strong>{key} : </strong> {value} </p> }
+              : key === "Tramo/zona"
+              ? <p><strong>Zona: </strong> {value} </p>
+              : <p><strong>{key}: </strong> {value} </p> }
           </li>
           </>
         );
@@ -1079,7 +1143,7 @@ const TimelineSelector = ({ activeJornada, setActiveJornada }) => {
           onClick={() => setActiveJornada(jornada)}
           className={`button ${activeJornada === jornada ? 'active' : ''}`}
         >
-          {jornada}
+          {jornada === "Tramo Completo" ? "Tramo completo": jornada}
         </button>
       ))}
     </div>
@@ -1105,6 +1169,50 @@ const FunnelChart = () => {
     "noviembre": 10,
     "diciembre": 11
   };
+
+  const colorMapping = {
+    "Total Global": "#3f007d",
+    "PET": "#8F0D68",
+    "Otros plásticos": "#C50B90",
+    "Llantas": "#A40034",
+    "Textil": "#E3001E",
+    "Escombro": "#EF5606",
+    "Vidrio": "#FD8A05",
+    "Aluminio": "#DCB835",
+    "Metal": "#F7DE89",
+    "Muebles": "#684E3B",
+    "Electrónicos": "#3D72D5",
+    "Planta Invasora": "#00955B",
+    "Residuos Mezclados": "#956BD9"
+  };
+  
+  const generateColorPalette = (selectedVariable, data) => {
+    const baseColor = d3.color(colorMapping[selectedVariable]);
+    if (!baseColor) return () => "#ffffff";
+  
+    const lightColor = baseColor.brighter(1);
+    const darkColor = baseColor; 
+  
+    const colorInterpolator = d3.interpolateRgb(lightColor, darkColor);
+    const valueRange = data.map(d => d.value);
+    const min = Math.min(...valueRange);
+    const max = Math.max(...valueRange);
+    
+    const colorScale = d3.scaleLinear().domain([min, max]).range([0, 1]);
+  
+    return data.map(d => {
+      const t = colorScale(d.value);
+      let color = d3.color(colorInterpolator(t));
+  
+      if (t < 0.1) {
+        color = d3.color(baseColor.darker(0.5)); 
+      }
+  
+      color.opacity = Math.max(0.5, t); 
+      return color.formatRgb();
+    });
+  };
+  
   
   const parseDate = (dateStr) => {
     const [day, month, year] = dateStr.split(" ");
@@ -1146,9 +1254,10 @@ const FunnelChart = () => {
 
     const getLabelColor = (color) => {
       const hsl = d3.hsl(color);
-      return hsl.l > 0.5 ? "black" : "white";
+      return hsl.l > 0.3 ? "black" : "white";
     };
 
+    const colorPalette = generateColorPalette(selectedVariable, formattedData);
 
   return (
     <div style={{ height: "300px", width:"100%" }}>
@@ -1172,34 +1281,42 @@ const FunnelChart = () => {
             onChange={(e) => setSelectedVariable(e.target.value)}
             style={{ marginLeft: "10px" }}
           >
-            <option value="Total Global">Total Global</option>
-            <option value="Residuos Mezclados">Residuos Mezclados</option>
-            <option value="Planta Invasora">Planta Invasora</option>
-            <option value="Escombro">Escombro</option>
+            <option value="Total Global">Total global</option>
             <option value="PET">PET</option>
             <option value="Otros plásticos">Otros plásticos</option>
-            <option value="Metal">Metal</option>
-            <option value="Vidrio">Vidrio</option>
-            <option value="Textil">Textil</option>
-            <option value="Cartón">Cartón</option>
-            <option value="Aluminio">Aluminio</option>
             <option value="Llantas">Llantas</option>
+            <option value="Textil">Textiles</option>
+            <option value="Escombro">Escombro</option>
+            <option value="Vidrio">Vidrio</option>
+            <option value="Aluminio">Aluminio</option>
+            <option value="Metal">Metal</option>
             <option value="Muebles">Muebles</option>
             <option value="Electrónicos">Electrónicos</option>
+            <option value="Planta Invasora">Planta invasora</option>
+            <option value="Residuos Mezclados">Residuos mezclados</option>
+            
+            
+            
+      
+           {/*  <option value="Cartón">Cartón</option>
+             */}
+            
+            
+
           </select>
         </label>
       </div>
 
       <ResponsiveFunnel
           data={formattedData}
-          margin={{ top: 20, right: 20, bottom: 60, left: 60 }}
+          margin={{ top: 5, right: 30, bottom: 60, left: 50 }}
           enableLabel={true}
           direction="horizontal"
-          valueFormat={(value) => new Intl.NumberFormat("es-MX").format(value)}
+          valueFormat={" =-,.4r"}
           labelColor={({ color }) => getLabelColor(color)}
-          colors={{ scheme: "purples" }}
+          colors={colorPalette}
           borderWidth={0}
-          borderColor={{ from: "color", modifiers: [["darker", 0.2]] }}
+          fontSize= { `calc(0.5rem + 0.5vw)`}
           tooltip={CustomTooltipFunnel}
         />
 
@@ -1209,7 +1326,7 @@ const FunnelChart = () => {
         <div
           style={{
             display: "flex",
-            marginTop: "-7%",
+            marginTop: "-8%",
             marginLeft: "7%",
             justifyContent: "space-around",
             padding: "0px 20px",
@@ -1228,7 +1345,7 @@ const FunnelChart = () => {
       <div
         style={{
           position: "absolute",
-          top: "75%",
+          top: "72.5%",
           right: "90%",
           transform: "rotate(-90deg)",
           fontSize: isMobile ? "10px" : "12px",
@@ -1244,11 +1361,11 @@ const FunnelChart = () => {
           fontWeight: "bold",
           fontSize: isMobile ? "8px" : "min(0.8dvw, 1.4dvh)",
           textAlign: "center",
-          marginTop: "10px",
+          marginTop: "12px",
           color: "#3498DB",
         }}
       >
-        Residuos removidos por Jornada (kg)
+        Residuos removidos por jornada (kg)
       </div>
     </div>
   );

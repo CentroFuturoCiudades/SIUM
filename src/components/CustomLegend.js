@@ -147,26 +147,52 @@ export const TriangleLegendItem = ({ color, label }) => {
 
 );}
 
-export const CircleLegendItem = ({ color, label }) => {
+export const LegendXItem = ({ color, label }) => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
-  return(
-    <Tr fontSize="min(0.7dvw, 0.7dvh)">
-  <Td>
-  <Box
-      className="legend-color"
-      h="min(1.6dvh, 0.8dvw)"
-      w="min(1.6dvh, 0.8dvw)"
-      bg={color}
-      borderRadius="50%"
-    />
-  </Td>
-  <Td
-    className="custom-legend-label"
-    fontSize={isMobile ? "10px" : "min(1.6dvh, 0.8dvw)"}
-  >
-    {label}
-  </Td>
-</Tr>
 
+  return (
+    <Tr fontSize="min(0.7dvw, 0.7dvh)">
+      <Td>
+        <ImCross color={color} fontSize="min(1.6dvh, 0.8dvw)" />
+      </Td>
+      <Td
+        className="custom-legend-label"
+        fontSize={isMobile ? "10px" : "min(1.6dvh, 0.8dvw)"}
+      >
+        {label}
+      </Td>
+    </Tr>
   );
-}
+};
+
+export const LegendTwoToneItem = ({ label }) => {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
+
+  return (
+    <Tr fontSize="min(0.7dvw, 0.7dvh)">
+      <Td>
+        <Card
+          className="legend-color"
+          h={isMobile ? "10px" : "min(1.6dvh, 0.8dvw)"}
+          w={isMobile ? "10px" : "min(1.6dvh, 0.8dvw)"}
+          bg="#DBC9FF"
+          borderRadius="15%"
+          p="3px"
+        >
+          <Card
+            h="100%"
+            w="100%"
+            bg="#8351DA"
+            borderRadius="inherit"
+          />
+        </Card>
+      </Td>
+      <Td
+        className="custom-legend-label"
+        fontSize={isMobile ? "10px" : "min(1.6dvh, 0.8dvw)"}
+      >
+        {label}
+      </Td>
+    </Tr>
+  );
+};

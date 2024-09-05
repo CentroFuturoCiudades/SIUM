@@ -622,9 +622,9 @@ export const sectionsInfo = {
     controls: EscenariosFuturosControls,
   },
   arroyoVivo:{
-    title: "Arroyo Vivo",
+    title: "¿Por qué se contaminan nuestros arroyos?",
     answer:
-      "Tendremos una ciudad más dispersa, con centralidades desconectadas y social y territorialmente fragmentada",
+      "Arroyo vivo. Modelo de regeneración, remediación y reciclaje en cuerpos de agua en Monterrey.",
     color: "blue",
     icon: LuWaves,
     component: ArroyoVivoCard,

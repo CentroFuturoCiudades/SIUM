@@ -273,22 +273,26 @@ td {
 .timeline-selector {
   display: flex;
   justify-content: space-evenly;
-  margin: 20px;
-  padding: 10px;
+  flex-wrap: wrap;
+  margin: 15px;
+  padding: 5px;
   background: #f4f4f8;
-  border-radius: 8px;
+  border-radius: 4px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .timeline-selector .button {
-  padding: 10px 10px;
-  font-size: 16px;
+  padding: 10px;
+  font-size: 12px;
   color: #333;
   background-color: #f4f4f8;
   border: 2px solid transparent;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
+  min-width: 70px;
+  flex: 1;
+  text-align: center;
 }
 
 .timeline-selector .button:hover {
@@ -300,4 +304,15 @@ td {
   color: #fff;
   background-color: #5DADE2;
   border-color: #5DADE2;
+}
+@media (max-width: 600px) {
+  .timeline-selector {
+    justify-content: center;
+  }
+
+  .timeline-selector .button {
+    font-size: 9px; 
+    padding: 8px;
+    min-width: 60px;
+  }
 }
