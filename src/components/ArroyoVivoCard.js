@@ -167,24 +167,24 @@ const legend = {
 
 
 export const ArroyoVivoControls = () => {
-  const { data } = useFetch("TestData//mty_buildings_heights.geojson");
-  const { data: arroyo_anim } = useFetch("TestData//arroyo_vivo_flow.json");
-  const { data: sedimentos } = useFetch("TestData//sedimentos.geojson");
-  const { data: arroyo } = useFetch("TestData//arroyo_vivo.geojson");
-  const { data: aguas_pluviales } = useFetch("TestData//agua_pluvial_flow.json");
-  const { data: grises } = useFetch("TestData//aguas_grises_flow.json");
-  const { data: negras } = useFetch("TestData//aguas_negras_flow.json");
-  const { data: aguas_pluviales_point } = useFetch("TestData//agua_pluvial.geojson");
-  const { data: grises_point } = useFetch("TestData//aguas_grises.geojson");
-  const { data: negras_point } = useFetch("TestData//aguas_negras.geojson");
-  const { data: tiraderos } = useFetch("TestData//tiraderos.geojson");
-  const { data: tramo2 } = useFetch("TestData/campana_tec.geojson");
-  const { data: tramo1 } = useFetch("TestData//altamira_tec.geojson");
-  const { data: tramo3 } = useFetch("TestData//distrito_tec.geojson");
-  const { data: marine_debris } = useFetch("TestData//marine_debris.geojson");
-  const { data: rio_la_silla } = useFetch("TestData/rio_la_silla.geojson");
-  const { data: rio_la_silla_point } = useFetch("TestData/silla_point.geojson");
-  const { data: santa_catarina } = useFetch("TestData/santa_catarina_point.geojson");
+  const { data } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.mty_buildings_heights.geojson");
+  const { data: arroyo_anim } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.arroyo_vivo_flow.json");
+  const { data: sedimentos } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.sedimentos.geojson");
+  const { data: arroyo } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.arroyo_vivo.geojson");
+  const { data: aguas_pluviales } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.agua_pluvial_flow.json");
+  const { data: grises } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.aguas_grises_flow.json");
+  const { data: negras } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.aguas_negras_flow.json");
+  const { data: aguas_pluviales_point } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.agua_pluvial.geojson");
+  const { data: grises_point } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.aguas_grises.geojson");
+  const { data: negras_point } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.aguas_negras.geojson");
+  const { data: tiraderos } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.tiraderos.geojson");
+  const { data: tramo2 } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.campana_tec.geojson");
+  const { data: tramo1 } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.altamira_tec.geojson");
+  const { data: tramo3 } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.distrito_tec.geojson");
+  const { data: marine_debris } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.marine_debris.geojson");
+  const { data: rio_la_silla } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.rio_la_silla.geojson");
+  const { data: rio_la_silla_point } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.silla_point.geojson");
+  const { data: santa_catarina } = useFetch("https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.santa_catarina_point.geojson");
   const [hoverInfo, setHoverInfo] = useState();
   const [processedNegras, setProcessedNegras] = useState([]);
   const [processedGrises, setProcessedGrises] = useState([]);
@@ -665,8 +665,8 @@ export const ArroyoVivoControls = () => {
             id="pluviales"
             data={processedPluviales}
             getPosition={d => d.position}
-            iconAtlas="./TestData/arroyo-vivo-icon.png"
-            iconMapping="./TestData/arroyo-vivo-materiales.json"
+            iconAtlas="./https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.arroyo-vivo-icon.png"
+            iconMapping="./https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.arroyo-vivo-materiales.json"
             getIcon={d => `${d.color}`}
             sizeUnits={"meters"}
             sizeScale={2}
@@ -685,8 +685,8 @@ export const ArroyoVivoControls = () => {
           id="grises"
           data={processedGrises}
           getPosition={d => d.position}
-          iconAtlas="./TestData/arroyo-vivo-icon.png"
-          iconMapping="./TestData/arroyo-vivo-materiales.json"
+          iconAtlas="./https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.arroyo-vivo-icon.png"
+          iconMapping="./https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.arroyo-vivo-materiales.json"
           getIcon={d => `${d.color}`}
           sizeUnits={"meters"}
           sizeScale={2}
@@ -705,8 +705,8 @@ export const ArroyoVivoControls = () => {
           id="negras"
           data={processedNegras}
           getPosition={d => d.position}
-          iconAtlas="./TestData/arroyo-vivo-icon.png"
-          iconMapping="./TestData/arroyo-vivo-materiales.json"
+          iconAtlas="./https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.arroyo-vivo-icon.png"
+          iconMapping="./https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.arroyo-vivo-materiales.json"
           getIcon={d => `${d.color}`}
           sizeUnits={"meters"}
           sizeScale={2}
@@ -851,7 +851,7 @@ export const ArroyoVivoControls = () => {
     }}
   >
     <img
-      src={"/TestData/arroyo/arroyo.svg"}
+      src={"/https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.arroyo/arroyo.svg"}
       alt="SVG Icon"
       style={{ width: "100%", height: "100%" }}
     />
@@ -895,7 +895,7 @@ export const ArroyoVivoControls = () => {
     }}
   >
     <img
-      src={"/TestData/arroyo/arroyo.svg"}
+      src={"/https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.arroyo/arroyo.svg"}
       alt="SVG Icon"
       style={{ width: "100%", height: "100%" }}
     />
@@ -1085,11 +1085,11 @@ const Legend = ({ hoveredPolygon }) => {
   }, {});
 
   const iconMapping = {
-    'Periodo': 'TestData/arroyo/fecha.svg',
-    'Residuos Removidos': 'TestData/arroyo/residuos_recolectados.svg',
-    'Escombro Removido': 'TestData/arroyo/escombro_remvodio.svg',
-    'Distancia lineal  (m)': 'TestData/arroyo/distancia.svg',
-    "pesajeIcon": "TestData/arroyo/pesaje.svg"
+    'Periodo': 'https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.arroyo/fecha.svg',
+    'Residuos Removidos': 'https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.arroyo/residuos_recolectados.svg',
+    'Escombro Removido': 'https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.arroyo/escombro_remvodio.svg',
+    'Distancia lineal  (m)': 'https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.arroyo/distancia.svg',
+    "pesajeIcon": "https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/.arroyo/pesaje.svg"
   };
   
 
