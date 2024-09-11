@@ -6,7 +6,7 @@ import {
   INDUSTRIA_URL,
   ISLAS_CALOR_CHART_URL,
   ISLAS_CALOR_URL,
-  PARQUES_URL,
+  PARQUES_URL2,
   VIAS_URL,
   cleanedGeoData,
   colorInterpolate,
@@ -60,7 +60,7 @@ export const IslasCalorControls = () => {
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const [legendItems, setLegendItems] = useState([]);
   const { data } = useFetch(ISLAS_CALOR_URL);
-  const { data: dataParques } = useFetch(PARQUES_URL);
+  const { data: dataParques } = useFetch(PARQUES_URL2);
   const { data: dataIndustrias } = useFetch(INDUSTRIA_URL);
 
   useEffect(() => {
