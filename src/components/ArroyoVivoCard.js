@@ -665,8 +665,8 @@ export const ArroyoVivoControls = () => {
             id="pluviales"
             data={processedPluviales}
             getPosition={d => d.position}
-            iconAtlas="./https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo-vivo-icon.png"
-            iconMapping="./https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo-vivo-materiales.json"
+            iconAtlas="https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo-vivo-icon.png"
+            iconMapping="https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo-vivo-materiales.json"
             getIcon={d => `${d.color}`}
             sizeUnits={"meters"}
             sizeScale={2}
@@ -685,8 +685,8 @@ export const ArroyoVivoControls = () => {
           id="grises"
           data={processedGrises}
           getPosition={d => d.position}
-          iconAtlas="./https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo-vivo-icon.png"
-          iconMapping="./https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo-vivo-materiales.json"
+          iconAtlas="https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo-vivo-icon.png"
+          iconMapping="https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo-vivo-materiales.json"
           getIcon={d => `${d.color}`}
           sizeUnits={"meters"}
           sizeScale={2}
@@ -705,8 +705,8 @@ export const ArroyoVivoControls = () => {
           id="negras"
           data={processedNegras}
           getPosition={d => d.position}
-          iconAtlas="./https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo-vivo-icon.png"
-          iconMapping="./https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo-vivo-materiales.json"
+          iconAtlas="https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo-vivo-icon.png"
+          iconMapping="https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo-vivo-materiales.json"
           getIcon={d => `${d.color}`}
           sizeUnits={"meters"}
           sizeScale={2}
@@ -851,7 +851,7 @@ export const ArroyoVivoControls = () => {
     }}
   >
     <img
-      src={"/https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo/arroyo.svg"}
+      src={"https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo/arroyo.svg"}
       alt="SVG Icon"
       style={{ width: "100%", height: "100%" }}
     />
@@ -895,7 +895,7 @@ export const ArroyoVivoControls = () => {
     }}
   >
     <img
-      src={"/https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo/arroyo.svg"}
+      src={"https://sium.blob.core.windows.net/sium/datos/arroyo_vivo/arroyo/arroyo.svg"}
       alt="SVG Icon"
       style={{ width: "100%", height: "100%" }}
     />
