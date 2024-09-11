@@ -71,7 +71,7 @@ const Map = ({ year }) => {
   const multiplier =
     minMultiplier +
     ((maxMultiplier - minMultiplier) / (maxWidth - minWidth)) *
-      (width - minWidth);
+    (width - minWidth);
   const image = SATELLITE_IMAGES_URL(year || 1990);
 
   useEffect(() => {
@@ -192,8 +192,8 @@ const Map = ({ year }) => {
         data={
           data
             ? data.features
-                .filter((x) => +x.properties.year <= year)
-                .sort((a, b) => +b.properties.year - +a.properties.year)
+              .filter((x) => +x.properties.year <= year)
+              .sort((a, b) => +b.properties.year - +a.properties.year)
             : []
         }
         getFillColor={(d) =>
@@ -327,15 +327,19 @@ const Map = ({ year }) => {
         {year ? (
           <>
             <div style={noteStyle}>
-              <Text
-                fontSize={isMobile ? "6px" : "min(1.6dvh, 0.8dvw)"}
-                style={{ color: "white", alignItems: "end" }}
-              >
-                *Superficie construida con techo
-              </Text>
+                <Text
+                  fontSize={isMobile ? "6px" : "min(1.6dvh, 0.8dvw)"}
+                  style={{ color: "white", alignItems: "end", alignSelf:"flex-end"}}
+                >
+                  <div style={{width:"50vw"}}>
+                  *La superficie que se reporta es la superficie de suelo construido. El suelo construido se define así cuando el área de una celda de 30x30 mts tiene al menos un 20% de su superficie cubierta con un techo. La fuente de información es el Global Human Settlement Layer (https://human-settlement.emergency.copernicus.eu/). La métrica no reporta suelo urbanizado como vialidades y espacio público. Se eligió esta métrica porque era la única forma de contar con un indicador consistente, sistemático y confiable para medir su evolución en los últimos 30 años.
+                  </div>
+                </Text>
             </div>
           </>
-        ) : null}
+        ) : null }
+
+        
       </div>
     </DeckGL>
   );

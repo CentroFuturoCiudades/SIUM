@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useCardContext } from "../views/Problematica";
 import { ResponseTitle, ContextTitle } from "./Card";
 import {
@@ -8,6 +8,7 @@ import {
   SERVICIOS_URL,
   cleanedGeoData,
   colorInterpolate,
+  fetchGeo,
   generateGradientColors,
   generateQuantileColors,
   sectionsInfo,
@@ -26,6 +27,7 @@ import { CustomLegend, LegendItem } from "./CustomLegend";
 import { Legend } from "recharts";
 import { IconLayer } from "deck.gl";
 import PopupButton from "./PopupButton";
+import { debounce } from "lodash";
 
 //const INFANCIAS_QUANTILES = [0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.2, 0.3, 0.4];
 const INFANCIAS_QUANTILES = [0.05, 0.1, 0.15, 0.2, 0.4];
@@ -33,20 +35,21 @@ const INFANCIAS_QUANTILES = [0.05, 0.1, 0.15, 0.2, 0.4];
 export const InfanciasControls = () => {
   const { color } = useCardContext();
   const [isMobile] = useMediaQuery("(max-width: 800px)");
-  const [startColor] = useToken("colors", [`${color}.100`]);
+  const [startColor] = useToken("colors", [`${color}.200`]);
   const endColor = "#6a2eab";
   //const INFANCIA_COLORS = generateGradientColors(startColor, endColor, 8);
-  const INFANCIA_COLORS = generateQuantileColors(startColor, endColor, 4);
+  const INFANCIA_COLORS = generateQuantileColors("#fcfce3", endColor, 4);
   const [viewState, setViewState] = useState(
     SPECIAL_INFANCIAS_STATE,
     undefined,
     isMobile
   ); //para que empiece en el punto que dijo nelida
-  const { data: dataPob } = useFetch(POB05_URL, undefined, isMobile);
-  const { data: dataParques } = useFetch(PARQUES_URL, undefined, isMobile);
-  const { data: dataServ } = useFetch(SERVICIOS_URL, undefined, isMobile);
+  const [dataPob, setDataPob] = useState();
+  const [dataParques, setDataParques] = useState();
+  const [dataServ, setDataServ] = useState();
   const [brushingRadius, setBrushingRadius] = useState(1000); //radio esta en metros
   const [circlePayload, setCirclePayload] = useState();
+  const [hoverCenter, setHoverCenter] = useState(null);
 
   const radiusInDegrees = (brushingRadius / 40075000) * 360; //formula para convertir metros a grados (con la circunferencia de la Tierra 40,075,000 mts)
   ///CALCULAR SERVICIOS DENTRO DEL CIRCULO CON DISTANCIA EUCLIDEANA
@@ -69,84 +72,107 @@ export const InfanciasControls = () => {
   }
 
   //se llama cada vez que se mueve el circulo
-  const handleInfanciasHover = (info) => {
-    if (info.coordinate) {
-      const [longCenter, latCenter] = [info.coordinate[0], info.coordinate[1]];
-
-      //filter de servicios dentro del circulo
-      const enclosedDataServices = dataServ.features.filter((feature) => {
-        const coordinates = feature.geometry.coordinates;
-        const [featureLong, featureLat] = coordinates;
-        const distance = EuclideanDistance(
-          longCenter,
-          latCenter,
-          featureLong,
-          featureLat
-        );
-        return distance <= radiusInDegrees;
-      });
-
-      //filter de manzanas pob05 dentro del circulo
-      const filteredDataPob05 = dataPob.features.filter((feature) => {
-        const centerBlockLong = feature.properties.longitud;
-        const centerBlockLat = feature.properties.latitud;
-        const distance = EuclideanDistance(
-          longCenter,
-          latCenter,
-          centerBlockLong,
-          centerBlockLat
-        );
-        return distance <= radiusInDegrees;
-      });
-
-      const filteredDataParques = dataParques.features.filter((feature) => {
-        const centerBlockLong = feature.properties.longitude;
-        const centerBlockLat = feature.properties.latitude;
-        const distance = EuclideanDistance(
-          longCenter,
-          latCenter,
-          centerBlockLong,
-          centerBlockLat
-        );
-        return distance <= radiusInDegrees;
-      });
-      const sumPob = _.sumBy(filteredDataPob05, (f) => f.properties.POBTOT);
-      const sumPob05 = _.sumBy(filteredDataPob05, (f) => f.properties.pob05);
-      const servicesCount = _.countBy(
-        enclosedDataServices,
-        (f) => f.properties.sector
-      );
-      const promedio = (sumPob05 / sumPob) * 100;
-
-      setCirclePayload({
-        ...servicesCount,
-        pob_ratio: Math.round(promedio * 100) / 100,
-        area_parques: _.sumBy(filteredDataParques, (f) => f.properties.area),
-      });
-    } else {
+  const handleInfanciasHover = async (coordinates) => {
+    if (!coordinates) {
       setCirclePayload(null);
+      return;
     }
-  };
-  if (isMobile)
-    return (
-      <div>
-        Esta sección no se encuentra disponible en móvil por el momento. <br />
-        Para ver esta sección, por favor visita la página en una computadora.
-      </div>
-    );
+    console.log(hoverCenter);
+    const [longCenter, latCenter] = [coordinates[0], coordinates[1]];
+    const bbox = [longCenter - radiusInDegrees, latCenter - radiusInDegrees, longCenter + radiusInDegrees, latCenter + radiusInDegrees];
 
-  if (!dataPob || !dataParques || !dataServ) return <Loading color={color} />;
+    const services = await fetchGeo(SERVICIOS_URL, bbox);
+    setDataServ(services);
+
+    //filter de servicios dentro del circulo
+    const enclosedDataServices = services.features.filter((feature) => {
+      const coordinates = feature.geometry.coordinates;
+      const [featureLong, featureLat] = coordinates;
+      const distance = EuclideanDistance(
+        longCenter,
+        latCenter,
+        featureLong,
+        featureLat
+      );
+      return distance <= radiusInDegrees;
+    });
+
+    const population = await fetchGeo(POB05_URL, bbox);
+    setDataPob(population);
+    //filter de manzanas pob05 dentro del circulo
+    const filteredDataPob05 = population.features.filter((feature) => {
+      const centerBlockLong = feature.properties.longitud;
+      const centerBlockLat = feature.properties.latitud;
+      const distance = EuclideanDistance(
+        longCenter,
+        latCenter,
+        centerBlockLong,
+        centerBlockLat
+      );
+      return distance <= radiusInDegrees;
+    });
+
+    const parks = await fetchGeo(PARQUES_URL, bbox);
+    setDataParques(parks);
+    const filteredDataParques = parks.features.filter((feature) => {
+      const centerBlockLong = feature.properties.longitude;
+      const centerBlockLat = feature.properties.latitude;
+      const distance = EuclideanDistance(
+        longCenter,
+        latCenter,
+        centerBlockLong,
+        centerBlockLat
+      );
+      return distance <= radiusInDegrees;
+    });
+    const sumPob = _.sumBy(filteredDataPob05, (f) => f.properties.POBTOT);
+    const sumPob05 = _.sumBy(filteredDataPob05, (f) => f.properties.pob05);
+    const servicesCount = _.countBy(
+      enclosedDataServices,
+      (f) => f.properties.sector
+    );
+    const promedio = (sumPob05 / sumPob) * 100;
+
+    setCirclePayload({
+      ...servicesCount,
+      pob_ratio: Math.round(promedio * 100) / 100,
+      area_parques: _.sumBy(filteredDataParques, (f) => f.properties.area),
+    });
+  };
+
+  const debouncedInfanciasHover = useCallback(
+    debounce(handleInfanciasHover, 100),
+    []
+  );
+
+  useEffect(() => {
+    debouncedInfanciasHover(hoverCenter);
+  }, [hoverCenter]);
+
+  const showData = !!dataPob && !!dataParques && !!dataServ;
+  console.log("showData", showData);
 
   return (
     <>
       <CustomMap
         viewState={viewState}
         setViewState={setViewState}
-        infanciasHover={handleInfanciasHover}
+        onHover={(info, event) => {
+          if (info.coordinate) {
+            const [longCenter, latCenter] = [
+              info.coordinate[0],
+              info.coordinate[1],
+            ];
+            setHoverCenter([longCenter, latCenter]);
+          } else {
+            setHoverCenter(null);
+          }
+        }}
+        onDragStart={() => setHoverCenter(null)}
       >
         <GeoJsonLayer
           id="infancias2_layer" //aqui me falta arreglar el degradado de colores correcto y quitar el delineado de bordes
-          data={cleanedGeoData(dataPob.features, "ratio_pob05")}
+          data={showData ? cleanedGeoData(dataPob.features, "ratio_pob05") : []}
           getFillColor={(d) =>
             colorInterpolate(
               d.properties["ratio_pob05"],
@@ -157,18 +183,20 @@ export const InfanciasControls = () => {
             )
           }
           getLineColor={[118, 124, 130]}
-          getLineWidth={0}
+          getLineWidth={3}
           brushingEnabled={true}
+          visible={!!circlePayload}
           brushingRadius={brushingRadius}
           extensions={[new BrushingExtension()]}
         />
         <GeoJsonLayer
           id="parques_layer"
-          data={cleanedGeoData(dataParques.features, "area")}
+          data={showData ? cleanedGeoData(dataParques.features, "area") : []}
           getFillColor={[150, 200, 112]}
           getLineColor={[80, 120, 20]}
-          getLineWidth={10}
+          getLineWidth={5}
           brushingEnabled={true}
+          visible={!!circlePayload}
           brushingRadius={brushingRadius}
           extensions={[new BrushingExtension()]}
         />
@@ -176,9 +204,9 @@ export const InfanciasControls = () => {
         <GeoJsonLayer
           id="comercios_layer"
           //data={cleanedGeoData(dataServ.features, "codigo_act")}
-          data={dataServ.features.filter(
+          data={showData ? dataServ.features.filter(
             (d) => d.properties.sector === "comercio al por menor"
-          )}
+          ) : []}
           getLineColor={[246, 145, 0]}
           getLineWidth={20}
           brushingEnabled={true}
@@ -188,21 +216,21 @@ export const InfanciasControls = () => {
         />
         <IconLayer
           id="servicios_tachas"
-          data={dataServ.features.filter(
+          data={showData ? dataServ.features.filter(
             (d) =>
               d.properties.sector === "guarderia" ||
               d.properties.sector === "preescolar" ||
               d.properties.sector === "salud"
-          )}
+          ) : []}
           iconAtlas="https://sium.blob.core.windows.net/sium/images/icon-atlas2.png"
           iconMapping="https://sium.blob.core.windows.net/sium/images/icon-atlas2.json"
           getIcon={(d) => getIconByCodigoAct(d.properties.sector)}
           getPosition={(d) => d.geometry.coordinates}
           sizeUnits={"meters"}
           sizeScale={100}
-          visible={!!circlePayload}
           sizeMinPixels={6}
           brushingEnabled={true}
+          visible={!!circlePayload}
           brushingRadius={brushingRadius}
           extensions={[new BrushingExtension()]}
         />
@@ -219,6 +247,21 @@ export const InfanciasControls = () => {
             text: "La importancia de accesibilidad a espacio público.",
           }}
         />
+        {hoverCenter && (
+          <ScatterplotLayer
+            id="circle-layer"
+            data={[{ position: hoverCenter, size: 1000 }]}
+            pickable={true}
+            stroked={true}
+            filled={true}
+            lineWidthMinPixels={1}
+            getPosition={hoverCenter}
+            getRadius={1100}
+            getFillColor={[0, 0, 0, 20]} // Circle color
+            getLineWidth={80}
+            getLineColor={[80, 80, 80]} // Border color
+          />
+        )}
       </CustomMap>
       <CustomLegend
         color={color}
