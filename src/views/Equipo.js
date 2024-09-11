@@ -108,7 +108,6 @@ const infoEquipo = {
       "Martha Montemayor",
       "Luisa Pérez",
       "Carlos Placencia",
-      "Carlos Orozco",
       "Marina Ramírez",
     ],
   },

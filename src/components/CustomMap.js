@@ -57,7 +57,7 @@ export const SPECIAL_INFANCIAS_STATE = {
 const LONGITUDE_RANGE = [-100.7, -99.9];
 const LATITUDE_RANGE = [25.35, 26.01];
 
-export function CustomMap({ viewState, infanciasHover, children, onHover, onDragStart }) {
+export function CustomMap({ viewState, infanciasHover, children }) {
   const dimensions = useWindowDimensions();
   const [isMobile] = useMediaQuery("(max-width: 800px)");
   const view = new WebMercatorViewport({
@@ -127,8 +127,18 @@ export function CustomMap({ viewState, infanciasHover, children, onHover, onDrag
           setProcessedViewState(viewState);
         }}
         controller={DECK_GL_CONTROLLER}
-        onHover={onHover}
-        onDragStart={onDragStart}
+        onHover={(info, event) => {
+          if (info.coordinate) {
+            const [longCenter, latCenter] = [
+              info.coordinate[0],
+              info.coordinate[1],
+            ];
+            setHoverCenter([longCenter, latCenter]);
+          } else {
+            setHoverCenter(null);
+          }
+          debouncedInfanciasHover(info, event);
+        }}
       >
         <Map
           width="100%"
