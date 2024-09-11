@@ -998,7 +998,7 @@ const CustomTooltipTreemap = ({ active, payload }) => {
       <>
      
       <p>
-      la participación ciudadana ha sido clave para el desarrollo y la consolidación del modelo. Con el levantamiento de datos se registraron en el Arroyo Seco más de 23,000 piezas de residuos sólidos urbanos, siendo en su mayoría escombro de construcción, diversos tipos de plásticos y textiles. Esta información se recopiló con la aplicación Marine Debris Tracker, que permite georreferenciar la ubicación exacta de los residuos. 
+      La participación ciudadana ha sido clave para el desarrollo y la consolidación del modelo. Con el levantamiento de datos se registraron en el Arroyo Seco más de 23,000 piezas de residuos sólidos urbanos, siendo en su mayoría escombro de construcción, diversos tipos de plásticos y textiles. Esta información se recopiló con la aplicación Marine Debris Tracker, que permite georreferenciar la ubicación exacta de los residuos. 
       </p>
 
       <p>
