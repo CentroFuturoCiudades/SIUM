@@ -1034,7 +1034,7 @@ const CustomTooltipTreemap = ({ active, payload }) => {
           data={groupedData}
           dataKey="size"
           nameKey="name"
-          aspectRatio={4/4}
+          aspectRatio={4/3}
           stroke="#fff"
           content={<CustomTooltip />}
         >
@@ -1096,7 +1096,7 @@ const Legend = ({ hoveredPolygon }) => {
 
   return (
     <>
-    <h3 style={{ fontSize: '20px' }}>
+    <h3 style={{ fontSize: '0.95rem' }}>
       <strong>
         {hoveredPolygon.Periodo !== "Julio 2022 a Abril 2024" ? "Residuos removidos por jornada" : "Datos Globales de Jornada"}
       </strong>
@@ -1105,8 +1105,8 @@ const Legend = ({ hoveredPolygon }) => {
       {Object.entries(filteredInfo).map(([key, value]) => {
         return (
           <>
-          <li style={{ display: 'flex', alignItems: 'center', marginLeft: "2px", fontSize: '10px' }} key={key}>
-            <img src={iconMapping[key] || iconMapping["Periodo"]} alt={key} style={{ width: '20px', height: '20px', marginRight: '0px' }} />
+          <li style={{ display: 'flex', alignItems: 'center', marginLeft: "2px", fontSize: '0.5rem' }} key={key}>
+            <img src={iconMapping[key] || iconMapping["Periodo"]} alt={key} style={{ width: '20px', height: '15px', marginRight: '0px' }} />
             {
               key === "Residuos Removidos" 
               ? <p><strong>Residuos removidos:  </strong> {new Intl.NumberFormat("es-MX", {

@@ -283,7 +283,7 @@ td {
 
 .timeline-selector .button {
   padding: 10px;
-  font-size: 12px;
+  font-size: 0.65rem;
   color: #333;
   background-color: #f4f4f8;
   border: 2px solid transparent;
