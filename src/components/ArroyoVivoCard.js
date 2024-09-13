@@ -5,10 +5,11 @@ import {
   useFetch,
 } from "../utils/constants";
 import {
-  CustomLegend,
+  CustomLegendArroyo,
   LegendItem,
   LegendTwoToneItem,
   LegendXItem,
+  LegendLineItem
 } from "./CustomLegend.js";
 import { useMediaQuery} from "@chakra-ui/react";
 import { GeoJsonLayer, TripsLayer, IconLayer, HeatmapLayer, DeckGL, ScatterplotLayer, TextLayer } from "deck.gl";
@@ -815,7 +816,7 @@ export const ArroyoVivoControls = () => {
         ]}
       />
       {activeButton == "arroyo" ? <>
-        <CustomLegend
+        <CustomLegendArroyo
           title={"Puntos de contaminación"}
           color={color}
           description={
@@ -858,8 +859,8 @@ export const ArroyoVivoControls = () => {
   </div>
           
 
-        </CustomLegend>
-      </> : <CustomLegend
+        </CustomLegendArroyo>
+      </> : <CustomLegendArroyo
         title={<>Principales residuos registrados - Marine Debris Tracker</>}
         color={color}
         description={
@@ -875,7 +876,7 @@ export const ArroyoVivoControls = () => {
         <LegendItem color="#EF5606" label="Escombro"/>
         <LegendItem color="#FD8A05" label="Vidrio" />
         <LegendItem color="#FFCB00" label="Aluminio y metal" />
-        {/* <LegendItem color="#383838" label="Tramo seleccionado" /> */}
+        <LegendLineItem color="#383838" label="Tramo seleccionado" />
         <div
     style={{
       
@@ -901,7 +902,7 @@ export const ArroyoVivoControls = () => {
     />
   </div>
 
-      </CustomLegend>}
+      </CustomLegendArroyo>}
     </>
   );
 };
@@ -1327,17 +1328,22 @@ const FunnelChart = () => {
           style={{
             display: "flex",
             marginTop: "-8%",
-            marginLeft: isMobile? "7%":"1.7vw",
+            marginLeft: isMobile? "-9%":"1.7vw",
             justifyContent: "space-around",
-            padding: isMobile?"0px 20px":"0px 25px",
+            padding: isMobile?"0px -20px":"0px 25px",
             fontSize: isMobile?"7px":"0.4rem",
             fontWeight: "bold",
             color: "#3498DB",
           }}
         >
           {formattedData.map((d) => (
+            isMobile?
             <div 
-            style={{transform: "rotate(-90deg)",}}
+            style={{transform: "rotate(-90deg)", marginRight:"-30px"}}
+            key={d.id}><p style={{fontSize:"7px", marginRight:"6.25px",width: "max-content"}}>{d.fecha}</p></div>
+            :
+            <div 
+            style={{transform: "rotate(-90deg)"}}
             key={d.id}>{d.fecha}</div>
           ))}
         </div>
