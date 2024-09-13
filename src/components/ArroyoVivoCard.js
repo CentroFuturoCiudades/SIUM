@@ -1260,7 +1260,7 @@ const FunnelChart = () => {
     const colorPalette = generateColorPalette(selectedVariable, formattedData);
 
   return (
-    <div style={{ height: "300px", width:"100%" }}>
+    <div style={{ height: "27.5vh", width:"30vw", fontSize:"0.65em"}}>
       <div style={{ marginBottom: "20px" }}>
         <label>
           Ordenar Por: 
@@ -1309,28 +1309,28 @@ const FunnelChart = () => {
 
       <ResponsiveFunnel
           data={formattedData}
-          margin={{ top: 5, right: 30, bottom: 60, left: 50 }}
+          margin={{ top: 5, right: 30, bottom: 60, left: 45 }}
           enableLabel={true}
           direction="horizontal"
           valueFormat={" =-,.4r"}
           labelColor={({ color }) => getLabelColor(color)}
           colors={colorPalette}
-          borderWidth={0}
-          fontSize= { `calc(0.5rem + 0.5vw)`}
+          borderWidth={0}          
           tooltip={CustomTooltipFunnel}
+          
         />
 
-      <div style={{display: "flex", flexDirection: "column" }}>
+      <div style={{display: "flex", flexDirection: "column", width:"100%"}}>
         
 
         <div
           style={{
             display: "flex",
             marginTop: "-8%",
-            marginLeft: "7%",
+            marginLeft: "1.7vw",
             justifyContent: "space-around",
-            padding: "0px 20px",
-            fontSize: isMobile ? "7px" : "8px",
+            padding: "0px 25px",
+            fontSize: "0.4rem",
             fontWeight: "bold",
             color: "#3498DB",
           }}
