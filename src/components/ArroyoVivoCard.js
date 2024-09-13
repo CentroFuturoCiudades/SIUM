@@ -671,8 +671,8 @@ export const ArroyoVivoControls = () => {
             sizeUnits={"meters"}
             sizeScale={2}
             sizeMinPixels={0.0001}
-            sizeMaxPixels={70}
-            getSize={d => 50}
+            sizeMaxPixels={40}
+            getSize={d => 30}
             extensions={[new CollisionFilterExtension()]}
             collisionGroup={'contaminacion'}
             collisionTestProps={{radiusScale: 5}}
@@ -691,8 +691,8 @@ export const ArroyoVivoControls = () => {
           sizeUnits={"meters"}
           sizeScale={2}
           sizeMinPixels={0.0001}
-          sizeMaxPixels={70}
-          getSize={d => 50}
+          sizeMaxPixels={40}
+          getSize={d => 30}
           extensions={[new CollisionFilterExtension()]}
           collisionGroup={'contaminacion'}
           collisionTestProps={{radiusScale: 5}}
@@ -711,8 +711,7 @@ export const ArroyoVivoControls = () => {
           sizeUnits={"meters"}
           sizeScale={2}
           sizeMinPixels={0.0001}
-          sizeMaxPixels={70}
-          getSize={d => 50}
+          sizeMaxPixels={40}
           extensions={[new CollisionFilterExtension()]}
           collisionGroup={'contaminacion'}
           collisionTestProps={{radiusScale: 5}}
@@ -875,7 +874,7 @@ export const ArroyoVivoControls = () => {
         <LegendItem color="#EF5606" label="Escombro"/>
         <LegendItem color="#FD8A05" label="Vidrio" />
         <LegendItem color="#FFCB00" label="Aluminio y metal" />
-
+        {/* <LegendItem color="#383838" label="Tramo seleccionado" /> */}
         <div
     style={{
       
@@ -1260,7 +1259,7 @@ const FunnelChart = () => {
     const colorPalette = generateColorPalette(selectedVariable, formattedData);
 
   return (
-    <div style={{ height: "27.5vh", width:"30vw", fontSize:"0.65em"}}>
+    <div style={{ height: isMobile?"300px":"27.5vh", width:isMobile?"100vw":"30vw", fontSize:"0.65em", marginLeft:"-2%"}}>
       <div style={{ marginBottom: "20px" }}>
         <label>
           Ordenar Por: 
@@ -1309,7 +1308,7 @@ const FunnelChart = () => {
 
       <ResponsiveFunnel
           data={formattedData}
-          margin={{ top: 5, right: 30, bottom: 60, left: 45 }}
+          margin={{ top: 5, right: isMobile?20:30, bottom: 60, left: isMobile?15:45 }}
           enableLabel={true}
           direction="horizontal"
           valueFormat={" =-,.4r"}
@@ -1320,17 +1319,17 @@ const FunnelChart = () => {
           
         />
 
-      <div style={{display: "flex", flexDirection: "column", width:"100%"}}>
+      <div style={{display: "flex", flexDirection: "column", width:isMobile?"60%":"100%"}}>
         
 
         <div
           style={{
             display: "flex",
             marginTop: "-8%",
-            marginLeft: "1.7vw",
+            marginLeft: isMobile? "7%":"1.7vw",
             justifyContent: "space-around",
-            padding: "0px 25px",
-            fontSize: "0.4rem",
+            padding: isMobile?"0px 20px":"0px 25px",
+            fontSize: isMobile?"7px":"0.4rem",
             fontWeight: "bold",
             color: "#3498DB",
           }}
@@ -1344,11 +1343,12 @@ const FunnelChart = () => {
       </div>
       <div
         style={{
-          position: "absolute",
-          top: "72.5%",
-          right: "90%",
+          position: isMobile?"relative":"absolute",
+          top: isMobile?"-67%":"70.5%",
+          right: isMobile?"12%":"85%",
           transform: "rotate(-90deg)",
-          fontSize: isMobile ? "10px" : "12px",
+          width: isMobile?"25vw":"25%",
+          fontSize: isMobile ? "9px" : "10px",
           fontWeight: "bold",
           color: "#3498DB",
         }}
