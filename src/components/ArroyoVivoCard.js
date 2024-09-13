@@ -712,6 +712,7 @@ export const ArroyoVivoControls = () => {
           sizeScale={2}
           sizeMinPixels={0.0001}
           sizeMaxPixels={40}
+          getSize={d => 30}
           extensions={[new CollisionFilterExtension()]}
           collisionGroup={'contaminacion'}
           collisionTestProps={{radiusScale: 5}}
