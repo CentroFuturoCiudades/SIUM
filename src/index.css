@@ -274,7 +274,8 @@ td {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
-  margin: 15px;
+  margin-top: 2.55%;
+  margin-bottom: 2.55%;
   padding-bottom: 10px;
   padding-left: 3px;
   padding-right: 3px;
@@ -282,11 +283,12 @@ td {
   background: #f4f4f8;
   border-radius: 4px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
 }
 
 .timeline-selector .button {
   padding: 10px;
-  font-size: 0.6035em;
+  font-size: 0.6rem;
   color: #333;
   background-color: #f4f4f8;
   border: 2px solid transparent;

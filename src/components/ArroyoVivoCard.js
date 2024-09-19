@@ -121,11 +121,11 @@ const legend = {
 
 ],
   tramo3: [{
-    latitude: 25.644,
+    latitude: 25.642,
     longitude: -100.286,
-    zoom: 15.15,
+    zoom: 13.15,
     transitionDuration: 500,
-    minZoom: 15.15,
+    minZoom: 14.95,
     maxZoom: 20,
   },
   {
@@ -525,10 +525,10 @@ export const ArroyoVivoControls = () => {
           opacity={1}
           filled={false}
           getLineColor={[56, 56, 56, 179]}
-          lineWidthScale={10}
+          lineWidthScale={4}
           lineWidthUnits={"meters"}
           lineWidthMinPixels={1}
-          lineWidthMaxPixels={10}
+          lineWidthMaxPixels={4}
         />
 
         
@@ -549,10 +549,10 @@ export const ArroyoVivoControls = () => {
             opacity={1}
             filled={false}
             getLineColor={[56, 56, 56, 179]}
-            lineWidthScale={10}
+            lineWidthScale={4}
             lineWidthUnits={"meters"}
             lineWidthMinPixels={1}
-            lineWidthMaxPixels={10}
+            lineWidthMaxPixels={4}
           />
 
           
@@ -812,7 +812,7 @@ export const ArroyoVivoControls = () => {
           { id: "arroyo", name: "Arroyo Vivo" },
           { id: "tramo1", name: "Altamira" },
           { id: "tramo2", name: "Campana" },
-          { id: "tramo3", name: "Distritotec" },
+          { id: "tramo3", name: "distritotec" },
         ]}
       />
       {activeButton == "arroyo" ? <>
@@ -1030,7 +1030,7 @@ const CustomTooltipTreemap = ({ active, payload }) => {
 
       
       <TimelineSelector activeJornada={activeJornada} setActiveJornada={setActiveJornada} />
-      <ResponsiveContainer width="100%" height={200} style={{"padding-bottom":"5vh"}}>
+      <ResponsiveContainer width="100%" height={200} style={{"height":"min(25dvw, 12.5dvh)","padding-bottom":"2vh"}}>
         <Treemap
           data={groupedData}
           dataKey="size"
@@ -1097,7 +1097,7 @@ const Legend = ({ hoveredPolygon }) => {
 
   return (
     <>
-    <h3 style={{ fontSize: '0.95rem' }}>
+    <h3 style={{ fontSize: "min(6dvw, 1.55dvh)" }}>
       <strong>
         {hoveredPolygon.Periodo !== "Julio 2022 a Abril 2024" ? "Residuos removidos por jornada" : "Datos Globales de Jornada"}
       </strong>
@@ -1106,24 +1106,24 @@ const Legend = ({ hoveredPolygon }) => {
       {Object.entries(filteredInfo).map(([key, value]) => {
         return (
           <>
-          <li style={{ display: 'flex', alignItems: 'center', marginLeft: "2px", fontSize: '0.5rem' }} key={key}>
+          <li style={{ display: 'flex', alignItems: 'center', marginLeft: "2px", lineHeight:"50%"}} key={key}>
             <img src={iconMapping[key] || iconMapping["Periodo"]} alt={key} style={{ width: '20px', height: '15px', marginRight: '0px' }} />
             {
               key === "Residuos Removidos" 
-              ? <p><strong>Residuos removidos:  </strong> {new Intl.NumberFormat("es-MX", {
+              ? <p style={{fontSize: "min(6dvw, 1.35dvh)" }}><strong>Residuos removidos:  </strong> {new Intl.NumberFormat("es-MX", {
                 style: "unit",
                 unit: "kilogram",
-              }).format(value)}</p>
+              }).format(Math.round(value))}</p>
               : key === "Distancia lineal  (m)" 
-              ? <p><strong>Longitud del tramo:  </strong> {new Intl.NumberFormat("es-MX",
+              ? <p style={{fontSize: "min(6dvw, 1.35dvh)" }}><strong>Longitud del tramo:  </strong> {new Intl.NumberFormat("es-MX",
                 {
                   style: "unit",
                   unit: "meter",
                 }
               ).format(value)}</p>
               : key === "Tramo/zona"
-              ? <p><strong>Zona: </strong> {value} </p>
-              : <p><strong>{key}: </strong> {value} </p> }
+              ? <p style={{fontSize: "min(6dvw, 1.35dvh)" }}><strong>Zona: </strong> {value} </p>
+              : <p style={{fontSize: "min(6dvw, 1.35dvh)" }}><strong>{key}: </strong> {value} </p> }
           </li>
           </>
         );
@@ -1245,11 +1245,11 @@ const FunnelChart = () => {
       >
         <strong>Jornada:</strong> {part.data.id}<br />
         <strong>Variable:</strong> {selectedVariable}<br />
-        <strong>Cantidad:</strong> {new Intl.NumberFormat("es-MX",
+        <strong>Cantidad:</strong> {(new Intl.NumberFormat("es-MX",
                 {
                   style: "unit",
                   unit: "kilogram",
-                }).format(part.data.value)}
+                }).format(Math.round(part.data.value)))}
       </div>
     };
 
@@ -1259,6 +1259,21 @@ const FunnelChart = () => {
     };
 
     const colorPalette = generateColorPalette(selectedVariable, formattedData);
+
+    const monthMap = {
+      "enero": "01",
+      "febrero": "02",
+      "marzo": "03",
+      "abril": "04",
+      "mayo": "05",
+      "junio": "06",
+      "julio": "07",
+      "agosto": "08",
+      "septiembre": "09",
+      "octubre": "10",
+      "noviembre": "11",
+      "diciembre": "12"
+    };
 
   return (
     <div style={{ height: isMobile?"300px":"27.5vh", width:isMobile?"100vw":"30vw", fontSize:"0.65em", marginLeft:"-2%"}}>
@@ -1313,7 +1328,7 @@ const FunnelChart = () => {
           margin={{ top: 5, right: isMobile?20:30, bottom: 60, left: isMobile?15:45 }}
           enableLabel={true}
           direction="horizontal"
-          valueFormat={" =-,.4r"}
+          valueFormat={(value) => `${Math.round(value).toLocaleString()}`}
           labelColor={({ color }) => getLabelColor(color)}
           colors={colorPalette}
           borderWidth={0}          
@@ -1324,38 +1339,77 @@ const FunnelChart = () => {
       <div style={{display: "flex", flexDirection: "column", width:isMobile?"60%":"100%"}}>
         
 
-        <div
+      <div
           style={{
             display: "flex",
             marginTop: "-8%",
-            marginLeft: isMobile? "-9%":"1.7vw",
+            marginLeft: isMobile? "-9%":"0.7vw",
             justifyContent: "space-around",
             padding: isMobile?"0px -20px":"0px 25px",
-            fontSize: isMobile?"7px":"0.4rem",
+            fontSize: isMobile?"7px":"min(10dvw, 0.835dvh)",
             fontWeight: "bold",
             color: "#3498DB",
           }}
         >
-          {formattedData.map((d) => (
-            isMobile?
-            <div 
-            style={{transform: "rotate(-90deg)", marginRight:"-30px"}}
-            key={d.id}><p style={{fontSize:"7px", marginRight:"6.25px",width: "max-content"}}>{d.fecha}</p></div>
-            :
-            <div 
-            style={{transform: "rotate(-90deg)"}}
-            key={d.id}>{d.fecha}</div>
-          ))}
-        </div>
+        {formattedData.map((d) => {
+          console.log(d.fecha);
+          let formattedDate = "Invalid Date";
+
+          if (d.fecha) {
+            // Split the date by spaces to get day, month (in Spanish), and year
+            const dateParts = d.fecha.split(' ');
+            if (dateParts.length === 3) {
+              const day = dateParts[0].padStart(2, '0');  // Ensure day is always two digits
+              const month = monthMap[dateParts[1].toLowerCase().trim()];  // Get the month number
+              const year = dateParts[2];
+      
+              if (month) {
+                // Manually create the date string in the format yyyy-mm-dd
+                const dateStr = `${year}-${month}-${day}`;
+                let dateObj = new Date(dateStr);
+
+                dateObj.setDate(dateObj.getDate() + 1);
+                
+                // Validate the date
+                if (!isNaN(dateObj.getTime())) {
+                  // Format the date as dd/mm/yy in Spanish
+                  formattedDate = dateObj.toLocaleDateString('es-MX', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: '2-digit'
+                  });
+                }
+              }
+            }
+          }
+      
+
+          console.log(formattedDate);
+
+          return (
+            isMobile ? (
+              <div 
+                style={{ transform: "rotate(-90deg)", marginRight: "-30px" }}
+                key={d.id}>
+                <p style={{ fontSize: "7px", marginRight: "6.25px", width: "max-content" }}>{formattedDate}</p>
+              </div>
+            ) : (
+              <div 
+                style={{ transform: "rotate(-90deg)" }}
+                key={d.id}>{formattedDate}</div>
+            )
+          );
+        })}
+      </div>
       </div>
       <div
         style={{
-          position: isMobile?"relative":"absolute",
-          top: isMobile?"-67%":"70.5%",
-          right: isMobile?"12%":"85%",
+          position: isMobile?"relative":"relative",
+          top: isMobile?"-67%":"-62.5%",
+          right: isMobile?"12%":"10%",
           transform: "rotate(-90deg)",
           width: isMobile?"25vw":"25%",
-          fontSize: isMobile ? "9px" : "10px",
+          fontSize: isMobile ? "9px" : "0.75rem",
           fontWeight: "bold",
           color: "#3498DB",
         }}
@@ -1368,11 +1422,11 @@ const FunnelChart = () => {
           fontWeight: "bold",
           fontSize: isMobile ? "8px" : "min(0.8dvw, 1.4dvh)",
           textAlign: "center",
-          marginTop: "12px",
+          marginTop: "-2.5vh",
           color: "#3498DB",
         }}
       >
-        Residuos removidos por jornada (kg)
+        Fecha
       </div>
     </div>
   );
