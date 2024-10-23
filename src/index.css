@@ -274,8 +274,8 @@ td {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
-  margin-top: 2.55%;
-  margin-bottom: 2.55%;
+  margin-top: 0.75dvh;
+  margin-bottom: 1.25dvh;
   padding-bottom: 10px;
   padding-left: 3px;
   padding-right: 3px;
@@ -283,7 +283,7 @@ td {
   background: #f4f4f8;
   border-radius: 4px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-height: 200px;
+  max-height: 100px;
 }
 
 .timeline-selector .button {

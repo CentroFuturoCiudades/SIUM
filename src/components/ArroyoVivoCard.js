@@ -865,6 +865,7 @@ export const ArroyoVivoControls = () => {
         color={color}
         description={
           <>
+          
             <b>Residuos registrados con Marine Debris Tracker</b>
             <p>Marine Debris Tracker es una aplicación de ciencia ciudadana y datos abiertos desarrollada por la Oficina Nacional de Administración Oceánica y Atmosférica (NOAA) de los Estados Unidos con el propósito de que los ciudadanos puedan contribuir datos sobre la contaminación hídrica en sus comunidades.</p>
           </>
@@ -991,37 +992,34 @@ const CustomTooltipTreemap = ({ active, payload }) => {
   return (
     <>
     
-      {activeButton != "arroyo" ?
-
-
-
-
-      <>
-     
+    {activeButton != "arroyo" ? 
+    <>
       <p>
-      La participación ciudadana ha sido clave para el desarrollo y la consolidación del modelo. Con el levantamiento de datos se registraron en el Arroyo Seco más de 23,000 piezas de residuos sólidos urbanos, siendo en su mayoría escombro de construcción, diversos tipos de plásticos y textiles. Esta información se recopiló con la aplicación Marine Debris Tracker, que permite georreferenciar la ubicación exacta de los residuos. 
-      </p>
-
-      <p>
-      Durante las jornadas de limpieza se separaron y pesaron los residuos con potencial valorizable como el PET, cartón, aluminio, vidrio y metal. 
-      </p>
+      La participación de más de 2,000 voluntarios entre 2022 y 2024 ha sido clave para el desarrollo y consolidación del proyecto, contribuyendo a los esfuerzos de documentación y limpieza.
       
+      </p>
+      <p> En el Arroyo Seco se registraron más de 23,000 residuos sólidos, principalmente escombros de construcción, plásticos y textiles, recopilados con la app Marine Debris Tracker para georreferenciar su ubicación exacta.
+</p>
+<p>
+En las jornadas de limpieza se separaron residuos valorizables como PET, cartón, aluminio, vidrio y metal. El diagrama inferior muestra el peso total (kg) por tipo de residuo en el tramo recorrido en cada jornada de limpieza.
+</p>
+
       <Legend hoveredPolygon={hoveredPolygon} />
-      </>
-      :
+    </>
+  :
       <>
        <ResponseTitle color={color}>
         Porque no gestionamos adecuadamente los residuos.
       </ResponseTitle>
       
       <p>
-      El proyecto<strong> Arroyo Vivo </strong> es un modelo de regeneración ambiental, remediación y reciclaje inclusivo ubicado en el Arroyo Seco, al sur de la ciudad. Es uno de los pocos cuerpos de agua naturales que subsisten en la zona metropolitana, y por años ha sido contaminado al utilizarse como tiradero a cielo abierto. 
+      El proyecto<strong> Arroyo Vivo </strong>es un modelo de regeneración ambiental, remediación y reciclaje inclusivo ubicado en el Arroyo Seco, al sur de la ciudad. Es uno de los pocos cuerpos de agua naturales que subsisten en la zona metropolitana.
       </p>
       <p>
-      Desde el 2022, mediante un proceso participativo de jornadas de limpieza y levantamiento de datos, <strong>Arroyo Vivo</strong> ha documentado la presencia de residuos, tiraderos domésticos y descargas ilegales de aguas grises y negras en el Arroyo Seco. Esto con el objetivo de crear una línea base de información que permita mejorar la calidad del agua y promover la salud del ecosistema.
+      Desde el 2022, mediante un proceso participativo de jornadas de limpieza y levantamiento de datos, arroyo vivo ha documentado la presencia de residuos, tiraderos domésticos y descargas ilegales de aguas grises y negras en el Arroyo Seco. Esto con el objetivo de crear una línea base de información que permita mejorar la calidad del agua y promover la salud del ecosistema.
       </p>
       <p>
-      En el mapa se aprecian los puntos de contaminación identificados durante el levantamiento de datos en campo y la presencia de residuos sólidos urbanos registrados con la herramienta Marine Debris Tracker.
+      En el mapa se aprecian los puntos de contaminación identificados durante el levantamiento de datos en campo y la presencia de residuos sólidos urbanos registrados con la herramienta Marine Debris Tracker. En el diagrama inferior, se presentan los datos derivados de las 12 jornadas de limpieza comunitarias que se han realizado en el arroyo.
       </p>
       <FunnelChart/>
       </>
@@ -1030,7 +1028,7 @@ const CustomTooltipTreemap = ({ active, payload }) => {
 
       
       <TimelineSelector activeJornada={activeJornada} setActiveJornada={setActiveJornada} />
-      <ResponsiveContainer width="100%" height={200} style={{"height":"min(25dvw, 12.5dvh)","padding-bottom":"2vh"}}>
+      <ResponsiveContainer width="100%" height={200} style={{"height":"min(20dvh, 7.5dvh)","padding-bottom":"2vh"}}>
         <Treemap
           data={groupedData}
           dataKey="size"
@@ -1103,31 +1101,59 @@ const Legend = ({ hoveredPolygon }) => {
       </strong>
     </h3>
     <ul>
-      {Object.entries(filteredInfo).map(([key, value]) => {
-        return (
-          <>
-          <li style={{ display: 'flex', alignItems: 'center', marginLeft: "2px", lineHeight:"50%"}} key={key}>
-            <img src={iconMapping[key] || iconMapping["Periodo"]} alt={key} style={{ width: '20px', height: '15px', marginRight: '0px' }} />
-            {
-              key === "Residuos Removidos" 
-              ? <p style={{fontSize: "min(6dvw, 1.35dvh)" }}><strong>Residuos removidos:  </strong> {new Intl.NumberFormat("es-MX", {
-                style: "unit",
-                unit: "kilogram",
-              }).format(Math.round(value))}</p>
-              : key === "Distancia lineal  (m)" 
-              ? <p style={{fontSize: "min(6dvw, 1.35dvh)" }}><strong>Longitud del tramo:  </strong> {new Intl.NumberFormat("es-MX",
-                {
-                  style: "unit",
-                  unit: "meter",
-                }
-              ).format(value)}</p>
-              : key === "Tramo/zona"
-              ? <p style={{fontSize: "min(6dvw, 1.35dvh)" }}><strong>Zona: </strong> {value} </p>
-              : <p style={{fontSize: "min(6dvw, 1.35dvh)" }}><strong>{key}: </strong> {value} </p> }
-          </li>
-          </>
-        );
-      })}
+    {Object.entries(filteredInfo).map(([key, value]) => {
+  // Check if the "Tramo" is "Distrito" and map it to "distritotec"
+  const mappedValue = key === "Tramo/zona" && value === "Distrito" ? "distritotec" : value;
+
+  return (
+    <>
+      <li
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginLeft: "2px",
+          lineHeight: "50%",
+        }}
+        key={key}
+      >
+        <img
+          src={iconMapping[key] || iconMapping["Periodo"]}
+          alt={key}
+          style={{ width: "20px", height: "15px", marginRight: "0px" }}
+        />
+        {key === "Residuos Removidos" ? (
+          <p style={{ fontSize: "min(6dvw, 1.35dvh)" }}>
+            <strong>Residuos removidos: </strong>{" "}
+            {new Intl.NumberFormat("es-MX", {
+              style: "unit",
+              unit: "kilogram",
+            }).format(Math.round(value))}
+          </p>
+        ) : key === "Distancia lineal  (m)" ? (
+          <p style={{ fontSize: "min(6dvw, 1.35dvh)" }}>
+            <strong>Longitud del tramo: </strong>{" "}
+            {new Intl.NumberFormat("es-MX", {
+              style: "unit",
+              unit: "meter",
+            }).format(value)}
+          </p>
+        ) : key === "Tramo/zona" ? (
+          <p style={{ fontSize: "min(6dvw, 1.35dvh)" }}>
+            <strong>Zona: </strong> {mappedValue}{" "}
+          </p>
+        ) : key === "Tramo" && mappedValue === "Distrito" ? (
+          <p style={{ fontSize: "min(6dvw, 1.35dvh)" }}>
+            <strong>Zona: </strong> distritotec{" "}
+          </p>
+        ) : (
+          <p style={{ fontSize: "min(6dvw, 1.35dvh)" }}>
+            <strong>{key}: </strong> {value}
+          </p>
+        )}
+      </li>
+    </>
+  );
+})}
     </ul>
     </>
   );
@@ -1276,8 +1302,8 @@ const FunnelChart = () => {
     };
 
   return (
-    <div style={{ height: isMobile?"300px":"27.5vh", width:isMobile?"100vw":"30vw", fontSize:"0.65em", marginLeft:"-2%"}}>
-      <div style={{ marginBottom: "20px" }}>
+    <div style={{ height: isMobile ? "300px" : "27.5dvh", width: "100%", fontSize: "0.65em", padding: "0 1%" }}>
+      <div style={{ marginBottom: "0.5dvh" }}>
         <label>
           Ordenar Por: 
           <select
@@ -1310,126 +1336,114 @@ const FunnelChart = () => {
             <option value="Electrónicos">Electrónicos</option>
             <option value="Planta Invasora">Planta invasora</option>
             <option value="Residuos Mezclados">Residuos mezclados</option>
-            
-            
-            
-      
-           {/*  <option value="Cartón">Cartón</option>
-             */}
-            
-            
-
-          </select>
+            </select>
         </label>
       </div>
 
       <ResponsiveFunnel
-          data={formattedData}
-          margin={{ top: 5, right: isMobile?20:30, bottom: 60, left: isMobile?15:45 }}
-          enableLabel={true}
-          direction="horizontal"
-          valueFormat={(value) => `${Math.round(value).toLocaleString()}`}
-          labelColor={({ color }) => getLabelColor(color)}
-          colors={colorPalette}
-          borderWidth={0}          
-          tooltip={CustomTooltipFunnel}
-          
-        />
+        data={formattedData}
+        margin={{ top: 5, right: isMobile ? 20 : 30, bottom: 60, left: isMobile ? 15 : 45 }}
+        enableLabel={true}
+        direction="horizontal"
+        valueFormat={(value) => `${Math.round(value).toLocaleString()}`}
+        labelColor={({ color }) => getLabelColor(color)}
+        colors={colorPalette}
+        borderWidth={0}
+        tooltip={CustomTooltipFunnel}
+      />
 
-      <div style={{display: "flex", flexDirection: "column", width:isMobile?"60%":"100%"}}>
-        
-
-      <div
-          style={{
-            display: "flex",
-            marginTop: "-8%",
-            marginLeft: isMobile? "-9%":"0.7vw",
-            justifyContent: "space-around",
-            padding: isMobile?"0px -20px":"0px 25px",
-            fontSize: isMobile?"7px":"min(10dvw, 0.835dvh)",
-            fontWeight: "bold",
-            color: "#3498DB",
-          }}
-        >
-        {formattedData.map((d) => {
-          console.log(d.fecha);
-          let formattedDate = "Invalid Date";
-
-          if (d.fecha) {
-            // Split the date by spaces to get day, month (in Spanish), and year
-            const dateParts = d.fecha.split(' ');
-            if (dateParts.length === 3) {
-              const day = dateParts[0].padStart(2, '0');  // Ensure day is always two digits
-              const month = monthMap[dateParts[1].toLowerCase().trim()];  // Get the month number
-              const year = dateParts[2];
+<div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+  <div
+    style={{
+      display: "flex",
+      marginTop: "-7.5%",
+      marginLeft: isMobile ? "-8%" : "1dvw",
+      justifyContent: "space-between",  // Ensure equal spacing
+      padding: isMobile ? "0px 0px" : "0px 0.75dvw",
+      fontSize: isMobile ? "7px" : "min(0.52rem, 1.5rem)",
+      fontWeight: "bold",
+      color: "#3498DB",
+      whiteSpace: "nowrap"
       
-              if (month) {
-                // Manually create the date string in the format yyyy-mm-dd
-                const dateStr = `${year}-${month}-${day}`;
-                let dateObj = new Date(dateStr);
+    }}
+  >
+    {formattedData.map((d) => {
+      let formattedDate = "Invalid Date";
+      if (d.fecha) {
+        const dateParts = d.fecha.split(' ');
+        if (dateParts.length === 3) {
+          const day = dateParts[0].padStart(2, '0');
+          const month = monthMap[dateParts[1].toLowerCase().trim()];
+          const year = dateParts[2];
 
-                dateObj.setDate(dateObj.getDate() + 1);
-                
-                // Validate the date
-                if (!isNaN(dateObj.getTime())) {
-                  // Format the date as dd/mm/yy in Spanish
-                  formattedDate = dateObj.toLocaleDateString('es-MX', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: '2-digit'
-                  });
-                }
-              }
+          if (month) {
+            const dateStr = `${year}-${month}-${day}`;
+            const dateObj = new Date(dateStr);
+            dateObj.setDate(dateObj.getDate() + 1);
+
+            if (!isNaN(dateObj.getTime())) {
+              formattedDate = dateObj.toLocaleDateString('es-MX', {
+                day: '2-digit',
+                month: '2-digit',
+                year: '2-digit',
+              });
             }
           }
-      
+        }
+      }
 
-          console.log(formattedDate);
+      return (
+        <div
+          style={{
+            transform: "rotate(-90deg)",
+            flexGrow: 1, // Allow even spacing across the entire width
+            maxWidth: "7%", // Limit the width of each label
+            textAlign: "center", // Center the label
+          }}
+          key={d.id}
+        >
+          <p style={{ fontSize: "min(0.65rem, 1.25rem)", margin: "0" }}>
+            {formattedDate}
+          </p>
+        </div>
+      );
+    })}
+  </div>
+</div>
 
-          return (
-            isMobile ? (
-              <div 
-                style={{ transform: "rotate(-90deg)", marginRight: "-30px" }}
-                key={d.id}>
-                <p style={{ fontSize: "7px", marginRight: "6.25px", width: "max-content" }}>{formattedDate}</p>
-              </div>
-            ) : (
-              <div 
-                style={{ transform: "rotate(-90deg)" }}
-                key={d.id}>{formattedDate}</div>
-            )
-          );
-        })}
-      </div>
-      </div>
-      <div
-        style={{
-          position: isMobile?"relative":"relative",
-          top: isMobile?"-67%":"-62.5%",
-          right: isMobile?"12%":"10%",
-          transform: "rotate(-90deg)",
-          width: isMobile?"25vw":"25%",
-          fontSize: isMobile ? "9px" : "0.75rem",
-          fontWeight: "bold",
-          color: "#3498DB",
-        }}
-      >
-        Cantidad (kg)
-      </div>
 
-      <div
-        style={{
-          fontWeight: "bold",
-          fontSize: isMobile ? "8px" : "min(0.8dvw, 1.4dvh)",
-          textAlign: "center",
-          marginTop: "-2.5vh",
-          color: "#3498DB",
-        }}
-      >
-        Fecha
-      </div>
+    <div
+  style={{
+    position: "relative",
+    top: isMobile ? "-70%" : "-55%",  
+    right: isMobile ? "12%" : "10%",
+    transform: "rotate(-90deg)",  
+    width: isMobile ? "25vw" : "25%",
+    fontSize: isMobile ? "1.2rem" : "min(0.75rem, 1.75rem)",
+    fontWeight: "bold",
+    color: "#3498DB",
+    overflow: "visible",
+    whiteSpace: "nowrap",  
+    lineHeight: "1.2em", 
+  }}
+>
+  Cantidad (kg)
+</div>
+
+
+    <div
+      style={{
+        fontWeight: "bold",
+        fontSize: isMobile ? "8px" : "min(0.8vw, 1.5vh)",
+        textAlign: "center",
+        marginTop: "-2vh",
+        color: "#3498DB",
+      }}
+    >
+      Fecha
     </div>
-  );
+  </div>
+);
 };
 
 
@@ -1455,6 +1469,10 @@ const CustomTooltip = ({ root, depth, x, y, width, height, index, payload, color
         textAnchor="middle"
         fill="#fff"
         fontSize={10}
+        style={{
+          fontWeight:"lighter"
+        }
+        }
       >
         {name}
       </text>
