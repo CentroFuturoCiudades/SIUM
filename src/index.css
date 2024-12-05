@@ -257,3 +257,67 @@ td {
   font-size: 16px;
   cursor: pointer;
 }
+
+.legend {
+  position: absolute;
+  top: 80px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 300px;
+  z-index: 10;
+}
+
+.timeline-selector {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  margin-top: 0.75dvh;
+  margin-bottom: 1.25dvh;
+  padding-bottom: 10px;
+  padding-left: 3px;
+  padding-right: 3px;
+  padding-top: 10px;
+  background: #f4f4f8;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-height: 100px;
+}
+
+.timeline-selector .button {
+  padding: 10px;
+  font-size: 0.6rem;
+  color: #333;
+  background-color: #f4f4f8;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 70px;
+  flex: 1;
+  text-align: center;
+}
+
+.timeline-selector .button:hover {
+  background-color: #ffffff;
+  color: #007bff;
+}
+
+.timeline-selector .active {
+  color: #fff;
+  background-color: #5DADE2;
+  border-color: #5DADE2;
+}
+@media (max-width: 600px) {
+  .timeline-selector {
+    justify-content: center;
+  }
+
+  .timeline-selector .button {
+    font-size: 9px; 
+    padding: 8px;
+    min-width: 60px;
+  }
+}

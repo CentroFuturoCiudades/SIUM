@@ -9,7 +9,9 @@ import {
   MdOutlineFamilyRestroom,
   MdDeviceThermostat,
   MdOutlineAccessTime,
+  wav
 } from "react-icons/md";
+import { LuWaves } from "react-icons/lu";
 import { HiMiniBuildingOffice } from "react-icons/hi2";
 import { GiInjustice, GiRobber } from "react-icons/gi";
 import { FaPeopleArrows } from "react-icons/fa";
@@ -46,6 +48,7 @@ import {
   EscenariosFuturosCard,
   EscenariosFuturosControls,
 } from "../components/EscenariosFuturosCard";
+import { ArroyoVivoCard, ArroyoVivoControls } from "../components/ArroyoVivoCard";
 import { BrushingExtension } from "@deck.gl/extensions";
 import { useEffect, useState } from "react";
 import { FlatGeobufLoader } from '@loaders.gl/flatgeobuf';
@@ -641,4 +644,13 @@ export const sectionsInfo = {
     component: EscenariosFuturosCard,
     controls: EscenariosFuturosControls,
   },
+  arroyoVivo:{
+    title: "¿Por qué se contaminan nuestros arroyos?",
+    answer:
+      "Arroyo vivo. Modelo de regeneración, remediación y reciclaje en cuerpos de agua en Monterrey.",
+    color: "blue",
+    icon: LuWaves,
+    component: ArroyoVivoCard,
+    controls: ArroyoVivoControls,
+  }
 };
