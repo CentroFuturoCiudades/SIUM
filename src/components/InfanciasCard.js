@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useCardContext } from "../views/Problematica";
 import { ResponseTitle, ContextTitle } from "./Card";
 import {
   PARQUES_URL,
+  POB05_AGEB_URL,
   POB05_CHART_URL,
   POB05_URL,
   SERVICIOS_URL,
@@ -45,11 +46,20 @@ export const InfanciasControls = () => {
     isMobile
   ); //para que empiece en el punto que dijo nelida
   const [dataPob, setDataPob] = useState();
+  const [dataPobAgeb, setDataPobAgeb] = useState();
   const [dataParques, setDataParques] = useState();
   const [dataServ, setDataServ] = useState();
   const [brushingRadius, setBrushingRadius] = useState(1000); //radio esta en metros
   const [circlePayload, setCirclePayload] = useState();
   const [hoverCenter, setHoverCenter] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const ageb = await fetchGeo(POB05_AGEB_URL);
+      setDataPobAgeb(ageb);
+    };
+    fetchData();
+  }, []);
 
   const radiusInDegrees = (brushingRadius / 40075000) * 360; //formula para convertir metros a grados (con la circunferencia de la Tierra 40,075,000 mts)
   ///CALCULAR SERVICIOS DENTRO DEL CIRCULO CON DISTANCIA EUCLIDEANA
@@ -79,7 +89,12 @@ export const InfanciasControls = () => {
     }
     console.log(hoverCenter);
     const [longCenter, latCenter] = [coordinates[0], coordinates[1]];
-    const bbox = [longCenter - radiusInDegrees, latCenter - radiusInDegrees, longCenter + radiusInDegrees, latCenter + radiusInDegrees];
+    const bbox = [
+      longCenter - radiusInDegrees,
+      latCenter - radiusInDegrees,
+      longCenter + radiusInDegrees,
+      latCenter + radiusInDegrees,
+    ];
 
     const services = await fetchGeo(SERVICIOS_URL, bbox);
     setDataServ(services);
@@ -149,7 +164,7 @@ export const InfanciasControls = () => {
     debouncedInfanciasHover(hoverCenter);
   }, [hoverCenter]);
 
-  const showData = !!dataPob && !!dataParques && !!dataServ;
+  const showData = !!dataPob && !!dataPobAgeb && !!dataParques && !!dataServ;
   console.log("showData", showData);
 
   return (
@@ -171,12 +186,30 @@ export const InfanciasControls = () => {
         onDragStart={() => setHoverCenter(null)}
       >
         <GeoJsonLayer
-          id="infancias2_layer" //aqui me falta arreglar el degradado de colores correcto y quitar el delineado de bordes
+          id="infancias_ageb_layer"
+          data={
+            dataPobAgeb
+              ? cleanedGeoData(dataPobAgeb.features, "ratio_pob05")
+              : []
+          }
+          getFillColor={(d) =>
+            colorInterpolate(
+              d.properties["ratio_pob05"],
+              INFANCIAS_QUANTILES,
+              INFANCIA_COLORS,
+              1
+            )
+          }
+          getLineColor={[118, 124, 130]}
+          getLineWidth={3}
+          brushingEnabled={true}
+        />
+        <GeoJsonLayer
+          id="infancias2_layer"
           data={showData ? cleanedGeoData(dataPob.features, "ratio_pob05") : []}
           getFillColor={(d) =>
             colorInterpolate(
               d.properties["ratio_pob05"],
-              //[0, 0.03, 0.06, 0.09, 0.12, 0.15, 0.2, 0.3, 0.4],
               INFANCIAS_QUANTILES,
               INFANCIA_COLORS,
               1
@@ -204,9 +237,13 @@ export const InfanciasControls = () => {
         <GeoJsonLayer
           id="comercios_layer"
           //data={cleanedGeoData(dataServ.features, "codigo_act")}
-          data={showData ? dataServ.features.filter(
-            (d) => d.properties.sector === "comercio al por menor"
-          ) : []}
+          data={
+            showData
+              ? dataServ.features.filter(
+                  (d) => d.properties.sector === "comercio al por menor"
+                )
+              : []
+          }
           getLineColor={[246, 145, 0]}
           getLineWidth={20}
           brushingEnabled={true}
@@ -216,12 +253,16 @@ export const InfanciasControls = () => {
         />
         <IconLayer
           id="servicios_tachas"
-          data={showData ? dataServ.features.filter(
-            (d) =>
-              d.properties.sector === "guarderia" ||
-              d.properties.sector === "preescolar" ||
-              d.properties.sector === "salud"
-          ) : []}
+          data={
+            showData
+              ? dataServ.features.filter(
+                  (d) =>
+                    d.properties.sector === "guarderia" ||
+                    d.properties.sector === "preescolar" ||
+                    d.properties.sector === "salud"
+                )
+              : []
+          }
           iconAtlas="https://sium.blob.core.windows.net/sium/images/icon-atlas2.png"
           iconMapping="https://sium.blob.core.windows.net/sium/images/icon-atlas2.json"
           getIcon={(d) => getIconByCodigoAct(d.properties.sector)}

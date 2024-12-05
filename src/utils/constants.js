@@ -160,6 +160,7 @@ export const DELINCUENCIA_CHART_URL = `${DATA_URL}/crimen_municipality.json`;
 export const COSTOS_URL = `${DATA_URL}/crimen-hex.geojson`;
 export const COSTOS_MUNICIPALITY_URL = `${DATA_URL}/costos_municipality.json`;
 export const POB05_URL = `${DATA_URL}/pob_infancia.fgb`;
+export const POB05_AGEB_URL = `${DATA_URL}/pob_infancia_ageb.fgb`;
 export const POB05_CHART_URL = `${DATA_URL}/pob_infancia_municipality.json`;
 export const PARQUES_URL = `${DATA_URL}/parques.fgb`;
 export const PARQUES_URL2 = `${DATA_URL}/parques.geojson`;
