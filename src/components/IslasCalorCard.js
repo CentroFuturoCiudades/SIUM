@@ -35,15 +35,18 @@ import { Heading, useMediaQuery, useToken } from "@chakra-ui/react";
 import _ from "lodash";
 import * as d3 from "d3";
 import PopupButton from "./PopupButton";
+import { fromUrl } from "geotiff";
+import { rgb } from "d3-color";
+import { BitmapLayer } from "@deck.gl/layers";
 
 export const ISLAS_CALOR_COLORS = [
-  "#C32B21",
-  "#FF4945",
-  "#FEBDBC",
-  "#46A59C",
-  "#528EAA",
-  "#6A60C6",
-  "#8132E1",
+  "#b03a2e",
+  "#e74c3c",
+  "#eb984e",
+  "#9ebcda",
+  "#6b98d6",
+  "#5b5df5",
+  "#ab6fed",
 ];
 const ISLAS_CALOR_LEGEND_DATA = [
   "Muy frío",
@@ -55,27 +58,88 @@ const ISLAS_CALOR_LEGEND_DATA = [
   "Muy caliente",
 ];
 
+function useHeatIslandBitmap(tifUrl) {
+  const [image, setImage] = useState(null);
+  const [bounds, setBounds] = useState(null);
+  const [colorMap, setColorMap] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const tiff = await fromUrl(tifUrl);
+      const img = await tiff.getImage();
+      const [wX, wY, eX, eY] = img.getBoundingBox();
+
+      const categoryValues = [3, 2, 1, 0, -1, -2, -3];
+      const categories = categoryValues.map((value, i) => ({
+        value,
+        label: ISLAS_CALOR_LEGEND_DATA[i],
+        color: rgb(ISLAS_CALOR_COLORS[i])
+      }));
+      const colorByValue = Object.fromEntries(
+        categories.map(c => [c.value, c.color])
+      );
+
+      const width = img.getWidth();
+      const height = img.getHeight();
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      const imageData = ctx.createImageData(width, height);
+      const rasters = await img.readRasters();
+
+      const rasterData = rasters[0];
+
+      rasterData.forEach((v, i) => {
+        const color = colorByValue[v];
+        if (color) {
+          imageData.data.set([color.r, color.g, color.b, 255], i * 4);
+        } else {
+          imageData.data.set([0, 0, 0, 0], i * 4); // Transparent for undefined categories
+        }
+      });
+
+      ctx.putImageData(imageData, 0, 0);
+      const url = canvas.toDataURL("image/png");
+      const imgEl = new Image();
+      imgEl.src = url;
+      imgEl.onload = () => {
+        setImage(imgEl);
+        setBounds([wX, wY, eX, eY]);
+        setColorMap({
+          title: 'Isla de calor',
+          categories: categories.map(({ label, color, value }) => ({
+            label, color, value
+          }))
+        });
+      };
+    })().catch(console.error);
+  }, [tifUrl]);
+
+  return { image, bounds, colorMap };
+}
+
 export const IslasCalorControls = () => {
   const { color } = useCardContext();
   const [viewState, setViewState] = useState(INITIAL_STATE);
   const [legendItems, setLegendItems] = useState([]);
-  const { data } = useFetch(ISLAS_CALOR_URL);
   const { data: dataParques } = useFetch(PARQUES_URL2);
   const { data: dataIndustrias } = useFetch(INDUSTRIA_URL);
+  const { image: heatImage, bounds: heatBounds, colorMap } = useHeatIslandBitmap(ISLAS_CALOR_URL);
 
   useEffect(() => {
-    if (!data) return;
-    const values = data.features.map((feat) => feat.properties["Value"]);
+    if (!colorMap) return;
+    console.log(colorMap);
     setLegendItems(
       separateLegendItemsByCategory(
-        values,
+        colorMap.categories.map(({ value }) => value),
         [7, 6, 5, 4, 3, 2, 1],
         ISLAS_CALOR_COLORS
       )
     );
-  }, [data]);
+  }, [colorMap]);
 
-  if (!data) return <Loading />;
+  if (!heatImage || !dataIndustrias || !dataParques) return <Loading />;
 
   return (
     <>
@@ -93,25 +157,22 @@ export const IslasCalorControls = () => {
           radiusPixels={viewState.zoom * 5}
           intensity={2}
         />
-        <GeoJsonLayer
+        <BitmapLayer
           id="islas_calor_layer"
-          data={cleanedGeoData(data.features, "Value")}
-          getFillColor={(d) =>
-            colorInterpolate(
-              d.properties["Value"],
-              [7, 6, 5, 4, 3, 2, 1],
-              ISLAS_CALOR_COLORS,
-              0.5
-            )
-          }
-          getLineWidth={0}
-          opacity={0.8}
+          image={heatImage}
+          bounds={heatBounds}
+          boundsOptions={{ padding: 0.01 }}
+          opacity={0.4}
+          pickable={true}
+          desaturate={0}
+          visible={true}
         />
         <GeoJsonLayer
           id="parques_layer"
           data={cleanedGeoData(dataParques.features, "area")}
           getFillColor={[150, 200, 112]}
           getLineColor={[80, 120, 20]}
+          opacity={0.3}
           getLineWidth={10}
         />
         <PopupButton
@@ -123,7 +184,7 @@ export const IslasCalorControls = () => {
       </CustomMap>
       [legendItems &&{" "}
       <CustomLegend
-        title={"Islas de calor"}
+        title={"Islas de calor (2024)"}
         color={color}
         description={
           <>
