@@ -240,8 +240,8 @@ export const InfanciasControls = () => {
           data={
             showData
               ? dataServ.features.filter(
-                  (d) => d.properties.sector === "comercio al por menor"
-                )
+                (d) => d.properties.sector === "comercio al por menor"
+              )
               : []
           }
           getLineColor={[246, 145, 0]}
@@ -256,11 +256,11 @@ export const InfanciasControls = () => {
           data={
             showData
               ? dataServ.features.filter(
-                  (d) =>
-                    d.properties.sector === "guarderia" ||
-                    d.properties.sector === "preescolar" ||
-                    d.properties.sector === "salud"
-                )
+                (d) =>
+                  d.properties.sector === "guarderia" ||
+                  d.properties.sector === "preescolar" ||
+                  d.properties.sector === "salud"
+              )
               : []
           }
           iconAtlas="https://sium.blob.core.windows.net/sium/images/icon-atlas2.png"
@@ -366,11 +366,10 @@ export function InfanciasCard() {
         oferta de servicios, la población infantil es menor.
       </p>
       <p>
-        Este desbalance se ilustra en los equipamientos de salud (consultorios y
-        hospitales generales). En un municipio central como Monterrey con un 7%
-        de población infantil, la proporción de equipamientos es 1 por cada 42
+        En un municipio central como Monterrey con un 7%
+        de población infantil, la proporción de equipamientos es 1 por cada 32
         infancias. Por el contrario en la periferia, El Carmen con un 14% de la
-        población infantil, cuenta con 1 equipamiento cada 2,468 niños. Esto
+        población infantil, cuenta con 1 equipamiento cada 328 niños. Esto
         obliga a las familias a desplazarse largas distancias para recibir
         atención médica, lo que implica mayores costos y esfuerzo.
       </p>
