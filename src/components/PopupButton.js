@@ -86,8 +86,9 @@ const PopupButton = ({
             <div className="video-container" style={{ margin: "10px 0 0 0" }}>
               <iframe
                 src={`https://www.youtube.com/embed/${videoId}?rel=0`}
-                frameBorder="0"
-                allowFullScreen
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" 
+                allowfullscreen
                 style={{ height: "100%", width: "100%" }}
               ></iframe>
             </div>
@@ -111,7 +112,9 @@ const PopupButton = ({
                     <iframe
                       src={`https://www.youtube.com/embed/${additionalContent.videoId}?rel=0`}
                       frameBorder="0"
-                      allowFullScreen
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                      referrerpolicy="strict-origin-when-cross-origin" 
+                      allowfullscreen
                     ></iframe>
                   </div>
                 </div>
@@ -184,7 +187,9 @@ export const VideoCenter = ({ color, videoId, title, subtitle, text }) => {
               <iframe
                 src={`https://www.youtube.com/embed/${videoId}?rel=0`}
                 frameBorder="0"
-                allowFullScreen
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" 
+                allowfullscreen
                 style={{ height: "100%", width: "100%" }}
               ></iframe>
             </div>
