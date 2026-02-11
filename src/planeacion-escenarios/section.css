@@ -1,0 +1,250 @@
+/*TEXTS*/
+.header__title {
+    font-family: 'Neue Montreal Bold', sans-serif;
+    font-size: clamp(2rem, 3vw, 3.4rem);
+    font-weight: 400;
+    line-height: 1.1;
+    margin: 0;
+}
+.header__subtitle {
+    font-family: 'Neue Montreal Regular', sans-serif;
+    font-size: clamp(1.5rem, 3vw, 3.2rem);
+}
+.section_title {
+  font-family: 'Neue Montreal Bold', sans-serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: black;
+  margin: 0;
+}
+.section_title--white {
+  color: white;
+}
+.section_subtitle {
+    font-family: 'Neue Montreal Medium Italic', sans-serif;
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+}
+
+/*HEADER*/
+.img__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.logo-tec {
+    width: clamp(25rem, 25vw, 30rem);
+}
+.logo-pxe {
+  width: clamp(300px, 40vw, 440px);
+  height: auto;
+}
+.logoPXE {
+    position: absolute;
+    height: clamp(80vh, 90vh, 95vh);
+    top: 50%;
+    right: 20%;
+    transform: translateY(-50%);
+}
+
+/*WHY*/
+.why span {
+    font-family: 'Neue Montreal Medium Italic', sans-serif;
+}
+
+/*STEPS*/
+.step__item {
+    padding: 0.7rem;
+    border-radius: 6px;
+}
+.step__item--blue { background: #5f8fbf;}
+.step__item--yellow { background: #d6ab2d;}
+.step__item--red { background: #c95a5a;}
+.step__item--green { background: #7fae6b;}
+
+.step__description {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+.step__number {
+    font-size: 2rem;
+}
+
+/*HERRAMIENTAS*/
+.herramientas {
+  display: flex;
+  flex-direction: column;
+  padding:1rem;
+  box-sizing: border-box;
+  background-color: #c6c9c7;
+  width: 40rem;
+  /*height: 90%;*/
+  flex-shrink: 0;
+  /*flex: 1;*/
+  border-radius: 2rem;
+}
+.herramientas__title,
+.herramientas h4 {
+    text-align: center;
+    font-family: 'Neue Montreal Bold', sans-serif;
+}
+.toolCards {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /*grid-template-rows: auto auto;*/
+  gap: 1rem;
+  box-sizing: border-box;
+}
+.toolCards__card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    color: black;
+    text-align: center;
+    padding:0;
+    margin: 0;
+    height: auto;
+}
+.toolCards__card p {
+    background-color: #e8e8e8;
+      border-radius: 0.5rem;
+      padding: 0.5rem;
+      min-height: 5rem;
+}
+
+
+/**/
+.two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+.color-grid {
+    position: absolute;
+    top:0;
+    right: 0;
+    display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(4, 1fr);
+  height: 100dvh;
+  width: 50dvw;
+}
+.theme {
+  position: relative;
+  padding: 1.5rem 1.8rem;
+
+  font-size: clamp(1rem, 1.05vw, 1.1rem);
+  font-weight: 700;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.theme h3 { font-size: clamp(1.25rem, 3vw, 1.75rem) }
+.theme span { font-size: clamp(0.7rem, 0.75vw, 0.78rem) }
+
+.theme__meta {
+  position: absolute;
+  top: 0.9rem;
+  right: 1.1rem;
+
+  line-height: 1.35;
+  font-weight: 400;
+
+  text-align: right;
+  opacity: 0.9;
+
+  max-width: 65%;
+}
+/* Colores */
+.theme--water        { background: #2f6c93; }
+.theme--mobility     { background: #f1c54a; }
+.theme--management   { background: #67b7e1; }
+.theme--energy       { background: #f28c45; }
+.theme--governance   { background: #c85c5c; }
+.theme--finance      { background: #7dbb66; }
+.theme--connection   { background: #7c6bb0; }
+.theme--citizenship  { background: #8ccfb0; }
+
+
+/*SCENARIOS*/
+.three-columns {
+    display: grid;
+    grid-template-columns: 30% 30% 1fr;
+    gap: 2rem;
+}
+
+
+/*grids comparativos*/
+.grid1 {
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+.grid1_item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.grid1__item--green { background-color: #7fae6b;}
+.grid1__item--blue { background-color: #6b8dbf;}
+.grid1__item--pink { background-color: #d88cae;}
+.grid1__item--purple { background-color: #9b7fbf;}
+
+.grid2 {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 0.5fr repeat(4, 1fr);
+    grid-template-rows: 0.5fr repeat(4, 1fr);
+    color: black;
+}
+
+.grid2__header {
+    background-color: white;
+    border: 1px solid black;
+    text-align: center;
+}
+
+/*TEAM*/
+.team_grid {
+    width: 50%;
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 3rem;
+}
+
+.equipo h3 {
+    font-family: 'Neue Montreal Bold', sans-serif;
+    font-size: clamp(1.25rem, 1vw, 1.5rem);
+    margin-bottom: 1rem;
+}
+.equipo span{
+    font-family: 'Neue Montreal Light', sans-serif;
+}
+
+/*FONT IMPORTS*/
+@font-face {
+    font-family: 'Neue Montreal Bold';
+    src: url(/public/pxe_images/fonts/Neue\ Montreal/NeueMontreal-Bold.otf) format("opentype");
+}
+@font-face {
+    font-family: 'Neue Montreal Medium';
+    src: url(/public/pxe_images/fonts/Neue\ Montreal/NeueMontreal-Medium.otf) format("opentype");
+}
+@font-face {
+    font-family: 'Neue Montreal Regular';
+    src: url(/public/pxe_images/fonts/Neue\ Montreal/NeueMontreal-Regular.otf) format("opentype");
+}
+@font-face {
+    font-family: 'Neue Montreal Medium Italic';
+    src: url(/public/pxe_images/fonts/Neue\ Montreal/NeueMontreal-MediumItalic.otf) format("opentype");
+}
+@font-face {
+    font-family: 'Neue Montreal Light';
+    src: url(/public/pxe_images/fonts/Neue\ Montreal/NeueMontreal-Light.otf) format("opentype");
+}

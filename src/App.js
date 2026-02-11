@@ -3,6 +3,7 @@ import Problematica from "./views/Problematica";
 import Home from "./views/Home";
 import DescargaDatos from "./views/DescargaDatos";
 import Equipo from "./views/Equipo";
+import PXE_Landing from "./planeacion-escenarios/pxe_landing";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/problematica" element={<Problematica />} />
         <Route path="/descargas" element={<DescargaDatos />} />
         <Route path="/acerca" element={<Equipo />} />
+        <Route path="/pxe" element={<PXE_Landing />} />
       </Routes>
     </BrowserRouter>
   );

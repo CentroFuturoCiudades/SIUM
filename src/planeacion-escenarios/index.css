@@ -1,0 +1,73 @@
+.pxe__section {
+    height: 100dvh;
+}
+
+/*SECTIONS*/
+.content {
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    color: black;
+    padding: clamp(2rem, 3vw, 4rem);;
+    box-sizing: border-box;    
+    font-family: 'Neue Montreal Medium', sans-serif;
+    overflow-y: hidden;
+}
+.content p{
+    font-size: clamp(1.125rem, 1vw, 1.25rem);
+}
+
+.content--dark-green {
+    background-color: #1f2b2b;
+    color: white;
+}
+.content--light-green {
+    background-color: #32483c;
+    color: white;
+}
+.content--beige {
+    background-color: #9c958d;
+    color: white;
+}
+
+.content-row {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+.content-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    /* gap: 1rem; */
+}
+
+.section-number {
+    position: absolute;
+    color: white;
+    font-family: 'Neue Montreal Bold', sans-serif;;
+    font-size: clamp(10rem, 18vw, 20rem);
+    line-height: 1;
+    top: 0;
+    right: 2rem;
+
+}
+.section-number--left {
+    left: 2rem;
+}
+
+.section-number--black {
+    color: black;
+}
+
+.section-number--outline {
+    color: transparent;
+    -webkit-text-stroke: 1px white;
+    transform: translate(-0.5rem, -0.5rem);
+}
+.section-number--outline.section-number--black {
+    -webkit-text-stroke: 1px black;
+}
