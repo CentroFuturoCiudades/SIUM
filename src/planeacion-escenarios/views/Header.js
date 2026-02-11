@@ -13,7 +13,7 @@ const Header = () => {
         <img src={'/pxe_images/Logo-CFC.png'} className="logo-tec"/>
       </div>
       
-      <img src={'/pxe_images/LogoPXEGrande.png'} className="logoPXE"/>
+      <img src={'/pxe_images/LogoPXEgrande.png'} className="logoPXE"/>
 
     </header>
   );
