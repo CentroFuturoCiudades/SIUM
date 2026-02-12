@@ -10,13 +10,16 @@
     flex-direction: column;
     background-color: white;
     color: black;
-    padding: clamp(2rem, 3vw, 4rem);;
+    /*padding: clamp(2rem, 3vw, 4rem);*/
+    padding: min(5.55dvh, 3.12dvw); /*60px*/
     box-sizing: border-box;    
     font-family: 'Neue Montreal Medium', sans-serif;
     overflow-y: hidden;
 }
 .content p{
-    font-size: clamp(1.125rem, 1vw, 1.25rem);
+    /*font-size: clamp(1.125rem, 1vw, 1.25rem);*/
+    /*font-size: min(1.04dvw, 1.85dvh); 20px*/
+    font-size: min(2.22dvh, 1.25dvw); /*24px*/
 }
 
 .content--dark-green {

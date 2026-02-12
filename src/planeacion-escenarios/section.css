@@ -12,7 +12,8 @@
 }
 .section_title {
   font-family: 'Neue Montreal Bold', sans-serif;
-  font-size: clamp(2rem, 5vw, 3rem);
+  /*font-size: clamp(2rem, 5vw, 3rem);*/
+  font-size: min(5.55dvh, 3.12dvw); /*60px*/
   color: black;
   margin: 0;
 }
@@ -21,7 +22,7 @@
 }
 .section_subtitle {
     font-family: 'Neue Montreal Medium Italic', sans-serif;
-    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    font-size: min(4.6dvh, 2.6dvw);
 }
 
 /*HEADER*/
@@ -77,14 +78,17 @@
 .herramientas {
   display: flex;
   flex-direction: column;
-  padding:1rem;
+  /*padding:1rem;*/
+  padding: min(2.22dvh, 1.25dvw); /*24px*/
   box-sizing: border-box;
   background-color: #c6c9c7;
-  width: 40rem;
-  /*height: 90%;*/
+  /*width: 40rem;*/
+  width: min(64.8dvh, 36.4dvw);
+
+  height: 90%;
   flex-shrink: 0;
   /*flex: 1;*/
-  border-radius: 2rem;
+  border-radius: 12px;
 }
 .herramientas__title,
 .herramientas h4 {
@@ -97,6 +101,7 @@
   grid-template-columns: 1fr 1fr;
   /*grid-template-rows: auto auto;*/
   gap: 1rem;
+  margin-top: 1rem;
   box-sizing: border-box;
 }
 .toolCards__card {
@@ -106,15 +111,13 @@
     align-items: center;
     color: black;
     text-align: center;
-    padding:0;
-    margin: 0;
     height: auto;
 }
 .toolCards__card p {
     background-color: #e8e8e8;
-      border-radius: 0.5rem;
-      padding: 0.5rem;
-      min-height: 5rem;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    font-size: min(1.85dvh, 1.04dvw); /*20px*/
 }
 
 
@@ -138,15 +141,15 @@
   position: relative;
   padding: 1.5rem 1.8rem;
 
-  font-size: clamp(1rem, 1.05vw, 1.1rem);
+  /*font-size: clamp(1rem, 1.05vw, 1.1rem);*/
   font-weight: 700;
 
   display: flex;
   align-items: center;
   justify-content: flex-start;
 }
-.theme h3 { font-size: clamp(1.25rem, 3vw, 1.75rem) }
-.theme span { font-size: clamp(0.7rem, 0.75vw, 0.78rem) }
+.theme h3 { font-size: min(2.96dvh, 1.6dvw); }
+.theme span { font-size: min(1.48dvh, 0.83dvw) }
 
 .theme__meta {
   position: absolute;
