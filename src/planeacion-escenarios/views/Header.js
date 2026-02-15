@@ -1,6 +1,6 @@
 const Header = () => {
   return (
-    <header className="content content--dark-green header">
+    <header className="content content--dark-green">
       {/* Fondo satelital */}
       <img className="img__background" src={'/pxe_images/FondoMTY.png'}/>
 
