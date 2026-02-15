@@ -2,14 +2,13 @@
 .header__title {
     font-family: 'Neue Montreal Bold', sans-serif;
     font-size: clamp(2rem, 3vw, 3.4rem);
-    font-weight: 400;
     line-height: 1.1;
-    margin: 0;
 }
 .header__subtitle {
     font-family: 'Neue Montreal Regular', sans-serif;
     font-size: clamp(1.5rem, 3vw, 3.2rem);
 }
+
 .section_title {
   font-family: 'Neue Montreal Bold', sans-serif;
   /*font-size: clamp(2rem, 5vw, 3rem);*/
@@ -22,24 +21,19 @@
 }
 .section_subtitle {
     font-family: 'Neue Montreal Medium Italic', sans-serif;
-    font-size: min(4.6dvh, 2.6dvw);
+    font-size: min(5.55dvh, 3.12dvw); /*min(4.6dvh, 2.6dvw);*/
 }
 
-/*HEADER*/
+/*01 HEADER*/
 .img__background {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 .logo-tec {
     width: clamp(25rem, 25vw, 30rem);
-}
-.logo-pxe {
-  width: clamp(300px, 40vw, 440px);
-  height: auto;
 }
 .logoPXE {
     position: absolute;
@@ -49,12 +43,31 @@
     transform: translateY(-50%);
 }
 
-/*WHY*/
-.why span {
-    font-family: 'Neue Montreal Medium Italic', sans-serif;
+.logo-pxe {
+  width: clamp(300px, 40vw, 440px);
+  height: auto;
 }
 
-/*STEPS*/
+/*02 WHY*/
+.leyenda {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.leyenda p {
+    font-size: min(2.22dvh, 1.25dvw); /*24px*/;
+}
+.leyenda span {
+    font-size: 40px;
+}
+
+/*03 PROCESO Y PARTICIPACIÓN*/
+.process .content-col {
+    max-width: 50%;
+    height: 90%;
+    justify-content: space-between;
+}
 .step__item {
     padding: 0.7rem;
     border-radius: 6px;
@@ -69,28 +82,28 @@
     flex-direction: row;
     align-items: center;
     gap: 1rem;
+    padding: 0.5rem 0;
+}
+.step__description p {
+    margin: 0;
 }
 .step__number {
     font-size: 2rem;
 }
 
-/*HERRAMIENTAS*/
+/*03 HERRAMIENTAS*/
 .herramientas {
   display: flex;
   flex-direction: column;
-  /*padding:1rem;*/
-  padding: min(2.22dvh, 1.25dvw); /*24px*/
-  box-sizing: border-box;
-  background-color: #c6c9c7;
-  /*width: 40rem;*/
   width: min(64.8dvh, 36.4dvw);
-
   height: 90%;
-  flex-shrink: 0;
-  /*flex: 1;*/
+  padding: min(2.22dvh, 1.25dvw); /*24px*/
+  background-color: #c6c9c7;
   border-radius: 12px;
+  /* box-sizing: border-box; */
+  /* flex-shrink: 0; */
 }
-.herramientas__title,
+.herramientas h3,
 .herramientas h4 {
     text-align: center;
     font-family: 'Neue Montreal Bold', sans-serif;
@@ -99,10 +112,9 @@
   flex: 1;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  /*grid-template-rows: auto auto;*/
   gap: 1rem;
   margin-top: 1rem;
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
 }
 .toolCards__card {
     display: flex;
@@ -121,21 +133,17 @@
 }
 
 
-/**/
-.two-columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-}
+/* THEMES (GRID DE COLORE) */
+
 .color-grid {
     position: absolute;
     top:0;
     right: 0;
     display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(4, 1fr);
-  height: 100dvh;
-  width: 50dvw;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, 1fr);
+    height: 100dvh;
+    width: 50dvw;
 }
 .theme {
   position: relative;
@@ -175,42 +183,44 @@
 .theme--citizenship  { background: #8ccfb0; }
 
 
-/*SCENARIOS*/
-.three-columns {
+/*SCENARIO INTRO*/ 
+.scenario {
+    padding-right: 0;
+}
+.scenario h4 {
+    font-size: min(2.77dvh, 1.56dvw); /*24px*/
+    line-height: normal;
+    margin-bottom: 0.5rem;
+}
+.dots-row {
+  display: flex;
+  gap: 0.5rem;
+  height: 100%;
+}
+.dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #000000;
+}
+.dot--filled {
+    background-color: #000000;
+}
+.scenario-grid {
     display: grid;
-    grid-template-columns: 30% 30% 1fr;
+    grid-template-columns: 50% 1fr;
+    gap: 4rem;
+}
+.scenario-grid h4{
+    margin: 0;
+}
+.two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 2rem;
 }
-
-
-/*grids comparativos*/
-.grid1 {
-    height: 100%;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-}
-.grid1_item {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-.grid1__item--green { background-color: #7fae6b;}
-.grid1__item--blue { background-color: #6b8dbf;}
-.grid1__item--pink { background-color: #d88cae;}
-.grid1__item--purple { background-color: #9b7fbf;}
-
-.grid2 {
-    height: 100%;
-    display: grid;
-    grid-template-columns: 0.5fr repeat(4, 1fr);
-    grid-template-rows: 0.5fr repeat(4, 1fr);
-    color: black;
-}
-
-.grid2__header {
-    background-color: white;
-    border: 1px solid black;
-    text-align: center;
+.two-columns .content-col {
+    gap: 1.5rem;
 }
 
 /*TEAM*/

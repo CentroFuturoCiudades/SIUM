@@ -12,11 +12,11 @@ const ProcessParticipation = () => {
       </div>
       <h2 className='section_title section_title--white'>PROCESO Y<br />PARTICIPACIÓN</h2>
 
+      {/* PASOS DEL PROCESO */}
       <div className='content-row' style={{gap:'2rem', alignItems:'flex-end'}}>
-        {/*STEPS COLORES*/}
-        <div className='content-col' style={{maxWidth:'50%', height:'90%', justifyContent:'space-between'}}>
+        <div className='content-col'>
           {steps.map((step, index) => (
-            <div key={index} style={{display:'flex', flexDirection:'column'}}>
+            <div key={index}>
               <div className={`step__item ${step.colorClass}`}>
                 <h3>{step.title}</h3>
               </div>
@@ -31,13 +31,13 @@ const ProcessParticipation = () => {
 
         {/*HERRAMIENTAS*/}
         <div className='herramientas'>
-          <h3 className='herramientas__title'>HERRAMIENTAS DE MODELACIÓN</h3>
+          <h3>HERRAMIENTAS DE MODELACIÓN</h3>
           <div className='toolCards'>
             {tools.map((tool) => (
               <div key={tool.name} className='toolCards__card'>
                 <h4>{tool.name}</h4>
                 <div style={{fontSize:'40px', color:'white'}}>
-                {tool.icon}
+                  {tool.icon}
                 </div>
                 <p>{tool.description}</p>
               </div>

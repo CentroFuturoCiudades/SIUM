@@ -6,9 +6,8 @@ import ProjectWhy from './views/ProjectWhy';
 import ProcessParticipation from './views/ProcessParticipation';
 import ProcessThemes from './views/ProcessThemes';
 import Scenarios from './views/Scenarios';
-import ScenarioCase from './views/ScenarioCase';
-import ScenariosGrid1 from './views/Grid1';
-import ScenarioGrid2 from './views/Grid2';
+import ScenarioIntro from './views/ScenarioIntro';
+import ScenarioDescription from './views/ScenarioDescription';
 import Team from './views/Team';
 import { scenarios_cases } from './constants/constants';
 // import '../styles/global.scss'
@@ -38,9 +37,9 @@ const PXE_Landing = () => {
         <ProcessParticipation />
       </Section>
 
-      <Section id="themes">
+      {/*<Section id="themes">
         <ProcessThemes />
-      </Section>
+      </Section>*/}
 
       <Section id="scenario">
         <Scenarios />
@@ -48,17 +47,15 @@ const PXE_Landing = () => {
 
 
       {scenarios_cases.map((caseData, index) => (
+        <>
         <Section id={`scenario-case-${index}`} key={index}>
-          <ScenarioCase {...caseData} />
+          <ScenarioIntro {...caseData} />
         </Section>
+        <Section id={`scenario-description-${index}`} key={`${index}-description`}>
+          <ScenarioDescription {...caseData} />
+        </Section>
+        </>
       ))}
-      <Section id="grid1">
-        <ScenariosGrid1 />
-      </Section>
-      
-      <Section id="grid2">
-        <ScenarioGrid2 />
-      </Section>
 
       <Section id="team">
         <Team />
