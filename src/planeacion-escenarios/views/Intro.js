@@ -46,9 +46,9 @@ const Intro = () => {
           </div>
         </div>
         
-        <div style={{width:'min(88dvh, 50dvw)', alignSelf:'flex-end', backgroundColor:'#716c6c', height:'90%'}}>
-         <img src={'/pxe_images/intro-table-01.png'} style={{height:'100%'}}/>
-        </div>
+        <div style={{flex: 1, height:'100%'}}>
+         <img src={'/pxe_images/table01.png'} style={{maxHeight:'100%', maxWidth: '100%', objectFit:'contain', display:'block'}}/>
+        </div> 
       </div>
     </section>
   );

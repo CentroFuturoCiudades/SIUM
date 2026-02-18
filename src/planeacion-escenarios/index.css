@@ -11,7 +11,7 @@
     background-color: white;
     color: black;
     /*padding: clamp(2rem, 3vw, 4rem);*/
-    padding: min(5.55dvh, 3.12dvw); /*60px*/
+    padding: min(7.4dvh, 4.16dvw); /*80px*/
     box-sizing: border-box;    
     font-family: 'Neue Montreal Medium', sans-serif;
     overflow-y: hidden;
@@ -19,8 +19,10 @@
 .content p,
 .content u {
     /*font-size: clamp(1.125rem, 1vw, 1.25rem);*/
-    /*font-size: min(1.04dvw, 1.85dvh); 20px*/
-    font-size: min(2.22dvh, 1.25dvw); /*24px*/
+    /*font-size: min(1.04dvw, 1.85dvh); */ /*20px*/
+    font-size: min(2.03dvh, 1.15dvw); /*22px*/
+    line-height: normal;
+    /*font-size: min(2.22dvh, 1.25dvw); 24px*/
     line-height: normal;
     margin-bottom: 0.5rem;
 }
@@ -42,6 +44,7 @@
     display: flex;
     flex-direction: row;
     flex: 1;
+    overflow: hidden;
 }
 
 .content-col {

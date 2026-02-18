@@ -36,8 +36,8 @@ const ProcessParticipation = () => {
             {tools.map((tool) => (
               <div key={tool.name} className='toolCards__card'>
                 <h4>{tool.name}</h4>
-                <div style={{fontSize:'40px', color:'white'}}>
-                  {tool.icon}
+                <div style={{width:'100%', height:'6rem'}}>
+                  <img src={tool.icon} style={{width:'100%', height:'100%', objectFit:'contain', display:'block'}}/>
                 </div>
                 <p>{tool.description}</p>
               </div>
