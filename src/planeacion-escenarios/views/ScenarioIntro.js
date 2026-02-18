@@ -1,14 +1,17 @@
-const ScenarioIntro = ({ title, intro, viabilidad }) => {
+const ScenarioIntro = ({ title, subtitle1, subtitle2, intro, viabilidad }) => {
     return (
-        <div className="content scenario" style={title == "Incercial" ? {backgroundColor:'#adb8cf'} : {}}>
-            <h2 className="section_title">ESCENARIO</h2>
+        <div className="content scenario" style={title == "Escenario A" ? {backgroundColor:'#adb8cf', paddingRight:0} : {paddingRight:0}}>
+            <h2 className="section_title">{title}</h2>
             
             <div className="content-row scenario-grid">
                 <div 
                     className='content-col'
                     style={{gap:'2rem'}}
                 >
-                    <h3 className="section_subtitle">{title}</h3>
+                    <div>
+                        <h3 className="section_subtitle">{subtitle1}</h3>
+                        <h3 className="section_subtitle-italic">{subtitle2}</h3>
+                    </div>
                     <h4 style={{marginTop:'2rem', width:'70%'}}>{intro}</h4>
                     <div className="content-row" style={{gap:'1rem'}}>
                         <h4>VIABILIDAD POLÍTICA</h4>

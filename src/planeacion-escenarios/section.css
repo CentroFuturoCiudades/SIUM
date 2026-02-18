@@ -20,8 +20,16 @@
   color: white;
 }
 .section_subtitle {
-    font-family: 'Neue Montreal Medium Italic', sans-serif;
+    font-family: 'Neue Montreal Medium', sans-serif;
     font-size: min(5.55dvh, 3.12dvw); /*min(4.6dvh, 2.6dvw);*/
+}
+.section_subtitle--medium-italic {
+    font-family: 'Neue Montreal Medium Italic', sans-serif;
+    font-size: min(5.55dvh, 3.12dvw);
+}
+.section_subtitle-italic {
+    font-family: 'Neue Montreal Light Italic', sans-serif;
+    font-size: min(4.6dvh, 2.6dvw); /*50px*/
 }
 
 /*01 HEADER*/
@@ -54,6 +62,11 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+
+    background-image: url('/public/pxe_images/map_mty.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 .leyenda p {
     font-size: min(2.22dvh, 1.25dvw); /*24px*/;
@@ -182,13 +195,16 @@
 .theme--connection   { background: #7c6bb0; }
 .theme--citizenship  { background: #8ccfb0; }
 
+/*04 ESCENARIOS*/
+.col-grid {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    gap: 1rem;
+}
 
 /*SCENARIO INTRO*/ 
-.scenario {
-    padding-right: 0;
-}
 .scenario h4 {
-    font-size: min(2.77dvh, 1.56dvw); /*24px*/
+    font-size: 23px; /*24px*/
     line-height: normal;
     margin-bottom: 0.5rem;
 }
@@ -208,19 +224,50 @@
 }
 .scenario-grid {
     display: grid;
-    grid-template-columns: 50% 1fr;
-    gap: 4rem;
+    grid-template-columns: 60% 1fr;
+    gap: 1rem;
+    box-sizing: border-box;
 }
-.scenario-grid h4{
+.scenario-grid--desc {
+    grid-template-columns: 75% 1fr;
+}
+.scenario-grid h4,
+.scenario-grid h3 {
     margin: 0;
 }
-.two-columns {
+.three-columns {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-}
-.two-columns .content-col {
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 1.5rem;
+    height: 100%;
+    box-sizing: border-box;
+}
+.three-columns .content-col {
+    gap: 1rem;
+    /* justify-content: space-between; */
+    height: 100%;
+}
+.three-columns .content-col p {
+    font-size: min(1.85dvh, 1.04dvw); /*20px*/
+    line-height: normal;
+    margin: 0;
+}
+
+/*VENTAJAS Y TENSIONES*/
+.extraInfo {
+    background-color: #d8e1f5;
+    box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.25);
+    padding: 0.5rem;
+}
+.extraInfo--inercial {
+    background-color: #fafafa;
+}
+.extraInfo h6 {
+    font-family: 'Neue Montreal Bold', sans-serif;
+    font-size: min(2.22dvh, 1.25dvw); /*24px*/
+}
+.extraInfo .content-col p {
+    font-size: min(1.38dvh, 0.78dvw); /*15px*/
 }
 
 /*TEAM*/
@@ -260,4 +307,8 @@
 @font-face {
     font-family: 'Neue Montreal Light';
     src: url(/public/pxe_images/fonts/Neue\ Montreal/NeueMontreal-Light.otf) format("opentype");
+}
+@font-face {
+    font-family: 'Neue Montreal Light Italic';
+    src: url(/public/pxe_images/fonts/Neue\ Montreal/NeueMontreal-LightItalic.otf) format("opentype");
 }

@@ -13,7 +13,9 @@ const ProjectWhy = () => {
       <div className="content-row">
 
         <div className="leyenda">
-          <div style={{backgroundColor:'#c6c9c7', width:'30%', height:'40%', marginBottom:'1rem'}}></div>
+          <div style={{ width:'30%', height:'40%', marginBottom:'1rem'}}>
+            <img src={'/pxe_images/legend.png'} style={{width:'100%', height:'100%'}}/>
+          </div>
           <p>¿HACIA DÓNDE NOS EXPANDIMOS?</p>
           <p>
             El <span>35%</span> del territorio construido
