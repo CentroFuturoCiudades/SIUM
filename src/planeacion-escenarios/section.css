@@ -29,7 +29,7 @@
 }
 .section_subtitle-italic {
     font-family: 'Neue Montreal Light Italic', sans-serif;
-    font-size: min(4.6dvh, 2.6dvw); /*50px*/
+    font-size: min(4.4dvh, 2.5dvw); /*48px*/
 }
 
 /*01 HEADER*/
@@ -204,7 +204,7 @@
 
 /*SCENARIO INTRO*/ 
 .scenario h4 {
-    font-size: 23px; /*24px*/
+    font-size: min(2.77dvh, 1.56dvw); /*30px*/
     line-height: normal;
     margin-bottom: 0.5rem;
 }
@@ -225,11 +225,12 @@
 .scenario-grid {
     display: grid;
     grid-template-columns: 60% 1fr;
-    gap: 1rem;
+    gap: 1.5rem;
     box-sizing: border-box;
 }
 .scenario-grid--desc {
     grid-template-columns: 75% 1fr;
+    gap: 2rem;
 }
 .scenario-grid h4,
 .scenario-grid h3 {
@@ -238,25 +239,69 @@
 .three-columns {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 1.5rem;
+    gap: min(1.85dvh, 1.04dvw); /*20px*/
+    margin-top: min(2.22dvh, 1.25dvw); /*24px*/
+    
     height: 100%;
     box-sizing: border-box;
+    /* padding-bottom: 10px; */
 }
 .three-columns .content-col {
-    gap: 1rem;
-    /* justify-content: space-between; */
+    /* gap: 1rem; */
+    /* justify-content: space-between;  */
+    display: flex;
+    flex-direction: column;
+    flex: 0;
+    gap: min(1rem, 2vw);
     height: 100%;
 }
 .three-columns .content-col p {
     font-size: min(1.85dvh, 1.04dvw); /*20px*/
-    line-height: normal;
+    line-height: 1.2;
     margin: 0;
 }
 
 /*VENTAJAS Y TENSIONES*/
+.pros-cons {
+    /* display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 1rem;
+    height: 100%;
+    border: 1px solid blue;
+    box-sizing: border-box; */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 0 10px 10px 0;
+}
+.pros-cons h6 {
+    font-family: 'Neue Montreal Bold', sans-serif;
+    font-size: min(2.03dvh, 1.14dvw); /*22px*/
+    margin-bottom: 0.5rem;
+}
+.pros-cons p {
+    font-size: min(1.29dvh, 0.72dvw); /*15px*/
+}
+.pros-cons .pros,
+.pros-cons .cons {
+    background-color: #e9eff4;
+    box-shadow: 8px 8px 8px rgba(214, 214, 214, 1);
+    /* padding: 10px;
+    box-sizing: border-box; */
+    flex: 1;
+    box-sizing: border-box;
+    min-height: 0;
+    padding: 1rem;
+}
+.pros-cons .pros--inercial,
+.pros-cons .cons--inercial {
+    background-color: #fafafa;
+}
 .extraInfo {
-    background-color: #d8e1f5;
-    box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.25);
+    background-color: #e9eff4;
+    box-shadow: 8px 8px 8px rgba(214, 214, 214, 0.25);
     padding: 0.5rem;
 }
 .extraInfo--inercial {
@@ -264,10 +309,10 @@
 }
 .extraInfo h6 {
     font-family: 'Neue Montreal Bold', sans-serif;
-    font-size: min(2.22dvh, 1.25dvw); /*24px*/
+    font-size: min(2.03dvh, 1.14dvw); /*22px*/
 }
 .extraInfo .content-col p {
-    font-size: min(1.38dvh, 0.78dvw); /*15px*/
+    font-size: min(1.29dvh, 0.72dvw); /*15px*/
 }
 
 /*TEAM*/
