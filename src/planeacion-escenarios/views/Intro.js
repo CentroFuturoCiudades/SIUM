@@ -15,7 +15,7 @@ const Intro = () => {
         POR ESCENARIOS?
       </h2>
 
-      <div className='content-row' style={{marginTop:'2rem', gap:'5rem'}}>
+      <div className='content-row' style={{marginTop:'2rem', gap:'2rem'}}>
         <div className='content-col' style={{ gap:'2rem', maxWidth:'21%'}}>
           <div>
             <p>

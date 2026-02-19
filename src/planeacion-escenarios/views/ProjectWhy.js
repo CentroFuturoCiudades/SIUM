@@ -27,7 +27,7 @@ const ProjectWhy = () => {
           <h2 className="section_title section_title--white">
             ¿POR QUÉ ESTE<br />PROYECTO?
           </h2>
-          <div className="content-col" style={{width:'80%', gap:'1rem'}}>
+          <div className="content-col" style={{width:'90%', gap:'1rem'}}>
             <div>
               <p>
                 Las ciudades enfrentan problemas estructurales que son, en parte,
