@@ -1,7 +1,7 @@
 
 const Intro = () => {
   return (
-    <section className=' content content--dark-green'>
+    <section className='content content--dark-green intro-section'>
 
       <div className="section-number">
         01
@@ -16,7 +16,7 @@ const Intro = () => {
       </h2>
 
       <div className='content-row' style={{marginTop:'2rem', gap:'2rem'}}>
-        <div className='content-col' style={{ gap:'2rem', maxWidth:'21%'}}>
+        <div className='content-col' style={{ gap:'2rem'}}>
           <div>
             <p>
               Explora futuros plausibles sin pretender predecirlos,

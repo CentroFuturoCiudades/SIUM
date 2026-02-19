@@ -11,10 +11,16 @@
 
 .section_title {
   font-family: 'Neue Montreal Bold', sans-serif;
-  /*font-size: clamp(2rem, 5vw, 3rem);*/
+  /* font-size: clamp(3rem, 5.55vw, 60px); */
   font-size: min(5.55dvh, 3.12dvw); /*60px*/
   color: black;
   margin: 0;
+}
+.section_title--big {
+  font-size: min(8.3dvh, 4.7dvw); /*60px*/
+  color: black;
+  margin-bottom: 4rem;
+
 }
 .section_title--white {
   color: white;
@@ -41,19 +47,29 @@
     object-fit: cover;
 }
 .logo-tec {
-    width: clamp(25rem, 25vw, 30rem);
+    /* width: clamp(25rem, 25vw, 30rem); */
+    width: clamp(30dvw, 25dvw, 35dvw);
+
 }
 .logoPXE {
     position: absolute;
-    height: clamp(80vh, 90vh, 95vh);
+    /* height: clamp(80vh, 90vh, 95vh); */
+    height: min(80dvh, 80dvw, 90vh);
+    /* height: min(90dvh, 60dvw); 90vh */
     top: 50%;
-    right: 20%;
-    transform: translateY(-50%);
+    right: 50%;
+    transform: translate(60%, -50%); /*x, y*/
 }
 
 .logo-pxe {
   width: clamp(300px, 40vw, 440px);
   height: auto;
+}
+
+
+/* 01 INTRO */
+.intro-section .content-col {
+    max-width: 25%;
 }
 
 /*02 WHY*/
@@ -331,6 +347,21 @@
 }
 .equipo span{
     font-family: 'Neue Montreal Light', sans-serif;
+}
+
+
+
+
+
+@media (max-width: 600px) {
+    .logoPXE {
+        transform: translate(50%, -50%);
+    }
+
+    /* 01 INTRO */
+    .intro-section .content-col {
+        max-width: 50%;
+    }
 }
 
 /*FONT IMPORTS*/
