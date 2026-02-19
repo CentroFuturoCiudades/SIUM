@@ -1,6 +1,9 @@
 .pxe__section {
     height: 100dvh;
 }
+.pxe__section04 {
+    min-height: 100dvh;
+}
 
 /*SECTIONS*/
 .content {
@@ -14,7 +17,7 @@
     padding: min(7.4dvh, 4.16dvw); /*80px*/
     box-sizing: border-box;    
     font-family: 'Neue Montreal Medium', sans-serif;
-    overflow-y: hidden;
+    /* overflow-y: hidden; */
 }
 .content p,
 .content u {
@@ -77,4 +80,10 @@
 }
 .section-number--outline.section-number--black {
     -webkit-text-stroke: 1px black;
+}
+
+@media (max-width: 600px) {
+    .content-row {
+        flex-direction: column;
+    }
 }

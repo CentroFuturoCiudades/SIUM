@@ -13,7 +13,7 @@ import { scenarios_cases } from './constants/constants';
 // import '../styles/global.scss'
 
 const Section = ({ id, children }) => (
-  <section id={id} className='pxe__section'>
+  <section id={id} className={`${id === 'scenario-case-0' ? 'pxe__section04' : 'pxe__section'}`}>
     {children}
   </section>
 );
@@ -41,10 +41,9 @@ const PXE_Landing = () => {
         <ProcessThemes />
       </Section>*/}
 
-      <Section id="scenario">
+      {/* <Section id="scenario">
         <Scenarios />
-      </Section>
-
+      </Section> */}
 
       {scenarios_cases.map((caseData, index) => (
         <>

@@ -809,6 +809,10 @@ export const teamMembersCFC = [
         role: 'Líder del proyecto',
     },
     {
+        name: 'Alberto Meuchi',
+        role: 'Director de la sede CCM del CFC'
+    },
+    {
         name: 'Carlos Orozco',
         role: 'Project Manager del proyecto',
     },

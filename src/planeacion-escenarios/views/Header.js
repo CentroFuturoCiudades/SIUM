@@ -10,6 +10,7 @@ const Header = () => {
             <span className="header__subtitle">ZMM 2040</span>
             <h1 className="header__title">Futuros Posibles</h1>
         </div>
+        
         <img src={'/pxe_images/Logo-CFC.png'} className="logo-tec"/>
       </div>
       
