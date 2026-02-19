@@ -6,13 +6,13 @@ const ScenarioIntro = ({ title, subtitle1, subtitle2, intro, viabilidad }) => {
             <div className="content-row scenario-grid">
                 <div 
                     className='content-col'
-                    style={{gap:'2rem'}}
+                    style={{gap:'3rem'}}
                 >
                     <div>
                         <h3 className="section_subtitle">{subtitle1}</h3>
                         <h3 className="section_subtitle-italic">{subtitle2}</h3>
                     </div>
-                    <h4 style={{marginTop:'2rem', width:'70%'}}>{intro}</h4>
+                    <h4 style={{ width:'90%'}}>{intro}</h4>
                     <div className="content-row" style={{gap:'1rem'}}>
                         <h4>VIABILIDAD POLÍTICA</h4>
                         <div className="dots-row">
@@ -24,7 +24,7 @@ const ScenarioIntro = ({ title, subtitle1, subtitle2, intro, viabilidad }) => {
                 </div>
 
 
-                <div style={{width: '100%', height: '100%', backgroundColor:'#dd81ac'}}>
+                <div style={{width: '100%', height: '100%', backgroundColor:'#6297b8'}}>
                 </div>
             </div>
         </div>
