@@ -1,6 +1,6 @@
 const ScenarioIntro = ({ title, subtitle1, subtitle2, intro, viabilidad }) => {
     return (
-        <div className="content scenario" style={title == "Escenario A" ? {backgroundColor:'#adb8cf', paddingRight:0} : {paddingRight:0}}>
+        <div className="content scenario" style={title == "Escenario A" ? {backgroundColor:'#e9eff4', paddingRight:0} : {paddingRight:0}}>
             <h2 className="section_title">{title}</h2>
             
             <div className="content-row scenario-grid">

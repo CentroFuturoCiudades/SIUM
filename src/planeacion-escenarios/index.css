@@ -18,8 +18,6 @@
 }
 .content p,
 .content u {
-    /*font-size: clamp(1.125rem, 1vw, 1.25rem);*/
-    /*font-size: min(1.04dvw, 1.85dvh); */ /*20px*/
     font-size: min(2.03dvh, 1.15dvw); /*22px*/
     line-height: normal;
     /*font-size: min(2.22dvh, 1.25dvw); 24px*/
