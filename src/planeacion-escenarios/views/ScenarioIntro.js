@@ -1,4 +1,4 @@
-const ScenarioIntro = ({ title, subtitle1, subtitle2, intro, viabilidad }) => {
+const ScenarioIntro = ({ title, subtitle1, subtitle2, intro, viabilidad, image }) => {
     return (
 
         <div className="content scenario" style={title == "Escenario A" ? {backgroundColor:'#e9eff4', paddingRight:0 /* paddingLeft:0, height:'100dvh', border:'1px solid red'*/ } : {paddingRight:0}}>
@@ -41,7 +41,8 @@ const ScenarioIntro = ({ title, subtitle1, subtitle2, intro, viabilidad }) => {
                 </div>
 
 
-                <div style={{width: '100%', height: 'min(74dvh, 41.6dvw)', backgroundColor:'#6297b8', alignSelf:'center'}}>
+                <div style={{width: '100%', height: 'min(74dvh, 41.6dvw)', alignSelf:'center', }}>
+                    <img src={image} style={{width:'100%', height:'100%', objectFit:'contain', display:'block'}}/>
                 </div>
             </div>
         </div>

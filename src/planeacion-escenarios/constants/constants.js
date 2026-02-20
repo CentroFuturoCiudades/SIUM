@@ -234,7 +234,7 @@ export const scenarios_cases = [
                 </p>
             </div>
         ),
-        image: '/pxe_images/EscenarioTendencial.png'
+        image: '/pxe_images/scenarioA.jpeg'
     }, 
     {
         title: 'Escenario B',
@@ -421,7 +421,7 @@ export const scenarios_cases = [
                 </p>
             </div>
         ),
-        image: '/pxe_images/Escenario1.png'
+        image: '/pxe_images/scenarioB.jpeg'
     },
     {
         title: 'Escenario C',
@@ -610,7 +610,7 @@ export const scenarios_cases = [
                 </p>
             </div>
         ),
-        image: '/pxe_images/Escenario2.png'
+        image: '/pxe_images/scenarioC.jpeg'
     },
     {
         title: 'Escenario D',
@@ -799,7 +799,7 @@ export const scenarios_cases = [
                 </p>
             </div>
         ),
-        image: '/pxe_images/Escenario3.png'
+        image: '/pxe_images/scenarioD.jpeg'
     },
 ]
 

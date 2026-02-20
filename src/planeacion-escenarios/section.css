@@ -260,7 +260,7 @@
 }
 .scenario-grid {
     display: grid;
-    grid-template-columns: 50% 1fr;
+    grid-template-columns: 40% 1fr;
     gap: 2rem;
     box-sizing: border-box;
 }
