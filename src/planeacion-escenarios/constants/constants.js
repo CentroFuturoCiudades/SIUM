@@ -850,5 +850,18 @@ export const teamMembersCFC = [
     },
 ]
 
-export const teamMembersCNL = ['Juan Alejandro García', 'Alicia Landín'];
-export const comiteAsesor = ['Armando Estrada', 'Ana Fernanda Hierro', 'José Antonio Torre', 'Heather Hannon', 'Giovanni Pérez', 'Matt Nookeser', 'Uri Avin'];
+export const teamMembersCNL = [
+    {
+        name: 'Juan Alejandro García',
+        role: 'Coordinador de la Comisión de Desarrollo Sustentable'
+    },
+    {
+        name: 'Ana Fernanda Hierro',
+        role: 'Secretaria Técnica'
+    },
+    {
+        name: 'Alicia Landín',
+        role: 'Asesora'
+    }
+];
+export const comiteAsesor = ['Armando Estrada', 'José Antonio Torre', 'Heather Hannon', 'Giovanni Pérez', 'Matt Nookeser', 'Uri Avin'];
