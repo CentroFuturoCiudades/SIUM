@@ -1,9 +1,9 @@
 const ScenarioIntro = ({ title, subtitle1, subtitle2, intro, viabilidad, image }) => {
     return (
 
-        <div className="content scenario" style={title == "Escenario A" ? {backgroundColor:'#e9eff4', paddingRight:0 /* paddingLeft:0, height:'100dvh', border:'1px solid red'*/ } : {paddingRight:0}}>
+        <div className="content scenario" style={title == "A" ? {backgroundColor:'#e9eff4', paddingRight:0 /* paddingLeft:0, height:'100dvh', border:'1px solid red'*/ } : {paddingRight:0}}>
 
-            {title == "Escenario A" && (
+            {title == "A" && (
                 <>
                 <h2 className="section_title section_title--big">ESCENARIOS EXPLORATIVOS</h2>
                 <div className="section-number section-number--black">
@@ -17,7 +17,10 @@ const ScenarioIntro = ({ title, subtitle1, subtitle2, intro, viabilidad, image }
             
             
             {/* <h2 className="section_title">{title}</h2> */}
-            <h2 className="section_subtitle">{subtitle1}</h2>
+            <h2 className="section_subtitle">
+                <span>{title}. </span>
+                {subtitle1}
+            </h2>
 
             
             <div className="content-row scenario-grid">
