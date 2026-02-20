@@ -52,7 +52,7 @@ export const tools = [
 
 export const scenarios_cases = [
     {
-        title: 'Escenario A',
+        title: 'A',
         subtitle1: 'Metrópolis Inercial',
         subtitle2: 'Expansión industrial y vivienda periférica',
         intro: 'LA ZONA METROPOLITANA DE MONTERREY CRECE DE FORMA EXPANSIVA, GUIADA POR UNA AGENDA INMEDIATA Y NO POR UNA VISIÓN INTEGRAL DE LARGO PLAZO. LA EXPANSIÓN SE DIRIGE AL NORTE Y ORIENTE, ARTICULADA EN POLOS INDUSTRIALES Y VIVIENDA DE BAJA Y MEDIA DENSIDAD, CONSOLIDANDO UN MODELO PERIFERICO, SEGMENTADO Y AMBIENTALMENTE PRESIONADO.',
@@ -237,7 +237,7 @@ export const scenarios_cases = [
         image: '/pxe_images/scenarioA.jpeg'
     }, 
     {
-        title: 'Escenario B',
+        title: 'B',
         subtitle1: 'Metrópolis  en Red',
         subtitle2: 'Red de centralidades y corredores',
         intro: 'LA CIUDAD SE REORDENA EN UNA RED DE CENTRALIDADES CONECTADAS POR CORREDORES. LA RED SE CONTIENE DENTRO DE LOS 16 MUNICIPIOS COORDINADOS Y ALINEADOS A PRINCIPIOS COMUNES QUE REGULAN EL DESARROLLO, EN FUNCIÓN DE LA DISPONIBILIDAD DE AGUA, ENERGÍA Y FACTIBILIDAD DE LA INFRAESTRUCTURA DE MOVILIDAD Y LOS EQUIPAMIENTOS.',
@@ -424,7 +424,7 @@ export const scenarios_cases = [
         image: '/pxe_images/scenarioB.jpeg'
     },
     {
-        title: 'Escenario C',
+        title: 'C',
         subtitle1: 'Metrópolis Contenida',
         subtitle2: 'Redensificación del centro metropolitano',
         intro: 'MONTERREY CONCENTRA SU DESARROLLO EN EL NÚCLEO URBANO (9 MUNICIPIOS CENTRALES), FRENANDO LA EXPANSIÓN PERIFÉRICA. LA CIUDAD APUESTA POR DENSIFICAR, RECICLAR Y MEZCLAR USOS DENTRO DE UN PERÍMETRO DEFINIDO, PRIORIZANDO EFICIENCIA, PROXIMIDAD Y SOSTENIBILIDAD. EL MODELO FORTALECE EL CENTRO METROPOLITANO, PERO GENERA TENSIONES SOCIALES, FISCALES Y TERRITORIALES CON LOS MUNICIPIOS PERIFÉRICOS.',
@@ -613,7 +613,7 @@ export const scenarios_cases = [
         image: '/pxe_images/scenarioC.jpeg'
     },
     {
-        title: 'Escenario D',
+        title: 'D',
         subtitle1: 'Metrópolis Archipiélago',
         subtitle2: 'Autonomía y competencia municipal',
         intro: 'LA ZONA METROPOLITANA DE MONTERREY EVOLUCIONA SIN UNA VISIÓN COMPARTIDA. CADA MUNICIPIO DEFINE SU PROPIO MODELO DE DESARROLLO SEGÚN SUS CAPACIDADES Y VENTAJAS, CONFIGURANDO UNA METRÓPOLI COMPETITIVA, DIVERSA Y ADAPTABLE, PERO FRAGMENTADA, DONDE LA COMPETENCIA TERRITORIAL PRODUCE RESULTADOS DESIGUALES EN SERVICIOS, INFRAESTRUCTURA Y CALIDAD DE VIDA URBANA.',

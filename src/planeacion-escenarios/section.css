@@ -29,6 +29,9 @@
     font-family: 'Neue Montreal Medium', sans-serif;
     font-size: min(5.55dvh, 3.12dvw); /*min(4.6dvh, 2.6dvw);*/
 }
+.section_subtitle span {
+    font-family: 'Neue Montreal Bold', sans-serif;
+}
 .section_subtitle--medium-italic {
     font-family: 'Neue Montreal Medium Italic', sans-serif;
     font-size: min(5.55dvh, 3.12dvw);
