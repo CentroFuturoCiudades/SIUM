@@ -6,10 +6,10 @@ const ScenarioIntro = ({ title, subtitle1, subtitle2, intro, viabilidad }) => {
             {title == "Escenario A" && (
                 <>
                 <h2 className="section_title section_title--big">ESCENARIOS EXPLORATIVOS</h2>
-                <div className="section-number">
+                <div className="section-number section-number--black">
                     04
                 </div>
-                <div className='section-number section-number--outline'>
+                <div className="section-number section-number--outline section-number--black">
                     04
                 </div>
                 </>

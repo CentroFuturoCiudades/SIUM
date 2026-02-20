@@ -805,16 +805,20 @@ export const scenarios_cases = [
 
 export const teamMembersCFC = [
     {
-        name: 'Roberto Ponce',
-        role: 'Líder del proyecto',
+        name: 'José Antonio Torre',
+        role: 'Director del CFC',
     },
     {
-        name: 'Alberto Meuchi',
-        role: 'Director de la sede CCM del CFC'
+        name: 'Roberto Ponce',
+        role: 'Investigador principal',
     },
     {
         name: 'Carlos Orozco',
-        role: 'Project Manager del proyecto',
+        role: 'Director del proyecto',
+    },
+    {
+        name: 'Alberto Meouchi',
+        role: 'Director de la sede CCM del CFC'
     },
     {
         name: 'Fabian Lozano',
@@ -839,6 +843,10 @@ export const teamMembersCFC = [
     {
         name: 'Alan Romero',
         role: 'Diseñador Web',
+    },
+    {
+        name: 'Jeannette Arjona',
+        role: 'Desarrolladora Web',
     },
 ]
 

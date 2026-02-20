@@ -10,17 +10,19 @@ const ProjectWhy = () => {
         <div className='section-number section-number--outline section-number--left'>
           02
         </div>
-      <div className="content-row">
 
+      <div className="content-row" style={{gap:'2rem'}}>
         <div className="leyenda">
-          <div style={{ width:'30%', height:'40%', marginBottom:'1rem'}}>
+          <div style={{ width:'min(32.4dvh, 18.2dvw)'}}>
             <img src={'/pxe_images/legend.png'} style={{width:'100%', height:'100%'}}/>
           </div>
-          <p>¿HACIA DÓNDE NOS EXPANDIMOS?</p>
-          <p>
-            El <span>35%</span> del territorio construido
-            pierde población.
-          </p>
+          <div>
+            <p>¿HACIA DÓNDE NOS EXPANDIMOS?</p>
+            <p>
+              El <span>35%</span> del territorio construido
+              pierde población.
+            </p>
+          </div>
         </div>
 
         <div className='content-col' style={{gap: '2rem'}}>

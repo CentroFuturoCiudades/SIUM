@@ -13,8 +13,10 @@ const Team = () => {
       <h2 className="section_title section_title--white"> 
         EQUIPO
       </h2>
+      <h2 className='credit' style={{textAlign:'left'}}>Este proyecto es fondeado por <span>Capital para el Bien Común A.C.</span></h2>
 
-      <div className='content-row' style={{marginTop:'2rem'}}>
+
+      <div className='content-row' style={{marginTop:'min(2.96dvh, 1.66dvw)'}}>
         <div className='team_grid'>
           <div className='content-col'>
             <h3>Centro para el Futuro de las Ciudades</h3>

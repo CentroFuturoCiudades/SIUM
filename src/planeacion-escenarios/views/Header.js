@@ -1,6 +1,6 @@
 const Header = () => {
   return (
-    <header className="content content--dark-green">
+    <header className="content content--dark-green" style={{padding: 'clamp(2rem, 3vw, 4rem)'}}>
       {/* Fondo satelital */}
       <img className="img__background" src={'/pxe_images/FondoMTY.png'}/>
 
@@ -10,8 +10,16 @@ const Header = () => {
             <span className="header__subtitle">ZMM 2040</span>
             <h1 className="header__title">Futuros Posibles</h1>
         </div>
-        
-        <img src={'/pxe_images/Logo-CFC.png'} className="logo-tec"/>
+
+        <div style={{zIndex:2, justifyContent:'space-between', display:'flex', flexDirection: 'row', alignItems:'center'}}>
+          <img src={'/pxe_images/Logo-CFC.png'} className="logo-tec"/>
+
+          <h2 className='credit'>
+            Este proyecto es fondeado por <br/> 
+            <span>Capital para el Bien Común A.C.</span>
+          </h2>
+        </div>
+
       </div>
       
       <img src={'/pxe_images/LogoPXEgrande.png'} className="logoPXE"/>
