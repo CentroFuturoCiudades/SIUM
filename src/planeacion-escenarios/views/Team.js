@@ -33,8 +33,9 @@ const Team = () => {
             <div>
               <h3>Consejo Nuevo León</h3>
               {teamMembersCNL.map((member) => (
-                <p key={member}>
-                  <strong>{member}</strong>
+                <p key={member.name}>
+                  <strong>{member.name}</strong><br />
+                  <span>{member.role}</span>
                 </p>
               ))}
             </div>
