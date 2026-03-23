@@ -13,7 +13,7 @@ const ProcessParticipation = () => {
       <h2 className='section_title section_title--white'>PROCESO Y<br />PARTICIPACIÓN</h2>
 
       {/* PASOS DEL PROCESO */}
-      <div className='content-row' style={{gap:'2rem', marginTop: '2rem'}}>
+      <div className='content-row'>
         <div className='content-col'>
           {steps.map((step, index) => (
             <div key={index}>
@@ -36,7 +36,7 @@ const ProcessParticipation = () => {
             {tools.map((tool) => (
               <div key={tool.name} className='toolCards__card'>
                 <h4>{tool.name}</h4>
-                <div style={{width:'100%', height:'6rem'}}>
+                <div className='toolCards__img'>
                   <img src={tool.icon} style={{width:'100%', height:'100%', objectFit:'contain', display:'block'}}/>
                 </div>
                 <p>{tool.description}</p>

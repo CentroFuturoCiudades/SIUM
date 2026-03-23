@@ -29,7 +29,6 @@ const ScenarioIntro = ({ title, subtitle1, subtitle2, intro, viabilidad, image }
                     style={{gap:'4rem'}}
                 >
                     <div>
-                        {/* <h3 className="section_subtitle">{subtitle1}</h3> */}
                         <h3 className="section_subtitle-italic">{subtitle2}</h3>
                     </div>
                     <h4 style={{ width:'90%'}}>{intro}</h4>

@@ -3,6 +3,7 @@ import { FaCarSide } from 'react-icons/fa';
 import { TfiMoney } from 'react-icons/tfi';
 import { HiOutlineBuildingOffice2 } from 'react-icons/hi2';
 import { GiModernCity } from 'react-icons/gi';
+import { color } from 'd3-color';
 
 export const steps = [
     {
@@ -801,6 +802,122 @@ export const scenarios_cases = [
         ),
         image: '/pxe_images/scenarioD.jpeg'
     },
+]
+
+export const implicaciones_globales = {
+    ScenarioA: [
+        {category: 'CatA', value: 10, color: '#FF0000'},
+        {category: 'CatB', value: 20, color: '#00FF00'},
+        {category: 'CatC', value: 30, color: '#0000FF'},
+    ],
+    ScenarioB: [
+        {category: 'CatA', value: 10, color: '#FF0000'},
+        {category: 'CatB', value: 20, color: '#00FF00'},
+        {category: 'CatC', value: 30, color: '#0000FF'},
+    ],
+    ScenarioC: [
+        {category: 'CatA', value: 10, color: '#FF0000'},
+        {category: 'CatB', value: 20, color: '#00FF00'},
+        {category: 'CatC', value: 30, color: '#0000FF'},
+    ],
+    ScenarioD: [
+        {category: 'CatA', value: 10, color: '#FF0000'},
+        {category: 'CatB', value: 20, color: '#00FF00'},
+        {category: 'CatC', value: 30, color: '#0000FF'},
+    ],
+}
+
+export const implicaciones_categories = [
+    {
+        category: 'Proporción de desarrollo en suelo no urbanizado',
+        scenarios: {
+            inicial: {value: '65%', color: '#299c53'},
+            red: {value: '59%', color: '#299c53'},
+            contenida: {value: '59%', color: '#299c53'},
+            archipelago: {value: '84%', color: '#b53a11'},
+        }
+    },
+    {
+        category: 'Nueva superficie de construcción',
+        scenarios: {
+            inicial: {value: '10,710', color: '#299c53'},
+            red: {value: '9,550', color: '#299c53'},
+            contenida: {value: '7,782', color: '#299c53'},
+            archipelago: {value: '12,784', color: '#b53a11'},
+        }
+    },
+    {
+        category: 'Proporción vivienda nuevo desarrollo | redesarrollo',
+        scenarios: {
+            inicial: {value: '83% | 17%', color: '#299c53'},
+            red: {value: '67% | 33%', color: '#299c53'},
+            contenida: {value: '56% | 44%', color: '#299c53'},
+            archipelago: {value: '87% | 13%', color: '#b53a11'},
+        }
+    },
+    {
+        category: 'Infraestructura de energía',
+        scenarios: {
+            inicial: {value: '$8,680', color: '#299c53'},
+            red: {value: '$8,106', color: '#299c53'},
+            contenida: {value: '$5,761', color: '#299c53'},
+            archipelago: {value: '$10,656', color: '#b53a11'},
+        }
+    },
+    {
+        category: 'Demanda de agua',
+        scenarios: {
+            inicial: {value: 'ALTO', color: '#299c53'},
+            red: {value: 'MEDIO', color: '#299c53'},
+            contenida: {value: 'BAJO', color: '#299c53'},
+            archipelago: {value: 'ALTO', color: '#b53a11'},
+        }
+    },
+    {
+        category: 'Viabilidad política',
+        scenarios: {
+            inicial: {value: 'ALTO', color: '#299c53'},
+            red: {value: 'MEDIO', color: '#299c53'},
+            contenida: {value: 'BAJO', color: '#299c53'},
+            archipelago: {value: 'ALTO', color: '#b53a11'},
+        }
+    },
+    {
+        category: 'Sostenibilidad fiscal',
+        scenarios: {
+            inicial: {value: 'MEDIO', color: '#299c53'},
+            red: {value: 'MEDIO', color: '#299c53'},
+            contenida: {value: 'BAJO', color: '#299c53'},
+            archipelago: {value: 'MEDIO', color: '#b53a11'},
+        }
+    },
+    {
+        category: 'Riesgo de deuda',
+        scenarios: {
+            inicial: {value: 'MEDIO', color: '#299c53'},
+            red: {value: 'MEDIO', color: '#299c53'},
+            contenida: {value: 'BAJO', color: '#299c53'},
+            archipelago: {value: 'ALTO', color: '#b53a11'},
+        }
+    },
+    {
+        category: 'Distancia promedio de viaje',
+        scenarios: {
+            inicial: {value: 24, color: '#299c53'},
+            red: {value: 21, color: '#299c53'},
+            contenida: {value: 17, color: '#299c53'},
+            archipelago: {value: 29, color: '#b53a11'},
+        }
+    },
+    {
+        category: 'Porcentaje de transporte público',
+        scenarios: {
+            inicial: {value: '32%', color: '#299c53'},
+            red: {value: '36%', color: '#299c53'},
+            contenida: {value: '41%', color: '#299c53'},
+            archipelago: {value: '22%', color: '#b53a11'},
+        }
+    }
 ]
 
 export const teamMembersCFC = [

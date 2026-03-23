@@ -15,8 +15,8 @@ const Intro = () => {
         POR ESCENARIOS?
       </h2>
 
-      <div className='content-row' style={{marginTop:'2rem', gap:'2rem'}}>
-        <div className='content-col' style={{ gap:'2rem'}}>
+      <div className='content-row'>
+        <div className='content-col'>
           <div>
             <p>
               Explora futuros plausibles sin pretender predecirlos,

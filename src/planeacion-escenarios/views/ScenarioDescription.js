@@ -4,7 +4,7 @@ const ScenarioDescription = ({ subtitle1, col1, col2, col3, ventajas, tensiones,
             <div 
                 className='content-row scenario-grid scenario-grid--desc'
             >
-                <div className="content-col">
+                <div className="content-col" style={{gap:0}}>
                     <h2 className="section_subtitle section_subtitle--medium-italic">{subtitle1}</h2>
                     <div className="three-columns">
                         <div>{col1}</div>

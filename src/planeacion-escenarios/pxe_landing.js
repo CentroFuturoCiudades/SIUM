@@ -8,6 +8,7 @@ import ProcessThemes from './views/ProcessThemes';
 import Scenarios from './views/Scenarios';
 import ScenarioIntro from './views/ScenarioIntro';
 import ScenarioDescription from './views/ScenarioDescription';
+import ImplicacionesColumns from './views/ImplicacionesColumns';
 import Team from './views/Team';
 import { scenarios_cases } from './constants/constants';
 // import '../styles/global.scss'
@@ -55,6 +56,10 @@ const PXE_Landing = () => {
         </Section>
         </>
       ))}
+
+      <Section id="implicaciones">
+        <ImplicacionesColumns />
+      </Section>
 
       <Section id="team">
         <Team />

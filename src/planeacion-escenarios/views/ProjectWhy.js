@@ -1,9 +1,9 @@
-//import './ProjectWhy.scss';
-//import MapMty from '../../assets/map-mty-02.png';
-
+import { useMediaQuery } from "@chakra-ui/react";
 const ProjectWhy = () => {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
+
   return (
-    <section className=' why content content--light-green'>
+    <section className='why content content--light-green'>
         <div className='section-number section-number--left'>
           02
         </div>
@@ -11,25 +11,28 @@ const ProjectWhy = () => {
           02
         </div>
 
-      <div className="content-row" style={{gap:'2rem'}}>
-        <div className="leyenda">
-          <div style={{ width:'min(32.4dvh, 18.2dvw)'}}>
-            <img src={'/pxe_images/legend.png'} style={{width:'100%', height:'100%'}}/>
-          </div>
-          <div>
-            <p>¿HACIA DÓNDE NOS EXPANDIMOS?</p>
-            <p>
-              El <span>35%</span> del territorio construido
-              pierde población.
-            </p>
-          </div>
-        </div>
+      
+        <div className="content-row" style={{gap:'2rem'}}>
+          {!isMobile &&
+            <div className="leyenda">
+              <div style={{ width:'min(32.4dvh, 18.2dvw)'}}>
+                <img src={'/pxe_images/legend.png'} style={{width:'100%', height:'100%'}}/>
+              </div>
+              <div>
+                <p>¿HACIA DÓNDE NOS EXPANDIMOS?</p>
+                <p>
+                  El <span>35%</span> del territorio construido
+                  pierde población.
+                </p>
+              </div>
+            </div>
+          }
 
-        <div className='content-col' style={{gap: '2rem'}}>
+        <div className='content-col' style={{gap:0}}>
           <h2 className="section_title section_title--white">
             ¿POR QUÉ ESTE<br />PROYECTO?
           </h2>
-          <div className="content-col" style={{width:'90%', gap:'1rem'}}>
+          <div className="content-col" style={{gap:'1rem'}}>
             <div>
               <p>
                 Las ciudades enfrentan problemas estructurales que son, en parte,
@@ -54,6 +57,22 @@ const ProjectWhy = () => {
               <p>¿Qué tan severos serán los efectos del cambio climático en la región?</p>
               <p>¿Cuánto financiamiento habrá disponible para mantener y expandir la infraestructura?</p>
             </div>
+
+
+            {isMobile && 
+              <div className="leyenda">
+              <div style={{ width:'min(32.4dvh, 18.2dvw)'}}>
+                <img src={'/pxe_images/legend.png'} style={{width:'100%', height:'100%'}}/>
+              </div>
+              <div>
+                <p>¿HACIA DÓNDE NOS EXPANDIMOS?</p>
+                <p>
+                  El <span>35%</span> del territorio construido
+                  pierde población.
+                </p>
+              </div>
+            </div>
+            }
           </div>
 
         </div>
