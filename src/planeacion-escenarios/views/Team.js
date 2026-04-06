@@ -10,14 +10,15 @@ const Team = () => {
         05
       </div>
 
-      <h2 className="section_title section_title--white"> 
+      <h2 className="section_title section_title--white" style={{marginBottom:0}}> 
         EQUIPO
       </h2>
-      <h2 className='credit' style={{textAlign:'left'}}>Este proyecto es fondeado por <span>Capital para el Bien Común A.C.</span></h2>
+      <h2 className='section_subtitle'>Este proyecto es fondeado por <span className='section_subtitle section_subtitle--bold'>Capital para el Bien Común A.C.</span></h2>
 
 
-      <div className='content-row' style={{marginTop:'min(2.96dvh, 1.66dvw)'}}>
-        <div className='team_grid'>
+      <div className='content-row'>
+        <div className='content-row' style={{flex:'0 0 50%'}}>
+          
           <div className='content-col'>
             <h3>Centro para el Futuro de las Ciudades</h3>
             <div className='content-col' style={{justifyContent:'space-between'}}>
@@ -29,6 +30,7 @@ const Team = () => {
               ))}
             </div>
           </div>
+
           <div className="content-col" style={{gap:'3rem'}}>
             <div>
               <h3>Consejo Nuevo León</h3>
@@ -50,8 +52,8 @@ const Team = () => {
           </div>
         </div>
         <div className='content-col' style={{alignItems: 'flex-end', justifyContent:'flex-end'}}>
-          <img src={'/pxe_images/LogoPXE.png'} className="logo-pxe"/>
-          <img src={'/pxe_images/Logo-CFC.png'} className="logo-tec" />
+          <img src={'/pxe_images/LogoPXE.png'} className="logoPXE_medium"/>
+          <img src={'/pxe_images/Logo-CFC.png'} className="logoCFC" />
         </div>
       </div>
     </section>

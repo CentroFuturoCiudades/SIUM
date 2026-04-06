@@ -8,7 +8,9 @@ import ProcessThemes from './views/ProcessThemes';
 import Scenarios from './views/Scenarios';
 import ScenarioIntro from './views/ScenarioIntro';
 import ScenarioDescription from './views/ScenarioDescription';
-import ImplicacionesColumns from './views/ImplicacionesColumns';
+import ImplicacionesGlobales from './views/ImplicacionesGlobales';
+import ImplicacionesTerritoriales from './views/ImplicacionesTerritoriales';
+import ScenariosGrid from './views/ScenariosGrid';
 import Team from './views/Team';
 import { scenarios_cases } from './constants/constants';
 // import '../styles/global.scss'
@@ -58,7 +60,15 @@ const PXE_Landing = () => {
       ))}
 
       <Section id="implicaciones">
-        <ImplicacionesColumns />
+        <ImplicacionesGlobales />
+      </Section>
+
+      <Section id="implicaciones-territoriales">
+        <ImplicacionesTerritoriales />
+      </Section>
+
+      <Section id="scenarios-grid">
+        <ScenariosGrid />
       </Section>
 
       <Section id="team">

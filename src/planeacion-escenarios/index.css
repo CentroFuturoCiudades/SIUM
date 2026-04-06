@@ -12,19 +12,15 @@
     display: flex;
     flex-direction: column;
     background-color: white;
-    color: black;
-    /*padding: clamp(2rem, 3vw, 4rem);*/
-    padding: min(7.4dvh, 4.16dvw); /*80px*/
+    padding: clamp(16px, 5dvh, 48px);
     box-sizing: border-box;    
     font-family: 'Neue Montreal Medium', sans-serif;
-    /* overflow-y: hidden; */
+    color: black;
 }
 .content p,
 .content u {
-    /*font-size: min(2.03dvh, 1.15dvw); /*22px*/
-    font-size: clamp(12px, 1.2vw, 22px);
+    font-size: var(--section-paragraph-size); /*22px*/
     line-height: normal;
-    /*font-size: min(2.22dvh, 1.25dvw); 24px*/
     margin-bottom: 0.5rem;
 }
 
@@ -60,8 +56,7 @@
     position: absolute;
     color: white;
     font-family: 'Neue Montreal Bold', sans-serif;;
-    /*font-size: clamp(10rem, 18vw, 20rem);*/
-    font-size: clamp(100px, 18vw, 320px);
+    font-size: clamp(100px, 18vw, 380px);
     line-height: 1;
     top: 0;
     right: 2rem;

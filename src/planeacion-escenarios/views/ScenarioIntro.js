@@ -1,7 +1,7 @@
 const ScenarioIntro = ({ title, subtitle1, subtitle2, intro, viabilidad, image }) => {
     return (
 
-        <div className="content scenario" style={title == "A" ? {backgroundColor:'#e9eff4', paddingRight:0 /* paddingLeft:0, height:'100dvh', border:'1px solid red'*/ } : {paddingRight:0}}>
+        <div className="content scenario" style={title == "A" ? {backgroundColor:'#e9eff4', height:'100dvh'} : {}}>
 
             {title == "A" && (
                 <>
@@ -16,24 +16,19 @@ const ScenarioIntro = ({ title, subtitle1, subtitle2, intro, viabilidad, image }
             )}
             
             
-            {/* <h2 className="section_title">{title}</h2> */}
-            <h2 className="section_subtitle">
-                <span>{title}. </span>
+            <h2 className="section_title section_title--medium" style={{margin:0}}>
+                <span className="section_title">{title}. </span>
                 {subtitle1}
             </h2>
+            <h2 className="section_title section_title--light-italic">{subtitle2}</h2>
+
 
             
-            <div className="content-row scenario-grid">
-                <div 
-                    className='content-col'
-                    style={{gap:'4rem'}}
-                >
-                    <div>
-                        <h3 className="section_subtitle-italic">{subtitle2}</h3>
-                    </div>
-                    <h4 style={{ width:'90%'}}>{intro}</h4>
-                    <div className="content-row" style={{gap:'1rem'}}>
-                        <h4>VIABILIDAD POLÍTICA</h4>
+            <div className="content-row">
+                <div className='scenario-intro content-col'>
+                    <p>{intro}</p>
+                    <div style={{gap:0}}>
+                        <p>VIABILIDAD POLÍTICA</p>
                         <div className="dots-row">
                             {[...Array(5)].map((_, i) => (
                                 <span className={`dot ${i < viabilidad ? 'dot--filled' : ''}`} key={i}></span>
@@ -43,8 +38,8 @@ const ScenarioIntro = ({ title, subtitle1, subtitle2, intro, viabilidad, image }
                 </div>
 
 
-                <div style={{width: '100%', height: 'min(74dvh, 41.6dvw)', alignSelf:'center', }}>
-                    <img src={image} style={{width:'100%', height:'100%', objectFit:'contain', display:'block'}}/>
+                <div className='scenario-img'>
+                    <img src={image} style={{width:'100%', height:'clamp(360px, 60vh, 1020px);', objectFit:'contain', display:'block'}}/>
                 </div>
             </div>
         </div>
