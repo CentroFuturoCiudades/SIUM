@@ -4,10 +4,14 @@ import Header from './views/Header';
 import Intro from './views/Intro';
 import ProjectWhy from './views/ProjectWhy';
 import ProcessParticipation from './views/ProcessParticipation';
-import ProcessThemes from './views/ProcessThemes';
-import Scenarios from './views/Scenarios';
+//import ProcessThemes from './views/ProcessThemes';
+//import Scenarios from './views/Scenarios';
 import ScenarioIntro from './views/ScenarioIntro';
 import ScenarioDescription from './views/ScenarioDescription';
+import ImplicacionesGlobales from './views/ImplicacionesGlobales';
+import ImplicacionesTerritoriales from './views/ImplicacionesTerritoriales';
+import ScenariosGrid from './views/ScenariosGrid';
+import GroupIndicators from './views/GroupIndicators';
 import Team from './views/Team';
 import { scenarios_cases } from './constants/constants';
 // import '../styles/global.scss'
@@ -55,6 +59,22 @@ const PXE_Landing = () => {
         </Section>
         </>
       ))}
+
+      <Section id="implicaciones">
+        <ImplicacionesGlobales />
+      </Section>
+
+      <Section id="implicaciones-territoriales">
+        <ImplicacionesTerritoriales />
+      </Section>
+
+      <Section id="group-indicators">
+        <GroupIndicators />
+      </Section>
+
+      <Section id="scenarios-grid">
+        <ScenariosGrid />
+      </Section>
 
       <Section id="team">
         <Team />

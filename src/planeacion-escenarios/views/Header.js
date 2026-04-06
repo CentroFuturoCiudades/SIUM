@@ -1,22 +1,22 @@
 const Header = () => {
   return (
-    <header className="content content--dark-green" style={{padding: 'clamp(2rem, 3vw, 4rem)'}}>
+    <header className="content content--dark-green header" style={{padding: 'clamp(2rem, 3vw, 4rem)'}}>
       {/* Fondo satelital */}
       <img className="img__background" src={'/pxe_images/FondoMTY.png'}/>
 
       {/* Texto izquierdo */}
-      <div className="content-col" style={{zIndex:'2', justifyContent: 'space-between'}}>
+      <div className="content-col" >
         <div style={{padding:'1rem'}}>
-            <span className="header__subtitle">ZMM 2040</span>
-            <h1 className="header__title">Futuros Posibles</h1>
+            <h2 className="header">ZMM 2040</h2>
+            <h2 className="header header--bold">Futuros Posibles</h2>
         </div>
 
-        <div style={{zIndex:2, justifyContent:'space-between', display:'flex', flexDirection: 'row', alignItems:'center'}}>
-          <img src={'/pxe_images/Logo-CFC.png'} className="logo-tec"/>
+        <div className='content-row'>
+          <img src={'/pxe_images/Logo-CFC.png'} className="logoCFC"/>
 
-          <h2 className='credit'>
+          <h2 className='section_subtitle'>
             Este proyecto es fondeado por <br/> 
-            <span>Capital para el Bien Común A.C.</span>
+            <span className="section_subtitle--bold">Capital para el Bien Común A.C.</span>
           </h2>
         </div>
 

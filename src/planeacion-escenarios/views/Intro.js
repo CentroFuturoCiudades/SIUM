@@ -15,8 +15,8 @@ const Intro = () => {
         POR ESCENARIOS?
       </h2>
 
-      <div className='content-row' style={{marginTop:'2rem', gap:'2rem'}}>
-        <div className='content-col' style={{ gap:'2rem'}}>
+      <div className='content-row'>
+        <div className='content-col' style={{flex:'0 0 30%'}}>
           <div>
             <p>
               Explora futuros plausibles sin pretender predecirlos,
@@ -46,7 +46,7 @@ const Intro = () => {
           </div>
         </div>
         
-        <div style={{flex: 1, height:'100%'}}>
+        <div style={{display:'flex', flex:1, alignItems:'center'}}>
          <img src={'/pxe_images/table01.png'} style={{maxHeight:'100%', maxWidth: '100%', objectFit:'contain', display:'block'}}/>
         </div> 
       </div>

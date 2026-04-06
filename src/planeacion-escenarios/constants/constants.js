@@ -3,27 +3,45 @@ import { FaCarSide } from 'react-icons/fa';
 import { TfiMoney } from 'react-icons/tfi';
 import { HiOutlineBuildingOffice2 } from 'react-icons/hi2';
 import { GiModernCity } from 'react-icons/gi';
+import { color } from 'd3-color';
+
+import { MdOutlineRectangle } from "react-icons/md";
+import { GiHistogram } from "react-icons/gi";
+import { FaBuilding, FaMoneyCheckAlt, FaBus } from "react-icons/fa";
+import { SlEnergy } from "react-icons/sl";
+import { IoWaterSharp } from "react-icons/io5";
+import { HiOutlineBuildingLibrary } from "react-icons/hi2";
+import { MdOutlineAttachMoney } from "react-icons/md";
+import { FaCar } from "react-icons/fa6";
+
+
+export const scenariosTitles = {
+    inicial: 'Metrópolis Inercial',
+    red: 'Metrópolis en Red',
+    contenida: 'Metrópolis Contenida',
+    archipelago: 'Metrópolis Archipiélago',
+}
 
 export const steps = [
     {
         title: 'ESTRUCTURACIÓN INICIAL DEL PROYECTO',
         description: 'Recopilación de información, documentos antecedentes, selección de herramientas de modelación.',
-        colorClass: 'step__item--blue',
+        color: '#5f8fbf'
     },
     {
         title: 'INTEGRACIÓN DE COMPONENTES Y PROCESOS PARTICIPATIVOS',
         description: 'Definición de catalizadores de cambio, componentes necesarios para el desarrollo de modelos y criterios de evaluación, talleres con stakeholders.',
-        colorClass: 'step__item--yellow',
+        color:'#d6ab2d'
     }, 
     {
         title: 'DESARROLLO DE ESCENARIOS',
         description: 'Construcción de escenarios: tendencial y escenarios exploratorios con base en los resultados de procesos participativos.',
-        colorClass: 'step__item--red',
+        color:'#c95a5a'
     },
     {
         title: 'ESTRATEGIAS DE IMPLEMENTACIÓN',
         description: 'Identificación y evaluación de proyectos y estrategias actuales, diseño de estrategias de implementación.',
-        colorClass: 'step__item--green',
+        color:'#7fae6b'
     },
 ];
 
@@ -802,6 +820,164 @@ export const scenarios_cases = [
         image: '/pxe_images/scenarioD.jpeg'
     },
 ]
+
+export const implicaciones_categories = [
+    {
+        category: 'Proporción de desarrollo en suelo no urbanizado',
+        icon: <MdOutlineRectangle />,
+        scenarios: {
+            inicial: {value: '65%', color: '#468077'},
+            red: {value: '59%', color: '#0d9488'},
+            contenida: {value: '59%', color: '#0d9488'},
+            archipelago: {value: '84%', color: '#ef4444'},
+        }
+    },
+    {
+        category: 'Nueva superficie de construcción',
+        icon: <GiHistogram />,
+        scenarios: {
+            inicial: {value: '10,710', color: '#916660'},
+            red: {value: '9,550', color: '#5c7870'},
+            contenida: {value: '7,782', color: '#0d9488'},
+            archipelago: {value: '12,784', color: '#ef4444'},
+        },
+        units: '(ha)'
+    },
+    {
+        category: 'Proporción vivienda nuevo desarrollo | redesarrollo',
+        icon: <FaBuilding />,
+        scenarios: {
+            inicial: {value: '83% | 17%', color: '#a76058'},
+            red: {value: '67% | 33%', color: '#a76058'},
+            contenida: {value: '56% | 44%', color: '#0d9488'},
+            archipelago: {value: '87% | 13%', color: '#ef4444'},
+        }
+    },
+    {
+        category: 'Infraestructura de energía',
+        icon: <SlEnergy />,
+        scenarios: {
+            inicial: {value: '$8,680', color: '#936560'},
+            red: {value: '$8,106', color: '#796e68'},
+            contenida: {value: '$5,761', color: '#0d9488'},
+            archipelago: {value: '$10,656', color: '#ef4444'},
+        },
+        units: 'M USD'
+    },
+    {
+        category: 'Demanda de agua',
+        icon: <IoWaterSharp />,
+        scenarios: {
+            inicial: {value: 'ALTO', color: '#ef4444'},
+            red: {value: 'MEDIO', color: '#a76058'},
+            contenida: {value: 'BAJO', color: '#0d9488'},
+            archipelago: {value: 'ALTO', color: '#ef4444'},
+        },
+        units: '(m3/s)'
+    },
+    {
+        category: 'Viabilidad política',
+        icon: <HiOutlineBuildingLibrary />,
+        scenarios: {
+            inicial: {value: 'ALTO', color: '#0d9488'},
+            red: {value: 'MEDIO', color: '#a76058'},
+            contenida: {value: 'BAJO', color: '#ef4444'},
+            archipelago: {value: 'ALTO', color: '#0d9488'},
+        }
+    },
+    {
+        category: 'Sostenibilidad fiscal',
+        icon: <MdOutlineAttachMoney />,
+        scenarios: {
+            inicial: {value: 'MEDIO', color: '#a76058'},
+            red: {value: 'MEDIO', color: '#a76058'},
+            contenida: {value: 'BAJO', color: '#ef4444'},
+            archipelago: {value: 'MEDIO', color: '#a76058'},
+        }
+    },
+    {
+        category: 'Riesgo de deuda',
+        icon: <FaMoneyCheckAlt />,
+        scenarios: {
+            inicial: {value: 'MEDIO', color: '#a76058'},
+            red: {value: 'MEDIO', color: '#a76058'},
+            contenida: {value: 'BAJO', color: '#ef4444'},
+            archipelago: {value: 'ALTO', color: '#0d9488'},
+        }
+    },
+    {
+        category: 'Distancia promedio de viaje',
+        icon: <FaCar />,
+        scenarios: {
+            inicial: {value: 24, color: '#916660'},
+            red: {value: 21, color: '#5c7870'},
+            contenida: {value: 17, color: '#0d9488'},
+            archipelago: {value: 29, color: '#ef4444'},
+        },
+        units: '(M vehículo km privado)'
+    },
+    {
+        category: 'Porcentaje de transporte público',
+        icon: <FaBus />,
+        scenarios: {
+            inicial: {value: '32%', color: '#796e67'},
+            red: {value: '36%', color: '#487e76'},
+            contenida: {value: '41%', color: '#0d9488'},
+            archipelago: {value: '22%', color: '#ef4444'},
+        },
+        units: '% viajes en transporte público'
+    }
+]
+
+export const scenariosGrid = {
+    inicial: {
+        title: 'Metrópolis Inercial',
+        nuevo_desarrollo: 83,
+        redesarrollo: 17,
+        image: '/pxe_images/MetropolisInercial_2.png'
+    },
+    red: {
+        title: 'Metrópolis en Red',
+        nuevo_desarrollo: 67,
+        redesarrollo: 33,
+            image: '/pxe_images/MetropolisRed_2.png'
+    },
+    contenida: {
+        title: 'Metrópolis Contenida',
+        nuevo_desarrollo: 56,
+        redesarrollo: 44,
+        image: '/pxe_images/MetropolisContenida_2.png'
+    },
+    archipelago: {
+        title: 'Metrópolis Archipiélago',
+        nuevo_desarrollo: 87,
+        redesarrollo: 13,
+        image: '/pxe_images/MetropolisArchipielago_2.png'
+    }
+}
+
+export const territoriosMTY = {
+    group1: {
+        zones: ['Monterrey', 'San Pedro Garza García', 'Santa Catarina', 'García', 'General Escobedo', 'San Nicolás de los Garza', 'Guadalupe', 'Apodaca', 'Juárez'],
+        color: '#f5d057'
+    },
+    group2: {
+        zones: ['Pesquería', 'Cadereyta Jiménez'],
+        color: '#ef4444'
+    },
+    group3: {
+        zones: ['Santiago', 'Allende'],
+        color: '#fb7185'
+    },
+    group4: {
+        zones: ['Salinas Victoria', 'Ciénega de Flores', 'General Zuazua', 'El Carmen'],
+        color: '#0d9488'
+    },
+    group5: {
+        zones: ['Hidalgo', 'Abasolo', 'Higueras', 'Doctor González', 'Marín'],
+        color: '#a856f7'
+    }
+}
 
 export const teamMembersCFC = [
     {

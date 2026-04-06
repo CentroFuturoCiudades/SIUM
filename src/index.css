@@ -1,5 +1,13 @@
 html {
   overflow: hidden;
+  --landing-header-size: clamp(2rem, 3vw, 3.4rem);
+  --section-title-size: clamp(30px, 3vw, 80px); /*60px*/
+  --section-subtitle-size-big: clamp(28px, 2.8vw, 60px); /*40px*/
+  --section-subtitle-size: clamp(24px, 1.8vw, 36px); /*36px*/
+  --section-paragraph-size: clamp(14px, 1.2vw, 32px); /*paragraph 22px*/
+  --section-paragraph-size-big: clamp(18px, 1.5vw, 32px); /*paragraph big 28px*/
+  --section-small-paragraph-size: clamp(14px, 1.05vw, 28px); /*small paragraph 20px*/
+  --section-paragraph-size-xsmall: clamp(12px, 0.9vw, 24px);
 }
 
 body {
