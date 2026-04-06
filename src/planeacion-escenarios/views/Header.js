@@ -14,7 +14,7 @@ const Header = () => {
         <div className='content-row'>
           <img src={'/pxe_images/Logo-CFC.png'} className="logoCFC"/>
 
-          <h2 className='section_subtitle' style={{textAlign:'right'}}>
+          <h2 className='section_subtitle'>
             Este proyecto es fondeado por <br/> 
             <span className="section_subtitle--bold">Capital para el Bien Común A.C.</span>
           </h2>

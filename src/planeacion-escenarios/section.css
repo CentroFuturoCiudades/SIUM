@@ -58,6 +58,9 @@
     align-items: center;
     z-index: 2;
 }
+.header .content-row h2 {
+    text-align: right;
+}
 .img__background {
     position: absolute;
     inset: 0;
@@ -172,8 +175,9 @@
     margin: 0;
 }
 .scenario-img {
+    display: flex;
     flex: 1;
-    align-self: center;
+    align-items: center;
 }
 
 .scenario-intro div {
@@ -342,8 +346,11 @@
         width: clamp(50vw, 60vw, 80vw);
     }
     .header .content-row {
-        align-items: flex-end;
+        align-items: flex-start;
         gap:0;
+    }
+    .header .content-row h2 {
+        text-align: left;
     }
     .why .section_title {
         text-align: right;

@@ -39,7 +39,7 @@ const ScenarioIntro = ({ title, subtitle1, subtitle2, intro, viabilidad, image }
 
 
                 <div className='scenario-img'>
-                    <img src={image} style={{width:'100%', height:'clamp(360px, 60vh, 1020px);', objectFit:'contain', display:'block'}}/>
+                    <img src={image} style={{width:'100%', height:'auto', objectFit:'contain', display:'block'}}/>
                 </div>
             </div>
         </div>
