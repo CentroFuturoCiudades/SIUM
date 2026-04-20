@@ -6,8 +6,8 @@ html {
   --section-subtitle-size: clamp(24px, 1.8vw, 36px); /*36px*/
   --section-paragraph-size: clamp(14px, 1.2vw, 32px); /*paragraph 22px*/
   --section-paragraph-size-big: clamp(18px, 1.5vw, 32px); /*paragraph big 28px*/
-  --section-small-paragraph-size: clamp(14px, 1.05vw, 28px); /*small paragraph 20px*/
-  --section-paragraph-size-xsmall: clamp(12px, 0.9vw, 24px);
+  --section-small-paragraph-size: clamp(14px, 1vw, 28px); /*small paragraph 20px*/
+  --section-paragraph-size-xsmall: clamp(12px, 0.85vw, 24px);
 }
 
 body {
