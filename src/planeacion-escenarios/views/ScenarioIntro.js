@@ -1,7 +1,7 @@
 const ScenarioIntro = ({ title, subtitle1, subtitle2, intro, viabilidad, image }) => {
     return (
 
-        <div className="content scenario" style={title == "A" ? {backgroundColor:'#e9eff4', height:'100dvh'} : {}}>
+        <div className="content scenario" style={title == "A" ? {backgroundColor:'#e9eff4', minHeight:'100dvh'} : {}}>
 
             {title == "A" && (
                 <>
@@ -39,7 +39,7 @@ const ScenarioIntro = ({ title, subtitle1, subtitle2, intro, viabilidad, image }
 
 
                 <div className='scenario-img'>
-                    <img src={image} style={{width:'100%', height:'auto', objectFit:'contain', display:'block'}}/>
+                    <img src={image} style={{width:'100%', height:'100%', objectFit:'contain', display:'block'}}/>
                 </div>
             </div>
         </div>

@@ -175,9 +175,10 @@
     margin: 0;
 }
 .scenario-img {
-    display: flex;
-    flex: 1;
-    align-items: center;
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
 }
 
 .scenario-intro div {
@@ -296,8 +297,9 @@
 }
 /* ZONES & TERRITORIAL IMPLICATIONS*/
 .zones .content-col {
-    gap:0;
-    justify-content: space-between;
+    gap: 1rem;
+    font-size: var(--section-small-paragraph-size);
+    justify-content: center;
 }
 .zones_col1 {
     flex: 0 0 75%;
