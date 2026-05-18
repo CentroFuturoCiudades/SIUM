@@ -13,7 +13,7 @@ const Team = () => {
       <h2 className="section_title section_title--white" style={{marginBottom:0}}> 
         EQUIPO
       </h2>
-      <h2 className='section_subtitle'>Este proyecto es fondeado por <span className='section_subtitle section_subtitle--bold'>Capital para el Bien Común A.C.</span></h2>
+      <h2 className='section_subtitle'>Este proyecto es fondeado por <span style={{fontFamily: 'Neue Montreal Bold, sans-serif'}}>Capital para el Bien Común A.C.</span></h2>
 
 
       <div className='content-row'>

@@ -1,9 +1,9 @@
 const ScenarioDescription = ({ subtitle1, col1, col2, col3, ventajas, tensiones, image }) => {
     return (
-        <div className="content scenario" style={subtitle1 == "Metrópolis Inercial" ? {backgroundColor:'#e9eff4'} : {}}>
+        <div className="content" style={subtitle1 == "Metrópolis Inercial" ? {backgroundColor:'#e9eff4'} : {}}>
             <div className='content-row'>
-                <div className="scenario-description content-col">
-                    <h2 className="section_title section_title--medium-italic">{subtitle1}</h2>
+                <div className="content-col" style={{flex:'0 0 70%', gap:0}}>
+                    <h2 className="section_title" style={{fontFamily:'Neue Montreal Medium Italic, sans-serif'}}>{subtitle1}</h2>
                     <div className="three-columns">
                         {col1}
                         {col2}

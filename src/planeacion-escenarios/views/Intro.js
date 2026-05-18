@@ -1,7 +1,10 @@
+import { useMediaQuery } from "@chakra-ui/react";
 
 const Intro = () => {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
+
   return (
-    <section className='content content--dark-green intro-section'>
+    <div className='content content--dark-green'>
 
       <div className="section-number">
         01
@@ -11,12 +14,15 @@ const Intro = () => {
       </div>
 
       <h2 className="section_title section_title--white"> 
-        ¿QUÉ ES LA PLANEACIÓN<br />
+        ¿QUÉ ES 
+        {isMobile && <br/>} LA PLANEACIÓN<br />
         POR ESCENARIOS?
       </h2>
 
       <div className='content-row'>
-        <div className='content-col' style={{flex:'0 0 30%'}}>
+        <div className='content-col' style={{
+          flex: isMobile ? 'unset' : '0 0 30%'
+        }}>
           <div>
             <p>
               Explora futuros plausibles sin pretender predecirlos,
@@ -46,11 +52,15 @@ const Intro = () => {
           </div>
         </div>
         
-        <div style={{display:'flex', flex:1, alignItems:'center'}}>
-         <img src={'/pxe_images/table01.png'} style={{maxHeight:'100%', maxWidth: '100%', objectFit:'contain', display:'block'}}/>
+        <div style={{
+          display:'flex', 
+          flex: isMobile ? 'unset' : '1', 
+          alignItems:'center'
+        }}>
+          <img src={'/pxe_images/table01.png'} style={{maxWidth: '100%', height:'auto', objectFit:'contain', display:'block'}}/>
         </div> 
       </div>
-    </section>
+    </div>
   );
 };
 

@@ -17,7 +17,7 @@ const ImplicacionesGlobales = () => {
                   color: 'black',
                   borderTop: '1px solid black',
                 }}>
-                  {scenariosTitles[scenario]}
+                  <p style={{textAlign:'center'}}>{scenariosTitles[scenario]}</p>
                 </div>
               ))}
 
@@ -26,9 +26,10 @@ const ImplicacionesGlobales = () => {
                       <div className="content-row implicaciones__category" style={{
                         gridColumn: 1,
                         gridRow: index + 2,
+                        alignItems:'center',
                       }}>
-                        <h3>{category.category}</h3>
-                        <span style={{fontSize:'1.5rem'}}>{category.icon}</span>
+                        <p style={{margin: 0}}>{category.category}</p>
+                        <span style={{fontSize:'min(2vh, 3vw)'}}>{category.icon}</span>
                       </div>
 
                       {scenarios.map((scenario, scenarioIndex) => (
@@ -38,7 +39,7 @@ const ImplicacionesGlobales = () => {
                           backgroundColor: category.scenarios[scenario].color,
                           borderBottom: index === implicaciones_categories.length - 1 ? '1px solid black' : 'none',
                         }}>
-                          {category.scenarios[scenario].value}
+                          <p style={{margin: 0}}>{category.scenarios[scenario].value}</p>
                         </div>
                       ))}
 
@@ -49,7 +50,7 @@ const ImplicacionesGlobales = () => {
                         color: 'black',
                         border: 'none',
                       }}>
-                        {category.units}
+                        <p style={{margin: 0}}>{category.units}</p>
                       </div>
                     </>
                   ))}
