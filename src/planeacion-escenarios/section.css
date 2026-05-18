@@ -234,6 +234,7 @@
 .equipo h3 {
     font-family: 'Neue Montreal Bold', sans-serif;
     margin-bottom: 1rem;
+    font-size: var(--section-paragraph-size)
 }
 .equipo .content-col span{
     font-family: 'Neue Montreal Light', sans-serif;

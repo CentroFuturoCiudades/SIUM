@@ -1,6 +1,9 @@
 import { teamMembersCFC, teamMembersCNL, comiteAsesor } from '../constants/constants';
+import { useMediaQuery } from "@chakra-ui/react";
 
 const Team = () => {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
+
   return (
     <section className="equipo content content--dark-green">
       <div className="section-number">
@@ -51,7 +54,7 @@ const Team = () => {
             </div>
           </div>
         </div>
-        <div className='content-col' style={{alignItems: 'flex-end', justifyContent:'flex-end'}}>
+        <div className='content-col' style={{alignItems: isMobile ? 'center' : 'flex-end', justifyContent: 'flex-end'}}>
           <img src={'/pxe_images/LogoPXE.png'} className="logoPXE_medium"/>
           <img src={'/pxe_images/Logo-CFC.png'} className="logoCFC" />
         </div>
