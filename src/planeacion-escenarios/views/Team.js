@@ -1,6 +1,9 @@
 import { teamMembersCFC, teamMembersCNL, comiteAsesor } from '../constants/constants';
+import { useMediaQuery } from "@chakra-ui/react";
 
 const Team = () => {
+  const [isMobile] = useMediaQuery("(max-width: 800px)");
+
   return (
     <section className="equipo content content--dark-green">
       <div className="section-number">
@@ -13,7 +16,7 @@ const Team = () => {
       <h2 className="section_title section_title--white" style={{marginBottom:0}}> 
         EQUIPO
       </h2>
-      <h2 className='section_subtitle'>Este proyecto es fondeado por <span className='section_subtitle section_subtitle--bold'>Capital para el Bien Común A.C.</span></h2>
+      <h2 className='section_subtitle'>Este proyecto es fondeado por <span style={{fontFamily: 'Neue Montreal Bold, sans-serif'}}>Capital para el Bien Común A.C.</span></h2>
 
 
       <div className='content-row'>
@@ -51,7 +54,7 @@ const Team = () => {
             </div>
           </div>
         </div>
-        <div className='content-col' style={{alignItems: 'flex-end', justifyContent:'flex-end'}}>
+        <div className='content-col' style={{alignItems: isMobile ? 'center' : 'flex-end', justifyContent: 'flex-end'}}>
           <img src={'/pxe_images/LogoPXE.png'} className="logoPXE_medium"/>
           <img src={'/pxe_images/Logo-CFC.png'} className="logoCFC" />
         </div>

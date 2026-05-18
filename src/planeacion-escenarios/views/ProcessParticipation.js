@@ -1,9 +1,12 @@
 import { steps, tools } from '../constants/constants';
+import { useMediaQuery } from "@chakra-ui/react";
 
 const ProcessParticipation = () => {
+    const [isMobile] = useMediaQuery("(max-width: 800px)");
+
 
   return (
-    <section className="process content content--beige">
+    <div className="process content content--beige">
       <div className="section-number">
         03
       </div>
@@ -18,23 +21,32 @@ const ProcessParticipation = () => {
       
       <div className='content-row'>
         {/* PASOS DEL PROCESO */}
-        <div className='content-col' style={{flex:'0 0 50%'}}>
+        <div className='content-col' style={{
+          flex: isMobile ? 'unset' : '0 0 50%', 
+          justifyContent: isMobile ? 'flex-start':'space-between'
+          }}
+        >
           {steps.map((step, index) => (
             <div key={index}>
-              <div className={`step__item`} style={{backgroundColor:step.color}}>
+              <div style={{
+                backgroundColor:step.color, 
+                borderRadius:6,
+                padding: 'min(1vh, 1vw) min(2vh, 2vw)',
+                marginBottom: 'min(0.8vh, 2vw)'
+              }}>
                 <h3 style={{textAlign:'left'}}>{step.title}</h3>
               </div>
               
-              <div className='step__description'>
+              <div style={{display:'flex', flexDirection:'row', alignItems:'center', gap:'1rem'}}>
                 <span className='step__number'>{index + 1}</span>
-                <p>{step.description}</p>
+                <p style={{margin:0}}>{step.description}</p>
               </div>
             </div>
           ))}
         </div>
 
         {/*HERRAMIENTAS*/}
-        <div className='herramientas content-col' style={{flex:'0 0 40%'}}>
+        <div className='herramientas' style={{flex: isMobile ? '1': '0 0 40%'}}>
           <h3>HERRAMIENTAS DE MODELACIÓN</h3>
           <div className='toolCards'>
             {tools.map((tool) => (
@@ -50,7 +62,7 @@ const ProcessParticipation = () => {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

@@ -1,26 +1,9 @@
-/*PORTADA TITLE ------------- 48PX*/
-.header {
-    font-family: 'Neue Montreal Regular', sans-serif;
-    font-size: var(--landing-header-size); /*slightly smaller than section title*/
-    line-height: 1.1;
-}
-.header--bold {
-    font-family: 'Neue Montreal Bold', sans-serif;
-}
-
-/* MAIN TITLE VARIATIONS ---------- 60PX*/
+/* MAIN TITLE VARIATIONS */
 .section_title {
   font-family: 'Neue Montreal Bold', sans-serif;
   font-size: var(--section-title-size);
   color: black;
   margin-bottom: clamp(1rem, 2vw, 2rem);
-}
-.section_title--medium {
-    font-family: 'Neue Montreal Medium', sans-serif;
-}
-.section_title--medium-italic {
-    font-family: 'Neue Montreal Medium Italic', sans-serif;
-    line-height: 1;
 }
 .section_title--light-italic {
     font-family: 'Neue Montreal Light Italic', sans-serif;
@@ -28,72 +11,47 @@
     line-height: 1;
 }
 .section_title--big {
-  font-size: clamp(30px, 4.3vw, 80px); /* bigger title for scenarios intro */
+  font-size: min(7.5vh, 7vw);/* bigger title for scenarios intro */
   margin-bottom: 4rem;
 }
 .section_title--white {
   color: white;
 }
 
-/* SECTION SUBTITLE VARIATIONS ----------- 36PX*/
+/* SECTION SUBTITLE */
 .section_subtitle {
     font-family: 'Neue Montreal Light', sans-serif;
     font-size: var(--section-subtitle-size);
 }
-.section_subtitle--bold {
-    font-family: 'Neue Montreal Bold', sans-serif;
-}
-.section_subtitle--medium {
-    font-family: 'Neue Montreal Medium', sans-serif;
-}
 
 /*01 HEADER*/
-.header .content-col {
+.header {
+    justify-content: space-between;
+    padding: clamp(2rem, 3vw, 4rem);
+    line-height: 1.1;
+}
+.header__row {
+    display: flex;
+    flex-direction: row;
     justify-content: space-between;
     z-index: 2;
-}
-.header .content-row {
-    flex: unset;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 2;
-}
-.header .content-row h2 {
-    text-align: right;
-}
-.img__background {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-.logoCFC {
-    width: clamp(30dvw, 25dvw, 35dvw);
-}
-.logoPXE {
-    position: absolute;
-    height: min(85dvh, 80dvw, 90vh);
-    top: 50%;
-    right: 50%;
-    transform: translate(55%, -50%); /*x, y*/
-}
-.logoPXE_medium {
-  width: clamp(20dvw, 25dvw, 30dvw);
-  height: auto;
 }
 
-/*02 LEYENDA*/
+/*02 WHY*/
 .map-legend { 
     display: flex;
     flex-direction: column;
     flex: 1;
     background-size: contain;
     background-repeat: no-repeat;
+    background-position: center;
     justify-content: flex-end;
 }
 .map-legend img {
-    width: clamp(32.4dvh, 18.2dvw, 40dvh);
+    width: min(25vh, 52vw);
+    height: auto;
+    object-fit: contain;
+    display: block;
 }
 .map-legend span {
     font-size: var(--section-subtitle-size-big);
@@ -103,28 +61,10 @@
 }
 
 /*03 PROCESO Y PARTICIPACIÓN*/
-.process .content-col {
-    justify-content: space-between;
-}
 .process h3 {
     font-family: 'Neue Montreal Bold', sans-serif;
     font-size: var(--section-paragraph-size);
     text-align: center;
-}
-.process p {
-    margin: 0;
-}
-
-.step__item {
-    padding: clamp(10px, 1.5vw, 14px);
-    border-radius: 6px;
-    margin-bottom: 0.5rem;
-}
-.step__description {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 1rem;
 }
 .step__number {
     font-size: var(--landing-header-size)
@@ -132,18 +72,20 @@
 
 /* 03 HERRAMIENTAS BOX & GRID */
 .herramientas {
-  gap: 1rem;
-  padding: clamp(16px, 2vw, 32px);
-  background-color: #c6c9c7;
-  border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: min(2vh, 4vw);
+    background-color: #c6c9c7;
+    border-radius: 12px;
 }
 .toolCards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 1.5rem;
-  height: 100%;
-  width: 100%;
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: min(2vh, 2vw);
+    box-sizing: border-box;
 }
 .toolCards__card {
     display: flex;
@@ -156,54 +98,22 @@
 .toolCards__card p {
     background-color: #e8e8e8;
     border-radius: 0.5rem;
-    padding: 0.5rem;
-    font-size: var(--section-small-paragraph-size)
+    padding: min(1vh, 1vw);
+    font-size: var(--section-small-paragraph-size);
+    margin: 0;
 }
 .toolCards__img {
-    height: clamp(50px, 10dvh, 80px);
+    height: min(9vh, 16vw);
     width: 100%;
 }
 
 /*04 SCENARIOS INTRO*/
-.scenario-intro {
-    flex: 0 0 40%;
-    justify-content: center;
-    gap: 2rem;
-}
 .scenario-intro p {
     font-size: var(--section-paragraph-size-big);
     margin: 0;
 }
-.scenario-img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: 0 auto;
-}
 
-.scenario-intro div {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-.dots-row {
-  gap: 0.5rem;
-  margin-left: 1rem;
-}
-.dot {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    border: 2px solid #000000;
-}
-.dot--filled {
-    background-color: #000000;
-}
 /*04 SCENARIOS DESCRIPTION*/
-.scenario-description {
-    flex: 0 0 70%;
-    gap: 0;
-}
 .three-columns {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -227,11 +137,6 @@
 .pros-cons p{
     font-size: var(--section-paragraph-size-xsmall);
 }
-.pros-cons {
-    gap: 1rem;
-    box-sizing: border-box;
-    padding: 0 10px 10px 0;
-}
 .pros-cons h6 {
     font-family: 'Neue Montreal Bold', sans-serif;
     font-size: var(--section-paragraph-size);
@@ -243,7 +148,7 @@
     flex: 1;
     box-sizing: border-box;
     min-height: 0;
-    padding: 1rem;
+    padding: min(1.8vh, 4vw);
     gap:0;
     margin:0;
 }
@@ -279,7 +184,8 @@
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     background-color: white;
-    height: 100%;
+    height: 100vh;
+    width: 100%;
     font-family: 'Neue Montreal Bold', sans-serif;
 }
 .four-grid__square {
@@ -328,18 +234,36 @@
 .equipo h3 {
     font-family: 'Neue Montreal Bold', sans-serif;
     margin-bottom: 1rem;
+    font-size: var(--section-paragraph-size)
 }
 .equipo .content-col span{
     font-family: 'Neue Montreal Light', sans-serif;
 }
 
+/* LOGOS */
+.logoCFC {
+    width: clamp(30dvw, 25dvw, 35dvw);
+}
+.logoPXE {
+    position: absolute;
+    height: min(80vh, 80vw);
+    top: 50%;
+    right: 50%;
+    transform: translate(55%, -50%); /*x, y*/
+    z-index: 1;
+}
+.logoPXE_medium {
+  width: clamp(20dvw, 25dvw, 30dvw);
+  height: auto;
+}
 
 
-
-
-@media (max-width: 600px) {
+@media (max-width: 800px) {
     .logoPXE {
         transform: translate(50%, -50%);
+    }
+    .section_subtitle {
+        font-family: 'Neue Montreal Regular', sans-serif;
     }
     .logoPXE_medium {
         width: clamp(40vw, 60vw, 30dvw);
@@ -347,17 +271,11 @@
     .logoCFC {
         width: clamp(50vw, 60vw, 80vw);
     }
-    .header .content-row {
-        align-items: flex-start;
-        gap:0;
-    }
-    .header .content-row h2 {
-        text-align: left;
-    }
-    .why .section_title {
-        text-align: right;
-    }
 
+    .toolCards {
+        grid-template-columns: 1fr;
+        grid-template-rows: none;
+    }
 
     /*04 SCENARIOS*/
     .scenario-grid{

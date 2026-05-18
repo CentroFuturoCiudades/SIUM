@@ -1,9 +1,10 @@
 import { useMediaQuery } from "@chakra-ui/react";
+
 const ProjectWhy = () => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
 
   return (
-    <section className='why content content--light-green'>
+    <div className='content content--light-green'>
         <div className='section-number section-number--left'>
           02
         </div>
@@ -11,11 +12,9 @@ const ProjectWhy = () => {
           02
         </div>
 
-      
         <div className="content-row">
           {!isMobile && (
             <div className="map-legend" style={{backgroundImage:'url("/pxe_images/map_mty.png")'}}>
-              <div>
                 <img src={'/pxe_images/legend.png'} />
                 <>
                   <p style={{fontWeight:'bold'}}>¿HACIA DÓNDE NOS EXPANDIMOS?</p>
@@ -24,13 +23,16 @@ const ProjectWhy = () => {
                     pierde población.
                   </p>
                 </>
-              </div>
             </div>
           )}
 
-          <div className='content-col' style={{gap:0, flex: '0 0 25%'}}>
-            <h2 className="section_title section_title--white">
-              ¿POR QUÉ ESTE<br />PROYECTO?
+          <div className='content-col' style={{
+            gap:0, 
+            flex: isMobile ? 'unset' : '0 0 25%'
+          }}>
+            <h2 className="section_title section_title--white" style={{textAlign: isMobile ? 'right' : 'left'}}>
+              ¿POR QUÉ {isMobile && <br/>}
+              ESTE<br />PROYECTO?
             </h2>
             <div className="content-col" style={{gap:'1rem'}}>
               <div>
@@ -61,9 +63,9 @@ const ProjectWhy = () => {
           </div>
 
           {isMobile && (
-            <div className="map-legend" >
+            <div className="map-legend" style={{flex:'unset'}}>
               <img src={'/pxe_images/map_mty.png'} style={{width:'100%', height:'auto', objectFit:'contain', display:'block'}}/>
-              <img src={'/pxe_images/legend.png'} style={{width:'100%', height:'100%'}}/>
+              <img src={'/pxe_images/legend.png'}/>
               <div>
                 <p style={{fontWeight:'bold'}}>¿HACIA DÓNDE NOS EXPANDIMOS?</p>
                 <p>
@@ -74,7 +76,7 @@ const ProjectWhy = () => {
             </div>
           )}
       </div>
-    </section>
+    </div>
   );
 };
 
