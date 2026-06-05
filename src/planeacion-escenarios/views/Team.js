@@ -1,4 +1,4 @@
-import { teamMembersCFC, teamMembersCNL, comiteAsesor } from '../constants/constants';
+import { teamMembersCFC, teamMembersCNL, comiteAsesor } from '../utils/constants';
 import { useMediaQuery } from "@chakra-ui/react";
 
 const Team = () => {
@@ -16,10 +16,14 @@ const Team = () => {
       <h2 className="section_title section_title--white" style={{marginBottom:0}}> 
         EQUIPO
       </h2>
-      <h2 className='section_subtitle'>Este proyecto es fondeado por <span style={{fontFamily: 'Neue Montreal Bold, sans-serif'}}>Capital para el Bien Común A.C.</span></h2>
+      <h2 className='section_subtitle'>
+        Este proyecto es fondeado {isMobile && <br/>}
+        por {isMobile && <br/>}
+        <span style={{fontFamily: 'Neue Montreal Bold, sans-serif'}}>Capital para el Bien Común A.C.</span>
+      </h2>
 
 
-      <div className='content-row'>
+      <div className='content-row' style={{marginTop: isMobile ? '2rem': ''}}>
         <div className='content-row' style={{flex:'0 0 50%'}}>
           
           <div className='content-col'>

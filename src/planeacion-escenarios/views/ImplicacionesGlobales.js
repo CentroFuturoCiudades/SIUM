@@ -1,7 +1,10 @@
-import { implicaciones_categories, scenariosTitles } from "../constants/constants";
+import { implicaciones_categories, scenariosTitles } from "../utils/constants";
+import { useMediaQuery } from "@chakra-ui/react";
 
 const ImplicacionesGlobales = () => {
+    const [isMobile] = useMediaQuery("(max-width: 768px)");
     const scenarios = ['inicial', 'red', 'contenida', 'archipelago'];
+
     return (
         <div className="content" style={{overflowX:'auto'}}>
             <h2 className="section_title section_title" style={{lineHeight:1}}> 
@@ -11,7 +14,7 @@ const ImplicacionesGlobales = () => {
 
             <div className="implicaciones">
               {scenarios.map((scenario, scenarioIndex) => (
-                <div className='implicaciones__cell' key={scenario} style={{
+                <div className='implicaciones__cell' key={scenarioIndex} style={{
                   gridColumn: scenarioIndex + 2,
                   gridRow: 1,
                   color: 'black',
@@ -23,13 +26,16 @@ const ImplicacionesGlobales = () => {
 
                   {implicaciones_categories.map((category, index) => (
                     <>
-                      <div className="content-row implicaciones__category" style={{
+                      <div className="implicaciones__category" style={{
+                        display:'flex',
+                        flexDirection:'row',
                         gridColumn: 1,
                         gridRow: index + 2,
                         alignItems:'center',
+                        justifyContent: isMobile ? 'space-between' :'',
                       }}>
                         <p style={{margin: 0}}>{category.category}</p>
-                        <span style={{fontSize:'min(2vh, 3vw)'}}>{category.icon}</span>
+                        <span style={{fontSize:'min(3vh, 4vw)'}}>{category.icon}</span>
                       </div>
 
                       {scenarios.map((scenario, scenarioIndex) => (

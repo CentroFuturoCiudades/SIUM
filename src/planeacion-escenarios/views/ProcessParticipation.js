@@ -1,4 +1,4 @@
-import { steps, tools } from '../constants/constants';
+import { steps, tools } from '../utils/constants';
 import { useMediaQuery } from "@chakra-ui/react";
 
 const ProcessParticipation = () => {

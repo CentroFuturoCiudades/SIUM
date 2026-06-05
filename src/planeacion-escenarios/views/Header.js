@@ -9,6 +9,8 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
+import { scenarios_game } from "../utils/constants";
+import { scrollToSection } from "../utils/general";
 
 const Header = () => {
   const [isMobile] = useMediaQuery("(max-width: 800px)");
@@ -61,28 +63,30 @@ const Header = () => {
                 colorScheme="whiteAlpha"
               />
               <MenuList style={{color:'black'}}>
-                <MenuItem as="a" href="#scenario" minH="50px">
+                <MenuItem onClick={() => scrollToSection('objetivo')} minH="50px">
                   Objetivo
                 </MenuItem>
-                <MenuItem as="a" href="#participation" minH="50px">
+                <MenuItem onClick={() => scrollToSection('proceso')} minH="50px">
                   Proceso
                 </MenuItem>
-                <MenuItem as="a" href="#scenario-case-0" minH="50px">
+                <MenuItem onClick={() => scrollToSection('escenario0')} minH="50px">
                   Escenarios
                 </MenuItem>
-                <MenuItem as="a" href="#implicaciones" minH="50px">
+                <MenuItem onClick={() => scrollToSection('implicaciones')} minH="50px">
                   Indicadores
                 </MenuItem>
-                <MenuItem as="a" href="#implicaciones" minH="50px">
-                  Materiales
+                <MenuItem onClick={() => scrollToSection('team')} minH="50px">
+                  Equipo
+                </MenuItem>
+                <MenuItem as="a" href={scenarios_game} target="_blank" minH="50px">
+                  Juego
                 </MenuItem>
               </MenuList>
             </Menu>
             ) : (
             <>
               <Button
-                as="a"
-                href="#scenario"
+                onClick={() => scrollToSection('objetivo')}
                 variant="text"
                 color="white"
                 fontSize="min(2.8dvh, 1.4dvw)"
@@ -91,8 +95,7 @@ const Header = () => {
                 Objetivo
               </Button>
               <Button
-                as="a"
-                href="#participation"
+                onClick={() => scrollToSection('proceso')}
                 variant="text"
                 color="white"
                 fontSize="min(2.8dvh, 1.4dvw)"
@@ -101,8 +104,7 @@ const Header = () => {
                 Proceso
               </Button>
               <Button
-                as="a"
-                href="#scenario-case-0"
+                onClick={() => scrollToSection('escenario0')}
                 variant="text"
                 color="white"
                 fontSize="min(2.8dvh, 1.4dvw)"
@@ -111,8 +113,7 @@ const Header = () => {
                 Escenarios
               </Button>
               <Button
-                as="a"
-                href="#implicaciones"
+                onClick={() => scrollToSection('implicaciones')}
                 variant="text"
                 color="white"
                 fontSize="min(2.8dvh, 1.4dvw)"
@@ -121,8 +122,7 @@ const Header = () => {
                 Indicadores
               </Button>
               <Button
-                as="a"
-                href="#team"
+                onClick={() => scrollToSection('team')}
                 variant="text"
                 color="white"
                 fontSize="min(2.8dvh, 1.4dvw)"
@@ -132,13 +132,14 @@ const Header = () => {
               </Button>
               <Button
                 as="a"
-                href="#team"
+                href={scenarios_game}
+                target="_blank"
                 variant="text"
                 color="white"
                 fontSize="min(2.8dvh, 1.4dvw)"
                 fontWeight="bold"
               >
-                Materiales
+                Juego
               </Button>
             </>
           )}

@@ -14,6 +14,7 @@ import { HiOutlineBuildingLibrary } from "react-icons/hi2";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { FaCar } from "react-icons/fa6";
 
+export const scenarios_game = "https://agreeable-tree-0f1e21a10.7.azurestaticapps.net"
 
 export const scenariosTitles = {
     inicial: 'Metrópolis Inercial',
