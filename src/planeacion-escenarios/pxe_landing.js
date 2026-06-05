@@ -13,11 +13,10 @@ import ImplicacionesTerritoriales from './views/ImplicacionesTerritoriales';
 import ScenariosGrid from './views/ScenariosGrid';
 import GroupIndicators from './views/GroupIndicators';
 import Team from './views/Team';
-import { scenarios_cases } from './constants/constants';
-// import '../styles/global.scss'
+import { scenarios_cases } from './utils/constants';
 
 const Section = ({ id, children }) => (
-  <section id={id} className={`${id === 'scenario-case-0' ? 'pxe__section04' : 'pxe__section'}`}>
+  <section id={id} className={`${id === 'escenario0' ? 'pxe__section04' : 'pxe__section'}`}>
     {children}
   </section>
 );
@@ -25,19 +24,19 @@ const Section = ({ id, children }) => (
 const PXE_Landing = () => {
   return (
     <>
-      <Section id="home">
-        <Header />
+      <Section>
+        <Header id="home"/>
       </Section>
 
-      <Section id="scenario">
+      <Section id="intro">
         <Intro />
       </Section>
 
-      <Section id="why">
+      <Section id="objetivo">
         <ProjectWhy />
       </Section>
 
-      <Section id="participation">
+      <Section id="proceso">
         <ProcessParticipation />
       </Section>
 
@@ -50,14 +49,14 @@ const PXE_Landing = () => {
       </Section> */}
 
       {scenarios_cases.map((caseData, index) => (
-        <>
-        <Section id={`scenario-case-${index}`} key={index}>
-          <ScenarioIntro {...caseData} />
-        </Section>
-        <Section id={`scenario-description-${index}`} key={`${index}-description`}>
-          <ScenarioDescription {...caseData} />
-        </Section>
-        </>
+        <div key={index}>
+          <Section id={`escenario${index}`} key={index}>
+            <ScenarioIntro {...caseData} />
+          </Section>
+          <Section id={`info-escenario${index}`} key={`${index}-info`}>
+            <ScenarioDescription {...caseData} />
+          </Section>
+        </div>
       ))}
 
       <Section id="implicaciones">

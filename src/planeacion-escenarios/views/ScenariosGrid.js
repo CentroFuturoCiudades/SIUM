@@ -1,4 +1,4 @@
-import { scenariosGrid } from "../constants/constants"
+import { scenariosGrid } from "../utils/constants"
 const ScenariosGrid = () => {
     return (
         <div className="four-grid">

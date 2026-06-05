@@ -1,4 +1,4 @@
-import { territoriosMTY } from "../constants/constants";
+import { territoriosMTY } from "../utils/constants";
 import { useMediaQuery } from "@chakra-ui/react";
 
 const ImplicacionesTerritoriales = () => {
